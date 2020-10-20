@@ -1,0 +1,339 @@
+body {
+	margin: 0px;
+}
+.title_bg_text {
+	font-family: 'Prompt', sans-serif;
+	font-size: 13px;
+	font-weight: bold;
+	color: #3963CF;
+	text-align: center;
+	background-image: url(images/monthBg.gif);
+	background-repeat: repeat-x;
+	padding: 5px;
+} 
+.right_border {
+	border-right-width: 1px;
+	border-right-style: solid;
+	border-right-color: #999999;
+}
+
+table {
+	font-family: 'Prompt', sans-serif;
+	font-size: 13px;
+}
+.text {
+	font-family: 'Prompt', sans-serif;
+	font-size: 13px;
+	color: #000000;
+	height: 1.8em;
+}
+A.text, A.text:visited, A.text:active
+
+ { 
+
+color: #004080; 
+text-decoration: none;
+FONT-WEIGHT: bold; 
+FONT-SIZE: 13px;
+   }
+A.text:hover
+{
+color: #8F4747; 
+text-decoration: underline;
+FONT-WEIGHT: bold; 
+FONT-SIZE: 13px;
+}
+.texttop {
+	font-family: 'Prompt', sans-serif;
+	font-size: 13px;
+	color: #000000;
+}
+A.texttop, A.texttop:visited, Atexttop:active
+
+ {
+	color: #004080;
+	text-decoration: none;
+	FONT-WEIGHT: bold;
+	FONT-SIZE: 13px;
+   }
+A.texttop:hover
+{
+color: #8F4747; 
+text-decoration: underline;
+FONT-WEIGHT: bold; 
+FONT-SIZE: 13px;
+}
+
+.textnormal {
+	font-family: 'Prompt', sans-serif;
+	font-size: 13px;
+	color: #000000;
+}
+A.textnormal, A.textnormal:visited, A.textnormal:active
+
+ { 
+
+color: #004080; 
+text-decoration: none;
+FONT-WEIGHT: normal; 
+FONT-SIZE: 13px;
+   }
+A.textnormal:hover
+{
+color: #8F4747; 
+text-decoration: underline;
+FONT-WEIGHT: normal; 
+FONT-SIZE: 13px;
+}
+
+.topic {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 36px;
+	font-weight: bold;
+	color: #004080;
+}
+
+.subtopic {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 24px;
+	font-weight: bold;
+	color: #008080;
+}
+.title_table {
+	font-family: 'Prompt', sans-serif;
+	font-size: 13px;
+	font-weight: bold;
+	color: #3963CF;
+	background-image: url(images/monthBg.gif);
+	background-repeat: repeat-x;
+	text-align: center;
+	height: 25px;
+}
+.title {
+
+	font-family: 'Prompt', sans-serif;
+	font-size: 13px;
+	font-weight: bold;
+	color: #1633B0;
+}
+.borderall {
+	border: 1px solid #666666;
+	padding-top: 0px;
+	padding-bottom: 10px;
+	padding-right: 5px;
+	padding-left: 5px;
+}
+.bottomtable {
+	font-family: Tahoma;
+	font-size: 13px;
+	color: #FFFFFF;
+	background-color: #339966;
+}
+.headtable {
+	font-family: Tahoma;
+	font-size: 13px;
+	color: #FFFFFF;
+	border: 1px inset #FFFFFF;
+	font-weight: bold;
+	background-color: #346498;
+}
+.border {
+	padding: 1px;
+	border: 1px solid #999999;
+}.titlenotbold {
+
+
+	font-family: 'Prompt', sans-serif;
+	font-size: 13px;
+	font-weight: normal;
+	color: #3963CF;
+}
+.footer {
+	font-family: 'Prompt', sans-serif;
+	font-size: 13px;
+	font-weight: bold;
+	color: #FFFFFF;
+	text-align: center;
+}
+.title_bg_text_no_center {
+
+	font-family: 'Prompt', sans-serif;
+	font-size: 13px;
+	font-weight: bold;
+	color: #3963CF;
+	background-image: url(images/monthBg.gif);
+	background-repeat: repeat-x;
+	padding: 5px;
+}
+.sub_title_bg_text {
+
+	font-family: 'Prompt', sans-serif;
+	font-size: 13px;
+	font-weight: bold;
+	color: #FFFFFF;
+	text-align: center;
+	background-image: url(images/subtitle_bg.gif);
+	background-repeat: repeat-x;
+	padding: 5px;
+}
+.sub_title_bg_text2 {
+
+
+	font-family: 'Prompt', sans-serif;
+	font-size: 13px;
+	font-weight: bold;
+	color: #FFFFFF;
+	text-align: center;
+	background-image: url(images/subtitle_bg2.gif);
+	background-repeat: repeat-x;
+	padding: 5px;
+}
+.sub_title_bg_text3 {
+
+
+	font-family: 'Prompt', sans-serif;
+	font-size: 13px;
+	font-weight: bold;
+	color: #FFFFFF;
+	text-align: center;
+	background-image: url(images/subtitle_bg3.gif);
+	background-repeat: repeat-x;
+	padding: 5px;
+}
+.sub_title_bg_text4 {
+
+
+	font-family: 'Prompt', sans-serif;
+	font-size: 13px;
+	font-weight: bold;
+	color: #0A1F49;
+	text-align: center;
+	background-image: url(images/subtitle_bg4.gif);
+	background-repeat: repeat-x;
+	padding: 5px;
+}
+.sub_title_bg_text5 {
+
+
+	font-family: 'Prompt', sans-serif;
+	font-size: 13px;
+	font-weight: bold;
+	color: #FFFFFF;
+	text-align: center;
+	background-image: url(images/subtitle_bg5.gif);
+	background-repeat: repeat-x;
+	padding: 5px;
+}
+.sub_title_bg_text6 {
+	font-family: 'Prompt', sans-serif;
+	font-size: 13px;
+	font-weight: bold;
+	color: #00356A;
+	text-align: center;
+	background-repeat: repeat-x;
+	padding: 5px;
+	background-color: #DE5CA7;
+}
+.redfont {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	font-weight: bold;
+	color: #FF0000;
+}
+.title_bg_text_no_center_green {
+
+
+	font-family: 'Prompt', sans-serif;
+	font-size: 13px;
+	font-weight: bold;
+	color: #FFFFFF;
+	background-image: url(images/green_bg.jpg);
+	background-repeat: repeat-x;
+	padding: 5px;
+}*/
+.borderall_blue {
+
+	border: 1px solid #2B50C3;
+}
+.title_bg_text_no_center_blue {
+
+
+
+	font-family: 'Prompt', sans-serif;
+	font-size: 13px;
+	font-weight: bold;
+	color: #FFFFFF;
+	background-image: url(images/blue_bg.jpg);
+	background-repeat: repeat-x;
+	padding: 5px;
+}
+.textwhite {
+	font-family: 'Prompt', sans-serif;
+	font-size: 13px;
+	color: #FFFFFF;
+	height: 1.8em;
+}
+A.textwhite, A.textwhite:visited, A.textwhite:active
+
+ { 
+
+color: #FFFFFF; 
+text-decoration: none;
+FONT-WEIGHT: bold; 
+FONT-SIZE: 13px;
+   }
+A.textwhite:hover
+{
+color: #D9B0B0; 
+text-decoration: underline;
+FONT-WEIGHT: bold; 
+FONT-SIZE: 13px;
+}*/
+.borderall_green {
+
+
+	border: 1px solid #479501;
+}
+.bottom_border {
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #999999;
+}
+.title_table_green {
+
+	font-family: 'Prompt', sans-serif;
+	font-size: 13px;
+	font-weight: bold;
+	color: #FFFFFF;
+	background-image: url(images/green_bg.jpg);
+	background-repeat: repeat-x;
+	text-align: center;
+	height: 25px;
+}
+.blue_bg_color {
+	background-color: #DFE6F1;
+}
+.yellow_bg_color {
+
+	background-color: #F8F7DE;
+}
+.title_table_blue {
+
+
+	font-family: 'Prompt', sans-serif;
+	font-size: 13px;
+	font-weight: bold;
+	color: #FFFFFF;
+	background-image: url(images/blue_bg.jpg);
+	background-repeat: repeat-x;
+	text-align: center;
+	height: 25px;
+}
+.bg_color {
+	background-color: #BCCBE2;
+}
+.bg_colorCopy {
+	background-color: #5F83BA;
+	font-weight: bold;
+	color: #FFFFFF;
+}

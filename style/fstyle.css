@@ -1,0 +1,240 @@
+TABLE.edit-form TR.bottom TD {
+	BORDER-BOTTOM: #abb6d7 1px solid
+}
+TABLE.edit-form TR.bottom TD.left {
+	BORDER-RIGHT: 0px; BORDER-TOP: 0px; BACKGROUND-IMAGE: url(../image/edit/lb.gif); BORDER-LEFT: 0px; WIDTH: 2px; BORDER-BOTTOM: 0px; HEIGHT: 2px
+}
+TABLE.edit-form TR.bottom TD.right {
+	BORDER-RIGHT: 0px; BORDER-TOP: 0px; BACKGROUND-IMAGE: url(../image/edit/rb.gif); BORDER-LEFT: 0px; WIDTH: 2px; BORDER-BOTTOM: 0px; HEIGHT: 2px
+}
+TABLE.edit-form TD.content {
+	PADDING-RIGHT: 2px; PADDING-LEFT: 2px; PADDING-BOTTOM: 2px; PADDING-TOP: 7px
+}
+TABLE.edit-form DIV.buttons {
+	BORDER-RIGHT: #ced6ec 1px solid; PADDING-RIGHT: 5px; BORDER-TOP: #ced6ec 1px solid; MARGIN-TOP: 4px; PADDING-LEFT: 5px; BACKGROUND-IMAGE: url(../image/edit/buttons_bg.gif); PADDING-BOTTOM: 5px; BORDER-LEFT: #ced6ec 1px solid; PADDING-TOP: 5px; BORDER-BOTTOM: #ced6ec 1px solid; BACKGROUND-COLOR: #f8f9fc
+}
+
+
+tr.section1 td {
+	padding: 0px 0px;
+	background: url(../images/hdot2.gif) repeat-x bottom;
+}
+tr.section2 td {
+	padding: 0px 0px;
+	background: url(../images/hdot2.gif) repeat-x bottom #F1F5FA;
+}
+tr.section1:hover td,
+tr.section2:hover td {
+	background: url(../images/hdot2.gif) repeat-x bottom #FCFCFC;
+}
+
+
+DIV.notes {
+	MARGIN-TOP: 0px; MARGIN-BOTTOM: 10px
+}
+DIV.edit-form DIV.notes {
+	MARGIN: 4px 0px
+}
+TABLE.notes TD {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; FONT-SIZE: 75%; PADDING-BOTTOM: 0px; COLOR: #333333; PADDING-TOP: 0px; BACKGROUND-COLOR: #fefdea
+}
+TABLE.notes TR.top TD {
+	BORDER-TOP: #d7d6ba 1px solid
+}
+TABLE.notes TD.left {
+	BORDER-LEFT: #d7d6ba 1px solid
+}
+TABLE.notes TD.right {
+	BORDER-RIGHT: #d7d6ba 1px solid
+}
+TABLE.notes TR.top TD.left {
+	BORDER-RIGHT: 0px; BORDER-TOP: 0px; BACKGROUND-IMAGE: url(../image/note/lt.gif); BORDER-LEFT: 0px; WIDTH: 2px; BORDER-BOTTOM: 0px; HEIGHT: 2px
+}
+TABLE.notes TR.top TD.right {
+	BORDER-RIGHT: 0px; BORDER-TOP: 0px; BACKGROUND-IMAGE: url(../image/note/rt.gif); BORDER-LEFT: 0px; WIDTH: 2px; BORDER-BOTTOM: 0px; HEIGHT: 2px
+}
+TABLE.notes TR.bottom TD {
+	BORDER-BOTTOM: #d7d6ba 1px solid
+}
+TABLE.notes TR.bottom TD.left {
+	BORDER-RIGHT: 0px; BORDER-TOP: 0px; BACKGROUND-IMAGE: url(../image/note/lb.gif); BORDER-LEFT: 0px; WIDTH: 2px; BORDER-BOTTOM: 0px; HEIGHT: 2px
+}
+TABLE.notes TR.bottom TD.right {
+	BORDER-RIGHT: 0px; BORDER-TOP: 0px; BACKGROUND-IMAGE: url(../image/note/rb.gif); BORDER-LEFT: 0px; WIDTH: 2px; BORDER-BOTTOM: 0px; HEIGHT: 2px
+}
+TABLE.notes TD.content {
+	PADDING-RIGHT: 7px; PADDING-LEFT: 7px; PADDING-BOTTOM: 7px; PADDING-TOP: 7px
+}
+DIV.notes DIV.ruler {
+	BORDER-TOP: #d7d6ba 1px solid; MARGIN-TOP: 8px
+}
+DIV.notes P {
+	FONT-SIZE: 100%; MARGIN: 12px 0px
+}
+DIV.notes A.control {
+	COLOR: black; TEXT-DECORATION: none
+}
+DIV.notes A.control:hover {
+	TEXT-DECORATION: underline
+}
+
+
+DIV.message {
+	MARGIN: 16px 0px
+}
+TABLE.message TD {
+	FONT-SIZE: 75%
+}
+TABLE.message-ok {
+	BORDER-RIGHT: #00cc00 2px solid; BORDER-TOP: #00cc00 2px solid; BORDER-LEFT: #00cc00 2px solid; BORDER-BOTTOM: #00cc00 2px solid
+}
+TABLE.message-error {
+	BORDER-RIGHT: #ff0000 2px solid; BORDER-TOP: #ff0000 2px solid; BORDER-LEFT: #ff0000 2px solid; BORDER-BOTTOM: #ff0000 2px solid
+}
+TABLE.message-ok TD {
+	COLOR: #009900
+}
+TABLE.message-error TD {
+	COLOR: #ff0000
+}
+TABLE.message TABLE.content {
+	MARGIN: 4px
+}
+TABLE.message TABLE.content TD {
+	PADDING-RIGHT: 4px; PADDING-LEFT: 4px; PADDING-BOTTOM: 4px; PADDING-TOP: 4px
+}
+TABLE.message SPAN.message-title {
+	FONT-WEIGHT: bold
+}
+TABLE.message DIV.icon-error {
+	BACKGROUND-IMAGE: url(image/icon_error.gif); WIDTH: 32px; HEIGHT: 32px
+}
+TABLE.message DIV.icon-ok {
+	BACKGROUND-IMAGE: url(image/icon_info.gif); WIDTH: 32px; HEIGHT: 32px
+}
+
+.textlogin {
+	border:1px solid #cccccc;
+	border-left: 5px solid #cccccc;
+	color:#595959;
+	width:109px;
+	background:none;
+	height:22px;
+	padding: 1px 2px 1px 2px;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size:14px;
+} 
+
+.textsearch {
+	border:1px solid #dadada;
+	border-left: 5px solid #dadada;
+	color:#595959;
+	width:222px;
+	height:22px;
+	padding: 1px 2px 1px 2px;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size:14px;
+} 
+
+.mytextbox {
+	border:1px solid #dadada;
+	border-left: 5px solid #dadada;
+	color:#595959;
+	width:151px;
+	height:22px;
+	padding: 1px 2px 1px 2px;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size:14px;
+}
+
+.mytextboxDate {
+	border:1px solid #dadada;
+	border-left: 5px solid #dadada;
+	color:#595959;
+	width:101px;
+	height:22px;
+	padding: 1px 2px 1px 2px;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size:14px;
+}
+
+.mytextboxNo {
+	border:1px solid #dadada;
+	border-left: 5px solid #dadada;
+	color:#595959;
+	width:80px;
+	height:22px;
+	padding: 1px 2px 1px 2px;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size:14px;
+	text-align:right;
+} 
+
+.mytextboxLong {
+	border:1px solid #dadada;
+	border-left: 5px solid #dadada;
+	color:#595959;
+	width:370px;
+	height:22px;
+	padding: 1px 2px 1px 2px;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size:14px;
+}
+
+.mytextboxLonger {
+	border:1px solid #dadada;
+	border-left: 5px solid #dadada;
+	color:#595959;
+	width:444px;
+	height:22px;
+	padding: 1px 2px 1px 2px;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size:14px;
+}
+
+.mytextboxLongest {
+	border:1px solid #dadada;
+	border-left: 5px solid #dadada;
+	color:#595959;
+	width:626px;
+	height:22px;
+	padding: 1px 2px 1px 2px;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size:14px;
+}
+
+.myUpload {
+	border:1px solid #dadada;
+	border-left: 5px solid #dadada;
+	color:#595959;
+	width:444px;
+	height:22px;
+	padding: 1px 2px 1px 2px;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size:14px;
+}
+
+.dropsearch {
+	border:1px solid #cccccc;
+	color:#595959;
+	height:22px;
+	margin-top:1px;
+	padding: 1px 1px 1px 1px;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size:13px;
+}
+
+.txtHeader {
+	color:#595959;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size:16px;
+	font-weight:bold;
+	text-decoration:none;
+}
+
+.txtHeaderSub {
+	color:#595959;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size:16px;
+	text-decoration:none;
+}

@@ -1,0 +1,29 @@
+
+.buttonblue{
+	background-color:#F7F9FB;
+	border:1px solid #6699FF;  
+	text-decoration:none;
+	color:#0C4EA6; 
+	font-size:13px; 
+	padding:3px; 
+	display:block; 
+	float:left; 
+	margin-left:1px; 
+	margin-right:1px;
+}
+
+.buttonblue img{
+	height:16px; 
+	width:16px; 
+	border:none; 
+	vertical-align:middle;
+}
+
+.buttonblue span{
+	vertical-align:middle;
+}
+
+.buttonblue:hover{
+	text-decoration:none;
+	border:1px solid #808080; 
+}

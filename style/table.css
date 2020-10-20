@@ -1,0 +1,40 @@
+.atd:link {
+	color: #006699;
+	text-decoration: none;
+}
+
+.atd:hover, .atd:active, .atd:focus {
+	color: #333333;
+	text-decoration: underline;
+}
+
+/* content tables */
+td.sectiontableheader {
+  padding: 4px;
+  border-right: 1px solid #fff;
+}
+
+.sectiontableheader {
+	padding: 8px 5px;
+	background: #61AEDC;
+	color: #FFFFFF;
+}
+
+.sectiontableheader a {
+	color: #FFFFFF;
+}
+
+tr.sectiontableentry1 td {
+	padding: 5px 5px;
+	background: url(../images/hdot2.gif) repeat-x bottom;
+}
+
+tr.sectiontableentry2 td {
+	padding: 5px 5px;
+	background: url(../images/hdot2.gif) repeat-x bottom #EFF3F8;
+}
+
+tr.sectiontableentry1:hover td,
+tr.sectiontableentry2:hover td {
+	background: url(../images/hdot2.gif) repeat-x bottom #FCFCFC;
+}

@@ -1,0 +1,52 @@
+	.select_multiple_submit {
+		background-image:url("bg_bot.png");
+		background-image:top center;
+		padding:2px;
+	}
+
+	table.select_multiple_table td {
+		height:25px;
+		border-bottom:1px solid #ddd;
+		font-family:"Lucida Grande",Verdana;
+		color:#333;
+		font-size:14px;
+	}
+	
+	table.select_multiple_table tr.even {
+		background-color:#FCFCFC;
+	}
+
+	table.select_multiple_table tr.odd {
+		background-color:#F7F7F7;
+	}
+	
+	table.select_multiple_table tr.selected {
+		background-image:none;
+		background-color:#D9E9FE;
+	}
+	
+	.select_multiple_name {
+		padding-left:5px;
+	}
+
+	.select_multiple_name_a {
+		/* padding-left:15px; */
+		font-weight:bold;
+		color:#D9E9FE;
+	}
+	
+	.select_multiple_checkbox {
+		text-align:right;
+	}
+	
+	.select_multiple_checkbox input {
+		/* margin-right:15px; */
+	}
+
+	.select_multiple_header {
+		/* padding-left:15px; */
+		font-weight:bold;
+		font-family:"Lucida Grande",Verdana;
+		font-size:14px;
+		color:#FFFFFF;
+	}

@@ -1,0 +1,105 @@
+	#select_multiple_from {
+		border:1px solid #dadada;
+		border-left: 5px solid #dadada;
+		color:#595959;
+		width:424px;
+		height:22px;
+		padding: 1px 2px 1px 2px;
+		font-family:Verdana, Arial, Helvetica, sans-serif;
+		font-size:14px;
+	}
+	
+	#select_from_container {
+		position:relative;
+	}
+	
+	#select_multiple_to {
+		border:1px solid #dadada;
+		border-left: 5px solid #dadada;
+		color:#595959;
+		width:424px;
+		height:22px;
+		padding: 1px 2px 1px 2px;
+		font-family:Verdana, Arial, Helvetica, sans-serif;
+		font-size:14px;
+	}
+	
+	#select_to_container {
+		position:relative;
+	}
+
+	.select_multiple_submit {
+		background-image:url("bg_bot.png");
+		background-image:top center;
+		padding:4px;
+		height:24px;
+		text-align:right;
+	}
+
+	.select_multiple_label {
+		margin-left:5px;
+		font-family:"Lucida Grande",Verdana;
+		font-size:12px;
+	}
+
+	.select_multiple_container {
+		width:447px;
+		position:absolute;
+		top:0;
+		left:0;
+		z-index:500;
+		border:1px solid #222;
+		border-top:none;
+	}
+
+	.select_multiple_container .select_multiple_header {
+		background-image:url("/stylesheets/black_background.gif");
+		background-repeat:repeat-x;
+		background-position:top center;
+		color:#eee;
+		font-family:"Lucida Grande",Verdana;
+		font-weight:bold;
+		font-size:14px;
+		margin:0;
+		padding:7px 0 8px 10px;
+		background-color:#000;
+	}
+	
+	table.select_multiple_table td {
+		height:25px;
+		border-bottom:1px solid #ddd;
+		font-family:"Lucida Grande",Verdana;
+		color:#333;
+		font-size:14px;
+	}
+	
+	table.select_multiple_table tr.even {
+		background-color:#FCFCFC;
+	}
+
+	table.select_multiple_table tr.odd {
+		background-color:#F7F7F7;
+	}
+	
+	table.select_multiple_table tr.selected {
+		background-image:none;
+		background-color:#D9E9FE;
+	}
+	
+	.select_multiple_name {
+		padding-left:5px;
+	}
+
+	.select_multiple_name_a {
+		/* padding-left:15px; */
+		font-weight:bold;
+		color:#D9E9FE;
+	}
+	
+	.select_multiple_checkbox {
+		text-align:center;
+	}
+	
+	.select_multiple_checkbox input {
+		/* margin-right:15px; */
+	}

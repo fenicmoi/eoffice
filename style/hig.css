@@ -1,0 +1,83 @@
+body
+{
+	margin:0px;
+	background-image:none;
+	background-repeat:repeat;
+	background-position:top left;
+	font-family:Tahoma, Verdana, Arial;
+	font-size:11pt;
+	color:#444;
+	direction:ltr;
+}
+.IE_M6 .LeftNav LI A{color:#444 !important;}
+.MenuItemSelected, .LeftNav LI.FolderItemSelected A, LI.IndexListSelected A, .ToolbarItem.ToolbarIcon A.Selected{border:1px solid #83aada;background-color:#DDECFE;}
+.THEME_FL_HOVER, .LeftNav LI A:hover{border:1px solid #bbd8fb;background-color:#F3F7FD;}
+
+td
+{
+	font-family:Tahoma, Verdana, Arial;
+	font-size:11pt;
+}
+a
+{
+	font-weight:inherit;
+	text-decoration:none;
+	color:#414141;
+	cursor:pointer;
+}
+a:visited
+{
+	color:#333333;
+}
+a:hover
+{
+	text-decoration:none;
+	color:#000000;
+}
+
+.Caption
+{
+	font-weight:inherit;
+	font-size:11pt;
+	text-decoration:none;
+	color:#0066CC;
+	cursor:pointer;
+}
+.Caption:visited
+{
+	color:#0066CC;
+	text-decoration:none;	
+}
+.Caption:hover
+{
+	text-decoration:none;
+	color:#333333;	
+}
+
+.List
+{
+	margin:0px;
+	padding:0px;
+	list-style:none;
+	white-space:nowrap;
+	width:auto;	
+}
+.LeftNav LI
+{
+	border:1px solid #fcfcfc;
+	margin:0px;
+	white-space:nowrap;
+	clear:both;
+	display:block;
+}
+.LeftNav LI A
+{
+	border:1px solid #fcfcfc;
+	margin:0px;
+	padding:2px 8px;
+	white-space:nowrap;
+	clear:both;
+	display:block;
+	color:#444;
+	overflow:hidden;
+}
