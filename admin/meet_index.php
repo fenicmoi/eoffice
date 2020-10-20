@@ -140,7 +140,7 @@ if(isset($_POST['save_reserv'])){
                  time_rang();
             }else{  //ตรวจสอบห้องประชุมที่เลือก
                 $sql = "SELECT * FROM meeting_booking WHERE startdate ='$startdate' AND room_id='$room_id'";
-                
+
                 $result = dbQuery($sql);
                 $numrow = dbNumRows($result);
 
@@ -164,7 +164,7 @@ if(isset($_POST['save_reserv'])){
                                     if($result){
                                         success();
                                     }else{
-                                        nosuccess();
+                                        no_success();
                                     }
                                 }  //upload file
                              }//strlen
