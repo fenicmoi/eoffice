@@ -170,7 +170,10 @@ if(isset($_POST['save_reserv'])){
                              }//strlen
                     } // file  
                }else if($numrow <> 0){    //ถ้ามีนี้มีการใช้  ให้เชคต่อไปว่าเวลาตรงกันหรือไม่
+
+                    //เลือก  เวลาเริ่มที่น้อยที่สุด  และเวลาจบประชุมที่มากที่สุด  ในวันที่กำหนด ห้องที่กำหนด
                     $sql = "SELECT MIN(starttime) as st,MAX(endtime) as et FROM meeting_booking WHERE startdate ='$startdate'AND room_id='$room_id'";
+                   // print $sql;
                     $result = dbQuery($sql);
                     while ($row = dbFetchArray($result)) {
                         $st = $row['st'];  //เวลาเริ่มประชุม
@@ -182,7 +185,7 @@ if(isset($_POST['save_reserv'])){
 								 AND ('$starttime' BETWEEN '$st' and '$et')
                                  AND ('$endtime' BETWEEN '$st' and '$et')
                                  AND (conf_status >=1)";
-
+                        print $sql2;
                         $dbquery2 = dbQuery($sql2);
                         $numrows = dbNumRows($dbquery2);
                         //print $numrows;

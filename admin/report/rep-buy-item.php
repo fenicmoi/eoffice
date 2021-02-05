@@ -50,7 +50,7 @@ $row=dbFetchAssoc($result);
 วันที่ออกเลขสัญญา <span style="border-bottom: thin dotted;";?><?php echo thaiDate($row['date_submit']);?></span></h4>
 
 <h4>หน่วยงานเจ้าของงบประมาณ <?php echo $row['dep_name'];?>  ระหว่าง จังหวัดพัทลุง  โดย
- <span style="border-bottom: thin dotted;";?><?php echo $row['dep_name'];?></span> ผู้ซื้อ <br>
+ <span style="border-bottom: thin dotted;";?><?php echo $row['governer'];?></span> ผู้ซื้อ <br>
  กับ   <span style="border-bottom: thin dotted;";?><?php echo $row['company'];?></span> ผู้ขาย &nbsp;&nbsp;&nbsp;&nbsp;
  ชื่อ ผู้จัดการ/หุ้นส่วนผู้จัดการ <span style="border-bottom: thin dotted;";?><?php echo $row['manager'];?></span> <br>
  ที่อยู่ 
@@ -65,7 +65,7 @@ $row=dbFetchAssoc($result);
 <h4>
  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ข้อตกลงซื้อขาย <span style="border-bottom: thin dotted;";?><?php echo $row['product'];?></span>
  สถานที่ส่งมอบ ณ  <span style="border-bottom: thin dotted;";?><?php echo $row['location'];?></span> <br>
- วันครบกำหนด (งวดสุดท้าย)  <span style="border-bottom: thin dotted;";?><?php echo dateThai($row['date_stop']);?></span>
+ วันครบกำหนด (งวดสุดท้าย)  <span style="border-bottom: thin dotted;";?><?php echo thaiDate($row['date_stop']);?></span>
 </h4>
 
 <hr>
