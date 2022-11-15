@@ -4,19 +4,16 @@ $dayEdit=3;  //จำนวนวันที่อนุญาตให้แ�
 
 // database connection config
 
-
 $dbHost = 'localhost';
 $dbUser = 'root';
 $dbPass = 'hellojava';
-$dbName = 'phatthalung_eoffice';
-
+$dbName = 'eoffice';
 
 // Server พัทลุง
 /*
 $dbHost = 'localhost';
 $dbUser = 'phatthalun_ptl';
-$dbPass = 'nSSYV5cJ';
+$dbPass = '07PyiAzxt';
 $dbName = 'phatthalun_eoffice';
-
-*/
+-*/
 ?>

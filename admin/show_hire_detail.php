@@ -26,6 +26,7 @@ $row=dbFetchAssoc($result);
         <td><label>วันที่ทำรายการ:</label></td>
         <td><?php print thaiDate($row['datein']);?></td>
     </tr>
+
     <tr>
         <td><label>รายการจ้าง:</label></td>
         <td><?php print $row['title']?></td>
@@ -44,7 +45,11 @@ $row=dbFetchAssoc($result);
     </tr>
     <tr>
         <td><label>วันที่ลงนามสัญญาจ้าง:</label></td>
-        <td><?php print thaiDate($row['date_submit']);?></td>
+        <td><?php print thaiDate($row['date_hire']);?></td>
+    </tr>
+    <tr>
+        <td><label>วันที่ส่งมอบงาน:</label></td>
+        <td><?php  print thaiDate(($row['date_submit']));?></td>
     </tr>
     <tr>
         <td><label>ผู้ลงนาม:</label></td>

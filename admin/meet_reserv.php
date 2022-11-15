@@ -1,8 +1,4 @@
-<script>
-    $(function(){
 
-    })
-</script>
 <?php
 //ฟอร์มจองห้อง
 session_start();
@@ -78,6 +74,7 @@ $level_id=$_POST['level_id'];
 						<option value="<?php echo $row['room_id'];?>"><?php echo $row['roomname'];?>&nbsp&nbsp[<?php echo  $row['roomplace'];?>]</option>
 				<?php }?>
 			</select>
+            <?php //echo "depid=".$dep_id."sql.".$sql;?>
         </div>
     </div>  
 	 <div class="form-group">

@@ -29,22 +29,11 @@ if(!isset($_SESSION['ses_u_id'])){
       </div>
       <div id="collapse1" class="panel-collapse collapse">
           <div class="panel-body">
-              <div class="btn-group">
-                <a class="btn dropdown-toggle btn-danger btn-block"  data-toggle="dropdown" href="#">
-                    <i class="fa fa-cog pull-left"></i> จัดการระบบจองรถยนต์<span class="caret"></span>
-                </a>
-
-                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                  <li><a tabindex="-1" href="manage_car.php"><i class="fas fa-car"></i> รถยนต์ราชการ</a></li>
-                  <li><a tabindex="-1" href="#"><i class="fas fa-user-tie"></i> พนักงานขับรถ</a></li>
-                  <li class="divider"></li>
-                  <li><a tabindex="-1" href="#">คู่มือใช้งาน</a></li>
-                </ul>
-                
-            </div>  <!-- btn-group -->
-          </div> <!-- panel-body -->
-      </div>  <!-- panel-info -->
-</div>
+              <a href="index_admin.php" class="btn btn-danger btn-block" href>
+                  <i class="fa fa-home" aria-hidden="true"></i> หน้าหลัก</a>
+          </div>
+      </div>
+    </div>
     
     <div class="panel panel-info">
       <div class="panel-heading">
@@ -170,21 +159,6 @@ if(!isset($_SESSION['ses_u_id'])){
               <!-- <a class="btn btn-primary btn-block" href="flow-buy.php"><i class="fas fa-cogs  pull-left"></i>รายการรอยืนยัน</a>
               <a class="btn btn-primary btn-block" href="flow-buy.php"><i class="fas fa-cogs  pull-left"></i>รายการอนุมัติแล้ว</a>
               <a class="btn btn-primary btn-block" href="flow-buy.php"><i class="fas fa-cogs  pull-left"></i>รายการไม่อนุมัติ</a> -->
-            </div>
-      </div>
-    </div>
-
-    <div class="panel panel-info">
-      <div class="panel-heading">
-        <h4 class="panel-title">
-           <i class="fas fa-gopuram"></i><a data-toggle="collapse" data-parent="#accordion" href="#collapse9"> ปฏิทินการใช้รถยนต์</a>
-        </h4>
-      </div>
-      <div id="collapse9" class="panel-collapse collapse">
-            <div class="panel-body">
-              <a class="btn btn-primary btn-block" href="meet_index.php"><i class="fas fa-cog  pull-left"></i>รถราชการ</a>
-              <a class="btn btn-primary btn-block" href="meet_index.php"><i class="fas fa-cog  pull-left"></i>ผู้ขับขี่</a>
-              <a class="btn btn-primary btn-block" href="meet_room_user.php"><i class="fas fa-car  pull-left"></i>ปฏิทินการใช้รถ</a>
             </div>
       </div>
     </div>

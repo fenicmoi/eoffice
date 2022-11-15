@@ -104,7 +104,7 @@ if($u_id){
 <!-- Chatra {literal} -->
 
 <script>
-
+/*
     (function(d, w, c) {
         w.ChatraID = '8hztemC96qH6pieSE';
         var s = d.createElement('script');
@@ -115,7 +115,7 @@ if($u_id){
         s.src = 'https://call.chatra.io/chatra.js';
         if (d.head) d.head.appendChild(s);
     })(document, window, 'Chatra');
-    
+    */
 </script>
 
 <!-- /Chatra {/literal} -->

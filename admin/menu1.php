@@ -165,36 +165,6 @@ if(!isset($_SESSION['ses_u_id'])){
             </div>
       </div>
     </div>
-
-    <div class="panel panel-info">
-      <div class="panel-heading">
-        <h4 class="panel-title">
-           <i class="fas fa-car"></i><a data-toggle="collapse" data-parent="#accordion" href="#collapse9"> รถราชการ</a>
-        </h4>
-      </div>
-      <div id="collapse9" class="panel-collapse collapse">
-            <div class="panel-body">
-              <a class="btn btn-primary btn-block" href=""><i class="fas fa-cog  pull-left"></i>รถราชการ</a>
-              <a class="btn btn-primary btn-block" href=""><i class="fas fa-cog  pull-left"></i>ผู้ขับขี่</a>
-              <a class="btn btn-primary btn-block" href=""><i class="fas fa-car  pull-left"></i>ปฏิทินการใช้รถ</a>
-            </div>
-      </div>
-    </div>
-
-    <div class="panel panel-info">
-      <div class="panel-heading">
-        <h4 class="panel-title">
-           <i class="fas fa-car"></i><a data-toggle="collapse" data-parent="#accordion" href="#collapse10"> ทะเบียนทรัพย์สิน</a>
-        </h4>
-      </div>
-      <div id="collapse10" class="panel-collapse collapse">
-            <div class="panel-body">
-              <a class="btn btn-primary btn-block" href="manage_stock.php"><i class="fas fa-cog  pull-left"></i>จัดการทะเบียนทรัพย์สิน</a>
-              <a class="btn btn-primary btn-block" href=""><i class="fas fa-cog  pull-left"></i>ผู้ขับขี่</a>
-              <a class="btn btn-primary btn-block" href=""><i class="fas fa-car  pull-left"></i>ปฏิทินการใช้รถ</a>
-            </div>
-      </div>
-    </div>
     <br>
      <span class="btn btn-danger"><i class="fas fa-user"></i>  <?php include_once "../module/user-online.php"; ?></span>
  </div>

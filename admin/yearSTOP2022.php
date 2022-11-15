@@ -19,7 +19,7 @@ $u_id=$_SESSION['ses_u_id'];
         <div class="col-md-10">
             <div class="panel panel-default" style="margin: 20">
                 <div class="panel-heading"><i class="fa fa-clock-o fa-2x" aria-hidden="true"></i>  <strong>จัดการปีปฏิทิน</strong>
-                <a href="#" class="btn btn-primary pull-right" data-toggle="modal" data-target="#modalAdd">
+                <a href="add_object.php" class="btn btn-primary pull-right" data-toggle="modal" data-target="#modalAdd">
                      <i class="fa fa-plus" aria-hidden="true"></i> เพิ่มปีปฏิทิน
                     </a>
                 </div>

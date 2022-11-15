@@ -47,9 +47,6 @@ $u_id=$_SESSION['ses_u_id'];
             <div class="panel panel-default" >
                 <div class="panel-heading">
                     <i class="fa fa-envelope fa-2x" aria-hidden="true"></i>  <strong>หนังสือส่ง [ปกติ]</strong>
-                    <a href="" class="btn btn-default pull-right" data-toggle="modal" data-target="#modalReserv">
-                    <i class="fas fa-hand-point-up"></i> จองเลข
-                     </a>
                     <a href="" class="btn btn-default btn-md pull-right" data-toggle="modal" data-target="#modalAdd"><i class="fa fa-plus " aria-hidden="true"></i> ลงทะเบียนส่ง</a>
                     <button id="hideSearch" class="btn btn-default pull-right"><i class="fas fa-search"> ค้นหา</i></button>
                 </div>
@@ -522,120 +519,6 @@ if(isset($_POST['update'])){
     }
 }       
 ?>
-
-
-
-<!-- Modal Reserv -->
-<div id="modalReserv" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header bg-primary">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-       <h4 class="modal-title"> <i class="fas fa-plus"></i> จองเลข</h4>
-      </div>
-      <div class="modal-body">
-         <div class="alert alert-danger"><i class="fas fa-comments" fa-2x></i>ระบุจำนวนเอกสารที่ต้องการจอง</div>
-         <form name="form" method="post" enctype="multipart/form-data">
-
-         <div class="form-group col-sm-6">
-            <div class="input-group">
-                <span class="input-group-addon">เลขหน่วยงาน:</span>
-                <input type="prefex" class="form-control" name="prefex" max=10  placeholder="เลขหน่วยงาน">
-            </div>
-          </div>
-
-          <div class="form-group col-sm-6">
-            <div class="input-group">
-                <span class="input-group-addon">จำนวน:</span>
-                <input type="number" class="form-control" name="num" max=100  placeholder="ไม่เกิน 10 ฉบับ">
-            </div>
-          </div>
-
-             <center> <button class="btn btn-success" type="submit" name="btnReserv" id="btnReserv"><i class="fas fa-save fa-2x"></i> บันทึก</button></center>
-         </form>
-      </div>
-      <div class="modal-footer bg-primary">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<!--  process  Reserv -->
-<?php
-if(isset($_POST['btnReserv'])){
-
-       
-
-        $u_id = $_SESSION['ses_u_id'];
-        $obj_id = 1;
-        $yid = $yid;
-        $typeDoc = '0';
-        $title = 'จองเลข';
-        $speed_id = 4;
-        $sec_id= $_SESSION['ses_sec_id'];
-        $sendfrom = '-';
-        $sendto= '-';
-        $refer = '-';
-        $attachment = '-';
-        $practice = $_SESSION['ses_dep_id'];
-        $file_location = '-';
-        $dateline = date("Y-m-d");
-        $dateout = date("Y-m-d");
-        $status = 2;
-        $follow = 0;
-        $open = 0;
-        $file_upload = '-';
-        $state_send = '0';
-        $dep_id = $_SESSION['ses_dep_id'];
-
-        $prefex = $_POST['prefex'];
-        $num = $_POST['num'];
-        $a=0;
-     
-        $sql = "SELECT dep_name FROM depart WHERE dep_id =$dep_id";
-        $result = dbQuery($sql);
-        $row = dbFetchAssoc($result);
-        $dep_name = $row['dep_name'];
-      
-    
-
-        while ($a < $num) {
-            $sql = "SELECT max(rec_no) as rec_no FROM flownormal where yid=$yid";
-            $result = dbQuery($sql);
-            $row = dbFetchArray($result);
-            $rec_no = $row['rec_no'];
-            $rec_no = $rec_no + 1;
-
-
-
-            $sql="INSERT INTO flownormal
-            (rec_no,u_id,obj_id,yid,typeDoc,prefex,title,speed_id,sec_id,sendfrom,sendto,refer,attachment,practice,file_location,dateline,dateout,dep_id)    
-            VALUE($rec_no,$u_id,$obj_id,$yid,'$typeDoc','$prefex','$title',$speed_id,$sec_id,'$sendfrom','$sendto','$refer','$attachment','$practice','$file_location','$dateline','$dateout',$dep_id)";
-            $result = dbQuery($sql);
-            $a++;
-        }
-        
-        if($a == $num){
-            echo "<script>
-            swal({
-                title:'เรียบร้อย',
-                text:'!มีเวลา 3 วัน หลังวันจอง  เพื่อแก้ข้อมูลให้ถูกต้อง,
-                type:'success',
-                showConfirmButton:true
-                },
-                function(isConfirm){
-                    if(isConfirm){
-                        window.location.href='flow-normal.php';
-                    }
-                }); 
-            </script>";
-        }
-} 
-?>
-
 
 <script type="text/javascript">
 function loadData(cid,u_id) {

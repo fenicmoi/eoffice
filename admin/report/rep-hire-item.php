@@ -48,7 +48,7 @@ $row=dbFetchAssoc($result);
 
     <table cellspacing="0" cellpadding="1" border="1" style="width:1100px;"> 
 				 <tr> 
-        	<td colspan="2"><center><img  src="logo.jpg" style="width:10%;"><h3>รายงานทะเบียนคุมสัญญาจ้าง</h3></center></td>
+        	<td colspan="2"><center><img  src="logo.jpg" style="width:10%;"><h3>รายงานทะเบียนคุมสัญญาจ้างจังหวัดพัทลุง</h3></center></td>
         </tr> 
         <tr> 
         	<td colspan="2"><center><h4>วันที่ออกรายงาน <?php echo  DateThai(); ?></h4></center></td>
@@ -57,10 +57,11 @@ $row=dbFetchAssoc($result);
 					<td>ทะเบียนคุมสัญญา</td>
 					<td><?php echo $row['rec_no']?>/<?php echo $row['yname']?></td>
 				</tr>
-				<tr>
+				<!-- <tr>
 					<td>วันที่ทำรายการ</td>
-					<td><?php echo  thaiDate($row['date_hire']);?></td>
-				<tr>
+					<td><?php //echo  thaiDate($row['h.datein'])?></td>
+				</tr> -->
+				<tr> 
 					<td>รายการจ้าง</td>
 					<td><?php echo $row['title'];?></td>
 				</tr>
@@ -77,7 +78,11 @@ $row=dbFetchAssoc($result);
 					<td><?php echo $row['employee'];?></td>
 				</tr>
 				<tr>
-					<td>วันที่ลงนาม</td>
+					<td>วันที่ลงนามสัญญาจ้าง</td>
+					<td><?php echo thaiDate($row['date_hire']);?></td>
+				</tr>
+				<tr>
+					<td>วันที่ส่งมอบงาน</td>
 					<td><?php echo thaiDate($row['date_submit']);?></td>
 				</tr>
 				<tr>
