@@ -142,5 +142,4 @@ if(!isset($_SESSION['ses_u_id'])){
       </div>
     </div>
     <br>
-     <span class="btn btn-danger"><i class="fas fa-user"></i> User Online <?php include_once "../module/user-online.php"; ?></span>
  </div>

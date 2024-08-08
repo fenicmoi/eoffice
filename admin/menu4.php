@@ -163,7 +163,6 @@ if(!isset($_SESSION['ses_u_id'])){
       </div>
     </div>
      <br>
-     <span class="alert alert-warning"><i class="fas fa-user"></i> User Online <?php include_once "../module/user-online.php";?></span>
      <!--
     <div class="panel panel-warning">
       <div class="panel-heading">
