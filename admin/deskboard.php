@@ -3,6 +3,7 @@
     <div class="col-md-2">
         <?php  //ตรวจสอบสิทธิ์การใช้งานเมนู
         $menu = checkMenu($level_id);
+        echo $menu;
         include $menu;
 
         // echo "is".$level_id;
@@ -125,7 +126,7 @@
                                                 </div>    
                                             </div>
                                         </div>
-                                        <!--
+                                        
                                         <div class="col-md-3">
                                             <div class="bg-success">
                                                  <div class="panel-group">
@@ -151,7 +152,7 @@
                                                 </div>    
                                             </div>
                                         </div>
-                                        -->
+                                       
                                         <div class="col-md-3">
                                             <div class="bg-success">
                                                  <div class="panel-group">
@@ -188,9 +189,9 @@
                                                     
                                                         <ul class="list-group">
                                                         <li class="list-group-item"><a class="btn btn-primary" href="http://www.phone.phatthalung.go.th/" target="_news"><i class="fas fa-home  pull-left"></i>  สมุดโทรศัพท์จังหวัด</a>
-                                                        <!-- <li class="list-group-item"><a class="btn btn-primary" href="phone_depart.php"><i class="fas fa-school  pull-left"></i>  ข้อมูลหน่วยงาน</a> -->
-                                                        <!-- <li class="list-group-item"><a class="btn btn-primary" href="headoffice.php"><i class="far fa-user-circle  pull-left"></i>  ข้อมูลผู้บริหาร/เจ้าหน้าที่</a>  -->
-                                                        <!-- <li class="list-group-item"><a class="btn btn-primary" href="excel.php"><i class="fas fa-file-export  pull-left"></i>  ส่งออกเป็น Excel</a>  -->
+                                                         <li class="list-group-item"><a class="btn btn-primary" href="phone_depart.php"><i class="fas fa-school  pull-left"></i>  ข้อมูลหน่วยงาน</a> 
+                                                         <li class="list-group-item"><a class="btn btn-primary" href="headoffice.php"><i class="far fa-user-circle  pull-left"></i>  ข้อมูลผู้บริหาร/เจ้าหน้าที่</a>  
+                                                         <li class="list-group-item"><a class="btn btn-primary" href="excel.php"><i class="fas fa-file-export  pull-left"></i>  ส่งออกเป็น Excel</a>  
                                                         </ul>
                                                     
                                                         <div class="panel-footer"></div>

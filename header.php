@@ -86,7 +86,7 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav ">
               <li><a class="nav-link active"  href="index.php"><i class="fas fa-home"></i> หน้าแรก</a></li>
-              <!-- <li class="dropdown">
+               <li class="dropdown">
                 <a class="btn disabled"  class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fas fa-users"></i> ระบบงานสารบรรณ
                 <span class="caret"></span></a>
                 <ul class="dropdown-menu">
@@ -95,9 +95,9 @@
                   <li><a   data-toggle="modal" data-target="#modalRegister"><i class="fas fa-users"></i> ลงทะเบียนผู้ใช้ทั่วไป </a></li>
                   <li><a href="admin/manual/manual-v1.pdf" target="_blank"><i class="fs fa-book"></i> คู่มือการใช้งาน</a></li>
                 </ul>
-              </li> -->
+              </li>
               <li><a class="btn-link"  href="flow-command-front.php"><i class="fas fa-retweet"></i> คำสั่งจังหวัด</a></li>
-              <!-- <li><a class="btn disabled"   href="flow-command-front.php"><i class="fas fa-gavel"></i> ยุทธศาสตร์จังหวัด </a></li>
+               <li><a class="btn disabled"   href="flow-command-front.php"><i class="fas fa-gavel"></i> ยุทธศาสตร์จังหวัด </a></li>
               <li class="dropdown">
                 <a class="btn disabled"  class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fas fa-users"></i> ลงทะเบียน
                 <span class="caret"></span></a>
@@ -107,7 +107,7 @@
                   <li><a   data-toggle="modal" data-target="#modalRegister"><i class="fas fa-users"></i> ลงทะเบียนผู้ใช้ทั่วไป </a></li>
                   <li><a href="admin/manual/manual-v1.pdf" target="_blank"><i class="fs fa-book"></i> คู่มือการใช้งาน</a></li>
                 </ul>
-              </li> -->
+              </li>
               <li><a  class="btn disabled"  href="#" data-toggle="modal" data-target="#modelRule">ข้อตกลงการใช้งาน</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
