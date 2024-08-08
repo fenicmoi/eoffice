@@ -6,8 +6,8 @@ $dayEdit=3;  //จำนวนวันที่อนุญาตให้แ�
 
 $dbHost = 'localhost';
 $dbUser = 'root';
-$dbPass = 'hellojava';
-$dbName = 'eoffice';
+$dbPass = '';
+$dbName = 'phatthalun_eoffice';
 
 // Server พัทลุง
 /*
