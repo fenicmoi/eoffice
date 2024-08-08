@@ -97,9 +97,9 @@
                 </ul>
               </li>
               <li><a class="btn-link"  href="flow-command-front.php"><i class="fas fa-retweet"></i> คำสั่งจังหวัด</a></li>
-               <li><a class="btn disabled"   href="flow-command-front.php"><i class="fas fa-gavel"></i> ยุทธศาสตร์จังหวัด </a></li>
+               <li><a class="btn-link"   href="flow-command-front.php"><i class="fas fa-gavel"></i> ยุทธศาสตร์จังหวัด </a></li>
               <li class="dropdown">
-                <a class="btn disabled"  class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fas fa-users"></i> ลงทะเบียน
+                <a class="btn-link"  class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fas fa-users"></i> ลงทะเบียน
                 <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                    <li><a   href="list_user.php"><i class="fas fa-check-circle"></i> ตรวจสอบส่วนราชการ/หน่วยงานที่ลงทะเบียน </a></li>
@@ -108,7 +108,7 @@
                   <li><a href="admin/manual/manual-v1.pdf" target="_blank"><i class="fs fa-book"></i> คู่มือการใช้งาน</a></li>
                 </ul>
               </li>
-              <li><a  class="btn disabled"  href="#" data-toggle="modal" data-target="#modelRule">ข้อตกลงการใช้งาน</a></li>
+              <li><a  class="btn-link"  href="#" data-toggle="modal" data-target="#modelRule">ข้อตกลงการใช้งาน</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li><a class="btn btn-default"  data-toggle="modal" data-target="#myModal"><i class="fas fa-key"></i> เข้าสู่ระบบ </a></li>
