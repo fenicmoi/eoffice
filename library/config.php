@@ -10,10 +10,12 @@ $dbPass = '';
 $dbName = 'phatthalun_eoffice';
 
 // Server พัทลุง
+
 /*
 $dbHost = 'localhost';
 $dbUser = 'phatthalun_ptl';
 $dbPass = '07PyiAzxt';
 $dbName = 'phatthalun_eoffice';
--*/
+*/
+
 ?>

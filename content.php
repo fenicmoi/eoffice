@@ -234,6 +234,11 @@
 </div> 
                 
  <!-- Model  -->
+            <?php   
+                $sql = "SELECT * FROm office_type";
+                $query = dbQuery($sql);
+            ?>
+
             <div id="modalRegister" class="modal fade" role="dialog" >
               <div class="modal-dialog">
                 <!-- Modal content-->
@@ -247,42 +252,30 @@
                           <i class="fas fa-bomb fa-2x"></i><h4>หลังจากลงทะเบียนแล้ว  ให้ติดต่อ Admin ประจำหน่วยงานของท่าน</h4>
                       </div>
                       <form name="form" method="post">
-                          <div class="form-group"> 
-                                <div class ="input-group">
-                                    <span class="input-group-addon">ประเภทส่วนราชการ : </span>
-                                    <span id="province">
-                                        <select class="form-control" required>
-                                            <option value="">- เลือกประเภทส่วนราชการ -</option>
-                                        </select>
-                                    </span>
-                                </div>
-                          </div>
-                          <div class="form-group">
-                                <div class="input-group">
-                                    <span class="input-group-addon">ชื่อส่วนราชการ : </span>
-                                    <span id="amphur">
-                                        <select class="form-control" required>
-                                            <option value=''>- เลือกหน่วยงาน -</option>
-                                        </select>
-                                    </span>
-                                </div>
-                          </div>
-                          <div class="form-group">
-                                <div class="input-group">
-                                    <span class="input-group-addon">ชื่อกลุ่มงาน/สาขา : </span>
-                                    <span id="district">
-                                         <select name="sec_id" class="form-control" required>
-                                            <option value=''>- เลือกกลุ่มงาน -</option>
-                                                <?php
-                                                $sql="SELECT * FROM section WHERE dep_id = $dep_id";
-                                                $result= dbQuery($sql);
-                                                while ($rowSec = dbFetchArray($result)){?>
-                                                    <option value='<?php print $rowSec['sec_id'];?>'><?php print $rowSec['sec_name'];?></option>
-                                                <?php } ?>
-                                        </select>
-                                    </span>
-                                </div>
-                          </div>
+                            <div class="form-group form-inline"> 
+                                    <label for="offict_type">ประเภทหน่วยงาน : </label>
+                                    <select name="office_type" id="office_type">
+                                        <option value="">เลือก</option>
+                                        <?php while($result =  dbFetchAssoc($query)): ?>
+                                            <option value="<?=$result['type_id']?>"><?=$result['type_name']?></option>
+                                        <?php endwhile; ?>
+                                    </select>
+                            </div>
+
+                            <div class="form-group col-md-4">
+                                <label for="depart">ชื่อหน่วยงาน</label>
+                                <select name="depart" id="depart" class="form-control">
+                                    <option value="">เลือกหน่วยงาน</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group col-md-4">
+                                <label for="section">เลือกกลุ่มงาน</label>
+                                <select name="section" id="section" class="form-control">
+                                    <option value="">เลือกกลุ่มงาน</option>
+                                </select>
+                            </div
+
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fas fa-star"></i></span>
@@ -432,7 +425,7 @@ if(isset($_POST['save'])){
                        } 
                   }
              };
-             req.open("GET", "admin/localtion.php?data="+src+"&val="+val); //สร้าง connection
+             req.open("GET", "localtion.php?data="+src+"&val="+val); //สร้าง connection
              req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf-8"); // set Header
              req.send(null); //ส่งค่า
         }

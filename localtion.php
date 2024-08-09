@@ -7,7 +7,8 @@
     header ("Pragma: no-cache");
 
     include "function.php";
-    include '../library/database.php';
+    include 'library/config.php';
+    include 'library/database.php';
 
     $data = $_GET['data'];
     $val = $_GET['val'];
