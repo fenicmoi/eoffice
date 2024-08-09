@@ -254,7 +254,7 @@
                       <form name="form" method="post">
                             <div class="form-group form-inline"> 
                                     <label for="offict_type">ประเภทหน่วยงาน : </label>
-                                    <select name="office_type" id="office_type">
+                                    <select name="office_type" id="office_type_id">
                                         <option value="">เลือก</option>
                                         <?php while($result =  dbFetchAssoc($query)): ?>
                                             <option value="<?=$result['type_id']?>"><?=$result['type_name']?></option>
@@ -264,17 +264,17 @@
 
                             <div class="form-group col-md-4">
                                 <label for="depart">ชื่อหน่วยงาน</label>
-                                <select name="depart" id="depart" class="form-control">
+                                <select name="depart" id="depar_id" class="form-control">
                                     <option value="">เลือกหน่วยงาน</option>
                                 </select>
                             </div>
 
                             <div class="form-group col-md-4">
                                 <label for="section">เลือกกลุ่มงาน</label>
-                                <select name="section" id="section" class="form-control">
+                                <select name="section" id="section_id" class="form-control">
                                     <option value="">เลือกกลุ่มงาน</option>
                                 </select>
-                            </div
+                            </div>
 
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
@@ -321,7 +321,6 @@
                            <center>
                            <button class="btn btn-success btn-lg" type="submit" name="save">
                                 <i class="fa fa-database fa-2x"></i> บันทึก
-                                <input id="u_id" name="u_id" type="hidden" value="<?php echo $u_id;?>"> 
                             </button>
                             </center>
                      </form>
