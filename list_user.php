@@ -1,4 +1,5 @@
 <?php
+// Display  user registry 
 date_default_timezone_set('Asia/Bangkok');
 include "header.php"; 
 include_once 'admin/function.php';
@@ -10,7 +11,7 @@ include_once 'admin/function.php';
         <table class="table table-bordered table-hover" id="myTable" >
                 <thead class="bg-info">
                         <tr>
-                        <td colspan="3"><center>รายชื่อเจ้าหน้าที่ Admin ประจำส่วนราชการ/หน่วยงาน</center></td>
+                        <td colspan="3"><center>รายชื่อเจ้าหน้าที่สารบรรณประจำส่วนราชการ/หน่วยงาน</center></td>
                         </tr>
                         <tr >
                                 <td colspan="3">
@@ -37,42 +38,52 @@ include_once 'admin/function.php';
                      
                     <tr>
                         <th>ส่วนราชการ</th>
-                        <th>ชื่อ Admin</th>
+                        <th>เจ้าหน้าที่สารบรรณ</th>
                         <th>วันที่ลงทะเบียน</th>
                     </tr>
                 </thead>
                 <?php
-                  @$txt_search=$_POST['search'];
-                  @$type_search=$_POST['number'];
-                  if(isset($_POST['perpage'])){
+                //searching
+                  @$txt_search=$_POST['search'];      //search for name
+                  @$type_search=$_POST['number'];     //search for number
+                  if(isset($_POST['perpage'])){       //number of page
                     $perpage = $_POST['perpage'];
                   }else{
-                    $perpage = 10;
+                    $perpage = 10;                    //count of page
                   }
 
-                  if (isset($_GET['page'])) {
+                  if (isset($_GET['page'])) {         //check page if start = 1
                     $page = $_GET['page'];
                   } else {
                     $page = 1;
                   }
-                  $start = ($page - 1) * $perpage;
+                  $start = ($page - 1) * $perpage;    // calculate page
 
-                 if(isset($_POST['save'])){
-                    if($type_search==2){
-                        $sql="SELECT t.type_name,d.dep_name,u.dep_id,u.firstname,u.lastname,u.level_id,u.date_create
-                         FROM depart as d 
-                        INNER JOIN user as u ON d.dep_id = u.dep_id 
-                        INNER JOIN office_type as t ON t.type_id=d.type_id
-                        WHERE u.level_id=3  and d.dep_name LIKE '%$txt_search%'
-                        LIMIT $start , $perpage  ";
+                 if(isset($_POST['save'])){           //check button search
+                    if($type_search==2){              //static variable  tye; 2
+                        // $sql="SELECT t.type_name,d.dep_name,u.dep_id,u.firstname,u.lastname,u.level_id,u.date_create
+                        //  FROM depart as d 
+                        // INNER JOIN user as u ON d.dep_id = u.dep_id 
+                        // INNER JOIN office_type as t ON t.type_id=d.type_id
+                        // WHERE u.level_id=3  and d.dep_name LIKE '%$txt_search%'
+                        // LIMIT $start , $perpage  ";
+
+                        $sql = "SELECT depart, fname, lname, date_add 
+                                FROM register_staf 
+                                WHERE depart LIKE '%$txt_search%'
+                                LIMIT $start, $perpage 
+                                ";
                     }
                                      
                 }else{
-                     $sql="SELECT t.type_name,d.dep_name,u.dep_id,u.firstname,u.lastname,u.level_id,u.date_create
-                     FROM depart as d 
-                     INNER JOIN user as u ON d.dep_id = u.dep_id 
-                     INNER JOIN office_type as t ON t.type_id=d.type_id WHERE u.level_id=3 ORDER BY d.dep_name
-                     limit $start , $perpage  ";    
+                    //  $sql="SELECT t.type_name,d.dep_name,u.dep_id,u.firstname,u.lastname,u.level_id,u.date_create
+                    //  FROM depart as d 
+                    //  INNER JOIN user as u ON d.dep_id = u.dep_id 
+                    //  INNER JOIN office_type as t ON t.type_id=d.type_id WHERE u.level_id=3 ORDER BY d.dep_name
+                    //  limit $start , $perpage  ";    
+                        $sql = "SELECT depart, fname, lname, date_add
+                                FROM register_staf
+                                LIMIT $start, $perpage";
                 }
                 //print $sql;
                 $result = dbQuery($sql);
@@ -82,17 +93,21 @@ include_once 'admin/function.php';
                     
                         <?php while($row=dbFetchArray($result)){?>
                         <tr>
-                            <td><?=$row['dep_name']?></td>
-                            <td><?=$row['firstname']?>&nbsp&nbsp<?=$row['lastname']?></td>
-                            <td><?=$row['date_create']?></td>
+                            <td><?=$row['depart']?></td>
+                            <td><?=$row['fname']?>&nbsp&nbsp<?=$row['lname']?></td>
+                            <td><?=$row['date_add']?></td>
                         </tr>
                     <?php } ?>
                         <tr>
                      <?php
-                            $sql = "SELECT t.type_name,d.dep_name,u.dep_id,u.firstname,u.lastname,u.level_id,u.date_create
-                                    FROM depart as d 
-                                    INNER JOIN user as u ON d.dep_id = u.dep_id 
-                                    INNER JOIN office_type as t ON t.type_id=d.type_id WHERE u.level_id=3 ORDER BY d.dep_name";
+                     // Management pagenavigation
+                            // $sql = "SELECT t.type_name,d.dep_name,u.dep_id,u.firstname,u.lastname,u.level_id,u.date_create
+                            //         FROM depart as d 
+                            //         INNER JOIN user as u ON d.dep_id = u.dep_id 
+                            //         INNER JOIN office_type as t ON t.type_id=d.type_id WHERE u.level_id=3 ORDER BY d.dep_name";
+                            $sql = "SELECT depart, fname, lname, date_add
+                            FROM register_staf
+                            LIMIT $start, $perpage";
                                     $result=dbQuery($sql);
                                     $total_record = dbNumRows($result);
                                     $total_page = ceil($total_record / $perpage);

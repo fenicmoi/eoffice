@@ -97,15 +97,15 @@
                 </ul>
               </li>
               <li><a class="btn-link"  href="flow-command-front.php"><i class="fas fa-retweet"></i> คำสั่งจังหวัด</a></li>
-               <li><a class="btn-link"   href="flow-command-front.php"><i class="fas fa-gavel"></i> ยุทธศาสตร์จังหวัด </a></li>
+              <!-- <li><a class="btn-link"   href="flow-command-front.php"><i class="fas fa-gavel"></i> ยุทธศาสตร์จังหวัด </a></li> -->
               <li class="dropdown">
                 <a class="btn-link"  class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fas fa-users"></i> ลงทะเบียน
                 <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                    <li><a   href="list_user.php"><i class="fas fa-check-circle"></i> ตรวจสอบส่วนราชการ/หน่วยงานที่ลงทะเบียน </a></li>
                   <li><a  data-toggle="modal" data-target="#modalAdd"><i class="fas fa-key"></i> ลงทะเบียนหน่วยงาน/เจ้าหน้าที่ </a></li>
-                  <li><a   data-toggle="modal" data-target="#modalRegister"><i class="fas fa-users"></i> ลงทะเบียนผู้ใช้ทั่วไป </a></li>
-                  <li><a href="admin/manual/manual-v1.pdf" target="_blank"><i class="fs fa-book"></i> คู่มือการใช้งาน</a></li>
+                  <!-- <li><a   data-toggle="modal" data-target="#modalRegister"><i class="fas fa-users"></i> ลงทะเบียนผู้ใช้ทั่วไป </a></li> -->
+                  <!-- <li><a href="admin/manual/manual-v1.pdf" target="_blank"><i class="fs fa-book"></i> คู่มือการใช้งาน</a></li> -->
                 </ul>
               </li>
               <li><a  class="btn-link"  href="#" data-toggle="modal" data-target="#modelRule">ข้อตกลงการใช้งาน</a></li>
@@ -169,6 +169,7 @@
             </div>
           </div>
         </div>
+
     <div class="container-fluse">
 <!-- Modal Add -->
         <div id="modalAdd" class="modal fade" role="dialog">
@@ -223,13 +224,13 @@
                                         <div class="form-group">
                                           <div class="input-group">
                                               <span class="input-group-addon">Website</span>
-                                              <input class="form-control" type="text" name="website" placeholder="ตัวอย่าง www.phangnga.go.th">
+                                              <input class="form-control" type="text" name="website" placeholder="ตัวอย่าง www.phatthalung.go.th">
                                           </div>
                                         </div>
                                         <div class="form-group">
                                           <div class="input-group">
-                                              <span class="input-group-addon">E-mail</span>
-                                              <input class="form-control" type="email" name="email" placeholder="phangnga@moi.go.thg" required>
+                                              <span class="input-group-addon">E-mail ทางการ</span>
+                                              <input class="form-control" type="email" name="email"  required>
                                           </div>
                                         </div>
                                   </fieldset>
@@ -263,28 +264,28 @@
                                         </div>
                                         <div class="form-group">
                                           <div class="input-group">
-                                              <span class="input-group-addon">เบอร์โทรศัพท์</span>
+                                              <span class="input-group-addon">เบอร์สำนักงาน</span>
                                               <input class="form-control" type="text" name="tel" placeholder="ตัวอย่าง 0-7648-1421" required >
                                           </div>
                                         </div>
                                         <div class="form-group">
                                           <div class="input-group">
-                                              <span class="input-group-addon">เบอร์โทรสาร</span>
+                                              <span class="input-group-addon">เบอร์มือถือ</span>
                                               <input class="form-control" type="text" name="fax" placeholder="ตัวอย่าง 0-7648-1421" required >
                                           </div>
                                         </div>
-                                        <div class="form-group">
+                                        <!-- <div class="form-group">
                                           <div class="input-group">
                                               <span class="input-group-addon">username</span>
                                               <input class="form-control" type="text" name="username" placeholder="ประกอบด้วยตัวอักษรภาษาอังกฤษและตัวเลข 8 หลัก">
                                           </div>
-                                        </div>
-                                        <div class="form-group">
+                                        </div> -->
+                                        <!-- <div class="form-group">
                                           <div class="input-group">
                                               <span class="input-group-addon">password</span>
                                               <input class="form-control" type="text" name="password" placeholder="ประกอบด้วยตัวอักษรภาษาอังกฤษและตัวเลข 8 หลัก" required>
                                           </div>
-                                        </div>
+                                        </div> -->
                                   </fieldset>
                               </div>
                           </div>
@@ -298,9 +299,9 @@
               </div>
             </div>
           </div>
-        </div>
+        </div>  
 <?php
-if(isset($_POST['add'])){
+if(isset($_POST['add'])){       // check button  
 	$depart=$_POST['depart'];
 	$book_no=$_POST['book_no'];
 	$address=$_POST['address'];
@@ -313,17 +314,21 @@ if(isset($_POST['add'])){
 	$position=$_POST['position'];
 	$tel=$_POST['tel'];
 	$fax=$_POST['fax'];
-	$username=$_POST['username'];
-	$password=$_POST['password'];
+	// $username=$_POST['username'];
+	// $password=$_POST['password'];
 	$status=0;
-	$sql="INSERT INTO register_staf(depart,book_no,address,office_tel,office_fax,website,fname,lname,position,tel,fax,email,username,password,status) VALUES('$depart','$book_no','$address','$office_tel','$office_fax','$website','$fname','$lname','$position','$tel','$fax','$email','$username','$password',$status)";
+	$sql="INSERT INTO register_staf(depart,book_no,address,office_tel,office_fax,website,fname,lname,position,tel,fax,email,status) VALUES('$depart','$book_no','$address','$office_tel','$office_fax','$website','$fname','$lname','$position','$tel','$fax','$email',$status)";
 	// 	print $sql;
+
+  //echo $sql;
+  
 	
 	$result=dbQuery($sql);
 	if(!$result){
 		echo "<script>
                   swal({
                     title:'ลงทะเบียนไม่สำเร็จ  กรุณาตรวจสอบ',
+                    text: 'อาจมีบางอย่างผิดพลาด โปรดลองอีกครั้ง',
                     type:'error',
                     showConfirmButton:true
                     },
@@ -338,16 +343,18 @@ if(isset($_POST['add'])){
 		echo "<script>
                 swal({
                     title:'ลงทะเบียนเรียบร้อยแล้ว ;-)',
+                    text: 'จังหวัดพัทลุงจะประสานจัดฝึกอบรมการใช้งานอีกครั้ง',
                     type:'success',
                     showConfirmButton:true
                     },
                     function(isConfirm){
                         if(isConfirm){
-                            window.location.href='index.php';
+                            window.location.href='list_user.php';
                         }
                     }); 
                 </script>";
 	}
+                
 }
 ?>
     <div class="container-fluse">
