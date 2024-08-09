@@ -28,7 +28,7 @@
         </div>
     </div>
 </div>
-<!--
+
 <div class="row bg-info">
     <div class="col-md-2">
        <center>
@@ -60,7 +60,7 @@
    </div>
    <div class="col-md-2">
        <center>
-       <a href="admin/manual/manual-v1.pdf" target="_blank"><i class="fas fa-map-signs fa-10x"></i>
+       <a class="btn-disabled  href="admin/manual/manual-v1.pdf" target="_blank"><i class="fas fa-map-signs fa-10x"></i>
             <h4>คู่มือผู้ใช้</h4>
        </a>
        </center>
@@ -70,12 +70,12 @@
        <a href="#" target="_blank"><i class="fas fa-chart-pie fa-10x"></i>
             <h4>สถิติข้อมูล</h4>
        </a>
-       User online <?php include_once "module/user-online.php"; ?>
+       <!-- User online <?php //include_once "module/user-online.php"; ?> -->
        </center>
    </div>
 </div>
--->
-<?php
+
+<?php /*
     $sql="SELECT 
             COUNT(IF(type_id=1,1,null)) AS c1,
             COUNT(IF(type_id=2,1,null)) AS c2,
@@ -94,13 +94,15 @@
         $c5=$row['c5'];
         $c6=$row['c6'];
         $sum=$c1+$c2+$c3+$c4+$c5+$c6;
+    */
 ?>
+<!--
 <div class="row">
  <div class="col-md-4">
     <div class="quote-container">
     <i class="pin"></i>
     <blockquote class="note yellow">
-        <i class="fas fa-chat"></i> <kbd>แจ้งเปิดใช้งานระบบใหม่</kbd> <br>
+        <i class="fas fa-chat"></i> <kbd>แจ้งเปลี่ยนแปลงระบใหม่</kbd> <br>
             <ol>
                 <li>ระบบออกเลขคำสั่งจังหวัด</li>
                 <li>ระบบออกเลขสัญญาซื้อขาย/สัญญาจ้างจังหวัด</li>
@@ -138,10 +140,12 @@
     </blockquote>
     </div>
  </div>
-</div> <!-- row  note -->
+</div> 
+-->
+<!--
+     <div class="well"><center><h3><span class="fas fa-chart-area fa-2x">สถิติข้อมูล</span></h3></center></div> 
 
-    <!-- <div class="well"><center><h3><span class="fas fa-chart-area fa-2x">สถิติข้อมูล</span></h3></center></div> -->
-                    <!-- <div class="row">
+                    <div class="row">
                         <div class="col-md-6">
                             <div id="depart" style="width: 700px; height: 350px;"></div>
                             <script type="text/javascript" src="js/chart/loader.js"></script>
@@ -154,11 +158,11 @@
                             function drawChart() {
                             var data = google.visualization.arrayToDataTable([
                             ['Task', 'Hours per Day'],
-                            ['ส่วนกลาง', <?=$c1?>],
-                            ['ส่วนภูมิภาค', <?=$c2?>],
-                            ['ส่วนท้องถิ่น', <?=$c3?>],
-                            ['รัฐวิสาหกิจ', <?=$c4?>],
-                            ['อื่น',<?=$c5?>]
+                            ['ส่วนกลาง', <? //=$c1?>],
+                            ['ส่วนภูมิภาค', <? //=$c2?>],
+                            ['ส่วนท้องถิ่น', <? //=$c3?>],
+                            ['รัฐวิสาหกิจ', <? //=$c4?>],
+                            ['อื่น',<? //=$c5?>]
                             ]);
 
                             // Optional; add a title and set the width and height of the chart
@@ -222,14 +226,14 @@
                             }
                             </script>
                         </div>
-                    </div> -->
-<!-- <div class="row">
+                    </div> 
+ <div class="row">
     <div class ="col-md-4 bg-danger ">
         <center><div id="piechart" style="width: 450px; height: 250px;"></div></center>
     </div>
-</div> -->
- <!-- Model -->
-            <!-- เพิ่มผู้ใช้ -->
+</div> 
+                
+ <!-- Model  -->
             <div id="modalRegister" class="modal fade" role="dialog" >
               <div class="modal-dialog">
                 <!-- Modal content-->
@@ -268,18 +272,13 @@
                                     <span class="input-group-addon">ชื่อกลุ่มงาน/สาขา : </span>
                                     <span id="district">
                                          <select name="sec_id" class="form-control" required>
-                                        <option value=''>- เลือกกลุ่มงาน -</option>
-                                            <?php
-                                                $sql="SELECT * FROM section WHERE dep_id=$dep_id";
-$result= dbQuery($sql);
-while ($rowSec = dbFetchArray($result)){
-	?>
-                                                    <option value='<?php print $rowSec['sec_id'];
-?>'><?php print $rowSec['sec_name'];
-?></option>
-                                        <?php
-}
-?>
+                                            <option value=''>- เลือกกลุ่มงาน -</option>
+                                                <?php
+                                                $sql="SELECT * FROM section WHERE dep_id = $dep_id";
+                                                $result= dbQuery($sql);
+                                                while ($rowSec = dbFetchArray($result)){?>
+                                                    <option value='<?php print $rowSec['sec_id'];?>'><?php print $rowSec['sec_name'];?></option>
+                                                <?php } ?>
                                         </select>
                                     </span>
                                 </div>
@@ -323,15 +322,13 @@ while ($rowSec = dbFetchArray($result)){
                           <div class="form-group col-sm-6">
                                 <div class="input-group">
                                   <span class="input-group-addon"><i class="far fa-calendar-alt"></i></span>
-                                  <input class="form-control" type="text" name="date_user" id="date_user" value="<?php echo date('Y-m-d');
-?>">
+                                  <input class="form-control" type="text" name="date_user" id="date_user" value="<?php echo date('Y-m-d');?>">
                               </div>
                           </div>
                            <center>
                            <button class="btn btn-success btn-lg" type="submit" name="save">
                                 <i class="fa fa-database fa-2x"></i> บันทึก
-                                <input id="u_id" name="u_id" type="hidden" value="<?php echo $u_id;
-?>"> 
+                                <input id="u_id" name="u_id" type="hidden" value="<?php echo $u_id;?>"> 
                             </button>
                             </center>
                      </form>
@@ -346,13 +343,9 @@ while ($rowSec = dbFetchArray($result)){
 <?php 
 if(isset($_POST['save'])){
 	
-	
 	$type_id=$_POST['province'];
-	
 	$dep_id=$_POST['amphur'];
-	
 	$sec_id=$_POST['district'];
-	
 	$level_id=5;
 	$u_name=$_POST['u_name'];
 	$u_pass=$_POST['u_pass'];
@@ -451,6 +444,7 @@ if(isset($_POST['save'])){
 }
 )
 </script> 
+
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
       google.charts.load('current', {
@@ -461,14 +455,10 @@ google.charts.setOnLoadCallback(drawChart);
 function drawChart() {
 	var data = google.visualization.arrayToDataTable([
 	          ['Task', 'Hours per Day'],
-	          ['ส่วนกลาง',     <?php echo $dep1;
-?>],
-          ['ส่วนภูมิภาค',      <?php echo $dep2;
-?>],
-          ['ส่วนท้องถิ่น',      <?php echo $dep3;
-?>],
-          ['อื่นๆ',      <?php echo $dep4;
-?>],
+	          ['ส่วนกลาง',     <?php echo $dep1;?>],
+              ['ส่วนภูมิภาค',      <?php echo $dep2;?>],
+              ['ส่วนท้องถิ่น',      <?php echo $dep3;?>],
+              ['อื่นๆ',      <?php echo $dep4;?>],
         ]);
         var options = {
           title: 'ผู้ใช้งานทั้งหมด'

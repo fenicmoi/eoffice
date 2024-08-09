@@ -118,7 +118,6 @@ $u_id = $_SESSION['ses_u_id'];
             <!-- เพิ่มผู้ใช้ -->
             <div id="modalAdd" class="modal fade" role="dialog" >
               <div class="modal-dialog">
-
                 <!-- Modal content-->
                 <div class="modal-content">
                   <div class="modal-header bg-primary">
