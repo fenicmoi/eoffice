@@ -30,6 +30,7 @@
     <link href="https://fonts.googleapis.com/css?family=Taviraj" rel="stylesheet">
     <link rel="stylesheet" href="css/sweetalert.css">
     <script src="js/sweetalert.min.js"></script>   
+  <script src="js/script_dropdown.js"></script>
  
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->

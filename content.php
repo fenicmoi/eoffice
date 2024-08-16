@@ -235,7 +235,8 @@
                 
  <!-- Model  -->
             <?php   
-                $sql = "SELECT * FROm office_type";
+                //Display office type
+                $sql = "SELECT * FROM office_type";
                 $query = dbQuery($sql);
             ?>
 
@@ -254,24 +255,24 @@
                       <form name="form" method="post">
                             <div class="form-group form-inline"> 
                                     <label for="offict_type">ประเภทหน่วยงาน : </label>
-                                    <select name="office_type" id="office_type_id">
+                                    <select  name="office_type" id="office_type">
                                         <option value="">เลือก</option>
                                         <?php while($result =  dbFetchAssoc($query)): ?>
-                                            <option value="<?=$result['type_id']?>"><?=$result['type_name']?></option>
+                                            <option value="<?php echo $result['type_id']?>"><?php echo $result['type_name']?></option>
                                         <?php endwhile; ?>
                                     </select>
                             </div>
 
                             <div class="form-group col-md-4">
                                 <label for="depart">ชื่อหน่วยงาน</label>
-                                <select name="depart" id="depar_id" class="form-control">
+                                <select name="depart" id="depart" class="form-control">
                                     <option value="">เลือกหน่วยงาน</option>
                                 </select>
                             </div>
 
                             <div class="form-group col-md-4">
                                 <label for="section">เลือกกลุ่มงาน</label>
-                                <select name="section" id="section_id" class="form-control">
+                                <select name="section" id="section" class="form-control">
                                     <option value="">เลือกกลุ่มงาน</option>
                                 </select>
                             </div>
@@ -407,29 +408,7 @@ if(isset($_POST['save'])){
 }
 //send
 ?>
-<script language=Javascript>   //ส่วนการทำ dropdown
-        function Inint_AJAX() {
-           try { return new ActiveXObject("Msxml2.XMLHTTP");  } catch(e) {} //IE
-           try { return new ActiveXObject("Microsoft.XMLHTTP"); } catch(e) {} //IE
-           try { return new XMLHttpRequest();          } catch(e) {} //Native Javascript
-           alert("XMLHttpRequest not supported");
-           return null;
-        };
-        function dochange(src, val) {
-             var req = Inint_AJAX();
-             req.onreadystatechange = function () { 
-                  if (req.readyState==4) {
-                       if (req.status==200) {
-                            document.getElementById(src).innerHTML=req.responseText; //รับค่ากลับมา
-                       } 
-                  }
-             };
-             req.open("GET", "localtion.php?data="+src+"&val="+val); //สร้าง connection
-             req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf-8"); // set Header
-             req.send(null); //ส่งค่า
-        }
-        window.onLoad=dochange('province', -1);     
-</script>
+
 <script type='text/javascript'>
        $('#tableCheck').DataTable( {
 	"order": [[ 0, "desc" ]]
@@ -438,6 +417,8 @@ if(isset($_POST['save'])){
 </script> 
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript" src="js/script_dropdown.js"></script>
+
     <script type="text/javascript">
       google.charts.load('current', {
 	'packages':['corechart']
@@ -459,3 +440,4 @@ function drawChart() {
         chart.draw(data, options);
       }
 </script>
+

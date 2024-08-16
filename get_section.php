@@ -1,7 +1,7 @@
 <?php
 include('library/config.php');
 include('library/database.php');
-$sql = "SELECT * FROM section WHERE section_id={$_GET['section_id']}";
+$sql = "SELECT * FROM section WHERE depart_id={$_GET['depart_id']}";
 $query = dbFetchArray($conn, $sql);
 $json = array();
 while($result = dbFetchAssoc($query)) {    
