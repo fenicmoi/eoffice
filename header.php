@@ -13,7 +13,7 @@
     <meta name="description" content="ระบบสารบรรณจังหวัดพัทลุง">
     <meta name="author" content="นายสมศักดิ์  แก้วเกลี้ยง">
     <link rel="icon" href="images/favicon.png">
-    <title><?php echo $title ?></title>
+    <title><?php echo $title ?>-version 2024</title>
 
     <!-- popup -->
     <link rel="stylesheet" href="css/popup.css">
