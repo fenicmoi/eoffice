@@ -48,7 +48,7 @@ $u_id=$_SESSION['ses_u_id'];
                                  </td>
                                
                                 <?php 
-                                    $hire_id=$row['hire_id'];
+                                    @$hire_id=$row['hire_id'];
                                    // print $hire_id;
                                 ?>
                                 <td>

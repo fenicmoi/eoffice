@@ -29,6 +29,12 @@ if(!isset($_SESSION['ses_u_id'])){
       </div>
       <div id="collapse1" class="panel-collapse collapse">
           <div class="panel-body">
+              <a href="index_admin.php" class="btn btn-danger btn-block" href>
+                  <i class="fa fa-home" aria-hidden="true"></i> หน้าหลัก</a>
+              <a href="section.php" class="btn btn-danger btn-block">
+                 <i class="fa fa-sitemap"></i> กลุ่มงาน/สาขาย่อย</a>
+              <a href="user.php" class="btn btn-danger btn-block">
+                 <i class="fa fa-user"></i> ผู้ใช้งาน</a>
               <div class="btn-group">
                 <a class="btn dropdown-toggle btn-danger btn-block"  data-toggle="dropdown" href="#">
                     <i class="fa fa-cog pull-left"></i> จัดการระบบจองรถยนต์<span class="caret"></span>
@@ -189,7 +195,6 @@ if(!isset($_SESSION['ses_u_id'])){
       </div>
     </div>
      <br>
-     <span class="alert alert-warning"><i class="fas fa-user"></i> User Online <?php include_once "../module/user-online.php";?></span>
      <!--
     <div class="panel panel-warning">
       <div class="panel-heading">

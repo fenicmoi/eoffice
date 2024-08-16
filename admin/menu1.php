@@ -166,7 +166,6 @@ if(!isset($_SESSION['ses_u_id'])){
       </div>
     </div>
     <br>
-     <span class="btn btn-danger"><i class="fas fa-user"></i>  <?php include_once "../module/user-online.php"; ?></span>
  </div>
 
 

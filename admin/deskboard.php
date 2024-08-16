@@ -2,11 +2,9 @@
  <div class="row">
     <div class="col-md-2">
         <?php  //ตรวจสอบสิทธิ์การใช้งานเมนู
-        $menu = checkMenu($level_id);
-        echo $menu;
-        include $menu;
-
-        // echo "is".$level_id;
+            $menu = checkMenu($level_id);
+            echo $menu;
+            include $menu;
         ?>
     </div>
     <div class="col-md-10">
@@ -231,7 +229,7 @@
                    $c5 = $row['c5'];
 
                    $sum = $c1 + $c2 + $c3 + $c4 + $c5; ?>
-                   
+
                <div class="row">  <!-- สถิติข้อมูล -->
                    <div  class="col-md-12">
                         <div class="panel panel-danger" >

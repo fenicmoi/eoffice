@@ -268,7 +268,7 @@ if (isset($_POST['save'])) {
     $email = $_POST['email'];
 
     // print $sql;
-    $sql = "SELECT * FROM user WHERE u_name='".$u_name.'';
+    $sql = "SELECT * FROM user WHERE u_name ='$u_name'";
     $result = dbQuery($sql);
     $numrow = dbNumRows($result);
     if ($numrow >= 1) {

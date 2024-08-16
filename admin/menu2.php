@@ -26,7 +26,7 @@ if(!isset($_SESSION['ses_u_id'])){
                   <i class="fa fa-home" aria-hidden="true"></i> หน้าหลัก</a>
               <a href="section.php" class="btn btn-danger btn-block">
                  <i class="fa fa-sitemap"></i> กลุ่มงาน/สาขาย่อย</a>
-             <a href="user.php" class="btn btn-danger btn-block">
+              <a href="user.php" class="btn btn-danger btn-block">
                  <i class="fa fa-user"></i> ผู้ใช้งาน</a>
           </div>
       </div>
