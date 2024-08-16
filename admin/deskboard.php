@@ -204,41 +204,7 @@
                                 </div>
                         </div>
                     </div> <!-- row -->
-                    <div class="row">
-                        <div class="row">
-                             <div class="col-md-6">
-                            <div class="quote-container">
-                                        <i class="pin"></i>
-                                        <blockquote class="note yellow">
-                                            <kbd><img src='../images/new.gif'>New Update</kbd>
-                                            <br>
-                                            <caption>สำนักงานจังหวัดได้เพิ่มระบบให้ใช้งานใหม่ดังนี้</caption>
-                                            <ol>
-                                            <li>ระบบออกเลขคำสั่งจังหวัด</li>
-                                            <li>ระบบออกเลขสัญญาซื้อขาย/สัญญาจ้างจังหวัด</li>
-                                            <li>ระบบออกเลขทะเบียนส่งจังหวัด(ธรรมดา/เวียน)</li>
-                                            </ol>
-                                            <cite class="author">Developer</cite>
-                                        </blockquote>
-                                    </div>
-                            </div>
-                            <div class="col-md-6">
-                                    <div class="quote-container">
-                                        <i class="pin"></i>
-                                        <blockquote class="note yellow">
-                                            <i class="fas fa-chat"></i>Tip การจองห้องประชุม <br>
-                                            <ol>
-                                                    <li>ดาวน์โหลดเอกสารคำขออนุัติการใช้ห้องประชุมเพื่อกรอกรายละเอียด <a class="btn btn-primary" href="doc/form_meeting.pdf">Download</a></li>
-                                                    <li>ไปที่ระบบการจองห้องประชุม -> บันทึกรายเอียด -> แนบไฟล์คำขอ</li>
-                                                    <li>ชำระเงิน (กรณ๊ต้องชำระ) ก่อนการประชุม 1 วัน</li>
-                                                    <li>ติดตามผลการอนุมัติ</li>
-                                            </ol>
-                                            <cite class="author">สำนักงานจังหวัดพัทลุง</cite>
-                                        </blockquote>
-                                    </div>
-                            </div>
-                        </div>
-                    </div>
+                 
                </div>
 
                <?php 
@@ -265,6 +231,7 @@
                    $c5 = $row['c5'];
 
                    $sum = $c1 + $c2 + $c3 + $c4 + $c5; ?>
+                   
                <div class="row">  <!-- สถิติข้อมูล -->
                    <div  class="col-md-12">
                         <div class="panel panel-danger" >
