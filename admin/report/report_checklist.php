@@ -20,7 +20,31 @@ img {
 // Require composer autoload
 require_once __DIR__ . '/vendor/autoload.php';
 // Create an instance of the class:
+
+
 $mpdf = new \Mpdf\Mpdf();
+
+$defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
+$fontDirs = $defaultConfig['fontDir'];
+
+$defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
+$fontData = $defaultFontConfig['fontdata'];
+
+$mpdf = new \Mpdf\Mpdf([
+    'fontDir' => array_merge($fontDirs, [
+        __DIR__ . '/ttfonts',
+    ]),
+    'fontdata' => $fontData + [
+        'th-sarabun' => [
+            'R' => 'THSarabunNew.ttf',
+            'I' => 'THSarabunNew Italic.ttf',
+            'B' => 'THSarabunNew Bold.ttf',
+            'BI' => 'THSarabunNew BoldItalic.ttf',
+        ]
+    ],
+    'default_font' => 'th-sarabun',
+    'default_font_size' => 16,
+]);
 
 ob_start(); // ทำการเก็บค่า html นะครับ
 session_start();
@@ -42,37 +66,41 @@ include "../function.php";
 ?>
 
 <?php  
-$sql = "SELECT title,postdate  FROM paper WHERE pid=$pid ";
+$sql = "SELECT title,postdate ,book_no FROM paper WHERE pid=$pid ";
 $result = dbQuery($sql);
 $row = dbFetchArray($result);
 ?>
 
 <table cellspacing="0" cellpadding="1" border="1" style="width:1100px;"> 
 		<tr> 
-        	<td colspan="6"><center><img  src="logo.jpg" style="width:5%;"><h3>รายงานผลการตรวจสอบเอกสารส่ง</h3></center></td>
+        	<td colspan="6"><center><img  src="logo.png" style="width:15%;"><h3>รายงานผลการตอบรับหนังสือ</h3></center></td>
         </tr> 
         <tr>
-            <td>หนังสือ:</td>
+            <td>หนังสือเรื่อง:</td>
             <td colspan="5"><?php print $row['title'];?></td>
         </tr>
         <tr>
-            <td>วันที่ส่ง:</td>
+            <td>เลขที่หนังสือ:</td>
+            <td colspan="5"><?php print $row['book_no'];?></td>
+        </tr>
+        <tr>
+            <td>วันที่ส่งหนังสือ:</td>
             <td colspan="5"><?php print thaiDate($row['postdate']);?></td>
         </tr>
         <tr> 
-        	<td>วันที่พิมพ์</td>
+        	<td>วันที่ออกรายงาน</td>
             <td colspan="5"> <?php echo  DateThai(); ?></td>
         </tr> 
 		<tr>
 			<td><strong>ที่</strong></td>
             <td><strong>ชื่อส่วนราชการ/หน่วยงาน</strong></td>
             <td><strong>กลุ่มงาน/หน่วยงานย่อย</strong></td>
-            <td><strong>สถานะ</strong></td>
+            <td><strong>การลงรับหนังสือ</strong></td>
             <td><strong>วันที่ยืนยัน<strong></td>]
             <td><strong>เบอร์ติดต่อ</strong></td>
 		</tr>
             <?php
-             $sql=" SELECT p.pid,p.u_id,p.sec_id,p.confirm,p.confirmdate,p.dep_id,d.dep_name,d.phone,s.sec_name,u.title
+             $sql=" SELECT p.pid,p.u_id, p.sec_id,p.confirm,p.confirmdate,p.dep_id,d.dep_name,d.phone,s.sec_name,u.title
                     FROM  paperuser p
                     INNER JOIN paper u ON u.pid = p.pid
                     INNER JOIN depart d   ON  p.dep_id=d.dep_id
@@ -91,9 +119,9 @@ $row = dbFetchArray($result);
                     <td>
                         <?php
                             if($row['confirm']==0){
-                                echo "No";
+                                echo "<center> X </center>";
                             }else{
-                                echo "Yes";
+                                echo "<center> / </center> ";
                             }
                         ?>
                     </td>
@@ -104,7 +132,7 @@ $row = dbFetchArray($result);
 		
 	</table>
 	<br>
-	<h5>ออกรายงานจาก ระบบบริการเอกสารจังหวัดพังงา (E-office 2.0)</h5>
+	<h5>ออกรายงานจาก ระบบงานสารบรรณอิล็กทรอนิกส์จังหวัดพัทลุง</h5>
 </body>
 </html>    
 
