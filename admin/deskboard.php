@@ -10,9 +10,9 @@
     <div class="col-md-10">
         <div class="container-fluid" >
             <?php
-            $sql = "SELECT COUNT(puid) AS pcount FROM paperuser WHERE confirm = 0 AND dep_id = $dep_id AND sec_id = $sec_id";
-            $result = dbQuery($sql);
-            $row = dbFetchArray($result);
+                $sql = "SELECT COUNT(puid) AS pcount FROM paperuser WHERE confirm = 0 AND dep_id = $dep_id AND sec_id = $sec_id";
+                $result = dbQuery($sql);
+                $row = dbFetchArray($result);
             ?>
             <?php
             if ($level_id < 4) {
@@ -30,10 +30,10 @@
                     </div>
                     <?php
                     $sql = "SELECT m.book_id,m.rec_id,d.book_no,d.title,d.sendfrom,d.sendto,d.date_in,d.date_line,d.practice,d.status,s.sec_code
-                        FROM book_master m
-                        INNER JOIN book_detail d ON d.book_id = m.book_id
-                        INNER JOIN section s ON s.sec_id = m.sec_id
-                        WHERE m.type_id=1 AND d.status ='' AND d.practice=$dep_id";
+                            FROM book_master m
+                            INNER JOIN book_detail d ON d.book_id = m.book_id
+                            INNER JOIN section s ON s.sec_id = m.sec_id
+                            WHERE m.type_id=1 AND d.status ='' AND d.practice=$dep_id";
                 $result = dbQuery($sql);
                 $num = dbNumRows($result); ?>    
                 <div class="col-md-3">
@@ -61,7 +61,7 @@
                         <center>
                             <a href="paper.php">
                             <i class="fas fa-bell fa-4x"></i<i class="fas fa-book fa-4x"  ></i>
-                            <h5>ประชาสัมพันธ์ <span class="badge">5</span></h5>
+                            <h5>ประชาสัมพันธ์ <span class="badge">0</span></h5>
                                 </a>
                         </center>
                     </div>

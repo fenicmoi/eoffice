@@ -97,7 +97,7 @@ if(!isset($_SESSION['ses_u_id'])){
      <div class="panel panel-info">
       <div class="panel-heading">
         <h4 class="panel-title">
-            <span class="fa fa-id-card"></span><a data-toggle="collapse" data-parent="#accordion" href="#collapse4"> ส่งหนังสือ</a>
+            <span class="fa fa-paper-plane"></span><a data-toggle="collapse" data-parent="#accordion" href="#collapse4"> รับ-ส่งหนังสือ</a>
         </h4>
       </div>
       <div id="collapse4" class="panel-collapse collapse">
