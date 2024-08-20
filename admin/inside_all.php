@@ -194,23 +194,23 @@ if(isset($_POST['send'])){ //ตรวจสอบการกดปุ่ม se
                   VALUE('$title','$detail','$part_link','$date',$user_id,$sec_id,$insite,$dep_id,'$book_no')";
 		}
 
-		echo "sql1=".$sql;
+		//echo "sql1=".$sql;
 
 		$result=dbQuery($sql);
         $lastid=dbInsertId();//ค้นนหารหัสล่าสุด
 
-        //เลือกผู้รับตามเงื่อนไข 1.สังกัดเดียวกัน 2.ไม่ส่งให้ตัวเอง 3.ผู้รับต้องเป็นคีย์แมน 
+        //เลือกผู้รับตามเงื่อนไข 1.สังกัดเดียวกัน 2.ไม่ส่งให้ตัวเอง 3.ผู้รับต้องไม่ใช่ผู้ใช้ทั่วไป
 		$sql="SELECT u_id,sec_id,dep_id,level_id,firstname,keyman FROM user
               WHERE  user.dep_id=$dep_id
               AND user.u_id <> $u_id             
-			  AND keyman=1";
+			  AND user.level_id = 4";
 
-        echo "sql2".$sql;
+       // echo "sql2".$sql;
 
 		$result=  dbQuery($sql);
 
 
-		/*
+		
 		while($rowUser=dbFetchArray($result)){
 			$u_id=$rowUser['u_id'];
 			$sec_id=$rowUser['sec_id'];
@@ -231,7 +231,7 @@ if(isset($_POST['send'])){ //ตรวจสอบการกดปุ่ม se
                    }
                }); 
            </script>";
-          */
+        
 	}elseif($toSome==2){  //กรณีส่งเอกสารถึงบางหน่วย
 		if($cid && $link_file<>null){
 			$sql="INSERT INTO paper(title,detail,file,postdate,u_id,sec_id,insite,dep_id,book_no)
