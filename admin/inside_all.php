@@ -1,6 +1,7 @@
 <?php
 date_default_timezone_set('Asia/Bangkok');
 include "header.php";
+
 $u_id=$_SESSION['ses_u_id'];
 
 @$cid=$_GET['cid'];
@@ -22,12 +23,14 @@ if($cid){
 	$link_file=$row['file_upload'];	
 }
 ?>
+
 <div class="col-md-2">
 <?php 
     $menu = checkMenu($level_id);
     include $menu;
 ?>
 </div>
+
 <div class="col-md-10">
     <div class="panel panel-primary">
         <div class="panel-heading"><i class="fas fa-share-square fa-2x"></i>  <strong>ส่งหนังสือภายในหน่วยงาน </strong></div>
@@ -42,7 +45,7 @@ if($cid){
             <br>
             <form name="fileIn" method="post" enctype="multipart/form-data" >
                 <div class="form-group form-inline">
-                    <label for="title">ชื่อเอกสาร:</label>
+                    <label for="title">เรื่อง:</label>
                     <input class="form-control" type="text" name="title" size="100%" placeholder="ใส่ชื่อเอกสาร" required="">
                 </div>
                 <div class="form-group form-inline">
@@ -54,16 +57,19 @@ if($cid){
                     <input type="radio" value="1" name="toAll" onclick="setEnabledTo(this); document.getElementById('ckToA').style.display = 'none';" checked="">ทั้งหมด
                     <input type="radio" value="2" name="toSome" onclick="setEnabledTo(this); document.getElementById('ckToA').style.display = 'block';"> เลือกเอง
                     <input type="text" name="toSomeUser" class="mytextboxLonger" style="width:373px;" readonly disabled>
+                    
                     <img src="../images/visit.gif" width="26" height="26" onclick="document.getElementById('ckToA').style.display = 'block';" title="คลิกเลือกผู้รับ">
-                    <div id="ckToA" style="display:none;">
+                    
+                    <div id="ckToA" style="display:none;"> 
                         <table border="1" width="599px" cellspacing="0" cellpadding="0">
                             <tr>
-                                <td  class="alere alert-info"><center>เลือกหน่วยรับ</center></td>
+                                <td class="alere alert-info"><center>เลือกหน่วยรับ</center></td>
                             </tr>
                         </table>
-                        <div id="div1" style="width:"599px"; height:350px; overflow:auto">
+                        <div id="div1" style="width:599px; height:350px; overflow:auto">
                             <table border="0" cellspacing="0" cellpadding="0" width="50%" class="select_multiple_table" bgcolor="#FCFCFC">
                             <?php
+                                //เลือกกลุ่มงานที่สังกัดในหน่วยงานมาแสดงทั้งหมด
                                 $sql="SELECT sec_id,sec_name,dep_id FROM section WHERE dep_id=$dep_id ";
                                 $result=  dbQuery($sql);
                                 $numrowIN=  dbNumRows($result);
@@ -74,13 +80,13 @@ if($cid){
                                 <td><font color="#666666">ไม่มีข้อมูลหน่วยงานย่อย.</font></td>
                             </tr>
                             <?php
-                            }else{
-                            $i=0;
+                                }else{
+                                $i=0;
                                 while ($rowIN=dbFetchAssoc($result)){
-                                    $i++;
-                                    $a=$i%2;
-                                    if($a==0){
-                                    ?>
+                                        $i++;
+                                        $a=$i%2;
+                                        if($a==0){
+                                ?>
                                 <tr bgcolor="#A9F5D0">
                                 <?php
                                 }else{ ?>
@@ -89,19 +95,20 @@ if($cid){
                                     <td class="select_multiple_checkbox" width="24"><input type="checkbox" onclick="listOne(this,'<?php echo $rowIN['sec_id']?>')"></td>
                                     <td class="select_multiple_name"><?php print$rowIN['sec_name']?></td>				
                                 </tr>
-                                <?php
-                                }
-                            } ?>
+                                    <?php
+                                } //end while
+                            } //end if ?>
                             </table>
-                        </div> <!--div1 -->
+                        </div> <!--end div1 -->
                             <table>
                                 <tr>
-                                    <td><input class="btn-success"  style="width:77px;" type="button" value="ตกลง" onclick="document.getElementById('ckToA').style.display = 'none';"></td>
-                                    <td><input class="btn-danger" style="width:77px;" type="button" value="ยกเลิก" onclick="document.getElementById('ckToA').style.display = 'none';"></td>
+                                    <td><input class="btn-success" style="width:77px;" type="button" value="ตกลง" onclick="document.getElementById('ckToA').style.display = 'none';"></td>
+                                    <td><input class="btn-danger"  style="width:77px;" type="button" value="ยกเลิก" onclick="document.getElementById('ckToA').style.display = 'none';"></td>
                                 </tr>
                             </table>
                         </div>
                     </div>
+
                     <?php if($cid && $link_file<>null){ ?>
                         <div class="form-group form-inline">
                             <label for="fileupload">ไฟล์แนบ</label><a href="<?php print $link_file;?>"><i class="fa fa-file fa-2x"></i></a>
@@ -141,6 +148,7 @@ if($cid){
 
 <!-- process -->
 <?php
+//เก็บข้อมูลเพื่อเตรียมทำการประมวลผล
 $date=date('Y-m-d');
 if(isset($_POST['send'])){ //ตรวจสอบการกดปุ่ม send  จากส่งเอกสารภายใน
 	$title=$_POST['title'];
@@ -159,6 +167,7 @@ if(isset($_POST['send'])){ //ตรวจสอบการกดปุ่ม se
     @$upload=$_FILES['fileupload'];//เพิ่มไฟล์
     $book_no=$_POST['book_no'];
 	
+    //เตรียมไฟล์ในการ Upload  เอกสาร
 	if($upload<>''){//ถ	้ามีการ upload เอกสาร
 		$part="paper/";
 		$type=  strrchr($_FILES['fileupload']['name'],".");
@@ -178,25 +187,30 @@ if(isset($_POST['send'])){ //ตรวจสอบการกดปุ่ม se
 		if($cid && $link_file<>null){    //เป็นนการตรวจสอบว่าเป็นการส่งเอกสารผ่านทางระบบส่งหนังสือโดยตรงหรือไม่
 			//ถ	้ามีการส่ง book_id มา
 			$sql="INSERT INTO paper(title,detail,file,postdate,u_id,sec_id,insite,dep_id,book_no)
-                              VALUE('$title','$detail','$link_file','$date',$user_id,$sec_id,$insite,$dep_id,'$book_no')";
+                  VALUE('$title','$detail','$link_file','$date',$user_id,$sec_id,$insite,$dep_id,'$book_no')";
 		}else{
 			//กรณีส่งเอกสารโดยไม่มีการออกเลข
 			$sql="INSERT INTO paper(title,detail,file,postdate,u_id,sec_id,insite,dep_id,book_no)
-                              VALUE('$title','$detail','$part_link','$date',$user_id,$sec_id,$insite,$dep_id,'$book_no')";
+                  VALUE('$title','$detail','$part_link','$date',$user_id,$sec_id,$insite,$dep_id,'$book_no')";
 		}
 
-        echo $sql;
-		
-        
+		echo "sql1=".$sql;
+
 		$result=dbQuery($sql);
         $lastid=dbInsertId();//ค้นนหารหัสล่าสุด
+
         //เลือกผู้รับตามเงื่อนไข 1.สังกัดเดียวกัน 2.ไม่ส่งให้ตัวเอง 3.ผู้รับต้องเป็นคีย์แมน 
 		$sql="SELECT u_id,sec_id,dep_id,level_id,firstname,keyman FROM user
               WHERE  user.dep_id=$dep_id
               AND user.u_id <> $u_id             
 			  AND keyman=1";
+
+        echo "sql2".$sql;
+
 		$result=  dbQuery($sql);
-		
+
+
+		/*
 		while($rowUser=dbFetchArray($result)){
 			$u_id=$rowUser['u_id'];
 			$sec_id=$rowUser['sec_id'];
@@ -217,7 +231,7 @@ if(isset($_POST['send'])){ //ตรวจสอบการกดปุ่ม se
                    }
                }); 
            </script>";
-        
+          */
 	}elseif($toSome==2){  //กรณีส่งเอกสารถึงบางหน่วย
 		if($cid && $link_file<>null){
 			$sql="INSERT INTO paper(title,detail,file,postdate,u_id,sec_id,insite,dep_id,book_no)

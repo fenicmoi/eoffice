@@ -29,12 +29,15 @@ if(!isset($_SESSION['ses_u_id'])){
       </div>
       <div id="collapse1" class="panel-collapse collapse">
           <div class="panel-body">
+            <!--
               <a href="index_admin.php" class="btn btn-danger btn-block" href>
                   <i class="fa fa-home" aria-hidden="true"></i> หน้าหลัก</a>
               <a href="section.php" class="btn btn-danger btn-block">
                  <i class="fa fa-sitemap"></i> กลุ่มงาน/สาขาย่อย</a>
               <a href="user.php" class="btn btn-danger btn-block">
                  <i class="fa fa-user"></i> จัดการผู้ใช้</a>
+            -->
+                 <label><h5>ไม่ได้รับสิทธิ์</h5></label>
               <!-- 
               <div class="btn-group">
                 <a class="link-disabled btn dropdown-toggle btn-danger btn-block"  data-toggle="dropdown" href="#">
@@ -81,7 +84,7 @@ if(!isset($_SESSION['ses_u_id'])){
            <div class="panel-body">
             <kbd>ออกเลขทะเบียนรับ</kbd>
             <!-- <a class="btn btn-primary btn-block" href="flow-resive-province.php"><i class="far fa-arrow-alt-circle-right  pull-left"></i>หนังสือถึงจังหวัด</a> -->
-            <a class="btn btn-primary btn-block" href="FlowResiveDepart.php"><i class="far fa-arrow-alt-circle-right  pull-left"></i> ทะเบียนรับหน่วยงาน</a>
+            <!-- <a class="btn btn-primary btn-block" href="FlowResiveDepart.php"><i class="far fa-arrow-alt-circle-right  pull-left"></i> ทะเบียนรับหน่วยงาน</a> -->
             <a class="btn btn-primary btn-block" href="flow-resive-group.php"><i class="far fa-arrow-alt-circle-right  pull-left"></i> ทะเบียนรับกลุ่มงาน</a>
             <kbd>ออกเลขทะเบียนส่ง</kbd>
            
@@ -112,7 +115,8 @@ if(!isset($_SESSION['ses_u_id'])){
         </div>
       </div>
     </div>
-       <div class="panel panel-info">
+
+    <!-- <div class="panel panel-info">
       <div class="panel-heading">
         <h4 class="panel-title">
             <i class="fab fa-app-store"></i><a data-toggle="collapse" data-parent="#accordion" href="#collapse5"> ระบบสนับสนุนอื่นๆ</a>
@@ -127,7 +131,8 @@ if(!isset($_SESSION['ses_u_id'])){
             </div>
         </div>
       </div>
-    </div>
+    </div> -->
+
      <div class="panel panel-info">
       <div class="panel-heading">
         <h4 class="panel-title">
@@ -158,7 +163,7 @@ if(!isset($_SESSION['ses_u_id'])){
         </div>
       </div>
     </div>
-
+    
      <div class="panel panel-info">
       <div class="panel-heading">
         <h4 class="panel-title">
@@ -167,6 +172,7 @@ if(!isset($_SESSION['ses_u_id'])){
       </div>
       <div id="collapse8" class="panel-collapse collapse">
             <div class="panel-body">
+              <h5>อยู่ระหว่างการปรับปรุง</h5>
               <!-- <a class="btn btn-primary btn-block" href="meet_room.php"><i class="fas fa-cogs  pull-left"></i>จัดการห้อง</a> -->
               <!-- <a class="btn btn-primary btn-block" href=""><i class="fas fa-cogs  pull-left"></i>จัดการอุปกรณ์</a>
               <a class="btn btn-primary btn-block" href=""><i class="fas fa-cogs  pull-left"></i>จัดการเวลา</a> -->
@@ -180,28 +186,27 @@ if(!isset($_SESSION['ses_u_id'])){
             </div>
       </div>
     </div>
-
+<!-- 
     <div class="panel panel-info">
       <div class="panel-heading">
-        <h4 class="panel-title">
-           <i class="fas fa-car"></i><a data-toggle="collapse" data-parent="#accordion" href="#collapse9"> ระบบจองรถราชการ</a>
-        </h4>
+        <h4 class="panel-title"><i class="fas fa-car"></i><a data-toggle="collapse" data-parent="#accordion" href="#collapse9"> ระบบจองรถราชการ</a></h4>
       </div>
+    
       <div id="collapse9" class="panel-collapse collapse">
             <div class="panel-body">
               <a class="btn btn-primary btn-block" href=""><i class="fas fa-cog  pull-left"></i>รถราชการ</a>
               <a class="btn btn-primary btn-block" href=""><i class="fas fa-cog  pull-left"></i>ผู้ขับขี่</a>
               <a class="btn btn-primary btn-block" href=""><i class="fas fa-car  pull-left"></i>ปฏิทินการใช้รถ</a>
             </div>
-      </div>
-    </div>
+      </div> 
+    </div> -->
      <br>
-     <!--
+    
     <div class="panel panel-warning">
       <div class="panel-heading">
         <h4 class="panel-title">
                 <img width=100 hight=100 src="../images/line.jpg"/>
         </h4>
       </div>
-    </div>-->
+    </div>
  </div>
