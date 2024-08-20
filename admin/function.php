@@ -122,15 +122,15 @@ function hit($table,$cid){
 
 //  คืนจำนวนวัน
 function getNumDay($d1,$d2){
-$dArr1    = preg_split("/-/", $d1);
-list($year1, $month1, $day1) = $dArr1;
-@$Day1 =  mktime(0,0,0,$month1,$day1,$year1);
- 
-$dArr2    = preg_split("/-/", $d2);
-list($year2, $month2, $day2) = $dArr2;
-$Day2 =  mktime(0,0,0,$month2,$day2,$year2);
- 
-return round(abs( $Day2 - $Day1 ) / 86400 )+1;
+  $dArr1    = preg_split("/-/", $d1);
+  list($year1, $month1, $day1) = $dArr1;
+  @$Day1 =  mktime(0,0,0,$month1,$day1,$year1);
+  
+  $dArr2    = preg_split("/-/", $d2);
+  list($year2, $month2, $day2) = $dArr2;
+  $Day2 =  mktime(0,0,0,$month2,$day2,$year2);
+  
+  return round(abs( $Day2 - $Day1 ) / 86400 )+1;
 }  
 
 //เปรียบเทียบวันที่กับฐานข้อมูล

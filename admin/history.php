@@ -89,45 +89,30 @@ include $menu;
 <?php
 $sql = "SELECT * FROM  paper WHERE sec_id=$sec_id ";
 
-if ( isset($_POST['btnSearch' ] ) ) {
-	//ถ	้ามีการกดปุ่มค้นหา
-	@$typeSearch = $_POST[ 'typeSearch' ];
-	//ป	ระเภทการค้นหา
-	@$txt_search = $_POST[ 'search' ];
-	//ก	ล่องรับข้อความ
-	if ( @$typeSearch == 1 ) {
-		//เลขหนังสือ
+if ( isset($_POST['btnSearch' ])) { //ถ้ามีการกดปุ่มค้นหา
+	$typeSearch = isset($_POST[ 'typeSearch' ]) ? $_POST['typeSearch'] : '';   
+	$txt_search = isset($_POST[ 'search' ]) ? $_POST['search'] : '';   
+	
+	if ( $typeSearch == 1 ) { //เลขหนังสือ
 		$sql .= " AND book_no LIKE '%$txt_search%'   ORDER BY pid  DESC";
-		
-	}
-	elseif( @$typeSearch == 2 ){
-		//ช		ื่อเรื่อง
+	}else if( $typeSearch == 2 ){ //ชื่อเรื่อง
 		$sql .= " AND title LIKE '%$txt_search%'     ORDER BY  pid DESC";
-		
 	}
 	
-}
-else{
-	
+}else{
 	$sql .= " ORDER BY pid DESC";
-	
 }
 
-//print $sql;
-
+//pagenavigation
 $result = page_query( $dbConn, $sql, 10 );
-
 $numrow = dbNumRows( $result );
 
-while ( $rowList = dbFetchArray( $result ) ) {
-	
-	
-	?>
+while ( $rowList = dbFetchArray( $result ) ) { ?>
 		<tr>
 			<td><i class="fas fa-bullseye"></i></td>
             <td>
 				<?php 
-					if($rowList['book_no']==null){
+					if($rowList['book_no'] == null) {
 						echo "...";
 					}else{
 						echo $rowList['book_no'];
@@ -142,34 +127,33 @@ while ( $rowList = dbFetchArray( $result ) ) {
 			<td><?php echo thaiDate($rowList['postdate']);?></td>
 			<td><a href="checklist.php?pid=<?php echo $rowList['pid'];?>" class="btn btn-warning" target="_blank"><i class="fab fa-wpexplorer"></i> ติดตาม</a></td>
 			<?php
-			$d1 = $rowList['postdate'];
-			$d2 = date('Y-m-d');
-			$numday = getNumDay($d1,$d2);
+				$d1 = $rowList['postdate'];
+				$d2 = date('Y-m-d');
+				$numday = getNumDay($d1,$d2);
+				echo $numday;
+			
 
 			//กำหนดให้แก้ไขได้ 1 วันเท่านั้น
 			if ($numday > 1) {?>       
 				<td><center><i class="fab fa-expeditedssl fa-2x"></i></center></td>
-			<? }else{
-				if($rowList['insite']==1){?>
-				  <td><a class="btn btn-info" href="inside_all_edit.php?pid=<?=$rowList['pid']?>"><i class="fas fa-edit"></i>แก้ไข</a></td>
-				<?}else if($rowList['outsite']==1){?>
-				  <td><a class="btn btn-info" href="outside_all_edit.php?pid=<?=$rowList['pid']?>"><i class="fas fa-edit"></i>แก้ไข</a></td>
-				<?}?>
+			<?php }else{
+						if($rowList['insite']==1){?>
+							<td><a class="btn btn-info" href="inside_all_edit.php?pid=<?php echo $rowList['pid'];?>"><i class="fas fa-edit"></i>แก้ไข</a></td>
+						<?php }else if($rowList['outsite']==1){?>
+							<td><a class="btn btn-info" href="outside_all_edit.php?pid=<?php echo $rowList['pid'];?>"><i class="fas fa-edit"></i>แก้ไข</a></td>
+						<?php }?>
 				
-			<? } ?>
+			<?php }?>
 			<td>
 			    <?php if($numday > 1){?>
 					<center><i class="fab fa-expeditedssl fa-2x"></i></center>
-				<?}else{?>
+				<?php }else{?>
 					<a class="btn btn-default" href="in_out_del.php?pid=<?=$rowList['pid'];?>" onclick="return confirm('คุณกำลังจะลบข้อมูล !'); "> <i class="fas fa-trash-alt"></i> ยกเลิก</a>
-				<?}?>
+				<?php } ?>
 				
 			</td>
 		</tr>
-		<?php
-}
-
-?>
+<?php } //end while?>
 	</tbody>
 </table>
 </div> <!--panel-body-->
@@ -191,9 +175,10 @@ while ( $rowList = dbFetchArray( $result ) ) {
 </div> <!--col-md-10-->
 
 <?php
+/*
 $del=$_GET['del'];
 if(isset($del)){
-echo "<script> alert('hello');</script>";
+  echo "<script> alert('hello');</script>";
 }
-	
+  */
 ?>

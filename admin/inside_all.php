@@ -30,7 +30,7 @@ if($cid){
 </div>
 <div class="col-md-10">
     <div class="panel panel-primary">
-        <div class="panel-heading"><i class="fas fa-share-square fa-2x"></i>  <strong>ส่งเอกสารภายในหน่วยงาน </strong></div>
+        <div class="panel-heading"><i class="fas fa-share-square fa-2x"></i>  <strong>ส่งหนังสือภายในหน่วยงาน </strong></div>
         <div class="panel-body">
             <ul class="nav nav-tabs">
                 <li><a class="btn-danger fas fa-envelope"  href="paper.php"> หนังสือเข้า</a></li>
@@ -47,7 +47,7 @@ if($cid){
                 </div>
                 <div class="form-group form-inline">
                     <label for="book_no">เลขหนังสือ:</label>
-                    <input class="form-control" type="text" name="book_no" size="100%" placeholder="ตัวอย่าง พง0017.2/ว1423 พิมพิ์ติดกัน" required="">
+                    <input class="form-control" type="text" name="book_no" size="100%" placeholder="โปรดระบุ" required="">
                 </div>
                 <div class="form-group form-inline">
                     <label for="to">ส่งถึง:</label>
@@ -58,7 +58,7 @@ if($cid){
                     <div id="ckToA" style="display:none;">
                         <table border="1" width="599px" cellspacing="0" cellpadding="0">
                             <tr>
-                                <td  class="alere alert-info"><center>เลือกชื่อผู้รับ</center></td>
+                                <td  class="alere alert-info"><center>เลือกหน่วยรับ</center></td>
                             </tr>
                         </table>
                         <div id="div1" style="width:"599px"; height:350px; overflow:auto">
@@ -124,6 +124,9 @@ if($cid){
                                 <textarea  name="detail" rows="3" cols="60">-</textarea>
                             </div>
                             <center>
+                                <?php  //check $fileupload
+                                     $fileupload = isset($fileupload) ? $fileupload : '';
+                                ?>
                                 <div class="form-group">
                                     <input type="hidden" name="file" value="<?php print $fileupload;?>"/>
                                     <input type="hidden" name="dep_id" value="<?php print $dep_id;?>"/>
@@ -135,6 +138,7 @@ if($cid){
    </div> <!-- panel-primary -->
    <div class="panel-footer"></div>
 </div>
+
 <!-- process -->
 <?php
 $date=date('Y-m-d');
@@ -172,7 +176,7 @@ if(isset($_POST['send'])){ //ตรวจสอบการกดปุ่ม se
 	
 	if($toAll==1){//กรณีส่งเอกสารถึงทุกหน่วยภายใน
 		if($cid && $link_file<>null){    //เป็นนการตรวจสอบว่าเป็นการส่งเอกสารผ่านทางระบบส่งหนังสือโดยตรงหรือไม่
-			//ถ		้ามีการส่ง book_id มา
+			//ถ	้ามีการส่ง book_id มา
 			$sql="INSERT INTO paper(title,detail,file,postdate,u_id,sec_id,insite,dep_id,book_no)
                               VALUE('$title','$detail','$link_file','$date',$user_id,$sec_id,$insite,$dep_id,'$book_no')";
 		}else{
@@ -180,7 +184,10 @@ if(isset($_POST['send'])){ //ตรวจสอบการกดปุ่ม se
 			$sql="INSERT INTO paper(title,detail,file,postdate,u_id,sec_id,insite,dep_id,book_no)
                               VALUE('$title','$detail','$part_link','$date',$user_id,$sec_id,$insite,$dep_id,'$book_no')";
 		}
+
+        echo $sql;
 		
+        
 		$result=dbQuery($sql);
         $lastid=dbInsertId();//ค้นนหารหัสล่าสุด
         //เลือกผู้รับตามเงื่อนไข 1.สังกัดเดียวกัน 2.ไม่ส่งให้ตัวเอง 3.ผู้รับต้องเป็นคีย์แมน 
@@ -200,7 +207,7 @@ if(isset($_POST['send'])){ //ตรวจสอบการกดปุ่ม se
 		
 		echo "<script>
            swal({
-               title:'ส่งเอกสารเรียบร้อยแล้ว',
+               title:'ส่งหนังสือเรียบร้อยแล้ว',
                type:'success',
                showConfirmButton:true
                },
@@ -210,7 +217,7 @@ if(isset($_POST['send'])){ //ตรวจสอบการกดปุ่ม se
                    }
                }); 
            </script>";
-
+        
 	}elseif($toSome==2){  //กรณีส่งเอกสารถึงบางหน่วย
 		if($cid && $link_file<>null){
 			$sql="INSERT INTO paper(title,detail,file,postdate,u_id,sec_id,insite,dep_id,book_no)
