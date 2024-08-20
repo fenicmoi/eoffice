@@ -158,15 +158,15 @@ $u_id=$_SESSION['ses_u_id'];
                             </tr>
                             <?php 
                                  //หมายเลขส่วนราชการ
-                                   /* $sql="SELECT d.dep_id,d.dep_name,d.prefex,u.firstname,
+                                   $sql="SELECT d.dep_id,d.dep_name,d.prefex,u.firstname,
                                     FROM depart d
                                     INNER JOIN user u ON u.dep_id= d.dep_id
-                                    WHERE u.u_id=".$u_id;*/
+                                    WHERE u.u_id=".$u_id;
                                 $sql = "SELECT section.sec_code,user.firstname,user.sec_id  FROM section,user  WHERE user.u_id = $u_id AND user.sec_id = section.sec_id " ;
-                                //print $sql;
+                               // print $sql;
                                 $result =  dbQuery($sql);
                                 $rowPrefex= dbFetchArray($result);
-                               // $prefex=$rowPrefex['sec_code'];
+                                $prefex=$rowPrefex['sec_code'];
                                 $firstname=$rowPrefex['firstname'];
                             ?>
                             <tr>
@@ -174,7 +174,7 @@ $u_id=$_SESSION['ses_u_id'];
                                     <div class="form-group">
                                             <div class="input-group">
                                                 <span class="input-group-addon">เลขประจำส่วนราชการ:</span>
-                                                 <input type="text" class="form-control" name="prefex" id="prefex"  placeholder="ตัวอย่าง:พท 0017.1" required>
+                                                 <input type="text" class="form-control" name="prefex" id="prefex"  value="<?php echo $prefex;?>">
                                             </div>    
                                     </div>
                                 </td>
@@ -228,8 +228,8 @@ $u_id=$_SESSION['ses_u_id'];
                             <tr>
                                 <td>
                                     <div class="form-group form-inline">
-                                        <input type="radio"  name="open" value="1" checked><label>เปิดเผยแก่บุคคลทั่วไป</label>
-                                        <input type="radio"  name="open" value="0" ><label>ไม่เปิดเผย</label>
+                                        <input type="radio"  name="open" value="1" checked><label>แสดงผลหน้าเว็บไซต์</label>
+                                        <input type="radio"  name="open" value="0" ><label>ไม่แสดงผลหน้าเว็บไซต์    </label>
                                     </div>
                                 </td>
                             </tr>
