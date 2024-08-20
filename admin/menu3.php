@@ -104,9 +104,9 @@ if(!isset($_SESSION['ses_u_id'])){
             <div class="panel-body">
             <div class="panel-body">
              <a class="btn btn-primary btn-block" href="paper.php"><i class="fas fa-envelope  pull-left"></i>หนังสือเข้า</a>
-            <a class="btn btn-primary btn-block" href="folder.php"><i class="far fa-envelope-open  pull-left"></i>รับแล้ว</a>
-            <!-- <a class="btn btn-primary btn-block" href="history.php"><i class="fas fa-folder-open  pull-left"></i>ส่งแล้ว</a> -->
-            <a class="btn btn-primary btn-block" href="inside_all.php"><i class="fas fa-home  pull-left"></i>ส่งภายใน</a>
+            <a class="btn btn-primary btn-block" href="folder.php"><i class="far fa-envelope-open  pull-left"></i>หนังสือลงรับแล้ว</a>
+            <a class="btn btn-primary btn-block" href="history.php"><i class="fas fa-folder-open  pull-left"></i>หนังสือส่งแล้ว</a> 
+            <a class="btn btn-primary btn-block" href="inside_all.php"><i class="fas fa-retweet  pull-left"></i>ส่งภายในหน่วย</a>
             <a class="btn btn-primary btn-block" href="outside_all.php"><i class="fas fa-paper-plane pull-left"></i>ส่งภายนอก</a>
             </div>
         </div>

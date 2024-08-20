@@ -231,7 +231,7 @@
                                         <div class="form-group">
                                           <div class="input-group">
                                               <span class="input-group-addon">E-mail ทางการ</span>
-                                              <input class="form-control" type="email" name="email"  required>
+                                              <input class="form-control" type="email" name="email" placeholder="อีเมลล์ทางการของหน่วยงาน"  required>
                                           </div>
                                         </div>
                                   </fieldset>

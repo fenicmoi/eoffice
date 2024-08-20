@@ -33,10 +33,10 @@ if($cid){
         <div class="panel-heading"><i class="fas fa-share-square fa-2x"></i>  <strong>ส่งเอกสารภายในหน่วยงาน </strong></div>
         <div class="panel-body">
             <ul class="nav nav-tabs">
-                <li><a class="btn-danger fas fa-envelope"  href="paper.php"> จดหมายเข้า</a></li>
-                <li><a class="btn-danger fas fa-envelope-open"  href="folder.php"> รับแล้ว</a></li>
-                <li><a class="btn-danger fas fa-history" href="history.php"> ส่งแล้ว</a></li>
-                <li class="active"><a class="btn-danger fas fa-paper-plane" href="inside_all.php"> ส่งภายใน</a></li>
+                <li><a class="btn-danger fas fa-envelope"  href="paper.php"> หนังสือเข้า</a></li>
+                <li><a class="btn-danger fas fa-envelope-open"  href="folder.php"> หนังสือลงรับแล้ว</a></li>
+                <li><a class="btn-danger fas fa-history" href="history.php"> หนังสือส่งแล้ว</a></li>
+                <li class="active"><a class="btn-danger fas fa-paper-plane" href="inside_all.php"> ส่งภายในหน่วย</a></li>
                 <li><a class="btn-danger fas fa-globe" href="outside_all.php"> ส่งภายนอก</a></li>
             </ul>
             <br>
@@ -51,8 +51,8 @@ if($cid){
                 </div>
                 <div class="form-group form-inline">
                     <label for="to">ส่งถึง:</label>
-                    <input type="radio" value="1" name="toAll" onclick="setEnabledTo(this); document.getElementById('ckToA').style.display = 'none';" checked="">ทุกหน่วย
-                    <input type="radio" value="2" name="toSome" onclick="setEnabledTo(this); document.getElementById('ckToA').style.display = 'block';"> บางหน่วย
+                    <input type="radio" value="1" name="toAll" onclick="setEnabledTo(this); document.getElementById('ckToA').style.display = 'none';" checked="">ทั้งหมด
+                    <input type="radio" value="2" name="toSome" onclick="setEnabledTo(this); document.getElementById('ckToA').style.display = 'block';"> เลือกเอง
                     <input type="text" name="toSomeUser" class="mytextboxLonger" style="width:373px;" readonly disabled>
                     <img src="../images/visit.gif" width="26" height="26" onclick="document.getElementById('ckToA').style.display = 'block';" title="คลิกเลือกผู้รับ">
                     <div id="ckToA" style="display:none;">

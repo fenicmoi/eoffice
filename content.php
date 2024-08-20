@@ -310,7 +310,7 @@
                           <div class="form-group col-sm-6">
                                 <div class="input-group">
                                   <span class="input-group-addon"><i class="fas fa-envelope-square"></i></span>
-                                  <input class="form-control" type="email" name="email" id="email" placeholder="อีเมลล์" required>
+                                  <input class="form-control" type="email" name="email" id="email" placeholder="อีเมลล์ที่เป็นทางการของหน่วยงาน" required>
                               </div>
                           </div>
                           <div class="form-group col-sm-6">
