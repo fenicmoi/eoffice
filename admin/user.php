@@ -205,9 +205,16 @@ $u_id = $_SESSION['ses_u_id'];
                           <div class="form-group form-inline">
                               <label for="email">E-mail</label>
                               <div class="input-group">
-                                  <input class="form-control" type="email" name="email" id="email" required>
+                                  <input class="form-control" type="email" name="email" id="email"  required placeholder="E-mail ทางการเท่านั้น">
                               </div>
                           </div>
+                          <div class="form-group form-inline">
+                              <label for="telphone">เบอร์โทรศัพท์เคลื่อนที่</label>
+                              <div class="input-group">
+                                  <input class="form-control" type="text" name="telphone" id="telphone" required placeholder="เบอร์มือถือ">
+                              </div>
+                          </div>
+
                           <div class="form-group form-inline">
                               <label for="status">สถานะการใช้งาน</label>
                               <input class="form-control" type="radio" name="status" id="status" value="1" checked>อนุญาตใช้งาน
@@ -226,7 +233,7 @@ $u_id = $_SESSION['ses_u_id'];
                                     <?php
                             } else {
                                 ?>
-                                    <center><button class="btn btn-primary btn-lg" type="submit" name="save">
+                                    <center><button class="btn btn-warning btn-lg" type="submit" name="save">
                                         <i class="fa fa-database fa-2x"></i> บันทึก
                                         <input id="u_id" name="u_id" type="hidden" value="<?php echo $u_id; ?>"> 
                                         </button></center>
@@ -266,6 +273,7 @@ if (isset($_POST['save'])) {
     $date_create = $_POST['date_user'];
     $status = $_POST['status'];
     $email = $_POST['email'];
+    $telphone = $_POST['telphone'];
 
     // print $sql;
     $sql = "SELECT * FROM user WHERE u_name ='$u_name'";
@@ -285,8 +293,8 @@ if (isset($_POST['save'])) {
                 }); 
               </script>";
     } elseif ($numrow < 1) {
-        $sql = "INSERT INTO user(sec_id,dep_id,level_id,u_name,u_pass,firstname,lastname,position,date_create,status,email)
-                   VALUES ($sec_id,$dep_id,$level_id,'$u_name','$u_pass','$firstname','$lastname','$position','$date_create',$status,'$email')";
+        $sql = "INSERT INTO user(sec_id,dep_id,level_id,u_name,u_pass,firstname,lastname,position,date_create,status,email,telphone)
+                   VALUES ($sec_id,$dep_id,$level_id,'$u_name','$u_pass','$firstname','$lastname','$position','$date_create',$status,'$email','$telphone')";
         //echo $sql;
         $result = dbQuery($sql);
         $level_id = $_SESSION['level'];

@@ -48,13 +48,13 @@ include $menu;
 			<a href="folder.php" class="btn btn-default pull-right"><i class="fas fa-home"></i> หน้าหลัก</a>
         </div>
 		<div class="panel-body"> 
-			 <ul class="nav nav-tabs">
-                <li><a class="btn-danger fas fa-envelope"  href="paper.php"> จดหมายเข้า</a></li>
-                <li><a class="btn-danger fas fa-envelope-open" href="folder.php"> รับแล้ว</a></li>
-                <li class="active"><a class="btn-danger fas fa-history" href="history.php"> ติดตามหนังสือ</a></li>
-                <li><a class="btn-danger fas fa-paper-plane" href="inside_all.php"> ส่งภายใน</a></li>
-                <li><a class="btn-danger fas fa-globe" href="outside_all.php"> ส่งภายนอก</a></li>
-            </ul> 
+							<ul class="nav nav-tabs">
+								<li><a class="btn-danger fas fa-envelope"  href="paper.php"> หนังสือเข้า</a></li>
+								<li><a class="btn-danger fas fa-envelope-open"  href="folder.php"> หนังสือลงรับแล้ว</a></li>
+								<li class="active"><a class="btn-danger fas fa-history" href="history.php"> ติดตามหนังสือส่ง</a></li>
+								<li ><a class="btn-danger fas fa-paper-plane" href="inside_all.php"> ส่งภายในหน่วย</a></li>
+								<li><a class="btn-danger fas fa-globe" href="outside_all.php"> ส่งระหว่างหน่วย</a></li>
+                            </ul>
 			<table class="table table-bordered table-hover" id="tbHistory">
 			<thead>
 				<tr bgcolor="black">

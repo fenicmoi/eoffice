@@ -185,6 +185,12 @@ $u_id = $_GET['edit'];
                               </div>
                           </div>
                           <div class="form-group form-inline">
+                              <label for="telphone">เบอร์โทรศัพท์เเคลื่อนที่</label>
+                              <div class="input-group">
+                                  <input class="form-control" type="text" name="telphone" id="telphone" value="<?php echo $getROW['telphone']; ?>">
+                              </div>
+                          </div>
+                          <div class="form-group form-inline">
                               <label for="date_create">วันที่แก้ไข</label>
                               <div class="input-group">
                                   <input class="form-control" type="text" name="date_user" id="date_user" value="<?php echo date('Y-m-d'); ?>">
@@ -221,6 +227,7 @@ $u_id = $_GET['edit'];
                 $date_create = $_POST['date_user'];
                 $status = $_POST['status'];
                 $email = $_POST['email'];
+                $telphone = $_POST['telphone'];
                 $keyman = $_POST['keyman'];
                 echo 'sec1';
             } else {
@@ -234,6 +241,7 @@ $u_id = $_GET['edit'];
                 $date_create = $_POST['date_user'];
                 $status = $_POST['status'];
                 $email = $_POST['email'];
+                $telphone = $_POST['telphone'];
                 $keyman = $_POST['keyman'];
                 echo 'sec2';
             }
@@ -249,6 +257,7 @@ $u_id = $_GET['edit'];
                         date_create='$date_create',
                         status='$status',
                         email='$email',
+                        telphone = '$telphone',
                         keyman='$keyman'
                         
                       WHERE u_id = $u_id

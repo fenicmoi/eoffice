@@ -73,38 +73,42 @@ $row = dbFetchArray($result);
 
 <table cellspacing="0" cellpadding="1" border="1" style="width:1100px;"> 
 		<tr> 
-        	<td colspan="6"><center><img  src="logo.png" style="width:15%;"><h3>รายงานผลการตอบรับหนังสือ</h3></center></td>
+        	<td colspan="7"><center><img  src="logo.png" style="width:15%;"><h3>รายงานผลการตอบรับหนังสือ</h3></center></td>
         </tr> 
         <tr>
             <td>หนังสือเรื่อง:</td>
-            <td colspan="5"><?php print $row['title'];?></td>
+            <td colspan="6"><?php print $row['title'];?></td>
         </tr>
         <tr>
             <td>เลขที่หนังสือ:</td>
-            <td colspan="5"><?php print $row['book_no'];?></td>
+            <td colspan="6"><?php print $row['book_no'];?></td>
         </tr>
         <tr>
             <td>วันที่ส่งหนังสือ:</td>
-            <td colspan="5"><?php print thaiDate($row['postdate']);?></td>
+            <td colspan="6"><?php print thaiDate($row['postdate']);?></td>
         </tr>
         <tr> 
         	<td>วันที่ออกรายงาน</td>
-            <td colspan="5"> <?php echo  DateThai(); ?></td>
+            <td colspan="6"> <?php echo  DateThai(); ?></td>
         </tr> 
 		<tr>
-			<td><strong>ที่</strong></td>
-            <td><strong>ชื่อส่วนราชการ/หน่วยงาน</strong></td>
-            <td><strong>กลุ่มงาน/หน่วยงานย่อย</strong></td>
-            <td><strong>การลงรับหนังสือ</strong></td>
-            <td><strong>วันที่ยืนยัน<strong></td>]
-            <td><strong>เบอร์ติดต่อ</strong></td>
+			<td><strong> ที่        </strong></td>
+            <td><strong> ส่วนราชการ </strong></td>
+            <td><strong> กลุ่มงาน   </strong></td>
+            <td><strong> เจ้าหน้าที่   </strong></td>
+            <td><strong> โทร      </strong></td>
+            <td><strong> วันที่ลงรับ  </strong></td>
+            <td><strong> สถานะ    </strong></td> 
+          
+           
 		</tr>
             <?php
-             $sql=" SELECT p.pid,p.u_id, p.sec_id,p.confirm,p.confirmdate,p.dep_id,d.dep_name,d.phone,s.sec_name,u.title
+             $sql=" SELECT p.pid,p.u_id, p.sec_id,p.confirm,p.confirmdate,p.dep_id,d.dep_name,d.phone,s.sec_name,u.title,e.firstname,e.telphone
                     FROM  paperuser p
                     INNER JOIN paper u ON u.pid = p.pid
-                    INNER JOIN depart d   ON  p.dep_id=d.dep_id
-                    INNER JOIN section s ON s.sec_id=p.sec_id
+                    INNER JOIN depart d   ON  p.dep_id = d.dep_id
+                    INNER JOIN section s ON s.sec_id = p.sec_id
+                    INNER JOIN user e ON e.u_id = p.u_id
                     WHERE p.pid=$pid  ORDER BY confirm ASC
                     ";
                 //print $sql;
@@ -116,6 +120,9 @@ $row = dbFetchArray($result);
                     <td><?php print $numrow;?></td>
                     <td><?php print $row['dep_name'];?></td>
                     <td><?php print $row['sec_name'];?></td>
+                    <td><?php print $row['firstname'];?></td>
+                    <td><?php print $row['telphone'];?></td>
+                    <td><?php print $row['confirmdate'];?></td>  
                     <td>
                         <?php
                             if($row['confirm']==0){
@@ -125,8 +132,6 @@ $row = dbFetchArray($result);
                             }
                         ?>
                     </td>
-                    <td><?php print $row['confirmdate'];?></td>
-                    <td><?php print $row['phone'];?></td>
                 </tr>
            <?php $numrow++; } ?>
 		
