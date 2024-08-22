@@ -80,7 +80,7 @@ if(!isset($_SESSION['ses_u_id'])){
         <div class="panel-body">
            <div class="panel-body">
             <kbd>ออกเลขทะเบียนรับ</kbd>
-            <!-- <a class="btn btn-primary btn-block" href="flow-resive-province.php"><i class="far fa-arrow-alt-circle-right  pull-left"></i>หนังสือถึงจังหวัด</a> -->
+             <a class="btn btn-primary btn-block" href="flow-resive-province.php"><i class="far fa-arrow-alt-circle-right  pull-left"></i>หนังสือถึงจังหวัด</a> 
             <a class="btn btn-primary btn-block" href="FlowResiveDepart.php"><i class="far fa-arrow-alt-circle-right  pull-left"></i> ทะเบียนรับหน่วยงาน</a>
             <a class="btn btn-primary btn-block" href="flow-resive-group.php"><i class="far fa-arrow-alt-circle-right  pull-left"></i> ทะเบียนรับกลุ่มงาน</a>
             <kbd>ออกเลขทะเบียนส่ง</kbd>

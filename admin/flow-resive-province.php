@@ -338,7 +338,7 @@ $ystatus = $ystatus;
 								<td colspan="3">
 									<div class="form-group">
 										<div class="input-group col-xs-8 ">
-											<span class="input-group-addon">เลขที่เอกสาร</span>
+											<span class="input-group-addon">เลขที่หนังสือ</span>
 											<input class="form-control" type="text" name="book_no" id="book_no" required>
 										</div>
 									</div>
@@ -535,8 +535,8 @@ $ystatus = $ystatus;
 					<span>เลือกวันที่</span>
 					<input class="form-control" id="dateprint" name="dateprint" type="date">
 					<button type="submit" class="btn btn-lg btn-primary">
-                                    <span class="glyphicon glyphicon-floppy-saved"></span>&nbspตกลง
-                                </button>
+                        <span class="glyphicon glyphicon-floppy-saved"></span>&nbspตกลง
+                    </button>
 				
 
 
@@ -637,6 +637,7 @@ if ( isset( $_POST[ 'save' ] ) ) { //กดปุ่มบันทึกจา�
 	$type_id = 1; //ชนิดของหนังสือ  1  หนังสือรับ-ถึงจังหวัด
 	/*$dep_id=$_SESSION['dep_id'];     //รหัสหน่วยงาน   รับค่ามาจาก session จาก header แล้ว
 	$sec_id=$_SESSION['sec_id'];       //รหัสกลุ่มงาน  */
+	$dep_id = $_POST['dep_id'];
 	$uid = $_POST[ 'u_id' ]; //รหัสผู้ใช้
 	$obj_id = $_POST[ 'obj_id' ]; //รหัสวัตถุประสงค์
 	$pri_id = $_POST[ 'pri_id' ]; //รหัสชั้นความลับ
@@ -644,7 +645,7 @@ if ( isset( $_POST[ 'save' ] ) ) { //กดปุ่มบันทึกจา�
 	$typeDoc = $_POST[ 'typeDoc' ]; //รหัสประเภทหนังสือ   1ปกติ 2 เวียน
 	$speed_id = $_POST[ 'speed_id' ];
 
-	//(1) เลือกข้อมูลเพื่อรันเลขรับ  โดยมีเงื่อนไขให้ตรงกับหน่วยงานของผู้ใช้ ###########################
+	//(1) เลือกข้อมูลเพื่อรันเลขรับ  
 	$sql = "SELECT rec_id FROM book_master WHERE   yid=$yid  ORDER BY book_id DESC LIMIT 1";
 	//print $sql;
 	$result = dbQuery( $sql );
@@ -879,4 +880,4 @@ if ( isset( $_POST[ 'save' ] ) ) { //กดปุ่มบันทึกจา�
 	// make_autocom(" id ของ input ตัวที่ต้องการกำหนด "," id ของ input ตัวที่ต้องการรับค่า");
 	make_autocom( "show_province", "h_province_id" );
 </script>
-<?php mysqli_close($dbConn); ?>
+<?php //mysqli_close($dbConn); ?>
