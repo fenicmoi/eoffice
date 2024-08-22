@@ -205,7 +205,7 @@ if(isset($_POST['send'])){ //ตรวจสอบการกดปุ่ม se
               AND user.u_id <> $u_id             
 			  AND user.level_id = 4";
 
-       // echo "sql2".$sql;
+        //echo "sql2".$sql;
 
 		$result=  dbQuery($sql);
 
@@ -232,18 +232,22 @@ if(isset($_POST['send'])){ //ตรวจสอบการกดปุ่ม se
                }); 
            </script>";
         
-	}elseif($toSome==2){  //กรณีส่งเอกสารถึงบางหน่วย
-		if($cid && $link_file<>null){
-			$sql="INSERT INTO paper(title,detail,file,postdate,u_id,sec_id,insite,dep_id,book_no)
-                  VALUES('$title','$detail','$link_file','$date',$user_id,$sec_id,$insite,$dep_id,'$book_no')";
-		}else{
-			$sql="INSERT INTO paper(title,detail,file,postdate,u_id,sec_id,insite,dep_id,book_no)
-                  VALUES('$title','$detail','$part_link','$date',$user_id,$sec_id,$insite,$dep_id,'$book_no')";	
-        }
-		$result=dbQuery($sql);
-		$lastid=  dbInsertId();//คนหาเลขระเบียนล่าสุด
+	} else if($toSome==2){  //กรณีส่งเอกสารถึงบางหน่วย
+            if($cid && $link_file<>null){
+                $sql="INSERT INTO paper(title,detail,file,postdate,u_id,sec_id,insite,dep_id,book_no)
+                    VALUES('$title','$detail','$link_file','$date',$user_id,$sec_id,$insite,$dep_id,'$book_no')";
+            }else{
+                $sql="INSERT INTO paper(title,detail,file,postdate,u_id,sec_id,insite,dep_id,book_no)
+                    VALUES('$title','$detail','$part_link','$date',$user_id,$sec_id,$insite,$dep_id,'$book_no')";	
+            }
+            //echo $sql;
+
+            $result=dbQuery($sql);
+
+            $lastid=  dbInsertId();//คนหาเลขระเบียนล่าสุด
+
 		if(!$result){
-			echo 'SQL Error';
+			echo 'SQL Error';               //ถ้าไม่สำเร็จ
 		}else{
 			$sendto=$_POST['toSomeUser'];//่ส่วนการเก็บค่า id จาก textbox
 			$sendto=substr($sendto, 1);
@@ -254,9 +258,9 @@ if(isset($_POST['send'])){ //ตรวจสอบการกดปุ่ม se
                         INNER JOIN section s ON s.sec_id=u.sec_id
                         INNER JOIN depart d  ON d.dep_id=u.dep_id
                         WHERE s.sec_id=$c[$i]  
-                        AND u.keyman=1
+                        AND u.level_id = 4
                         "; //สารบรรณประจำกลุ่มงานเท่านั้น
-                        
+              //  echo $sql;       
                 
 				$result=dbQuery($sql);
 				while($row=dbFetchArray($result)){
@@ -264,9 +268,11 @@ if(isset($_POST['send'])){ //ตรวจสอบการกดปุ่ม se
 					$sec_id=$row['sec_id'];
 					$dep_id=$row['dep_id'];
 					$sql="INSERT INTO paperuser (pid,u_id,sec_id,dep_id) VALUES ($lastid,$u_id,$sec_id,$dep_id)";
+                    echo $sql;
 					dbQuery($sql);
 				}	//while
 			} //for
+
 			echo "<script>
                 swal({
                     title:'ส่งเอกสารเรียบร้อยแล้ว',
@@ -279,7 +285,7 @@ if(isset($_POST['send'])){ //ตรวจสอบการกดปุ่ม se
                         }
                     }); 
                 </script>";
-			
+		
 		}//if ตรวจสอบว่ามีการบันทึกข้อมูลในตารางหลักแหล้วหรือไม่
 	}//if ตรวจสอบว่าส่งถึงใคร
 }//if isset

@@ -13,9 +13,11 @@
                 $sql = "SELECT COUNT(puid) AS pcount FROM paperuser WHERE confirm = 0 AND dep_id = $dep_id AND sec_id = $sec_id";
                 $result = dbQuery($sql);
                 $row = dbFetchArray($result);
+
+                //echo $sql;
             ?>
             <?php
-            if ($level_id < 4) {
+            if ($level_id <= 4) {
                 ?>
             <div class="row" >
                 <div class="col-md-3">

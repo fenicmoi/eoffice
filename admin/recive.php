@@ -49,7 +49,7 @@ if(!$result){
       }else{
         echo "<script>
         swal({
-            title:'ยืนยันรับทราบเรียบร้อยแล้ว',
+            title:'ลงรับหนังสือเรียบร้อยแล้ว',
             type:'success',
             showConfirmButton:true
             },
@@ -81,7 +81,7 @@ if(!$result){
       }else{
         echo "<script>
         swal({
-            title:'ยืนยันรับทราบเรียบร้อยแล้ว !',
+            title:'ลงรับหนังสือเรียบร้อยแล้ว !',
             type:'success',
             showConfirmButton:true
             },

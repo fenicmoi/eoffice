@@ -29,15 +29,14 @@ if(!isset($_SESSION['ses_u_id'])){
       </div>
       <div id="collapse1" class="panel-collapse collapse">
           <div class="panel-body">
-            <!--
+           <?php echo "menu4";?>
               <a href="index_admin.php" class="btn btn-danger btn-block" href>
                   <i class="fa fa-home" aria-hidden="true"></i> หน้าหลัก</a>
-              <a href="section.php" class="btn btn-danger btn-block">
+              <!-- <a href="section.php" class="btn btn-danger btn-block">
                  <i class="fa fa-sitemap"></i> กลุ่มงาน/สาขาย่อย</a>
               <a href="user.php" class="btn btn-danger btn-block">
-                 <i class="fa fa-user"></i> จัดการผู้ใช้</a>
-            -->
-                 <label><h5>ไม่ได้รับสิทธิ์</h5></label>
+                 <i class="fa fa-user"></i> จัดการผู้ใช้</a> -->
+           
               <!-- 
               <div class="btn-group">
                 <a class="link-disabled btn dropdown-toggle btn-danger btn-block"  data-toggle="dropdown" href="#">
