@@ -47,12 +47,12 @@ if($cid){
             <br>
                 <form  id="fileout" name="fileout" method="post" enctype="multipart/form-data" >
                     <div class="form-group form-inline">
-                        <label for="title">ชื่อเอกสาร:</label>
-                        <input class="form-control" type="text" name="title" size="100%" placeholder="ใส่ชื่อเอกสาร" required="">
+                        <label for="title">เรื่อง:</label>
+                        <input class="form-control" type="text" name="title" size="100%" placeholder="ใส่ชื่อเรื่อง" required="">
                     </div>
                      <div class="form-group form-inline">
                         <label for="book_no">เลขหนังสือ:</label>
-                        <input class="form-control" type="text" name="book_no" size="100%" placeholder="ตัวอย่าง พง0017.2/ว1258 พิมพ์ติดกันหมด" required="">
+                        <input class="form-control" type="text" name="book_no" size="100%" placeholder="โปรดระบุ" required="">
                     </div>
                     <div class="form-group form-inline">
                         <label>ส่งถึง:</label>
@@ -186,13 +186,13 @@ if($cid){
                                 <input type="file" name="fileupload" required>
                             </div>
                     <?php } ?>
-                    <label>ไฟล์เอกสารที่ส่งได้:</label>
-                        <i class="fa fa-file-pdf-o "></i>
-                        <i class="fa fa-file-excel-o "></i>
-                        <i class="fa fa-file-word-o "></i>
-                        <i class="fa fa-file-zip-o "></i>
-                        <i class="fa fa-file-image-o "></i>
-                        <i class="fa fa-file-powerpoint-o "></i>
+                    <!-- <label>ไฟล์เอกสารที่ส่งได้:</label>
+                        <i class="fas fa-file-pdf-o "></i>
+                        <i class="fas fa-file-excel-o "></i>
+                        <i class="fas fa-file-word-o "></i>
+                        <i class="fas fa-file-zip-o "></i>
+                        <i class="fas fa-file-image-o "></i>
+                        <i class="fas fa-file-powerpoint-o "></i> -->
                     <div class="form-group form-inline">
                         <label for="detail">รายละเอียด</label>
                         <textarea  name="detail" rows="3" cols="60">-</textarea>
@@ -278,15 +278,13 @@ if(isset($_POST['sendOut'])){//ตรวจสอบปุ่ม sendOut
 		$lastid=dbInsertId();
 		//เลข ID จากตาราง paper ล่าสุด
 		//เลือก User ทั้งหมด  1 ต้องเป็นระดับ 3 (ประจำส่วนราชการ) 2.มีสิทธิ์รับ (keyman=1)  3.ไม่ส่งให้ตัวเอง 
-		$sql="SELECT  u.u_id,u.firstname,u.keyman,s.sec_id,d.dep_id,d.dep_name  
+		$sql="SELECT  u.u_id,u.firstname,s.sec_id,d.dep_id,d.dep_name  
                 FROM user u 
                 INNER JOIN section s ON s.sec_id=u.sec_id
                 INNER JOIN depart d  ON d.dep_id=u.dep_id
-                WHERE u.keyman=1 
-                AND d.dep_id<>$dep_id 
-                AND u.level_id <= 3
-                AND u.keyman=1";
-
+                WHERE u.Level_id = 3     
+                AND d.dep_id <> $dep_id ";    
+        //echo $sql;
         
 		$result=  dbQuery($sql);
 		while($rowUser=  dbFetchArray($result)){
@@ -335,15 +333,14 @@ if(isset($_POST['sendOut'])){//ตรวจสอบปุ่ม sendOut
 		$c=explode("|", $sendto);
 		
 		for ($i=0;$i<count($c);$i++){	   //1.ต้องเป็นประเภทที่กำหนด 2.ต้องไม่ใช่หน่วยส่ง 3.ผู้รับต้องระดับเป็นสารบรรณหน่วยงาน 4.มีสิทธิ์รับเอกสาร
-			$sql="SELECT  u.u_id,u.firstname,u.keyman,s.sec_id,d.dep_id,d.type_id
+			$sql="SELECT  u.u_id,u.firstname,s.sec_id,d.dep_id,d.type_id
                         FROM user u 
                         INNER JOIN section s ON s.sec_id=u.sec_id
                         INNER JOIN depart d  ON d.dep_id=u.dep_id
                         INNER JOIN office_type t    ON t.type_id=d.type_id
                         WHERE d.type_id=$c[$i] 
                         AND d.dep_id<>$dep_id 
-                        AND u.level_id <= 3
-                        AND u.keyman=1";
+                        AND u.level_id = 3";
 			
 			
 			// 			print $sql;
@@ -380,18 +377,14 @@ if(isset($_POST['sendOut'])){//ตรวจสอบปุ่ม sendOut
 	
 	
 	if($toSomeOne!=''){
-		//ส		่งเอกสารแบบเลือกเอง
+		//ส	่งเอกสารแบบเลือกเอง
 		if($cid<>''){
-			
 			$sql="INSERT INTO paper(title,detail,file,postdate,u_id,outsite,sec_id,dep_id,book_no)
                        VALUES('$title','$detail','$link_file','$dateSend',$user_id,$outsite,$sec_id,$dep_id,'$book_no')";
-			
 		}
 		else{
-			
 			$sql="INSERT INTO paper(title,detail,file,postdate,u_id,outsite,sec_id,dep_id,book_no)
                        VALUES('$title','$detail','$part_link','$dateSend',$user_id,$outsite,$sec_id,$dep_id,'$book_no')";
-			
 		}
 		
 		
@@ -399,43 +392,30 @@ if(isset($_POST['sendOut'])){//ตรวจสอบปุ่ม sendOut
 		
 		
 		$result=dbQuery($sql);
-		
-		
 		$lastid=  dbInsertId();
-		//ค		้นหาเลขระเบียนล่าสุด
+		//ค	้นหาเลขระเบียนล่าสุด
 		$sendto=$toSomeOneUser;
-		
 		$sendto=  substr($sendto,1);
-		
 		$c=  explode("|",$sendto);
 		
 		for ($i=0;$i<count($c);$i++){
-			
-			
 			$sql="SELECT  u.u_id,u.firstname,s.sec_id,d.dep_id,d.dep_name  
-                      FROM user u 
-                      INNER JOIN section s ON s.sec_id=u.sec_id
-                      INNER JOIN depart d  ON d.dep_id=u.dep_id
-                      WHERE u.dep_id=$c[$i] AND u.level_id =3";
-			//ก			รณีส่งภายนอก  ต้องส่งให้ สารบรรณประจำหน่วยงานเท่านั้น
-			// 			print $sql;
-			
-			// 			echo "<br>";
+                  FROM user u 
+                  INNER JOIN section s ON s.sec_id=u.sec_id
+                  INNER JOIN depart d  ON d.dep_id=u.dep_id
+                  WHERE u.dep_id=$c[$i] AND u.level_id = 3";
+			//กรณีส่งภายนอก  ต้องส่งให้ สารบรรณประจำหน่วยงานเท่านั้น
+			//print $sql;
+			//echo "<br>";
 			
 			$result=dbQuery($sql);
 			
 			while($row=dbFetchArray($result)){
-				
 				$u_id=$row['u_id'];
-				
 				$sec_id=$row['sec_id'];
-				
 				$dep_id=$row['dep_id'];
-				
 				$sql="INSERT INTO paperuser (pid,u_id,sec_id,dep_id) VALUES ($lastid,$u_id,$sec_id,$dep_id)";
-				
 				dbQuery($sql);
-				
 			}
 			
 		}
