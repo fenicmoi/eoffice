@@ -193,7 +193,7 @@ $ystatus = $ystatus;
 								$sql .= " WHERE m.type_id=1 AND m.dep_id=$dep_id AND m.u_id=$u_id ORDER BY m.book_id DESC  ";
 								break;
 						}
-						
+						//echo $sql;
 						$result = page_query( $dbConn, $sql, 10 );
 					}
 					
@@ -641,16 +641,16 @@ if ( isset( $_POST[ 'save' ] ) ) { //กดปุ่มบันทึกจา�
 	$obj_id = $_POST[ 'obj_id' ]; //รหัสวัตถุประสงค์
 	$pri_id = $_POST[ 'pri_id' ]; //รหัสชั้นความลับ
 	$yid = $_POST[ 'yid' ]; //รหัสปีปัจจุบัน
-	$typeDoc = $_POST[ 'typeDoc' ]; //รหัสประเภทหนังสือ   1ปกติ 2 เวียน
+	$typeDoc = $_POST[ 'typeDoc' ]; //รหัสประเภทหนังสือ   1 ปกติ 2 เวียน
 	$speed_id = $_POST[ 'speed_id' ];
 
-	//(1) เลือกข้อมูลเพื่อรันเลขรับ  โดยมีเงื่อนไขให้ตรงกับหน่วยงานของผู้ใช้ ###########################
-	$sql = "SELECT rec_id FROM book_master WHERE   yid=$yid  ORDER BY book_id DESC LIMIT 1";
+	//(1) เลือกข้อมูลเพื่อรันเลขรับ  โดยมีเงื่อนไขต้องเป็นปีเดียวกัน
+	$sql = "SELECT rec_id FROM book_master WHERE   yid = $yid  ORDER BY book_id DESC LIMIT 1";
 	//print $sql;
 	$result = dbQuery( $sql );
 	$rowRun = dbFetchArray( $result );
 	$rec_id = $rowRun[ 'rec_id' ];
-	if ( $rec_id == 0 ) {
+	if ( $rec_id == 0 ) {    
 		$rec_id = 1;
 	} else {
 		$rec_id++;
