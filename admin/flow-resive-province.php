@@ -89,14 +89,9 @@ $ystatus = $ystatus;
 											<button class="btn btn-primary" type="submit" name="btnSearch" id="btnSearch">
                                                     <i class="fas fa-search "></i>
                                                 </button>
-										
-
-
 										</div>
 									</div>
-
 								</div>
-
 							</form>
 						</td>
 					</tr>
@@ -193,7 +188,7 @@ $ystatus = $ystatus;
 								$sql .= " WHERE m.type_id=1 AND m.dep_id=$dep_id AND m.u_id=$u_id ORDER BY m.book_id DESC  ";
 								break;
 						}
-						//echo $sql;
+						
 						$result = page_query( $dbConn, $sql, 10 );
 					}
 					
@@ -641,16 +636,16 @@ if ( isset( $_POST[ 'save' ] ) ) { //กดปุ่มบันทึกจา�
 	$obj_id = $_POST[ 'obj_id' ]; //รหัสวัตถุประสงค์
 	$pri_id = $_POST[ 'pri_id' ]; //รหัสชั้นความลับ
 	$yid = $_POST[ 'yid' ]; //รหัสปีปัจจุบัน
-	$typeDoc = $_POST[ 'typeDoc' ]; //รหัสประเภทหนังสือ   1 ปกติ 2 เวียน
+	$typeDoc = $_POST[ 'typeDoc' ]; //รหัสประเภทหนังสือ   1ปกติ 2 เวียน
 	$speed_id = $_POST[ 'speed_id' ];
 
-	//(1) เลือกข้อมูลเพื่อรันเลขรับ  โดยมีเงื่อนไขต้องเป็นปีเดียวกัน
-	$sql = "SELECT rec_id FROM book_master WHERE   yid = $yid  ORDER BY book_id DESC LIMIT 1";
+	//(1) เลือกข้อมูลเพื่อรันเลขรับ  โดยมีเงื่อนไขให้ตรงกับหน่วยงานของผู้ใช้ ###########################
+	$sql = "SELECT rec_id FROM book_master WHERE   yid=$yid  ORDER BY book_id DESC LIMIT 1";
 	//print $sql;
 	$result = dbQuery( $sql );
 	$rowRun = dbFetchArray( $result );
 	$rec_id = $rowRun[ 'rec_id' ];
-	if ( $rec_id == 0 ) {    
+	if ( $rec_id == 0 ) {
 		$rec_id = 1;
 	} else {
 		$rec_id++;
@@ -710,12 +705,12 @@ if ( isset( $_POST[ 'save' ] ) ) { //กดปุ่มบันทึกจา�
 	dbQuery( 'BEGIN' );
 
 	$sql = "INSERT INTO book_master (rec_id,type_id,dep_id,sec_id,u_id,obj_id,pri_id,yid,typeDoc,speed_id) 
-                      VALUES ($rec_id,$type_id,$dep_id,$sec_id,$u_id,$obj_id,$pri_id,$yid,$typeDoc,$speed_id)";
+            VALUES ($rec_id,$type_id,$dep_id,$sec_id,$u_id,$obj_id,$pri_id,$yid,$typeDoc,$speed_id)";
 	$result1 = dbQuery( $sql );
 
 	$date_line = date( 'Y-m-d H:i:s' );
 	$sql = "INSERT INTO book_detail (book_id,book_no,title,owner,sendfrom,sendto,reference,attachment,date_book,date_in,practice,follow,publice_book,status,date_line,file_upload)
-                               VALUES($book_id,'$book_no','$title','$owner','$sendfrom','$sendto','$refer','$attachment','$date_book','$date_in','$practice','$follow','$publice_book',0,'$date_line','$part_copy')";
+            VALUES($book_id,'$book_no','$title','$owner','$sendfrom','$sendto','$refer','$attachment','$date_book','$date_in','$practice','$follow','$publice_book',0,'$date_line','$part_copy')";
 	// echo $sql;
 	$result2 = dbQuery( $sql );
 
@@ -838,45 +833,5 @@ if ( isset( $_POST[ 'save' ] ) ) { //กดปุ่มบันทึกจา�
 		};
 		$( '#divDataview' ).load( 'show_resive_province_detail.php', sdata );
 	}
-</script>
-
-
-
-<script type="text/javascript">
-	function make_autocom( autoObj, showObj ) {
-		var mkAutoObj = autoObj;
-		var mkSerValObj = showObj;
-		new Autocomplete( mkAutoObj, function () {
-			this.setValue = function ( id ) {
-				document.getElementById( mkSerValObj ).value = id;
-				// ถ้ามี id ที่ได้จากการเลือกใน autocomplete 
-				if ( id != "" ) {
-					// ส่งค่าไปคิวรี่เพื่อเรียกข้อมูลเพิ่มเติมที่ต้องการ โดยใช้ ajax 
-					$.post( "g_fulldata.php", {
-						id: id
-					}, function ( data ) {
-						if ( data != null && data.length > 0 ) { // ถ้ามีข้อมูล
-							// นำข้อมูลไปแสดงใน textbox ที่่เตรียมไว้
-							$( "#province_id" ).val( data[ 0 ].id );
-							$( "#province_name_th" ).val( data[ 0 ].name_th );
-						}
-					} );
-				} else {
-					// ล้างค่ากรณีไม่มีการส่งค่า id ไปหรือไม่มีการเลือกจาก autocomplete
-					$( "#province_id" ).val( "" );
-					$( "#province_name_th" ).val( "" );
-				}
-			}
-			if ( this.isModified )
-				this.setValue( "" );
-			if ( this.value.length < 1 && this.isNotClick )
-				return;
-			return "gdata.php?q=" + encodeURIComponent( this.value );
-		} );
-	}
-
-	// การใช้งาน
-	// make_autocom(" id ของ input ตัวที่ต้องการกำหนด "," id ของ input ตัวที่ต้องการรับค่า");
-	make_autocom( "show_province", "h_province_id" );
 </script>
 <?php //mysqli_close($dbConn); ?>

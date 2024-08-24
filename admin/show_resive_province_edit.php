@@ -102,6 +102,7 @@ $file_upload = $row['file_upload'];
                             $sql="SELECT * FROM object ORDER BY obj_id";  //เลือกชั้นความเร็ว
                             $r = dbQuery($sql);
                             $pri_cure=$row['obj_id'];
+                            echo $row['obj_id'];
                             while($pri= dbFetchArray($r)){
                                 $pri_sel=$pri['obj_id']; ?>
                                 <option <?php if($pri_cure==$pri_sel){ echo "selected";}?> value="<?php print $pri['obj_id'];?>"><?php print $pri['obj_name'];?></option>

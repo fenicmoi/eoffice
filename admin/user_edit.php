@@ -116,7 +116,7 @@ $u_id = $_GET['edit'];
                           <div class="form-group form-inline">
                               <label for="amphur">ชื่อส่วนราชการ : </label>
                                 <span id="amphur">
-                                    <select id="amphur" name="amphur" class="form-control" required>
+                                    <select id="amphur" name="amphur"  class="selectpicker" data-live-search="true"  required>
                                         <?php
                                             while ($row = dbFetchArray($result)) {
                                                 $dep = $row['dep_id']; ?>
@@ -137,7 +137,7 @@ $u_id = $_GET['edit'];
                           <div class="form-group form-inline">
                               <label for="district">หน่วยงานย่อย : </label>
                                 <span id="district">
-                                    <select name="district" class="form-control" required>
+                                    <select name="district" class="selectpicker" data-live-search="true" required>
                                         <?php 
                                           while ($row = dbFetchArray($result)) {
                                               $dep = $row['dep_id'];
@@ -229,7 +229,7 @@ $u_id = $_GET['edit'];
                 $email = $_POST['email'];
                 $telphone = $_POST['telphone'];
                 $keyman = $_POST['keyman'];
-                echo 'sec1';
+               // echo 'sec1';
             } else {
                 $sec_id = $_POST['district'];
                 $level_id = $_POST['level'];
