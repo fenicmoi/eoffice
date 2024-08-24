@@ -46,12 +46,12 @@ $ystatus = $ystatus;
 <div class="col-md-10">
 	<div class="panel panel-primary">
 		<div class="panel-heading">
-			<i class="fas fa-university fa-2x" aria-hidden="true"></i> <strong>หนังสือรับ [ถึงจังหวัด]</strong>
+			<i class="fas fa-university fa-2x" aria-hidden="true"></i> <strong>ทะเบียนหนังสือรับ [ถึงจังหวัด]</strong>
 					:::สำหรับหนังสือราชการที่ส่งถึง ผวจ
 			<div class="btn-group pull-right">
-					<a href="" class="btn btn-default" data-toggle="modal" data-target="#modalAdd"><i class="fa fa-plus "></i> ลงรับ</a>
+					<a href="" class="btn btn-warning" data-toggle="modal" data-target="#modalAdd"><i class="fa fa-plus "></i> ลงทะเบียนรับ</a>
 				<div class="btn-group">
-					<button class="btn btn-default  dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-print"></i> รายงาน      
+					<button class="btn btn-warning  dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-print"></i> รายงาน      
                             <span class="caret"></span></button>
 					<ul class="dropdown-menu">
 						<li><a href="#" data-toggle="modal" data-target="#myReport"><i class="fas fa-calendar"></i> ประจำวัน</a>
@@ -60,7 +60,7 @@ $ystatus = $ystatus;
 						</li>
 					</ul>
 				</div>
-				<button id="hideSearch" class="btn btn-default"><i class="fas fa-search"> ค้นหา</i></button>
+				<button id="hideSearch" class="btn btn-warning"><i class="fas fa-search"> ค้นหา</i></button>
 			</div>
 		</div>
 		<div class="panel-body">
@@ -173,21 +173,23 @@ $ystatus = $ystatus;
 					} else { //กรณีโหลดเพจ หรือไม่มีการกดปุ่มใดๆ
 						switch ( $level_id ) {
 							case 1: //admin
-								$sql .= " WHERE m.type_id=1 ORDER BY m.book_id DESC ";
+								$sql .= " WHERE m.type_id=1 ORDER BY m.book_id DESC ";       //type_id = หนังสือถึงจังหวัดเท่านั้น
 								break;
-							case 2: //สารบรรณจังหวัด    ดูได้ทั้งจังหวัด
-								$sql .= " WHERE m.type_id=1 ORDER BY m.book_id DESC ";
+							case 2: //สารบรรณจังหวัดดูได้ทั้งจังหวัด
+								$sql .= " WHERE m.type_id=1 ORDER BY m.book_id DESC ";       //type_id = หนังสือถึงจังหวัดเท่านั้น
 								break;
 							case 3: //สารบรรณหน่วยงาน  ดูได้ทั้งหน่วยงาน
-								$sql .= " WHERE m.type_id=1 AND m.dep_id=$dep_id ORDER BY m.book_id DESC  ";
+								$sql .= " WHERE m.type_id=1 AND m.dep_id=$dep_id ORDER BY m.book_id DESC  ";     //type_id = หนังสือถึงจังหวัดเท่านั้น และรหัสหน่วยงานตนเองเท่านั้น
 								break;
 							case 4: //สารบรรณกลุ่มงาน  ดูได้ทั้งหน่วย  แต่แก้ไม่ได้
-								$sql .= " WHERE m.type_id=1 AND m.dep_id=$dep_id ORDER BY m.book_id DESC  ";
+								$sql .= " WHERE m.type_id=1 AND m.dep_id=$dep_id  ORDER BY m.book_id DESC  ";     //type_id = หนังสือถึงจังหวัดเท่านั้น และรหัสหน่วยงานตนเองเท่านั้น
 								break;
 							case 5: //สารบรรณกลุ่มงาน  ดูได้เฉพาะของตนเอง
 								$sql .= " WHERE m.type_id=1 AND m.dep_id=$dep_id AND m.u_id=$u_id ORDER BY m.book_id DESC  ";
 								break;
 						}
+
+						echo $sql;
 						
 						$result = page_query( $dbConn, $sql, 10 );
 					}
