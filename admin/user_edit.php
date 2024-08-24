@@ -185,7 +185,7 @@ $u_id = $_GET['edit'];
                               </div>
                           </div>
                           <div class="form-group form-inline">
-                              <label for="telphone">เบอร์โทรศัพท์เเคลื่อนที่</label>
+                              <label for="telphone">เบอร์โทร/มือถือ</label>
                               <div class="input-group">
                                   <input class="form-control" type="text" name="telphone" id="telphone" value="<?php echo $getROW['telphone']; ?>">
                               </div>
