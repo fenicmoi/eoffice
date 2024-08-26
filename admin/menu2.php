@@ -11,7 +11,7 @@ if(!isset($_SESSION['ses_u_id'])){
 	$num_row = dbNumRows($result);
 }
 ?>
-<div class="panel panel-primary">
+<div class="panel panel-success">
       <div class="panel-heading">
         <h4 class="panel-title">
               <a href="index_admin.php"><i class="fas fa-list" aria-hidden="true"></i> เมนูหลัก</a>

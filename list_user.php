@@ -75,7 +75,7 @@ include_once 'admin/function.php';
                         //         ";
 
                         $sql = "SELECT * FROM register_staf
-                                WHERE depart LIK '%$txt_search%'
+                                WHERE depart LIKE '%$txt_search%'
                                 LIMIT $start, $perpage";
                          $result = dbQuery($sql);
                     }

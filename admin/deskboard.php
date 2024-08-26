@@ -3,7 +3,6 @@
     <div class="col-md-2">
         <?php  //ตรวจสอบสิทธิ์การใช้งานเมนู
             $menu = checkMenu($level_id);
-            echo $menu;
             include $menu;
         ?>
     </div>

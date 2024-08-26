@@ -3,7 +3,7 @@ if(!isset($_SESSION['ses_u_id'])){
 	header("location:../index.php");
 }
 ?>
-<div class="panel panel-primary">
+<div class="panel panel-danger">
       <div class="panel-heading">
         <h4 class="panel-title">
               <i class="fas fa-list" aria-hidden="true"></i> เมนูหลัก
