@@ -10,11 +10,11 @@
             <!-- Wrapper for slides -->
             <div class="carousel-inner">
                 <div class="item active">
-                <img height="400" src="images/office2.jpg" alt="Los Angeles">
+                <img height="400" src="images/newbanner2.png" alt="Los Angeles">
                 </div>
-                <div class="item">
+                <!-- <div class="item">
                 <img src="images/office3.jpg" alt="Chicago">
-                </div>
+                </div> -->
             </div>
             <!-- Left and right controls -->
             <a class="left carousel-control" href="#myCarousel" data-slide="prev">
@@ -53,7 +53,7 @@
    </div>
    <div class="col-md-2">
        <center>
-       <a  data-toggle="modal" data-target="#modalRegister"><i class="fas fa-user fa-10x"></i>
+       <a   data-toggle="modal" data-target="#modalRegister_disabled"><i class="fas fa-user fa-10x"></i>
             <h4>ลงทะเบียนผู้ใช้งาน</h4>
        </a>
        </center>

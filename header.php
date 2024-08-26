@@ -98,7 +98,8 @@
                 </ul>
               </li>
               <li><a class="btn-link"  href="flow-command-front.php"><i class="fas fa-retweet"></i> คำสั่งจังหวัด</a></li>
-              <!-- <li><a class="btn-link"   href="flow-command-front.php"><i class="fas fa-gavel"></i> ยุทธศาสตร์จังหวัด </a></li> -->
+              <li><a class="btn disabled"   href="flow-command-front.php"><i class="fas fa-list"></i> วาระงานผู้บริหาร </a></li> 
+              <li><a class="btn disabled"   href="flow-command-front.php"><i class="fas fa-calendar"></i> การใช้ห้องประชุมจังหวัด </a></li> 
               <li class="dropdown">
                 <a class="btn-link"  class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fas fa-users"></i> ลงทะเบียน
                 <span class="caret"></span></a>
@@ -201,7 +202,7 @@
                                         <div class="form-group">
                                           <div class="input-group">
                                               <span class="input-group-addon">เลขประจำส่วนราชการ</span>
-                                              <input class="form-control" type="text" name="book_no" placeholder="ตัวอย่าง พง 0017.1" required >
+                                              <input class="form-control" type="text" name="book_no" placeholder="ตัวอย่าง พท 0017" required >
                                           </div>
                                         </div>
                                         <div class="form-group">
@@ -213,13 +214,13 @@
                                         <div class="form-group">
                                           <div class="input-group">
                                               <span class="input-group-addon">เบอร์โทรศัพท์</span>
-                                              <input class="form-control" type="text" name="o_tel" placeholder="ตัวอย่าง 0-7648-1421" required >
+                                              <input class="form-control" type="text" name="o_tel" placeholder="ตัวอย่าง 074-613409" required >
                                           </div>
                                         </div>
                                         <div class="form-group">
                                           <div class="input-group">
                                               <span class="input-group-addon">เบอร์โทรสาร</span>
-                                              <input class="form-control" type="text" name="o_fax" placeholder="ตัวอย่าง 0-7648-1421" required >
+                                              <input class="form-control" type="text" name="o_fax" placeholder="ตัวอย่าง 074-613409" required >
                                           </div>
                                         </div>
                                         <div class="form-group">
@@ -344,7 +345,7 @@ if(isset($_POST['add'])){       // check button
 		echo "<script>
                 swal({
                     title:'ลงทะเบียนเรียบร้อยแล้ว ;-)',
-                    text: 'จังหวัดพัทลุงจะประสานจัดฝึกอบรมการใช้งานอีกครั้ง',
+                    text: 'จังหวัดพัทลุงจะชี้แจงแนวทางการใช้งานอีกครั้ง',
                     type:'success',
                     showConfirmButton:true
                     },

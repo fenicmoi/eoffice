@@ -163,7 +163,7 @@ $ystatus = $ystatus;
                                                     showConfirmButton:true
                                                     },
                                                     function(isConfirm){
-                                                        if(isConfirm){
+                                                        if(isConfirm){p
                                                             window.location.href='flow-resive-province.php';
                                                         }
                                                     }); 

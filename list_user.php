@@ -68,11 +68,16 @@ include_once 'admin/function.php';
                         // WHERE u.level_id=3  and d.dep_name LIKE '%$txt_search%'
                         // LIMIT $start , $perpage  ";
 
-                        $sql = "SELECT depart, fname, lname, date_add 
-                                FROM register_staf 
-                                WHERE depart LIKE '%$txt_search%'
-                                LIMIT $start, $perpage 
-                                ";
+                        // $sql = "SELECT depart, fname, lname, date_add 
+                        //         FROM register_staf 
+                        //         WHERE depart LIKE '%$txt_search%'
+                        //         LIMIT $start, $perpage 
+                        //         ";
+
+                        $sql = "SELECT * FROM register_staf
+                                WHERE depart LIK '%$txt_search%'
+                                LIMIT $start, $perpage";
+                         $result = dbQuery($sql);
                     }
                                      
                 }else{
@@ -81,12 +86,17 @@ include_once 'admin/function.php';
                     //  INNER JOIN user as u ON d.dep_id = u.dep_id 
                     //  INNER JOIN office_type as t ON t.type_id=d.type_id WHERE u.level_id=3 ORDER BY d.dep_name
                     //  limit $start , $perpage  ";    
-                        $sql = "SELECT depart, fname, lname, date_add
+                        // $sql = "SELECT depart, fname, lname, date_add
+                        //         FROM register_staf
+                        //         LIMIT $start, $perpage";
+
+                        $sql = "SELECT *
                                 FROM register_staf
                                 LIMIT $start, $perpage";
+                         $result = dbQuery($sql);
                 }
                 //print $sql;
-                $result = dbQuery($sql);
+                // print $sql; 
                        
                 ?>        
                 <tbody>
@@ -105,12 +115,12 @@ include_once 'admin/function.php';
                             //         FROM depart as d 
                             //         INNER JOIN user as u ON d.dep_id = u.dep_id 
                             //         INNER JOIN office_type as t ON t.type_id=d.type_id WHERE u.level_id=3 ORDER BY d.dep_name";
-                            $sql = "SELECT depart, fname, lname, date_add
-                            FROM register_staf
-                            LIMIT $start, $perpage";
-                                    $result=dbQuery($sql);
-                                    $total_record = dbNumRows($result);
-                                    $total_page = ceil($total_record / $perpage);
+                            $sql = "SELECT *
+                                    FROM  register_staf
+                                    LIMIT $start, $perpage";
+                            $result=dbQuery($sql);
+                            $total_record = dbNumRows($result);
+                            $total_page = ceil($total_record / $perpage);
 
                                         // print $
                                     ?>
@@ -140,5 +150,4 @@ include_once 'admin/function.php';
             </table>
     </div>
 </div>
-
 <?php include "footer.php";
