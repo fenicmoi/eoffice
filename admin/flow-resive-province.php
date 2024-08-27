@@ -109,14 +109,14 @@ $ystatus = $ystatus;
 					<?php
 						
 					####ส่วนการแสดงผล
-				  $count = 1;
-				 $sql = "SELECT m.book_id,m.rec_id,m.dep_id,m.u_id,d.book_no,d.title,d.sendfrom,d.sendto,d.date_book,d.date_in,d.date_line,
+				$count = 1;
+				 $sql = "SELECT m.book_id ,m.rec_id ,m.dep_id ,m.u_id ,d.book_no,d.title ,d.sendfrom ,d.sendto ,d.date_book,d.date_in,d.date_line,
 					            d.practice,d.status,s.sec_code,y.yname
                   FROM book_master m
                   INNER JOIN book_detail d ON d.book_id = m.book_id
                   INNER JOIN section s ON s.sec_id = m.sec_id 
                   INNER JOIN sys_year y ON y.yid = m.yid ";
-                 //echo $sql;
+                   echo $sql;
 					
 					//ตรวจสอบการกดปุ่มค้นหา
 					if ( isset( $_POST[ 'btnSearch' ] ) ) { //ถ้ามีการกดปุ่มค้นหา

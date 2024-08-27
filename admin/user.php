@@ -16,7 +16,7 @@ $u_id = $_SESSION['ses_u_id'];
                 <div class="panel-heading"><i class="fa fa-user-secret fa-2x" aria-hidden="true"></i>  <strong>จัดการผู้ใช้งาน</strong>
                     <a href="#" class="btn btn-default pull-right" data-toggle="modal" data-target="#modalAdd">
                              <i class="fa fa-plus" aria-hidden="true"></i>เพิ่มผู้ใช้งาน
-                            </a>
+                    </a>
                 </div>
                 
              
