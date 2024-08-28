@@ -97,8 +97,10 @@ $ystatus = $ystatus;
 					</tr>
 					<tr>
 						<th>เลขรับจังหวัด</th>
+						<th>ความเร่งด่วน</th>
 						<th>เลขหนังสือ</th>
 						<th>เรื่อง</th>
+						<th>Doc</th>
 						<th>ผู้ส่ง</th>
 						<th>ลงวันที่</th>
 						<th>แก้ไข</th>
@@ -110,13 +112,15 @@ $ystatus = $ystatus;
 						
 					####ส่วนการแสดงผล
 				 $count = 1;
-				 $sql = "SELECT m.book_id ,m.rec_id ,m.dep_id ,m.u_id ,d.book_no,d.title ,d.sendfrom ,d.sendto ,d.date_book,d.date_in,d.date_line,
-					            d.practice,d.status,s.sec_code,y.yname
+				 $sql = "SELECT m.book_id ,m.rec_id ,m.dep_id ,m.u_id, m.speed_id, sp.speed_name, d.book_no,d.title ,d.sendfrom ,d.sendto ,d.date_book,d.date_in,d.date_line,
+					            d.practice, d.file_location, d.status,s.sec_code,y.yname
                   FROM book_master m
-                  INNER JOIN book_detail d ON d.book_id = m.book_id
-                  INNER JOIN section s ON s.sec_id = m.sec_id 
-                  INNER JOIN sys_year y ON y.yid = m.yid ";
-                  // echo $sql;
+						INNER JOIN book_detail d ON d.book_id = m.book_id
+						INNER JOIN section s ON s.sec_id = m.sec_id 
+						INNER JOIN sys_year y ON y.yid = m.yid 
+						INNER JOIN speed sp ON sp.speed_id = m.speed_id
+				   ORDER BY m.book_id";
+                   echo $sql;
 					
 					//ตรวจสอบการกดปุ่มค้นหา
 					if ( isset( $_POST[ 'btnSearch' ] ) ) { //ถ้ามีการกดปุ่มค้นหา
@@ -192,15 +196,24 @@ $ystatus = $ystatus;
 						$result = page_query( $dbConn, $sql, 10 );
 					}
 					
-					while ( $row = dbFetchArray( $result ) ) {
-						?>
-					<?php $rec_id=$row['rec_id']; ?>
-					<!-- กำหนดตัวแปรเพื่อส่งไปกับลิงค์ -->
-					<?php $book_id=$row['book_id']; ?>
-					<!-- กำหนดตัวแปรเพื่อส่งไปกับลิงค์ -->
+					while ( $row = dbFetchArray( $result ) ) {?>
+					<?php $rec_id=$row['rec_id']; ?><!-- กำหนดตัวแปรเพื่อส่งไปกับลิงค์ -->
+					<?php $book_id=$row['book_id']; ?><!-- กำหนดตัวแปรเพื่อส่งไปกับลิงค์ -->
+					<?php 
+						if (isset($row['file_location'])) {
+							$showFile = "<a href='$row[file_location]' target='_balnk'>Download</a>";
+						}else{
+							$showFile = "ไม่มีไฟล์";
+						}
+					?>      
+					
+
 					<tr>
 						<td>
 							<?php echo $row['rec_id']; ?>/<?php echo $row['yname'];?>
+						</td>
+						<td>
+							<?php echo $row['speed_name'];?>
 						</td>
 						<td>
 							<?php echo $row['book_no']; ?>
@@ -210,6 +223,9 @@ $ystatus = $ystatus;
 								<?php echo $row['title'];?>
 							</a>
 
+						</td>
+						<td>
+							<?php echo $showFile;?>
 						</td>
 						<td>
 							<?php echo $row['sendfrom']; ?>
@@ -639,8 +655,8 @@ if ( isset( $_POST[ 'save' ] ) ) { //กดปุ่มบันทึกจา�
 	$typeDoc = $_POST[ 'typeDoc' ]; //รหัสประเภทหนังสือ   1ปกติ 2 เวียน
 	$speed_id = $_POST[ 'speed_id' ];
 
-	//(1) เลือกข้อมูลเพื่อรันเลขรับ  โดยมีเงื่อนไขให้ตรงกับหน่วยงานของผู้ใช้ ###########################
-	$sql = "SELECT rec_id FROM book_master WHERE   yid=$yid  ORDER BY book_id DESC LIMIT 1";
+	//(1) เลือกข้อมูลเพื่อรันเลขรับ  โดยต้องเป็นปีปัจจุบัน
+	$sql = "SELECT rec_id FROM book_master WHERE   yid = $yid  ORDER BY book_id DESC LIMIT 1";
 	//print $sql;
 	$result = dbQuery( $sql );
 	$rowRun = dbFetchArray( $result );
