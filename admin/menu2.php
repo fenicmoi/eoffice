@@ -15,6 +15,7 @@ if(!isset($_SESSION['ses_u_id'])){
       <div class="panel-heading">
         <h4 class="panel-title">
               <a href="index_admin.php"><i class="fas fa-list" aria-hidden="true"></i> เมนูหลัก</a>
+              <br<br>
         </h4>
       </div>
 </div>
@@ -73,14 +74,14 @@ if(!isset($_SESSION['ses_u_id'])){
     <div class="panel panel-info">
       <div class="panel-heading">
         <h4 class="panel-title">
-            <span class="fa fa-briefcase"></span><a data-toggle="collapse" data-parent="#accordion" href="#collapse3"> งานสารบรรณ</a>
+            <span class="fa fa-briefcase"></span><a data-toggle="collapse" data-parent="#accordion" href="#collapse3"> ระบบงานสารบรรณ</a>
         </h4>
       </div>
       <div id="collapse3" class="panel-collapse collapse">
         <div class="panel-body">
            <div class="panel-body">
             <kbd>ออกเลขทะเบียนรับ</kbd>
-             <a class="btn btn-primary btn-block" href="flow-resive-province.php"><i class="far fa-arrow-alt-circle-right  pull-left"></i>หนังสือถึงจังหวัด</a> 
+             <a class="btn btn-primary btn-block" href="flow-resive-province.php"><i class="far fa-arrow-alt-circle-right  pull-left"></i>ทะเบียนรับจังหวัด</a> 
             <a class="btn btn-primary btn-block" href="FlowResiveDepart.php"><i class="far fa-arrow-alt-circle-right  pull-left"></i> ทะเบียนรับหน่วยงาน</a>
             <a class="btn btn-primary btn-block" href="flow-resive-group.php"><i class="far fa-arrow-alt-circle-right  pull-left"></i> ทะเบียนรับกลุ่มงาน</a>
             <kbd>ออกเลขทะเบียนส่ง</kbd>

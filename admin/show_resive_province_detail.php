@@ -40,7 +40,14 @@ $row=dbFetchArray($result);
 $strDate=$row['date_in'];
 $dateThai =  DateThai($strDate);
 $book_detail_id = $row['book_detail_id'];
-$file_upload = $row['file_location'];
+
+if (isset($row['file_location'])) {
+    $showFile = "<a href='$row[file_location]' target='_balnk'>Download เอกสาร</a>";
+}else{
+    $showFile = "ไม่มีไฟล์แนบ";
+}
+
+//$file_upload = $row['file_location'];
 
 ?>
                     <!-- <div class="well"> -->
@@ -94,7 +101,7 @@ $file_upload = $row['file_location'];
                                 </tr>
                                 <tr>
                                     <td><label>file download </label></td>
-                                    <td><a href="<?php echo $file_upload ;?>" target="_balnk">Download เอกสาร</a></td>
+                                    <td><?php echo $showFile;?></td>
                                 <tr>
                                 <?php
                                     $practice=$row['practice'];

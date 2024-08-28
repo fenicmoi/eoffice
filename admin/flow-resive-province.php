@@ -109,7 +109,7 @@ $ystatus = $ystatus;
 					<?php
 						
 					####ส่วนการแสดงผล
-				$count = 1;
+				 $count = 1;
 				 $sql = "SELECT m.book_id ,m.rec_id ,m.dep_id ,m.u_id ,d.book_no,d.title ,d.sendfrom ,d.sendto ,d.date_book,d.date_in,d.date_line,
 					            d.practice,d.status,s.sec_code,y.yname
                   FROM book_master m
@@ -156,24 +156,24 @@ $ystatus = $ystatus;
 						$numrow = dbNumRows( $result );
 						if ( $numrow == 0 ) {
 							echo "<script>
-                       swal({
-                                                    title:'ไม่พบข้อมูล!',
-                                                    type:'warning',
-                                                    text:'กรุณาตรวจสอบคำค้น...หรือเลือกเงื่อนไขการค้นหาใหม่อีกครั้งนะครับ',
-                                                    showConfirmButton:true
-                                                    },
-                                                    function(isConfirm){
-                                                        if(isConfirm){p
-                                                            window.location.href='flow-resive-province.php';
+                       				swal({
+                                            title:'ไม่พบข้อมูล!',
+                                            type:'warning',
+                                            text:'กรุณาตรวจสอบคำค้น...หรือเลือกเงื่อนไขการค้นหาใหม่อีกครั้งนะครับ',
+                                            showConfirmButton:true
+                                        },
+                                            function(isConfirm){
+                                                if(isConfirm){p
+                                                    window.location.href='flow-resive-province.php';
                                                         }
-                                                    }); 
-                                                </script>";
+                                                }); 
+                                        </script>";
 						}
 
 					} else { //กรณีโหลดเพจ หรือไม่มีการกดปุ่มใดๆ
 						switch ( $level_id ) {
 							case 1: //admin
-								$sql .= " WHERE m.type_id=1 ORDER BY m.book_id DESC ";       //type_id = หนังสือถึงจังหวัดเท่านั้น
+								$sql .= " WHERE m.type_id=1 ORDER BY m.book_id DESC ";       //type_id = ดูหนังสือได้ทั้งหมด
 								break;
 							case 2: //สารบรรณจังหวัดดูได้ทั้งจังหวัด
 								$sql .= " WHERE m.type_id=1 ORDER BY m.book_id DESC ";       //type_id = หนังสือถึงจังหวัดเท่านั้น
