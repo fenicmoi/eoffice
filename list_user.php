@@ -6,7 +6,7 @@ include_once 'admin/function.php';
 
 $sql = "SELECT *
         FROM  register_staf
-        LIMIT 20";
+        ORDER BY reg_id ASC ";
 
 $result = dbQuery($sql);
 

@@ -96,10 +96,10 @@ $ystatus = $ystatus;
 						</td>
 					</tr>
 					<tr>
-						<th>เลขรับ</th>
-						<th>เลขส่ง</th>
+						<th>เลขรับจังหวัด</th>
+						<th>เลขหนังสือ</th>
 						<th>เรื่อง</th>
-						<th>จาก</th>
+						<th>ผู้ส่ง</th>
 						<th>ลงวันที่</th>
 						<th>แก้ไข</th>
 						<th>สถานะ</th>
@@ -429,7 +429,7 @@ $ystatus = $ystatus;
 								<td colspan="3">
 									<div class="form-group">
 										<div class="input-group col-xs-12 ">
-											<span class="input-group-addon"><i class="fas fa-university"></i> เจ้าของเรื่อง</span>
+											<span class="input-group-addon"><i class="fas fa-university"></i> หน่วยส่งหนังสือ</span>
 											<input class="form-control" type="text" name="owner" id="owner" size="80" placeholder="หน่วยงานผู้ออกหนังสือ" required>
 										</div>
 									</div>

@@ -38,10 +38,10 @@ $result=dbQuery($sql);
 $row=dbFetchArray($result);
 //$status=$row['status'];
 $strDate=$row['date_in'];
-$dateThai=  DateThai($strDate);
-$book_detail_id=$row['book_detail_id'];
+$dateThai =  DateThai($strDate);
+$book_detail_id = $row['book_detail_id'];
+$file_upload = $row['file_location'];
 
-$file_upload=$row['file_upload'];
 ?>
                     <!-- <div class="well"> -->
 
@@ -92,6 +92,9 @@ $file_upload=$row['file_upload'];
                                     <td><label for="attachment">สิ่งที่ส่งมาด้วย</label></td>
                                     <td colspan="3"><textarea disabled="" name="attachment" cols="80"><?php print $row['attachment'];?></textarea></td>
                                 </tr>
+                                <tr>
+                                    <td><label>file download </label></td>
+                                    <td><a href="<?php echo $file_upload ;?>" target="_balnk">Download เอกสาร</a></td>
                                 <tr>
                                 <?php
                                     $practice=$row['practice'];
