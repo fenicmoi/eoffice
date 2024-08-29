@@ -6,6 +6,7 @@ $yid=chkYearMonth();
 $u_id=$_SESSION['ses_u_id'];
 ?>
 <?php
+
 $monthname=array("มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม");
 	$curDay = date("j");   //day  01,02,03
 	$curMonth = date("n");   //month 01-12
@@ -14,6 +15,7 @@ $monthname=array("มกราคม","กุมภาพันธ์","มี�
 	
 	$today="$curDay-$curMonth-$curYear";
     @$startdate=$_GET['startdate'];
+    
 ?>
 <? if ($curMonth== '1') { $showmonth = 'มกราคม' ;} ?>
 <? if ($curMonth== '2') { $showmonth = 'กุมภาพันธ์' ;} ?>
@@ -28,7 +30,8 @@ $monthname=array("มกราคม","กุมภาพันธ์","มี�
 <? if ($curMonth== '11') { $showmonth = 'พฤศจิกายน' ;} ?>
 <? if ($curMonth== '12') { $showmonth = 'ธันวาคม' ;} ?>
 
-<? $today="$curDay $showmonth $curYear"; ?>
+<?php $today="$curDay $showmonth $curYear"; ?>
+
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-primary" style="margin: 10">
@@ -51,11 +54,12 @@ $monthname=array("มกราคม","กุมภาพันธ์","มี�
                         <i class="fas fa-hand-holding-usd"></i> อัตราค่าตอบแทน
                     </a>
                 </div> 
-                <?php include "admin/calendar.php";?>
-                <?php include "admin/meet_listFront.php";?>
+                <?php  include "admin/calendar.php";?>
+                <?php  include "admin/meet_listFront.php";?>
             <div>
         </div> <!-- col-md- -->
     </div>    <!-- end row  -->
+
 
     <!--  modal แสงรายละเอียดข้อมูล -->
         <div  class="modal fade modal-reserv" tabindex="-1" aria-hidden="true" role="dialog">

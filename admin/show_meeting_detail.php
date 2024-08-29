@@ -11,6 +11,7 @@ $sql="SELECT r.*,d.dep_name
       FROM meeting_room as r
       INNER JOIN depart as d ON d.dep_id = r.dep_id
       WHERE r.room_id=$room_id";
+
 //print $sql;
 $result=dbQuery($sql);
 $row=dbFetchAssoc($result);
