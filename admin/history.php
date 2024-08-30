@@ -125,10 +125,12 @@ while ( $rowList = dbFetchArray( $result ) ) { ?>
 				</a>
 			</td>
 			<td><?php echo thaiDate($rowList['postdate']);?></td>
-			<td><a href="report/report_checklist.php?pid=<?php echo $rowList['pid'];?>" class="btn btn-warning" target="_blank"><i class="fab fa-wpexplorer"></i> ติดตาม</a></td>
+			<td><a href="checklist.php?pid=<?php echo $rowList['pid'];?>" class="btn btn-warning" target="_blank"><i class="fab fa-wpexplorer"></i> ติดตาม</a></td>
 			<?php
 				$d1 = $rowList['postdate'];
+				//echo $d1;
 				$d2 = date('Y-m-d');
+				echo $d2;
 				$numday = getNumDay($d1,$d2);
 				echo $numday;
 			

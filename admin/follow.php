@@ -99,10 +99,14 @@ $u_id=$_SESSION['ses_u_id'];
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-list"></span></span>
                                 <select class="form-control" name="rec_id" id="rec_id">
                                     <option>---เลือกผู้ลงนาม---</option>
-                                    <?php 
-                                    while ($row=dbFetchArray($result)) {?>
-                                        <option  value="<?=$row['rec_id']?>"><?=$row['name']?></option>
-                                    <?}?>
+
+                                    <?php   
+                                       
+                                        while ($row = dbFetchArray($result)){
+                                            echo  "<option value=".$row[rec_id]>".$row[rec_id]."</option>";
+                                           // $row['name']
+                                        } 
+                                    ?>
                                 </select>
                             </div>
                         </div>
@@ -129,12 +133,15 @@ $u_id=$_SESSION['ses_u_id'];
                                 <select class="form-control" name="speed_id" id="speed_id">
                                     <option value="">เลือกความเร่งด่วน</option>
                                     <?php 
-                                        while ($row=dbFetchArray($result)) {?>
-                                            <option  value="<?=$row['speed_id']?>"><?=$row['speed_name']?></option>
-                                        <?}?>
+                                        while ( $row = dbFetchArray($result)) {?>
+                                            <option  value="<?php echo $row['speed_id'];?>"><?php echo $row['speed_name'];?></option>
+                                        <?php } ?>
                                 </select>
                             </div>
                         </div>
+                        <?php  
+                     
+                        ?>
                         <div class="form-group form-inline">
                             <label for="datehire">กำหนดลงนามก่อนวันที่ :</label><input class="form-control" type="date" name="dateline"  id="dateline" required >
                         </div>
@@ -143,12 +150,12 @@ $u_id=$_SESSION['ses_u_id'];
                         $result=dbQuery($sql);
                         $row=dbFetchArray($result);
                         ?>
-                        <!-- <div class="form-group">
+                        <div class="form-group">
                             <div class="input-group"> 
                                 <span class="input-group-addon"><span class="fa fa-user-secret"></span></span>
                                 <input type="text" class="form-control" id="sec_name" name="sec_name" value="<?=$row['sec_name']?>"> 
                             </div>
-                        </div> -->
+                        </div> 
                      
                         <?php 
                         $sql="SELECT * FROM depart WHERE dep_id=$dep_id";

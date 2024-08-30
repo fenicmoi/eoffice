@@ -1,4 +1,11 @@
-<!-- Bootstrap -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checklist</title>
+
+    <!-- Bootstrap -->
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link href="../css/sticky-footer-navbar.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/loader.css">
@@ -48,6 +55,8 @@
     })
     
     </script>
+</head>
+<body>
 <?php
 include 'function.php';
 include '../library/database.php';
@@ -167,6 +176,7 @@ if($check==0){       // ถ้าค่าเป็น 0 หมายถึง�
             </div>
         </div>
     </div>  
-
+    </body>
+</html>
     
     
