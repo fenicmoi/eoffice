@@ -49,20 +49,17 @@ $u_id=$_SESSION['ses_u_id'];
                                // echo $sql;
                                 $result=dbQuery($sql);
                                // $numrow=dbNumRows($result);
-
-
-                                while( $row = dbFetchArray($result)){?>
-                                    <?php $rec_id=$row['rec_id']; ?>    <!-- กำหนดตัวแปรเพื่อส่งไปกับลิงค์ -->
-                                    <?php $book_id=$row['book_id']; ?>  <!-- กำหนดตัวแปรเพื่อส่งไปกับลิงค์ -->
-                                    <?php $recive_no=$row['recive_no']; ?>  <!-- ตรวจสอบว่าได้เลขลงรับแล้วหรือไม่ -->
+                                while ( $row = dbFetchArray( $result)){
+                                    $rec_id=$row['rec_id'];     
+                                    $book_id=$row['book_id'];  
+                                    $recive_no=$row['recive_no'];  
+                                    
+                                    if ( $recive_no == null){
+                                        $msg_recive = "รอยืนยัน";
+                                    } else {
+                                        echo $recive_no;
+                                    } ?>
                                     <tr>
-                                        <?php
-                                        if($recive_no == null){?>
-                                            <td><?php echo 'รอยืนยัน';?></td>
-                                        <?}else{?>
-                                            <td><?php echo $recive_no ;?></td>
-                                        <?}?>
-                                        
                                         <td><?php echo $row['book_no'];?></td>
                                         <td>
                                             <a href="#" 
@@ -88,7 +85,7 @@ $u_id=$_SESSION['ses_u_id'];
                                          </td>
                                     </tr>
 
-                                <?php } ?> <!-- end while -->
+                                    <?php } ?> <!-- end while -->
                                     
                         </tbody>
                     </table>
@@ -239,3 +236,5 @@ function load_leave_data(u_id,rec_id,book_id) {
         "order": [[ 0, "desc" ]]
     } )
 </script>
+
+
