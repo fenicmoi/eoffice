@@ -21,7 +21,7 @@ $u_id=$_SESSION['ses_u_id'];
         <div  class="col-md-10">
             <div class="panel panel-default" >
                 <div class="panel-heading">
-                    <i class="fa fa-envelope fa-2x" aria-hidden="true"></i>  <strong>หนังสือส่ง [เวียน]</strong>
+                    <i class="fa fa-envelope fa-2x" aria-hidden="true"></i>  <strong>ทะเบียนหนังสือส่ง [เวียน]</strong>
                     <a href="" class="btn btn-danger btn-md pull-right" data-toggle="modal" data-target="#modalAdd"><i class="fa fa-plus " aria-hidden="true"></i> ลงทะเบียนส่ง</a>
                     <!-- <a href="" class="btn btn-default btn-md pull-right" data-toggle="modal" data-target="#modalReserv"><i class="fas fa-hand-point-up "></i> จองทะเบียนส่ง</a> -->
                 </div>
@@ -108,7 +108,7 @@ $u_id=$_SESSION['ses_u_id'];
                 <div class="modal-content">
                   <div class="modal-header bg-primary">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title"><i class="fa fa-plus-circle"></i> ลงทะเบียนหนังสือเวียน</h4>
+                    <h4 class="modal-title"><i class="fa fa-plus-circle"></i> ออกเลขหนังสือเวียน</h4>
                   </div>
                   <div class="modal-body bg-success"> 
                      <form name="form" method="post" enctype="multipart/form-data">
