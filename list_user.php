@@ -22,6 +22,7 @@ $result = dbQuery($sql);
                         <thead class="alert alert-info">
                             <tr>
                                 <th>ส่วนราชการ</th>
+                                <th>เลขส่วนราชการ</th>
                                 <th>เจ้าหน้าที่สารบรรณ</th>
                                 <th>ตำแหน่ง</th>
                                 <th>เบอร์โทรสำนักงาน</th>
@@ -33,6 +34,7 @@ $result = dbQuery($sql);
                         <?php while($row=dbFetchArray($result)){?>
                         <tr>
                             <td><?php echo $row['depart']?></td>
+                            <td><?php echo $row['book_no']?></td>
                             <td><?php echo $row['fname']?>&nbsp&nbsp<?=$row['lname']?></td>
                             <td><?php echo $row['position']?></td>
                             <td><?php echo $row['office_tel']?></td>
