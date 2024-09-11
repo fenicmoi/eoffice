@@ -123,7 +123,7 @@ if (isset($_GET['edit'])) {  //เปลี่ยนปุ่ม
                             <div class="input-group">
                                 <span class="input-group-addon">เบอร์โทรศัพท์</span>
                                 <input type="text" class="form-control" id="phone" 
-                                       name="phone" onkeyup="autoTabTel(this,2)" value="<?php echo $getROW['phone']; ?>" /> 
+                                       name="phone"  value="<?php echo $getROW['phone']; ?>" /> 
                             </div>
                         </div>
 
@@ -131,15 +131,22 @@ if (isset($_GET['edit'])) {  //เปลี่ยนปุ่ม
                             <div class="input-group">
                                 <span class="input-group-addon">เบอร์โทรสาร</span>
                                 <input type="text" class="form-control" id="fax" 
-                                       name="fax" onkeyup="autoTabTel(this,2)" value="<?php echo $getROW['fax']; ?>"/>
+                                       name="fax" value="<?php echo $getROW['fax']; ?>"/>
                             </div>
                         </div>
 
                         <div class="form-group">
                           <div class="input-group">
                              <span class="input-group-addon">Website</span>
-                             <input type="facebook" class="form-control" id="website" 
+                             <input type="text" class="form-control" id="website" 
                                     name="website" value="<?php echo $getROW['social']; ?>">
+                          </div>            
+                        </div>
+                        <div class="form-group">
+                          <div class="input-group">
+                             <span class="input-group-addon">E-mail</span>
+                             <input type="text" class="form-control" id="email" 
+                                    name="email" value="<?php echo $getROW['email']; ?>">
                           </div>            
                         </div>
                             <center>
@@ -167,20 +174,22 @@ if (isset($_POST['update'])) {
                                         $local_num = $_POST['local_num'];
                                         $prefex = $_POST['prefex'];
                                         $ministry = $_POST['ministry'];
+                                        $email = $_POST['email'];
 
                                         $sql = "UPDATE depart
-                         SET type_id = $type_id,
-                             dep_name ='$dep_name',
-                             address ='$address',
-                             phone='$phone',
-                             fax='$fax',
-                             social='$social',
-                             status=$status,
-                             local_num=$local_num,
-                             prefex='$prefex',
-                             m_id=$ministry
-                        WHERE dep_id=".$_GET['edit'].'
-                            ';
+                                                SET type_id = $type_id,
+                                                    dep_name ='$dep_name',
+                                                    address ='$address',
+                                                    phone='$phone',
+                                                    fax='$fax',
+                                                    social='$social',
+                                                    status=$status,
+                                                    local_num=$local_num,
+                                                    prefex='$prefex',
+                                                    m_id=$ministry,
+                                                    email='$email'
+                                                WHERE dep_id=".$_GET['edit'].'
+                                                    ';
                                         //echo $sql;
                                         $result = dbQuery($sql);
                                         if (!$result) {
