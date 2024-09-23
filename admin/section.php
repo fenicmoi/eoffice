@@ -41,9 +41,13 @@ $u_id=$_SESSION['ses_u_id'];
                  <tbody>
                      <?php
                         $count=1;
-                        $sql="SELECT *
-                              FROM section 
-                              WHERE dep_id=".$dep_id;
+
+                        if($u_id == 1){     //ถ้าเป็น Admin  จะเห็นทั้งหมดเพื่อความสะดวกบริหารจัดการ
+                          $sql = "SELECT * FROM section ORDER BY sec_id DESC";
+                        }else{
+                          $sql = "SELECT * FROM section WHERE dep_id = ".$dep_id;    //กรณีเป็นบุคคลทั่วไปให้เห็นแค่เฉพาะในสังกัดของตนเอง
+                        }
+                        
                         $result=dbQuery($sql);
                         while($row=dbFetchArray($result)){?>
                             <tr>

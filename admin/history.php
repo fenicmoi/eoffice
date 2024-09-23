@@ -35,10 +35,8 @@ $u_id=$_SESSION['ses_u_id'];
 </script>
 <div class="col-md-2" >
 	<?php
-$menu=  checkMenu($level_id);
-
-include $menu;
-
+		$menu=checkMenu($level_id);
+		include $menu;
 ?>
 </div>
 <div class="col-md-10">

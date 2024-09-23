@@ -199,10 +199,10 @@ if($cid){
                     </div>
                     <center>
                     <div class="form-group">
-                        <input type="hidden" name="file" value="<?php print $fileupload;?>"/>
-                        <input type="hidden" name="dep_id" value="<?php print $dep_id;?>"/>
-                        <input type="hidden" name="sec_id" value="<?php print $sec_id;?>"/>
-                        <input type="hidden" name="user_id" id="user_id" value="<?php  print $u_id;?>"/>  
+                        <input type="hidden" name="file" value="<?php echo $fileupload;?>"/>
+                        <input type="hidden" name="dep_id" value="<?php echo $dep_id;?>"/>
+                        <input type="hidden" name="sec_id" value="<?php echo $sec_id;?>"/>
+                        <input type="hidden" name="user_id" id="user_id" value="<?php  echo $u_id;?>"/>  
                         <input type="submit" name="sendOut" class="btn btn-primary btn-lg" value="ส่งเอกสาร"/>
                     </div>
                     </center>
@@ -232,9 +232,9 @@ if(isset($_POST['sendOut'])){//ตรวจสอบปุ่ม sendOut
 	@$toSomeUser=$_POST['toSomeUser'];//ช	่องส่งแยกประเภทตามหน่วยงาน
 	@$toSomeOneUser=$_POST['toSomeOneUser'];//ช	่องรับรหัสแบบเลือกเอง
 	
-	@$fileupload=$_POST['file'];//ไ	ฟล์เอกสาร
-	$numrand=(mt_rand());//ส	ุ่มตัวเลข
-	@$upload=$_FILES['fileupload'];//เ	พิ่มไฟล์
+	@$fileupload=$_POST['file'];//ไฟล์เอกสาร
+	$numrand=(mt_rand());//สุ่มตัวเลข
+	@$upload=$_FILES['fileupload'];//เพิ่มไฟล์
     $dateSend=date('Y-m-d');//ว	ันที่ส่งเอกสาร  (มีปัญหายังแก้ไม่ได้)
     $book_no=$_POST['book_no'];
 	
@@ -245,26 +245,21 @@ if(isset($_POST['sendOut'])){//ตรวจสอบปุ่ม sendOut
 		
 		$part="paper/";
 		
-		$type=  strrchr($_FILES['fileupload']['name'],".");
-		//เ		อาชื่อเก่าออกให้เหลือแต่นามสกุล
-		$newname=$date.$numrand.$type;
-		//ต		ั้งชื่อไฟล์ใหม่โดยใช้เวลา 
+		$type=  strrchr($_FILES['fileupload']['name'],".");   //เอาชื่อเก่าออกให้เหลือแต่นามสกุล
+		$newname=$date.$numrand.$type;   //ตั้งชื่อไฟล์ใหม่โดยใช้เวลา 
 		$part_copy=$part.$newname;
-		
 		$part_link="paper/".$newname;
-		
-		move_uploaded_file($_FILES['fileupload']['tmp_name'],$part_copy);
-		//ค		ัดลอกไฟล์ไป Server
+		move_uploaded_file($_FILES['fileupload']['tmp_name'],$part_copy);    //คัดลอกไฟล์ไป Server
 	}
 	
-	
+	//กรณีส่งให้ทุกส่วนราชการ
 	if($toAll!=''){
 		//สงเอกสารถึงทุกส่วนราชการ
+        echo "ไม่ว่าง";
 		if($cid && $link_file<>null){
-			//ถ			้ามีการส่ง book_id มา
+			//ถ	้ามีการส่ง book_id มา
 			$sql="INSERT INTO paper(title,detail,file,postdate,u_id,sec_id,outsite,dep_id,book_no)
                               VALUE('$title','$detail','$link_file','$date',$user_id,$sec_id,$outsite,$dep_id,'$book_no')";
-			
 		}else{
 			//กรณีส่งเอกสารโดยไม่มีการออกเลข
 			$sql="INSERT INTO paper(title,detail,file,postdate,u_id,sec_id,outsite,dep_id,book_no)
@@ -272,11 +267,9 @@ if(isset($_POST['sendOut'])){//ตรวจสอบปุ่ม sendOut
 		}
 		
 		
-		//print $sql;
 		
 		$result=dbQuery($sql);
-		$lastid=dbInsertId();
-		//เลข ID จากตาราง paper ล่าสุด
+		$lastid=dbInsertId();    //เลข ID จากตาราง paper ล่าสุด
 		//เลือก User ทั้งหมด  1 ต้องเป็นระดับ 3 (ประจำส่วนราชการ) 2.มีสิทธิ์รับ (keyman=1)  3.ไม่ส่งให้ตัวเอง 
 		$sql="SELECT  u.u_id,u.firstname,s.sec_id,d.dep_id,d.dep_name  
                 FROM user u 
@@ -294,6 +287,22 @@ if(isset($_POST['sendOut'])){//ตรวจสอบปุ่ม sendOut
 			$tb="paperuser";
 			$sql="insert into $tb (pid,u_id,sec_id,dep_id) values ($lastid,$u_id,$sec_id,$dep_id)";
 			$dbquery= dbQuery($sql);
+
+            $result = dbQuery($sql);
+                if (!$result) {
+                    echo "<script>
+                        swal({
+                         title:'มีบางอย่างผิดพลาด  กรุณาลองใหม่',
+                         type:'warning',
+                         showConfirmButton:true
+                         },
+                         function(isConfirm){
+                             if(isConfirm){
+                                 window.location.href='user.php';
+                             }
+                         }); 
+                       </script>";
+                } 
 		}
 		
 		echo "<script>
@@ -312,20 +321,25 @@ if(isset($_POST['sendOut'])){//ตรวจสอบปุ่ม sendOut
 	}  //if
 	
 	
-	
+//***เลือกเองตามประเภท 
+
 	if($toSome!=''){
-		//ส		่งเอกสารแยกตามประเภทหน่วยงาน
-		if($cid && $link_file<>null){
+		//ส	่งเอกสารแยกตามประเภทหน่วยงาน
+		//if($cid && $link_file<>null){
+        if($cid && $link_file<>null){
 			
 			$sql="INSERT INTO paper(title,detail,file,postdate,u_id,outsite,sec_id,dep_id,book_no)
-                        VALUES('$title','$detail','$link_file','$dateSend',$user_id,$outsite,$sec_id,$dep_id,'$book_no')";
+                         VALUES('$title','$detail','$link_file','$dateSend',$user_id,$outsite,$sec_id,$dep_id,'$book_no')";
+            echo "checkpoint 1";
 		}else{
 			$sql="INSERT INTO paper(title,detail,file,postdate,u_id,outsite,sec_id,dep_id,book_no)
-                  VALUES('$title','$detail','$part_link','$dateSend',$user_id,$outsite,$sec_id,$dep_id,'$book_no')";
+                         VALUES('$title','$detail','$part_link','$dateSend',$user_id,$outsite,$sec_id,$dep_id,'$book_no')";
+          //  echo "$";
 		}
 		//print "คำสั่งส่งข้อมูลให้บางหน่วยงาน". $sqlSend;
 		$result=dbQuery($sql);
 		$lastid=  dbInsertId();
+        echo $
 		//คนหาเลขระเบียนล่าสุด
 		$sendto=$_POST['toSomeUser'];
 		//สงมาจาก textbox 
@@ -343,7 +357,7 @@ if(isset($_POST['sendOut'])){//ตรวจสอบปุ่ม sendOut
                         AND u.level_id = 3";
 			
 			
-			// 			print $sql;
+						print $sql;
 			
 			$result=dbQuery($sql);
 			
@@ -354,9 +368,23 @@ if(isset($_POST['sendOut'])){//ตรวจสอบปุ่ม sendOut
 				$dep_id=$row['dep_id'];
 				$sql="insert into $tb (pid,u_id,sec_id,dep_id) values ($lastid,$u_id,$sec_id,$dep_id)";
 				dbQuery($sql);
+                $result = dbQuery($sql);
+                if (!$result) {
+                    echo "<script>
+                        swal({
+                         title:'มีบางอย่างผิดพลาด  กรุณาลองใหม่',
+                         type:'warning',
+                         showConfirmButton:true
+                         },
+                         function(isConfirm){
+                             if(isConfirm){
+                                 window.location.href='user.php';
+                             }
+                         }); 
+                       </script>";
+                } 
 			}
 		}
-		
 		
 		echo "<script>
                 swal({
@@ -374,7 +402,7 @@ if(isset($_POST['sendOut'])){//ตรวจสอบปุ่ม sendOut
 		
 	}
 	
-	
+//***** เลือกเองทีละหน่วยงาน*********	
 	
 	if($toSomeOne!=''){
 		//ส	่งเอกสารแบบเลือกเอง
