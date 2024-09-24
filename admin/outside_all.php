@@ -287,22 +287,6 @@ if(isset($_POST['sendOut'])){//ตรวจสอบปุ่ม sendOut
 			$tb="paperuser";
 			$sql="insert into $tb (pid,u_id,sec_id,dep_id) values ($lastid,$u_id,$sec_id,$dep_id)";
 			$dbquery= dbQuery($sql);
-
-            $result = dbQuery($sql);
-                if (!$result) {
-                    echo "<script>
-                        swal({
-                         title:'มีบางอย่างผิดพลาด  กรุณาลองใหม่',
-                         type:'warning',
-                         showConfirmButton:true
-                         },
-                         function(isConfirm){
-                             if(isConfirm){
-                                 window.location.href='user.php';
-                             }
-                         }); 
-                       </script>";
-                } 
 		}
 		
 		echo "<script>
@@ -318,7 +302,7 @@ if(isset($_POST['sendOut'])){//ตรวจสอบปุ่ม sendOut
             }); 
         </script>";
         
-	}  //if
+	}  
 	
 	
 //***เลือกเองตามประเภท 
@@ -338,10 +322,9 @@ if(isset($_POST['sendOut'])){//ตรวจสอบปุ่ม sendOut
 		}
 		//print "คำสั่งส่งข้อมูลให้บางหน่วยงาน". $sqlSend;
 		$result=dbQuery($sql);
-		$lastid=  dbInsertId();
-        echo $
-		//คนหาเลขระเบียนล่าสุด
+		$lastid=  dbInsertId(); //คนหาเลขระเบียนล่าสุด
 		$sendto=$_POST['toSomeUser'];
+        echo "หน่วยรับ=".$sendto;
 		//สงมาจาก textbox 
 		$sendto=substr($sendto, 1);
 		$c=explode("|", $sendto);
@@ -357,7 +340,7 @@ if(isset($_POST['sendOut'])){//ตรวจสอบปุ่ม sendOut
                         AND u.level_id = 3";
 			
 			
-						print $sql;
+						//print $sql;
 			
 			$result=dbQuery($sql);
 			
@@ -368,21 +351,6 @@ if(isset($_POST['sendOut'])){//ตรวจสอบปุ่ม sendOut
 				$dep_id=$row['dep_id'];
 				$sql="insert into $tb (pid,u_id,sec_id,dep_id) values ($lastid,$u_id,$sec_id,$dep_id)";
 				dbQuery($sql);
-                $result = dbQuery($sql);
-                if (!$result) {
-                    echo "<script>
-                        swal({
-                         title:'มีบางอย่างผิดพลาด  กรุณาลองใหม่',
-                         type:'warning',
-                         showConfirmButton:true
-                         },
-                         function(isConfirm){
-                             if(isConfirm){
-                                 window.location.href='user.php';
-                             }
-                         }); 
-                       </script>";
-                } 
 			}
 		}
 		

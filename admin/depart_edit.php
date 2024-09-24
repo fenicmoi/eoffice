@@ -5,6 +5,8 @@
 include 'header.php';
 $u_id = $_SESSION['ses_u_id'];
 
+
+
 if (isset($_GET['edit'])) {  //เปลี่ยนปุ่ม
     $sql = 'SELECT * FROM depart WHERE dep_id='.$_GET['edit'];    //กรณี admin แก้ไข
     $result = dbQuery($sql);
@@ -149,6 +151,7 @@ if (isset($_GET['edit'])) {  //เปลี่ยนปุ่ม
                                     name="email" value="<?php echo $getROW['email']; ?>">
                           </div>            
                         </div>
+                            <input type="hidden" name="dep_id" value="<?php echo $_GET['dep_id'];?>">
                             <center>
                                 <button class="btn btn-success" type="submit" name="update">ตกลง</button>
                                 <a class="btn btn-danger" href="depart.php"  name="cancle">ยกเลิก</a>
@@ -175,7 +178,9 @@ if (isset($_POST['update'])) {
                                         $prefex = $_POST['prefex'];
                                         $ministry = $_POST['ministry'];
                                         $email = $_POST['email'];
-
+                                      //  $dep_id = $_GET['edit'];
+                                        $dep_id = $_POST['dep_id'];
+                                      
                                         $sql = "UPDATE depart
                                                 SET type_id = $type_id,
                                                     dep_name ='$dep_name',
@@ -188,36 +193,35 @@ if (isset($_POST['update'])) {
                                                     prefex='$prefex',
                                                     m_id=$ministry,
                                                     email='$email'
-                                                WHERE dep_id=".$_GET['edit'].'
-                                                    ';
-                                        //echo $sql;
+                                                WHERE dep_id ='$dep_id'";
+                                       // echo $sql;
                                         $result = dbQuery($sql);
                                         if (!$result) {
                                             echo "<script>
-                    swal({
-                        title:'มีบางอย่างผิดพลาด! กรุณาตรวจสอบ',
-                        type:'error',
-                        showConfirmButton:true
-                        },
-                        function(isConfirm){
-                            if(isConfirm){
-                                window.location.href='depart.php';
-                            }
-                        }); ";
+                                            swal({
+                                                title:'มีบางอย่างผิดพลาด! กรุณาตรวจสอบ',
+                                                type:'error',
+                                                showConfirmButton:true
+                                                },
+                                                function(isConfirm){
+                                                    if(isConfirm){
+                                                        window.location.href='index_admin.php';
+                                                    }
+                                                }); ";
                                         } else {
                                             echo "<script>
-                swal({
-                    title:'เรียบร้อย',
-                    type:'success',
-                    showConfirmButton:true
-                    },
-                    function(isConfirm){
-                        if(isConfirm){
-                            window.location.href='depart.php';
-                        }
-                    }); 
-                </script>";
-                                        }
+                                            swal({
+                                                title:'เรียบร้อย',
+                                                type:'success',
+                                                showConfirmButton:true
+                                                },
+                                                function(isConfirm){
+                                                    if(isConfirm){
+                                                        window.location.href='index_admin.php';
+                                                    }
+                                                }); 
+                                            </script>";
+                                            }
                                     }
 ?>
     

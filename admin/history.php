@@ -1,13 +1,7 @@
 <?php
-date_default_timezone_set('Asia/Bangkok');
-
-
-include "header.php";
-
-
-$u_id=$_SESSION['ses_u_id'];
-
-
+	date_default_timezone_set('Asia/Bangkok');
+	include "header.php";
+	$u_id=$_SESSION['ses_u_id'];
 ?>
 <script>
 	$( document ).ready( function () {
@@ -33,12 +27,14 @@ $u_id=$_SESSION['ses_u_id'];
 		} )
 	} );
 </script>
+
 <div class="col-md-2" >
 	<?php
 		$menu=checkMenu($level_id);
 		include $menu;
-?>
+	?>
 </div>
+
 <div class="col-md-10">
 	<div class="panel panel-primary">
 		<div class="panel-heading"><i class="fas fa-share-square fa-2x"></i>  <strong>ส่งไฟล์เอกสาร </strong>
@@ -49,7 +45,9 @@ $u_id=$_SESSION['ses_u_id'];
 							<ul class="nav nav-tabs">
 								<li><a class="btn-danger fas fa-envelope"  href="paper.php"> หนังสือเข้า</a></li>
 								<li><a class="btn-danger fas fa-envelope-open"  href="folder.php"> หนังสือลงรับแล้ว</a></li>
+
 								<li class="active"><a class="btn-danger fas fa-history" href="history.php"> ติดตามหนังสือส่ง</a></li>
+								
 								<li ><a class="btn-danger fas fa-paper-plane" href="inside_all.php"> ส่งภายในหน่วย</a></li>
 								<li><a class="btn-danger fas fa-globe" href="outside_all.php"> ส่งระหว่างหน่วย</a></li>
                             </ul>
@@ -126,13 +124,9 @@ while ( $rowList = dbFetchArray( $result ) ) { ?>
 			<td><a href="checklist.php?pid=<?php echo $rowList['pid'];?>" class="btn btn-warning" target="_blank"><i class="fab fa-wpexplorer"></i> ติดตาม</a></td>
 			<?php
 				$d1 = $rowList['postdate'];
-				//echo $d1;
 				$d2 = date('Y-m-d');
-				echo $d2;
 				$numday = getNumDay($d1,$d2);
-				echo $numday;
 			
-
 			//กำหนดให้แก้ไขได้ 1 วันเท่านั้น
 			if ($numday > 1) {?>       
 				<td><center><i class="fab fa-expeditedssl fa-2x"></i></center></td>

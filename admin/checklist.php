@@ -49,7 +49,7 @@
                          "sPrevious": "กลับ"
                                }
                          }
-      }
+        }
                 
         );
     })
@@ -77,7 +77,7 @@ $resNumNo= dbNumRows($result);
 
 /************** ตรวจสอบว่าเป็นหนังสื่อส่งภายนอกหรือภายใน */
 $sql="SELECT * FROM paperuser WHERE pid=$pid";
-echo $sql;
+//echo $sql;
 $result=dbQuery($sql);
 $rowCheck=dbFetchArray($result);
 if(!$rowCheck){
