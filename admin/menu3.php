@@ -45,7 +45,7 @@ $num_row = dbNumRows($result);
       <div class="panel-heading">
         <h4 class="panel-title">
           <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
-              <i class="fa fa-credit-card" aria-hidden="true"></i> ทะเบียนคุมเอกสารการจัดซื้อจัดจ้าง
+              <i class="fa fa-credit-card" aria-hidden="true"></i> ทะเบียนคุมสัญญา
           </a>
         </h4>
       </div>
