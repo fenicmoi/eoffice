@@ -103,7 +103,7 @@ $u_id=$_SESSION['ses_u_id'];
                                     <?php   
                                        
                                         while ($row = dbFetchArray($result)){
-                                            echo  "<option value=".$row[rec_id]>".$row[rec_id]."</option>";
+                                            echo  "<option value=".$row[rec_id].">".$row[name]."</option>";
                                            // $row['name']
                                         } 
                                     ?>
@@ -227,9 +227,9 @@ if(isset($_POST['save'])){
    // print  $rec_no;
     
 	dbQuery('BEGIN');
-	$sql="INSERT INTO fllow (rec_no,title,status,rec_id,dep_id,sec_id,u_id,yid,speed_id,dateline,date_current)
+	$sql="INSERT INTO fllow (f_id,title,status,rec_id,dep_id,sec_id,u_id,yid,speed_id,dateline,date_current)
                 VALUES($rec_no,'$title',0,$rec_id,$dep_id,$sec_id,$u_id,$yid,$speed_id,'$dateline','$date_current')";
-   // echo $sql;
+    echo $sql;
     
 	$result=dbQuery($sql);
 	if($result){
@@ -261,7 +261,9 @@ if(isset($_POST['save'])){
             }); 
         </script>";
 	}
+        
 }
+    
 ?>
 <script type="text/javascript">
 function loadData(f_id,u_id) {
