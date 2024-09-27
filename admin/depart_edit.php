@@ -4,18 +4,46 @@
 }*/
 include 'header.php';
 $u_id = $_SESSION['ses_u_id'];
+/*
+$dep_id = @$_GET['edit'];     //จะส่งมากรณีเป็น admin
+echo "edit=".$dep_id."<br>";
+$dep_id = @$_GET['dep_id'];    //จะส่งมากรณีเป็น  admin level 3
+echo "dep=".$dep_id."<br>";
+*/
 
 
-
+/*
 if (isset($_GET['edit'])) {  //เปลี่ยนปุ่ม
     $sql = 'SELECT * FROM depart WHERE dep_id='.$_GET['edit'];    //กรณี admin แก้ไข
     $result = dbQuery($sql);
     $getROW = dbFetchArray($result);
+    echo "admin edit".$dep_id;
 } elseif (isset($_GET['dep_id'])) {
     $sql = 'SELECT * FROM depart WHERE dep_id='.$_GET['dep_id'];  //กรณี user ระดับ 3 แก้ไข
     $result = dbQuery($sql);
     $getROW = dbFetchArray($result);
+    echo "user edit";
 }
+    */
+
+if($_GET['edit'] <> ''){      //admin login edit
+    $dep_id = $_GET['edit'];
+    $sql = 'SELECT * FROM depart WHERE dep_id='.$_GET['edit'];    //กรณี admin แก้ไข
+    $result = dbQuery($sql);
+    $getROW = dbFetchArray($result);
+    //echo "admin edit".$dep_id;
+}
+
+if(@$_GET['dep_id'] <> ''){    //user login edit
+    $dep_id = $_GET['dep_id'];
+    $sql = 'SELECT * FROM depart WHERE dep_id='.$_GET['dep_id'];  //กรณี user ระดับ 3 แก้ไข
+    $result = dbQuery($sql);
+    $getROW = dbFetchArray($result);
+   // echo "user edit";
+}
+
+
+
 ?>
     <div class="row">
         <div class="col-md-2" >
@@ -151,7 +179,7 @@ if (isset($_GET['edit'])) {  //เปลี่ยนปุ่ม
                                     name="email" value="<?php echo $getROW['email']; ?>">
                           </div>            
                         </div>
-                            <input type="hidden" name="dep_id" value="<?php echo $_GET['dep_id'];?>">
+                            <input type="hidden" name="dep_id" value="<?php echo $dep_id;?>">
                             <center>
                                 <button class="btn btn-success" type="submit" name="update">ตกลง</button>
                                 <a class="btn btn-danger" href="depart.php"  name="cancle">ยกเลิก</a>
@@ -178,7 +206,7 @@ if (isset($_POST['update'])) {
                                         $prefex = $_POST['prefex'];
                                         $ministry = $_POST['ministry'];
                                         $email = $_POST['email'];
-                                      //  $dep_id = $_GET['edit'];
+                                        //  $dep_id = $_GET['edit'];
                                         $dep_id = $_POST['dep_id'];
                                       
                                         $sql = "UPDATE depart
@@ -194,7 +222,7 @@ if (isset($_POST['update'])) {
                                                     m_id=$ministry,
                                                     email='$email'
                                                 WHERE dep_id ='$dep_id'";
-                                       // echo $sql;
+                                        echo $sql;
                                         $result = dbQuery($sql);
                                         if (!$result) {
                                             echo "<script>

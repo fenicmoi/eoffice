@@ -96,14 +96,7 @@
           <ul class="nav navbar-nav ">
               <li><a class="nav-link active"  href="index.php"><i class="fas fa-home"></i> หน้าแรก</a></li>
                <li class="dropdown">
-                <a class="btn disabled"  class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fas fa-users"></i> ระบบงานสารบรรณ
-                <span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                   <li><a   href="list_user.php"><i class="fas fa-check-circle"></i> ตรวจสอบส่วนราชการ/หน่วยงานที่ลงทะเบียน </a></li>
-                  <li><a  data-toggle="modal" data-target="#modalAdd"><i class="fas fa-key"></i> ลงทะเบียนหน่วยงาน/เจ้าหน้าที่ </a></li>
-                  <li><a   data-toggle="modal" data-target="#modalRegister"><i class="fas fa-users"></i> ลงทะเบียนผู้ใช้ทั่วไป </a></li>
-                  <li><a href="admin/manual/manual-v1.pdf" target="_blank"><i class="fs fa-book"></i> คู่มือการใช้งาน</a></li>
-                </ul>
+                <a class="btn disabled"  class="dropdown-toggle" data-toggle="dropdown" href="flow-cicle-front.php"><i class="fas fa-users"></i> หนังสือเวียน</a>
               </li>
               <li><a class="btn-link"  href="flow-command-front.php"><i class="fas fa-retweet"></i> คำสั่งจังหวัด</a></li>
               <li><a class="btn disabled"   href="flow-command-front.php"><i class="fas fa-list"></i> วาระงานผู้บริหาร </a></li> 
