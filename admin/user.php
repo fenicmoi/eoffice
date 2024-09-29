@@ -4,10 +4,7 @@ include 'header.php';
 $u_id = $_SESSION['ses_u_id'];
 ?>
 
-<script>
-    $(document).ready(function() {
-    $('.js-example-basic-single').select2();
-});
+
   
 </script>
     <div class="row">

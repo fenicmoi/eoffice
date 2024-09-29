@@ -100,6 +100,7 @@ if($u_id){
     <script>
       $(document).ready( function () {
           $('#myTable').DataTable();
+          $('.js-example-basic-single').select2();
       } );
 
     </script>
