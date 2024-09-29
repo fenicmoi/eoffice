@@ -3,6 +3,13 @@
 include 'header.php';
 $u_id = $_SESSION['ses_u_id'];
 ?>
+
+<script>
+    $(document).ready(function() {
+    $('.js-example-basic-single').select2();
+});
+  
+</script>
     <div class="row">
         <div class="col-md-2" >
            <?php
@@ -139,7 +146,7 @@ $u_id = $_SESSION['ses_u_id'];
                           <div class="form-group form-inline">
                               <label for="amphur">ชื่อส่วนราชการ : </label>
                                 <span id="amphur">
-                                    <select id ="selectpicker" class="form-control selectpicker" required>
+                                    <select id ="state" class="js-example-basic-single" required>
                                         <option value=''>- เลือกหน่วยงาน -</option>
                                     </select>
                                 </span>
@@ -418,9 +425,8 @@ if (isset($_POST['update'])) {
 
         window.onLoad=dochange('province', -1);     
 
-        $(document).ready( function () {
-            $('#myTable').DataTable();
-        } );
+    // In your Javascript (external .js resource or <script> tag)
+
     </script>
     
     
