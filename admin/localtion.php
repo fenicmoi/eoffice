@@ -22,7 +22,7 @@
                    echo "<option value='$row[type_id]' >$row[type_name]</option>" ;
               }
          } else if ($data=='amphur') {
-              echo "<select class=\"form-control\" name='amphur' onChange=\"dochange('district', this.value)\" required>";
+              echo "<select class=\"select-unit\" name='amphur' onChange=\"dochange('district', this.value)\" required>";
               echo "<option value=''>- เลือก -</option>\n";  
               $sql="SELECT * FROM depart WHERE type_id= '$val' ORDER BY dep_id DESC";
               $result = mysqli_query($dbConn, $sql);
