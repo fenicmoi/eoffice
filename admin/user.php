@@ -139,7 +139,7 @@ $u_id = $_SESSION['ses_u_id'];
                           <div class="form-group form-inline">
                               <label for="amphur">ชื่อส่วนราชการ : </label>
                                 <span id="amphur">
-                                    <select class="form-control" required>
+                                    <select id ="selectpicker" class="form-control selectpicker" required>
                                         <option value=''>- เลือกหน่วยงาน -</option>
                                     </select>
                                 </span>
