@@ -45,7 +45,7 @@ $num_row = dbNumRows($result);
       <div class="panel-heading">
         <h4 class="panel-title">
           <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
-              <i class="fa fa-credit-card" aria-hidden="true"></i> ทะเบียนคุมเอกสารการจัดซื้อจัดจ้าง
+              <i class="fa fa-credit-card" aria-hidden="true"></i> ทะเบียนคุมสัญญา
           </a>
         </h4>
       </div>
@@ -96,7 +96,7 @@ $num_row = dbNumRows($result);
               <a class="btn btn-primary btn-block" href="inside_all.php"><i class="fas fa-home  pull-left"></i>ส่งภายใน</a>
               <a class="btn btn-primary btn-block" href="outside_all.php"><i class="fas fa-paper-plane pull-left"></i>ส่งภายนอก</a>
               <a class="btn btn-primary btn-block" href="follow.php"><i class="far fa-arrow-alt-circle-right  pull-left"></i> ระบบติดตามแฟ้ม</a>
-              <a class="btn btn-primary btn-block" ><i class="far fa-arrow-alt-circle-right  pull-left"></i>ตรวจแฟ้ม[สำหรับเลขาฯ]</a>
+              <a class="btn btn-primary btn-block" href="follow-check.php"><i class="far fa-arrow-alt-circle-right  pull-left"></i>ตรวจแฟ้ม[สำหรับเลขาฯ]</a>
             </div>
         </div>
       </div>
