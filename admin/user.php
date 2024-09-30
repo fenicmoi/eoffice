@@ -281,12 +281,13 @@ if (isset($_POST['save'])) {
 
     // print $sql;
     $sql = "SELECT * FROM user WHERE u_name ='$u_name'";
+   // echo $sql;
     $result = dbQuery($sql);
-    $numrow = dbNumRows($result);
-    if ($numrow >= 1) {
+    $numrow = dbNumRows($result);    
+    if ($numrow == 1) {
         echo "<script>
                swal({
-                title:'ชื่อผู้ใช้งานซ้ำ!..กรุณาเปลี่ยนใหม่',
+                title:'Username ซ้ำ!..กรุณาเปลี่ยนชื่อใหม่',
                 type:'error',
                 showConfirmButton:true
                 },
@@ -329,7 +330,7 @@ if (isset($_POST['save'])) {
              }); 
            </script>";
         }
-    } // user duplicate
+    } // user duplicate   
 } //send
 
 if (isset($_GET['del'])) {
