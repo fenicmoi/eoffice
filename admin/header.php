@@ -93,12 +93,16 @@ if($u_id){
           });
     </script>
 
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <script type="text/javascript" src="../js/jquery.alphanumeric.js"></script>
     <script>
       $(document).ready( function () {
           $('#myTable').DataTable();
+          $('.select-unit').select2();
       } );
+
     </script>
 
 <!-- Chatra {literal} -->
