@@ -110,9 +110,9 @@ $num_row = dbNumRows($result);
       <div id="collapse5" class="panel-collapse collapse">
           <div class="panel-body">
             <div class="panel-body">
-              <a class="btn btn-primary btn-block" href="http://www.phangnga.go.th/meeting/index.php" target="_blank">ระบบจองห้องประชุม</a>
+              <!-- <a class="btn btn-primary btn-block" href="http://www.phangnga.go.th/meeting/index.php" target="_blank">ระบบจองห้องประชุม</a>
               <a class="btn btn-primary btn-block" href="http://www.phangnga.go.th/calendar/" target="_blank">ระบบนัดงานผู้บริหาร</a>
-              <a class="btn btn-primary btn-block" href="">ระบบลงประกาศ</a>
+              <a class="btn btn-primary btn-block" href="">ระบบลงประกาศ</a> -->
           </div>
       </div>
       </div>
@@ -126,9 +126,9 @@ $num_row = dbNumRows($result);
       <div id="collapse6" class="panel-collapse collapse">
             <div class="panel-body">
               <div class="panel-body">
-              <a class="btn btn-primary btn-block" href=""><i class="far fa-arrow-alt-circle-right  pull-left"></i>E-Office 2.0</a>
-              <a class="btn btn-primary btn-block" href="" target="_blank"><i class="far fa-arrow-alt-circle-right  pull-left"></i>ระบบจองห้องประชุม</a>
-              <a class="btn btn-primary btn-block" href=""><i class="far fa-arrow-alt-circle-right  pull-left"></i>การลงประกาศ</a>
+              <a class="btn btn-primary btn-block" href="https://shorturl.at/WEZe3" target='_blank'><i class="far fa-arrow-alt-circle-right  pull-left"></i>E-Office</a>
+              <!-- <a class="btn btn-primary btn-block" href="" target="_blank"><i class="far fa-arrow-alt-circle-right  pull-left"></i>ระบบจองห้องประชุม</a>
+              <a class="btn btn-primary btn-block" href=""><i class="far fa-arrow-alt-circle-right  pull-left"></i>การลงประกาศ</a> -->
               </div>
             </div>
       </div>
@@ -160,9 +160,9 @@ $num_row = dbNumRows($result);
               <!-- <a class="btn btn-primary btn-block" href=""><i class="fas fa-cogs  pull-left"></i>จัดการอุปกรณ์</a>
               <a class="btn btn-primary btn-block" href=""><i class="fas fa-cogs  pull-left"></i>จัดการเวลา</a> -->
               <!-- <a class="btn btn-primary btn-block" href="meet_wait.php"><i class="fas fa-rss  pull-left"></i>คำขอใช้ห้องประชุม</a> -->
-              <a class="btn btn-primary btn-block" href="meet_index.php"><i class="fas fa-calendar  pull-left"></i>ปฏิทินห้องประชุม</a>
+              <!-- <a class="btn btn-primary btn-block" href="meet_index.php"><i class="fas fa-calendar  pull-left"></i>ปฏิทินห้องประชุม</a>
               <a class="btn btn-primary btn-block" href="meet_index.php"><i class="fas fa-marker  pull-left"></i>จองห้องประชุม</a>
-              <a class="btn btn-primary btn-block" href="meet_room_user.php"><i class="fas fa-kaaba  pull-left"></i>ห้องประชุม</a>
+              <a class="btn btn-primary btn-block" href="meet_room_user.php"><i class="fas fa-kaaba  pull-left"></i>ห้องประชุม</a> -->
               <!-- <a class="btn btn-primary btn-block" href="flow-buy.php"><i class="fas fa-cogs  pull-left"></i>รายการรอยืนยัน</a>
               <a class="btn btn-primary btn-block" href="flow-buy.php"><i class="fas fa-cogs  pull-left"></i>รายการอนุมัติแล้ว</a>
               <a class="btn btn-primary btn-block" href="flow-buy.php"><i class="fas fa-cogs  pull-left"></i>รายการไม่อนุมัติ</a> -->

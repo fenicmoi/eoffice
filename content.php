@@ -60,7 +60,7 @@
    </div>
    <div class="col-md-2">
        <center>
-       <a class="btn-disabled  href="admin/manual/manual-v1.pdf" target="_blank"><i class="fas fa-map-signs fa-10x"></i>
+       <a class="btn-disabled  href="manual2024-v1.pdf" target="_blank"><i class="fas fa-map-signs fa-10x"></i>
             <h4>คู่มือผู้ใช้</h4>
        </a>
        </center>
