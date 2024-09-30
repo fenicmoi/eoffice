@@ -323,7 +323,7 @@ $ystatus = $ystatus;
 									<div class="form-group">
 										<div class="input-group">
 											<span class="input-group-addon"><i class="fas fa-user"></i></span>
-											<input type="text" class="form-control" name="practice" placeholder="ระบุเจ้าหน้าที่ผู้ปฏิบัติ" required>
+											<input type="text" class="form-control" name="practice" placeholder="หมายเหตุ">
 										</div>
 									</div>
 								</td>
@@ -375,8 +375,8 @@ $ystatus = $ystatus;
 					</div>
 					<button type="submit" class="btn btn-danger"><i class="fas fa-print"></i>ตกลง</button>
 					<input type="hidden" name="yid" value="<?php echo $yid?>">
-					<input type="hidden" name="uid" value="<?php echo $uid?>">
-					<input type="hidden" name="username" value="<?=$username?>">
+					<input type="hidden" name="uid" value="<?php echo $u_id?>">
+					<!-- <input type="hidden" name="username" value="<?php //print $username?>"> -->
 				</form>
 				</center>
 			</div>
@@ -407,8 +407,8 @@ $ystatus = $ystatus;
 					<input class="form-control" id="dateEnd" name="dateEnd" type="date">
 					<button type="submit" class="btn btn-danger"><i class="fas fa-print"></i> ตกลง</button>
 					<input type="hidden" name="yid" value="<?php echo $yid?>">
-					<input type="hidden" name="uid" value="<?php echo $uid?>">
-					<input type="hidden" name="username" value="<?=$username?>">
+					<input type="hidden" name="uid" value="<?php echo $u_id?>">
+					<!-- <input type="hidden" name="username" value="<?php //print $username?>"> -->
 				</form>
 			</div>
 			<div class="modal-footer">
