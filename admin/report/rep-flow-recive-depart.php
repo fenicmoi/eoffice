@@ -82,7 +82,7 @@ switch ($rep_time) {
         if($rep_time == 1){  //ช่วงเช้า
             $sql.=" AND time_stamp >= '08:00:00' AND time_stamp <= '12:00:00'";
         }else if($rep_time == 2){  //ช่วงบ่าย
-            $sql.=" AND time_stamp >= '13:00:00' AND time_stamp <= '16:30:00'";
+            $sql.=" AND time_stamp >= '13:00:00' AND time_stamp <= '23:59:00'";
         }else if($rep_time ==''){  //ไม่เลือก
             $$sql.=" ORDER BY cid DESC";
         }
