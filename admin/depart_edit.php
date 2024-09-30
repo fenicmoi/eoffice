@@ -222,7 +222,7 @@ if (isset($_POST['update'])) {
                                                     m_id=$ministry,
                                                     email='$email'
                                                 WHERE dep_id ='$dep_id'";
-                                        echo $sql;
+                                       // echo $sql;
                                         $result = dbQuery($sql);
                                         if (!$result) {
                                             echo "<script>
