@@ -61,7 +61,8 @@ $row=dbFetchAssoc($result);
             <td bgcolor="#F2F2F2" >&nbsp;เรื่อง</td>
             <td bgcolor="#F2F2F2" >&nbsp;จาก</td>
             <td bgcolor="#F2F2F2" >&nbsp;ถึง</td>
-            <td bgcolor="#F2F2F2" >&nbsp;ผู้ปฏิบัติ</td>
+            <td bgcolor="#F2F2F2" >&nbsp;มอบ</td>
+            <td bgcolor="#F2F2F2" >&nbsp;เจ้าหน้าที่</td>
             <td bgcolor="#F2F2F2" width="100" >&nbsp;ลงวันที่</td>
             <td bgcolor="#F2F2F2" width="100" >&nbsp;วันที่ลงรับ</td>
             <td bgcolor="#F2F2F2" width="80" >&nbsp;ลงชื่อผู้รับ</td> 
@@ -91,6 +92,7 @@ $row=dbFetchAssoc($result);
         <td >&nbsp;<?=$rs['sendfrom']?></td>
         <td >&nbsp;<?=$rs['sendto']?></td>
         <td >&nbsp;<?=$rs['sec_name']?></td>
+        <td >&nbsp;<?=$rs['practice']?></td>
         <td >&nbsp;<?=thaiDate($rs['dateout'])?></td>
         <td >&nbsp;<?=thaiDate($rs['datein'])?></td>
         <td >&nbsp;</td>
