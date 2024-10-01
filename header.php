@@ -95,9 +95,7 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav ">
               <li><a class="nav-link active"  href="index.php"><i class="fas fa-home"></i> หน้าแรก</a></li>
-               <li class="dropdown">
-                <a class="btn disabled"  class="dropdown-toggle" data-toggle="dropdown" href="flow-cicle-front.php"><i class="fas fa-users"></i> หนังสือเวียน</a>
-              </li>
+               <li ><a class="btn-link" href="flow-circle-front.php"><i class="fas fa-users"></i> หนังสือเวียน</a></li>
               <li><a class="btn-link"  href="flow-command-front.php"><i class="fas fa-retweet"></i> คำสั่งจังหวัด</a></li>
               <li><a class="btn disabled"   href="flow-command-front.php"><i class="fas fa-list"></i> วาระงานผู้บริหาร </a></li> 
               <li><a class="btn disabled"   href="flow-command-front.php"><i class="fas fa-calendar"></i> การใช้ห้องประชุมจังหวัด </a></li> 
