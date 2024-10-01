@@ -310,7 +310,10 @@ $ystatus = $ystatus;
 												<?php
 												while ( $row = dbFetchArray( $result ) ) {?>
 												<option value="<?php echo $row['sec_id']?>">
-													<?php echo $row['sec_name']?>
+													<?php 
+													echo $row['sec_name'];
+													$sec_id = $row['sec_id'];
+													?>
 												</option>
 												<?php } ?>
 											</select>
@@ -333,6 +336,7 @@ $ystatus = $ystatus;
 							<button class="btn btn-primary btn-lg" type="submit" name="save">
                                 <i class="fa fa-save fa-2x"></i> บันทึก
                                 <input id="yid" name="yid" type="hidden" value="<?php echo $yid; ?>"> 
+								<input id="sec_id" name = "sec_id" type="hidden" value="<?php echo $sec_id;?>
                             </button>
 						</center>
 					</form>

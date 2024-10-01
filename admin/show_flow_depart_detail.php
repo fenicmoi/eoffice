@@ -6,6 +6,7 @@ include '../library/database.php';
 
 $cid=$_POST['cid'];
 $u_id=$_POST['u_id'];
+$sec_id = $_POST['sec_id'];
 $sql="SELECT dep.*,d.dep_name,s.sec_name,y.yname,u.firstname
       FROM flow_recive_depart as dep
       INNER JOIN depart as d ON d.dep_id = dep.dep_id
@@ -47,8 +48,8 @@ $row=dbFetchAssoc($result);
         <td><?php print thaiDate($row['datein']);?> เวลา <?php print $row['time_stamp'];?>&nbsp น.</td>
     </tr>
     <tr>
-        <td><label>ผู้ปฏิบัติ:</label></td>
-        <td><?php print $row['practice'];?></td>
+        <td><label>หน่วยปฏิบัติ:</label></td>
+        <td><?php print $row['sec_name'];?></td>
     </tr>
     <tr>
         <td><label>เจ้าหน้าที่ผู้ลงรับ</label></td>
