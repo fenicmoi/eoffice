@@ -44,6 +44,7 @@ $numrow=dbNumRows($result);
 								<th>กลุ่มงาน</th>
 								<th>วันที่ส่ง</th>
 								<th>รับเอกสาร</th>
+								<th>ส่งผิด</th>
 						</tr>
 				</thead>
 				 <tbody>

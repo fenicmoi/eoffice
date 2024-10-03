@@ -9,7 +9,7 @@ $level_id = $_SESSION['ses_level_id'];
 // รับค่ามาจาก javascript from flow-resive-province
  $book_id = $_GET['book_id'];
 
- $sql="SELECT  bookm.book_id,bookm.rec_id,bookm.typeDoc,bookd.*,o.obj_id,o.obj_name,spe.speed_id,spe.speed_name,p.pri_id,p.pri_name,u.firstname,s.sec_id,s.sec_name,dep.dep_name,year.yname,dep.prefex
+ $sql="SELECT  bookm.book_id,bookm.rec_id,bookm.typeDoc,bookd.*,o.obj_id,o.obj_name,spe.speed_id,spe.speed_name,p.pri_id,p.pri_name,u.firstname, u.lastname, s.sec_id,s.sec_name,dep.dep_name,year.yname,dep.prefex
        FROM  book_master  bookm
        INNER JOIN book_detail bookd ON bookd.book_id = bookm.book_id
        INNER JOIN user u ON  u.u_id = bookm.u_id
@@ -168,7 +168,7 @@ $file_upload = $row['file_upload'];
                 </div>
                 <div class="well bg-warning">
                 
-                 <div class="form-group form-inline">
+                 <!-- <div class="form-group form-inline">
                     <div class="input-group col-xs-5">
                          <span class="input-group-addon"><i class="fas fa-hand-point-right"></i> พิมพ์เลือกหน่วยปฏิบัติ</span>
                         <input class="form-control"  name="show_province1" type="text" id="show_province1"/>
@@ -178,7 +178,7 @@ $file_upload = $row['file_upload'];
                         <span class="input-group-addon"><i class="fab fa-wpforms"></i> รหัสหน่วยงาน</span>
                         <input class="form-control" type="text" name="province_id" id="province_id">
                     </div>
-                </div>
+                </div> -->
                 
                 <div class="form-group form-inline">
                      <div class="input-group col-xs-5">
@@ -202,7 +202,7 @@ $file_upload = $row['file_upload'];
                     </div>
                     <div class="input-group col-xs-5">
                         <span class="input-group-addon"><i class="fas fa-user"></i> เจ้าหน้าที่</span>
-                        <input name="firstname" type="text" class="form-control" value="<?php print $row['firstname'];?>" disabled>
+                        <input name="firstname" type="text" class="form-control" value="<?php print $row['firstname']; echo "&nbsp&nbsp"; print $row['lastname'];?>" disabled>
                     </div>
                 </div>
                 <!-- ตัวแปรส่งไปเพื่่อตรวจสอบกับฐานข้อมูล -->
