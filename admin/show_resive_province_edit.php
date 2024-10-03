@@ -165,7 +165,7 @@ $file_upload = $row['file_upload'];
                         <?php
                         $practice=$row['practice']; 
                         ?>
-                        <select class="form-control" id="practice" name="practice" required="">
+                        <select  class="form-control selectpicker" data-live-search="true" id="practice" name="practice" required="">
                                     <?php
                                         $sql = 'SELECT * FROM depart ORDER BY dep_id';
                                        // echo $sql;
@@ -257,7 +257,7 @@ $file_upload = $row['file_upload'];
     $sendto=$_POST['sendto'];
     $date_book=$_POST['date_book'];       //date of ducument
     $date_in=$_POST['date_in'];
-    $practice=$_POST['h_province_id1'];
+    $practice=$_POST['practice'];
     $practiceCheck=$_POST['practice'];    //ใช้ตรวจสอบกรณีไม่มีการเลือกปฏิบัตหรือว่าผู้ปกิบัติมีอยู่แล้ว
 
     $upload=$_FILES['file_location']['name']; //ตัวแปรสำหรับอ่านค่าไฟล์ต่าง ๆ  $_FILES
