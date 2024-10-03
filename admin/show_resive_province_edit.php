@@ -9,7 +9,15 @@ $level_id = $_SESSION['ses_level_id'];
 // รับค่ามาจาก javascript from flow-resive-province
  $book_id = $_GET['book_id'];
 
- $sql="SELECT  bookm.book_id,bookm.rec_id,bookm.typeDoc,bookd.*,o.obj_id,o.obj_name,spe.speed_id,spe.speed_name,p.pri_id,p.pri_name,u.firstname, u.lastname, s.sec_id,s.sec_name,dep.dep_name,year.yname,dep.prefex
+ $sql="SELECT  bookm.book_id,bookm.rec_id,bookm.typeDoc,bookd.*,
+               o.obj_id,o.obj_name,
+               spe.speed_id,spe.speed_name,
+               p.pri_id,p.pri_name,
+               u.firstname, u.lastname, 
+               s.sec_id,s.sec_name,
+               dep.dep_name,
+               year.yname,
+               dep.prefex
        FROM  book_master  bookm
        INNER JOIN book_detail bookd ON bookd.book_id = bookm.book_id
        INNER JOIN user u ON  u.u_id = bookm.u_id
@@ -20,7 +28,7 @@ $level_id = $_SESSION['ses_level_id'];
        INNER JOIN sys_year year ON year.yid = bookm.yid
        INNER JOIN priority p ON p.pri_id = bookm.pri_id
        WHERE bookm.book_id =$book_id ";
-
+//print $sql;
 $result = dbQuery($sql);
 $row=dbFetchArray($result);
 $strDate = $row['date_in'];
@@ -155,15 +163,25 @@ $file_upload = $row['file_upload'];
                     <div class="input-group col-xs-10">
                         <span class="input-group-addon"><i class="fab fa-jenkins"></i>หน่วยปฏิบัติ</span>
                         <?php
-                        $practice=$row['practice'];
-                            if($practice!='') {
-                                $sql="SELECT dep_name FROM depart WHERE dep_id=$practice";
-                                $result=dbQuery($sql);
-                                $r=dbFetchArray($result);?>
-                                <input class="form-control" type="text" value="<?php print $r['dep_name'];?>" disabled>
-                      <?php }else{ ?>
-                                <input class="form-control" type="text" value="ยังไม่มีหน่วยปฏิบัติ" disabled>
-                      <?php } ?>
+                        $practice=$row['practice']; 
+                        ?>
+                        <select class="form-control" id="practice" name="practice" required="">
+                                    <?php
+                                        $sql = 'SELECT * FROM depart ORDER BY dep_id';
+                                       // echo $sql;
+                                        $result = dbQuery($sql);
+                                        while ($dep_row = dbFetchAssoc($result)) {
+                                            ?>
+                                            <option value="<?php echo $dep_row['dep_id']; ?>" <?php if ($dep_row['dep_id'] == $row['practice']) {
+                                                echo 'selected';
+                                            } ?>>
+                                                <?php echo $dep_row['dep_name']; ?>
+                                            </option>
+                                    <?php
+                                        }
+                                    ?>
+                        </select>
+                               
                     </div>
                 </div>
                 <div class="well bg-warning">
