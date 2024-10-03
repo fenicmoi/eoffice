@@ -186,18 +186,6 @@ $file_upload = $row['file_upload'];
                 </div>
                 <div class="well bg-warning">
                 
-                 <!-- <div class="form-group form-inline">
-                    <div class="input-group col-xs-5">
-                         <span class="input-group-addon"><i class="fas fa-hand-point-right"></i> พิมพ์เลือกหน่วยปฏิบัติ</span>
-                        <input class="form-control"  name="show_province1" type="text" id="show_province1"/>
-                        <input name="h_province_id1" type="hidden" id="h_province_id1" value="" / >
-                    </div>
-                    <div class="input-group col-xs-2">
-                        <span class="input-group-addon"><i class="fab fa-wpforms"></i> รหัสหน่วยงาน</span>
-                        <input class="form-control" type="text" name="province_id" id="province_id">
-                    </div>
-                </div> -->
-                
                 <div class="form-group form-inline">
                      <div class="input-group col-xs-5">
                        <span class="input-group-addon"><i class="fas fa-upload fa-2x"></i> เลือกไฟล์เพื่อแนบเอกสาร</span>
@@ -226,7 +214,7 @@ $file_upload = $row['file_upload'];
                 <!-- ตัวแปรส่งไปเพื่่อตรวจสอบกับฐานข้อมูล -->
                 <input name="book_id" type="hidden" name="book_id" value="<?php echo $row['book_id'];?>">    
                 <input name="book_detail_id" type="hidden"  value="<?php echo $row['book_detail_id'];?>">
-                <input name="practice" type="hidden" value="<?php echo $row['practice'];?>">
+                <!-- <input name="practice" type="hidden" value="<?php echo $row['practice'];?>"> -->
                 <center>
                         <input class="btn btn-warning btn-lg" type="submit" name="update" value="ตกลง">&nbsp&nbsp
                         <a class="btn btn-danger btn-lg" href="flow-resive-province.php">ยกเลิก</a>
@@ -294,9 +282,11 @@ $file_upload = $row['file_upload'];
                                  date_book='$date_book',
                                  date_in='$date_in',
                                  practice=$practice,
-                                 file_location='$part_copy' WHERE book_detail_id=$book_detail_id";
+                                 file_location='$part_copy' 
+                                 WHERE book_detail_id=$book_detail_id";
+        echo $sql;
         $result2=dbQuery($sql);
-
+   
          if($result1 && $result2){
             dbQuery("COMMIT");
             echo "<script>
