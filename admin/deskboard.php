@@ -209,13 +209,13 @@
                             <div class="quote-container">
                                         <i class="pin"></i>
                                         <blockquote class="note yellow">
-                                            <kbd><img src='../images/new.gif'>New Update</kbd>
+                                            <kbd><img src='../images/new.gif'>Tip</kbd>
                                             <br>
-                                            <caption>สำนักงานจังหวัดได้เพิ่มระบบให้ใช้งานใหม่ดังนี้</caption>
+                                            <caption>จังหวัดพัทลุงเพิ่ม ระบบใหม่ ดังนี้/caption>
                                             <ol>
-                                            <li>ระบบออกเลขคำสั่งจังหวัด</li>
-                                            <li>ระบบออกเลขสัญญาซื้อขาย/สัญญาจ้างจังหวัด</li>
-                                            <li>ระบบออกเลขทะเบียนส่งจังหวัด(ธรรมดา/เวียน)</li>
+                                            <li>ระบบงานสารบรรณเต็มรูปแบบ</li>
+                                            <li>ระบรับ-ส่งหนังสือ</li>
+                                            <li>และระบบอื่นๆ</li>
                                             </ol>
                                             <cite class="author">Developer</cite>
                                         </blockquote>
@@ -225,12 +225,13 @@
                                     <div class="quote-container">
                                         <i class="pin"></i>
                                         <blockquote class="note yellow">
-                                            <i class="fas fa-chat"></i>Tip การจองห้องประชุม <br>
+                                            <i class="fas fa-chat"></i>warning <br>
                                             <ol>
-                                                    <li>ดาวน์โหลดเอกสารคำขออนุัติการใช้ห้องประชุมเพื่อกรอกรายละเอียด <a class="btn btn-primary" href="doc/form_meeting.pdf">Download</a></li>
+                                                    <!-- <li>ดาวน์โหลดเอกสารคำขออนุัติการใช้ห้องประชุมเพื่อกรอกรายละเอียด <a class="btn btn-primary" href="doc/form_meeting.pdf">Download</a></li>
                                                     <li>ไปที่ระบบการจองห้องประชุม -> บันทึกรายเอียด -> แนบไฟล์คำขอ</li>
                                                     <li>ชำระเงิน (กรณ๊ต้องชำระ) ก่อนการประชุม 1 วัน</li>
-                                                    <li>ติดตามผลการอนุมัติ</li>
+                                                    <li>ติดตามผลการอนุมัติ</li> -->
+                                                    <li>ระบบ รับ - ส่ง หนังสือสำนักงานจังหวัดระบบเดิม กำหนดปิดใช้ในในเร็วๆ นี้</li>
                                             </ol>
                                             <cite class="author">สำนักงานจังหวัดพัทลุง</cite>
                                         </blockquote>
