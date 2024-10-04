@@ -10,14 +10,28 @@ $u_id=$_SESSION['ses_u_id'];
 	include $menu;
  ?>
 </div>
-<?php
 
-$sql="SELECT u.puid, u.pid,p.postdate,p.title,p.file,p.book_no,d.dep_name,s.sec_name,us.firstname FROM paperuser u
+<?php
+print $level_id;
+//ให้ admin  ดูหนังสือได้ทั้งหมด
+if ($level_id == 1) {  //กรณีเป็น  Admin
+	$sql="SELECT u.puid, u.pid,p.postdate,p.title,p.file,p.book_no,d.dep_name,s.sec_name,us.firstname FROM paperuser u
       INNER JOIN paper p  ON p.pid=u.pid
       INNER JOIN depart d ON d.dep_id=p.dep_id
 	  INNER JOIN section s ON s.sec_id = p.sec_id
 	  INNER JOIN user as us ON us.u_id = p.u_id
-      WHERE u.u_id=$u_id AND u.confirm=0 ORDER BY u.puid DESC" ;
+      ORDER BY u.puid DESC" ;
+}else{   //กรณีไม่ใช่ admin
+	  $sql="SELECT u.puid, u.pid,p.postdate,p.title,p.file,p.book_no,d.dep_name,s.sec_name,us.firstname FROM paperuser u
+	  INNER JOIN paper p  ON p.pid=u.pid
+	  INNER JOIN depart d ON d.dep_id=p.dep_id
+	  INNER JOIN section s ON s.sec_id = p.sec_id
+	  INNER JOIN user as us ON us.u_id = p.u_id
+	  WHERE u.u_id=$u_id AND u.confirm=0 ORDER BY u.puid DESC" ;
+}
+
+
+
 //print $sql;
 $result = page_query( $dbConn, $sql, 10 );
 $numrow=dbNumRows($result);
@@ -43,8 +57,7 @@ $numrow=dbNumRows($result);
 								<th>หน่วยส่ง</th>
 								<th>กลุ่มงาน</th>
 								<th>วันที่ส่ง</th>
-								<th>รับเอกสาร</th>
-								<th>ส่งผิด</th>
+								<th>ลงรับ</th>
 						</tr>
 				</thead>
 				 <tbody>
@@ -70,8 +83,12 @@ $numrow=dbNumRows($result);
 											<?php
 												if($level_id>5) {?>
 														<td><kbd>จำกัดสิทธิ์</kbd></td>
-											 <?php } else{?>
-														<td><a class="btn btn-success" href="recive.php?pid=<?php echo $rowNew['pid']; ?>&sec_id=<?php echo $sec_id; ?>&dep_id=<?php echo $dep_id; ?>"><i class="fas fa-check"></i> ลงรับ</a></td>
+											 <?php }else{?>
+														<td>
+															<a class="btn btn-success" 
+															   href="recive.php?pid=<?php echo $rowNew['pid'];?>&sec_id=<?php echo $sec_id; ?>&dep_id=<?php echo $dep_id; ?>"><i class="fas fa-check"></i> ลงรับ
+															</a>
+														</td>
 											 <?php } ?>
 
 										</tr>
