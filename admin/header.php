@@ -50,7 +50,7 @@ if($u_id){
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-     <meta name="description" content="ระบบสารบรรณจังหวัดพังงา">
+     <meta name="description" content="ระบบสารบรรณจังหวัดพัทลุง">
     <meta name="author" content="นายสมศักดิ์  แก้วเกลี้ยง">
     <link rel="icon" href="../images/favicon.ico">
     <title><?php echo $title;
