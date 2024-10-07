@@ -10,42 +10,28 @@ $u_id=$_SESSION['ses_u_id'];
 	include $menu;
  ?>
 </div>
-
 <?php
-print $level_id;
-//ให้ admin  ดูหนังสือได้ทั้งหมด
-if ($level_id == 1) {  //กรณีเป็น  Admin
-	$sql="SELECT u.puid, u.pid,p.postdate,p.title,p.file,p.book_no,d.dep_name,s.sec_name,us.firstname FROM paperuser u
+
+$sql="SELECT u.puid, u.pid,p.postdate,p.title,p.file,p.book_no,d.dep_name,s.sec_name,us.firstname FROM paperuser u
       INNER JOIN paper p  ON p.pid=u.pid
       INNER JOIN depart d ON d.dep_id=p.dep_id
 	  INNER JOIN section s ON s.sec_id = p.sec_id
 	  INNER JOIN user as us ON us.u_id = p.u_id
-      ORDER BY u.puid DESC" ;
-}else{   //กรณีไม่ใช่ admin
-	  $sql="SELECT u.puid, u.pid,p.postdate,p.title,p.file,p.book_no,d.dep_name,s.sec_name,us.firstname FROM paperuser u
-	  INNER JOIN paper p  ON p.pid=u.pid
-	  INNER JOIN depart d ON d.dep_id=p.dep_id
-	  INNER JOIN section s ON s.sec_id = p.sec_id
-	  INNER JOIN user as us ON us.u_id = p.u_id
-	  WHERE u.u_id=$u_id AND u.confirm=0 ORDER BY u.puid DESC" ;
-}
-
-
-
+      WHERE u.u_id=$u_id AND u.confirm=0 ORDER BY u.puid DESC" ;
 //print $sql;
 $result = page_query( $dbConn, $sql, 10 );
 $numrow=dbNumRows($result);
 ?>
  <div class="col-md-10">
 	            <div class="panel panel-primary">
-                <div class="panel-heading"><i class="fas fa-share-square fa-2x"></i>  <strong>ส่งหนังสือ</strong></div>
+                <div class="panel-heading"><i class="fas fa-share-square fa-2x"></i>  <strong>ส่งไฟล์เอกสาร</strong></div>
                 <div class="panel-body">                  
                             <ul class="nav nav-tabs">
-								<li class="active"><a class="btn-danger fas fa-envelope"  href="paper.php"> หนังสือเข้า</a></li>
-								<li><a class="btn-danger fas fa-envelope-open"  href="folder.php"> หนังสือลงรับแล้ว</a></li>
-								<li><a class="btn-danger fas fa-history" href="history.php"> ติดตามหนังสือส่ง</a></li>
-								<li ><a class="btn-danger fas fa-paper-plane" href="inside_all.php"> ส่งภายในหน่วย</a></li>
-								<li><a class="btn-danger fas fa-globe" href="outside_all.php"> ส่งระหว่างหน่วย</a></li>
+                                <li class="active"  ><a class="btn-danger fas fa-envelope"  href="paper.php">  จดหมายเข้า</a></li>
+                                <li><a class="btn-danger fas fa-envelope-open"  href="folder.php"> รับแล้ว</a></li>
+                                <li><a class="btn-danger fas fa-history" href="history.php"> ส่งแล้ว</a></li>
+                                <li><a class="btn-danger fas fa-paper-plane" href="inside_all.php"> ส่งภายใน</a></li>
+                                <li><a class="btn-danger fas fa-globe" href="outside_all.php"> ส่งภายนอก</a></li>
                             </ul>
                
 			<table class="table table-bordered table-hover" id="tbNew" >
@@ -57,7 +43,7 @@ $numrow=dbNumRows($result);
 								<th>หน่วยส่ง</th>
 								<th>กลุ่มงาน</th>
 								<th>วันที่ส่ง</th>
-								<th>ลงรับ</th>
+								<th>รับเอกสาร</th>
 						</tr>
 				</thead>
 				 <tbody>
@@ -83,12 +69,8 @@ $numrow=dbNumRows($result);
 											<?php
 												if($level_id>5) {?>
 														<td><kbd>จำกัดสิทธิ์</kbd></td>
-											 <?php }else{?>
-														<td>
-															<a class="btn btn-success" 
-															   href="recive.php?pid=<?php echo $rowNew['pid'];?>&sec_id=<?php echo $sec_id; ?>&dep_id=<?php echo $dep_id; ?>"><i class="fas fa-check"></i> ลงรับ
-															</a>
-														</td>
+											 <?php } else{?>
+														<td><a class="btn btn-success" href="recive.php?pid=<?php echo $rowNew['pid']; ?>&sec_id=<?php echo $sec_id; ?>&dep_id=<?php echo $dep_id; ?>"><i class="fas fa-check"></i> ลงรับ</a></td>
 											 <?php } ?>
 
 										</tr>

@@ -3,6 +3,7 @@
 <?php
 include "header.php";
 $u_id = $_SESSION[ 'ses_u_id' ];
+//echo $u_id;
 //ตรวจสอบปีเอกสาร
 list( $yid, $yname, $ystatus ) = chkYear();
 $yid = $yid;
@@ -256,7 +257,7 @@ $ystatus = $ystatus;
 						<div class="form-group col-md-8">
 							<div class="input-group">
 								<span class="input-group-addon">ผู้รับ</span>
-								<input class="form-control" type="text" name="sendto" id="sendto" placeholder="ระบุผู้รับหนังสือ" value="ผู้ว่าราชการจังหวัดพังงา">
+								<input class="form-control" type="text" name="sendto" id="sendto" placeholder="ระบุผู้รับหนังสือ" value="ผู้ว่าราชการจังหวัดพัทลุง">
 							</div>
 						</div>
 
@@ -375,7 +376,7 @@ $ystatus = $ystatus;
 					
 					</center>
 					<input type="hidden" name="yid" value="<?php print $yid?>">
-					<input type="hidden" name="uid" value="<?php print $uid?>">
+					<input type="hidden" name="uid" value="<?php print $u_id?>">
 					</td>
 					<input type="hidden" name="username" value="<?=$username?>">
 					</td>

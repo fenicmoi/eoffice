@@ -59,7 +59,7 @@ if(!isset($_SESSION['ses_u_id'])){
     <div class="panel panel-info">
       <div class="panel-heading">
         <h4 class="panel-title">
-            <span class="fa fa-briefcase"></span><a data-toggle="collapse" data-parent="#accordion" href="#collapse3"> เลขคำสั่งจังหวัด</a>
+            <span class="fa fa-briefcase"></span><a data-toggle="collapse" data-parent="#accordion" href="#collapse3"> ระบบงานสารบรรณ</a>
         </h4>
       </div>
       <div id="collapse3" class="panel-collapse collapse">
@@ -80,12 +80,13 @@ if(!isset($_SESSION['ses_u_id'])){
     <div class="panel panel-info">
       <div class="panel-heading">
         <h4 class="panel-title">
-            <span class="fa fa-id-card"></span><a data-toggle="collapse" data-parent="#accordion" href="#collapse4"> ส่งเอกสาร/ติดตามแฟ้ม</a>
+            <span class="fa fa-id-card"></span><a data-toggle="collapse" data-parent="#accordion" href="#collapse4"> ระบบรับ-ส่งเอกสาร</a>
         </h4>
       </div>
       <div id="collapse4" class="panel-collapse collapse">
             <div class="panel-body">
             <div class="panel-body">
+            <a class="btn btn-primary btn-block" href="paper-all.php"><i class="fas fa-envelope  pull-left"></i>เอกสารทั้งหมด</a>
             <a class="btn btn-primary btn-block" href="paper.php"><i class="fas fa-envelope  pull-left"></i>จดหมายเข้า</a>
             <a class="btn btn-primary btn-block" href="folder.php"><i class="far fa-envelope-open  pull-left"></i>รับแล้ว</a>
             <a class="btn btn-primary btn-block" href="history.php"><i class="fas fa-folder-open  pull-left"></i>ส่งแล้ว</a>
