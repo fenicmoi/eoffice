@@ -30,12 +30,7 @@ include "../../library/config.php";
 include "../../library/database.php";
 include "../function.php";
 
-/*
-$sql="SELECT d.dep_name,s.sec_name,u.firstname FROM depart as d
-      INNER JOIN section as s ON s.dep_id=d.dep_id
-      INNER JOIN user as u on u.u_id = 
-      WHERE d.dep_id=$dep_id AND s.sec_id=$sec_id ";
-      */
+
 
 $sql = "SELECT  f.*, d.dep_name, s.sec_name, u.firstname 
         FROM flow_recive_group  f 
@@ -43,19 +38,6 @@ $sql = "SELECT  f.*, d.dep_name, s.sec_name, u.firstname
         INNER JOIN section  s ON s.sec_id = s.sec_id
         INNER JOIN user  u ON  u.u_id = f.practice
         WHERE datein='$dateprint'  AND s.sec_id = $sec_id" ;
-
-/*  original
-$sql = "SELECT f.*,d.dep_name,s.sec_name,u.firstname FROM flow_recive_group as f 
-        INNER JOIN section as s ON s.dep_id=d.dep_id
-        INNER JOIN user as u on u.u_id = 
-        WHERE d.dep_id=$dep_id AND s.sec_id = $sec_id"; 
-*/
-
-//print $sql;
-/*
-$result=dbQuery($sql);
-$row=dbFetchAssoc($result);
-*/
 
 ?>
 
