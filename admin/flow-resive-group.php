@@ -94,9 +94,11 @@ $ystatus = $ystatus;
 			</tr>
 			<tr>
 				<th>ท/บ รับ</th>
-				<th>เลขที่เอกสาร</th>
+				<th>เลขหนังสือ</th>
+				<th>ลวท.</th>
+				<th>วันรับ</th>
 				<th>เรื่อง</th>
-				<th>ผู้ปฏิบัติ</th>
+				<th>มอบ</th>
 				<th>สถานะ</th>
 			</tr>
 		</thead>
@@ -154,6 +156,8 @@ $ystatus = $ystatus;
 			<tr>
 				<td> <?php echo $row['rec_no']; ?>/<?php echo $row['yname']; ?> </td>
 				<td> <?php echo $row['book_no']; ?> </td>
+				<td> <?php echo thaiDate($row['dateout']); ?></td>
+				<td> <?php echo thaiDate($row['datein']); ?></td>
 			<?php
 			 $cid=$row['cid']; 
 			
@@ -174,7 +178,7 @@ $ystatus = $ystatus;
 					<?php }?>
 					
 				</td>
-				<td> <?php echo $row['firstname']; ?> </td>
+				<td><?php echo $row['firstname'];?></td>
 				<td>
 					<?php
 					if ( $row[ 'status' ] == 0 ) { ?>
