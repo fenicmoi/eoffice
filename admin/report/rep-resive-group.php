@@ -17,7 +17,6 @@ ob_start(); // ทำการเก็บค่า html นะครับ
 session_start();
 $dep_id=$_SESSION['ses_dep_id'];
 $sec_id=$_SESSION['ses_sec_id'];
-
 $dateprint=$_POST['dateprint'];
 $uid=$_POST['uid'];
 $yid=$_POST['yid'];
@@ -31,30 +30,36 @@ include "../../library/database.php";
 include "../function.php";
 
 
-
+/*
 $sql = "SELECT  f.*, d.dep_name, s.sec_name, u.firstname 
         FROM flow_recive_group  f 
         INNER JOIN depart  d ON  d.dep_id = f.dep_id
         INNER JOIN section  s ON s.sec_id = s.sec_id
         INNER JOIN user  u ON  u.u_id = f.practice
         WHERE datein='$dateprint'  AND s.sec_id = $sec_id" ;
+*/
 
+$sql = "SELECT f.rec_no, f.book_no, f.title, f.dateout, f.datein, f.sendfrom, f.sec_id, f.practice, u.firstname
+        FROM  flow_recive_group as f  
+        INNER JOIN  user as u ON u.u_id = f.practice
+        WHERE f.datein LIKE '$dateprint' AND f.sec_id = $sec_id ORDER BY f.cid DESC"
+//print $sql;
 ?>
 
 
     <table cellspacing="0" cellpadding="1" border="1" style="width:1100px;">
         <tr> 
-        	<td colspan="7"><center><h3>รายงานทะเบียนหนังสือรับ  วันที่ <?= dateThai($dateprint)?> #<?=$row['sec_name'];?></h3></center></td>
+        	<td colspan="8"><center><h3>รายงานทะเบียนหนังสือรับ  วันที่ <?= dateThai($dateprint)?> #<?=$row['sec_name'];?></h3></center></td>
         </tr> 
         <tr> 
-        	<td colspan="7"><center><h4>วันที่ออกรายงาน <?php echo  DateThai(); ?></h4></center></td>
+        	<td colspan="8"><center><h4>วันที่ออกรายงาน <?php echo  DateThai(); ?></h4></center></td>
         </tr>  
         <tr>
             <td width="50" align="center" bgcolor="#F2F2F2">#</td>
             <td bgcolor="#F2F2F2" >&nbsp;เลขรับ</td>
             <td bgcolor="#F2F2F2" >&nbsp;เลขหนังสือ</td>
             <td bgcolor="#F2F2F2" >&nbsp;เรื่อง</td>
-            <td bgcolor="#F2F2F2" width="100" >&nbsp;ลงวันที่</td>
+            <td bgcolor="#F2F2F2" width="100" >&nbsp;วันรับ</td>
             <td bgcolor="#F2F2F2" >&nbsp;ต้นเรื่อง</td>
             <td bgcolor="#F2F2F2" >&nbsp;ผู้ปฏิบัติ</td>
             <td bgcolor="#F2F2F2" width="80" >&nbsp;ลงชื่อผู้รับ</td> 

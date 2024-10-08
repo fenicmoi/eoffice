@@ -128,7 +128,7 @@ while ( $rowList = dbFetchArray( $result ) ) { ?>
 				$numday = getNumDay($d1,$d2);
 			
 			//กำหนดให้แก้ไขได้ 1 วันเท่านั้น
-			if ($numday > 1) {?>       
+			if ($numday > 3) {?>       
 				<td><center><i class="fab fa-expeditedssl fa-2x"></i></center></td>
 			<?php }else{
 						if($rowList['insite']==1){?>
