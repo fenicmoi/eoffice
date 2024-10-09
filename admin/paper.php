@@ -43,7 +43,8 @@ $numrow=dbNumRows($result);
 								<th>หน่วยส่ง</th>
 								<th>กลุ่มงาน</th>
 								<th>วันที่ส่ง</th>
-								<th>รับเอกสาร</th>
+								<th>รับ</th>
+								<th>คืน</th>
 						</tr>
 				</thead>
 				 <tbody>

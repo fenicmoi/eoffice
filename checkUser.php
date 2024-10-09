@@ -75,7 +75,7 @@ else{
 	}
 }
 echo "</div>";
-
+mysqli_close($mysqli);
 
 include 'footer.php';
 ?>
