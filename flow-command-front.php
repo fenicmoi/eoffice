@@ -145,7 +145,7 @@ $ystatus=$ystatus;
                                             ?>
                                         </td>
                                         <td><?php echo thaiDate($row['dateout']); ?></td>
-                                        <td><?=$row['firstname']?> </td>
+                                        <td><?=$row['dep_name']?> </td>
                                     </tr>
                                     <?php }?>
                                   <tr>
