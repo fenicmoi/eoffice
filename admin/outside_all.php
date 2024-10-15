@@ -240,16 +240,31 @@ if(isset($_POST['sendOut'])){//ตรวจสอบปุ่ม sendOut
 	
 	//$	book_id=$_GET['book_id'];
 	
-
 	if($upload<>''){
-		
+		$allowed_types = array('image/jpeg', 'image/png', 'application/pdf');  
 		$part="paper/";
-		
-		$type=  strrchr($_FILES['fileupload']['name'],".");   //เอาชื่อเก่าออกให้เหลือแต่นามสกุล
-		$newname=$date.$numrand.$type;   //ตั้งชื่อไฟล์ใหม่โดยใช้เวลา 
-		$part_copy=$part.$newname;
-		$part_link="paper/".$newname;
-		move_uploaded_file($_FILES['fileupload']['tmp_name'],$part_copy);    //คัดลอกไฟล์ไป Server
+        
+        //ตรวจสอบประเภทของไฟล์
+        if(in_array($upload['type'], $allowed_types)){  
+            $type=  strrchr($_FILES['fileupload']['name'],".");   //เอาชื่อเก่าออกให้เหลือแต่นามสกุล
+		    $newname=$date.$numrand.$type;   //ตั้งชื่อไฟล์ใหม่โดยใช้เวลา 
+		    $part_copy=$part.$newname;
+		    $part_link="paper/".$newname;
+		    move_uploaded_file($_FILES['fileupload']['tmp_name'],$part_copy);    //คัดลอกไฟล์ไป Server
+        }else{
+            echo "<script>
+            swal({
+                title:'ไฟล์ที่  upload ไม่อยู่ในรูปแบบที่ได้รับอนุญาต ',
+                type:'warning',
+                showConfirmButton:true
+                },
+                function(isConfirm){
+                    if(isConfirm){
+                        window.location.href='outside_all.php';
+                    }
+                }); 
+            </script>";
+        } 
 	}
 	
 	//กรณีส่งให้ทุกส่วนราชการ
