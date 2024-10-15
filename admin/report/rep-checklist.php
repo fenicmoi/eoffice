@@ -73,7 +73,7 @@ include "../function.php";
                     INNER JOIN paper u ON u.pid = p.pid
                     INNER JOIN depart d   ON  p.dep_id=d.dep_id
                     INNER JOIN section s ON s.sec_id=p.sec_id
-                    WHERE p.pid=$pid  ORDER BY confirm ASC
+                    WHERE p.pid=$pid  ORDER BY p.confirm ASC
                     ";
                 print $sql;
                 $result=dbQuery($sql);
