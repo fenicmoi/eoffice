@@ -242,32 +242,6 @@ else{
       </div>
     </div>
     <!-- End Model -->
-<?php  //useronline
-//user online
-$session=session_id();
-$time=time();
-$time_check=$time-600;
-//print $time_check;
-//กำหนดเวลาในที่นี้ผมกำหนด 10 นาที
-$sql="select * from user_online";
-//print $sql;
-$result = dbQuery($sql);
-$session_check = dbNumRows($result);
-//echo "session_check".$session_check;
-if ($session_check == 0) {
-    $sql="insert into user_online values ('$session',$time)";
-    //print $sql;
-    dbQuery($sql);
-}
-else {
-    $sql="update user_online set time='$time' where session='$session'";
-    //print $sql;
-	dbQuery($sql);
-}
-$sql="select count(*) from user_online";
-$result= dbQuery($sql);
-$user_online = dbNumRows($result);
 
-?>
     <div class="container-fluse">    
 
