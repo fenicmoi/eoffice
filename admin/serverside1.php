@@ -10,7 +10,7 @@ $columns = array(
 // datatable column index  => database column name
 	0 => 'firstname', 
 	1 => 'lastname',
-	2 => 'position'
+	2 => 'position',
 );
 
 // getting total number records without any search
@@ -38,10 +38,12 @@ if( !empty($requestData['search']['value']) ) {   // if there is a search parame
 //$query=mysqli_query($conn, $sql) or die("employee-grid-data.php: get employees");
 $query = dbQuery($sql) or die("serverside1.php: get user query2");
 $totalFiltered = dbNumRows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
-$sql.=" ORDER BY ". $columns[$requestData['order'][0]['column']]."   ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
+$sql.=" 
+        ORDER BY ". $columns[$requestData['order'][0]['column']]."   ".$requestData['order'][0]['dir']."  
+		LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc*/	
 //$query=mysqli_query($conn, $sql) or die("employee-grid-data.php: get employees");
-echo $requestData['length'];
+//echo $requestData['length'];
 //echo $sql;
 $query = dbQuery($sql) or die("serverside1.php: get use query3r");
 

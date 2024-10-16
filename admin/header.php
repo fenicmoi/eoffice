@@ -98,9 +98,11 @@ if($u_id){
 
     <script type="text/javascript" src="../js/jquery.alphanumeric.js"></script>
     <script>
+      /*
       $(document).ready( function () {
           $('#myTable').DataTable();
       } );
+      */
 
     </script>
 

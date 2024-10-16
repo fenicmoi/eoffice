@@ -1,7 +1,7 @@
 <?php include "header.php";?>
 <script type="text/javascript" language="javascript" >
 			$(document).ready(function() {
-				var dataTable = $('#myData').DataTable( {
+				var dataTable = $('#myTable').DataTable( {
 					"processing": true,
 					"serverSide": true,
 					"ajax":{
@@ -20,7 +20,7 @@
 	<body>
 		<div class="header"><h1>DataTable demo (Server side) in Php,Mysql and Ajax By fordev22.com  </h1></div>
 		<div class="container">
-			<table id="myTable"  cellpadding="0" cellspacing="0" border="0" class="display" width="100%">
+			<table id="myTable" cellpadding="0" cellspacing="0" border="0" class="display" width="100%">
 					<thead>
 						<tr>
 							<th>firstname</th>
@@ -28,6 +28,11 @@
 							<th>position</th>
 						</tr>
 					</thead>
+					<tfoot>
+							<th>firstname</th>
+							<th>lastname</th>
+							<th>position</th>
+					</tfoot>
 			</table>
 		</div>
 	</body>
