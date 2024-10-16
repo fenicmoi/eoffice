@@ -10,6 +10,7 @@ $u_id=$_SESSION['ses_u_id'];
 	include $menu;
  ?>
 </div>
+
 <?php
 
 $sql = "SELECT p.*,d.dep_name,s.sec_name 
@@ -25,7 +26,7 @@ $numrow=dbNumRows($result);
 	            <div class="panel panel-primary">
                 <div class="panel-heading"><i class="fas fa-share-square fa-2x"></i>  <strong>ตรวจสอบเอกสารที่ส่งทั้งหมดในระบบ</strong></div>
                 <div class="panel-body">                  
-			<table class="table table-bordered table-hover" id="tbNew" >
+			<table class="table table-bordered table-hover" id="myTable" >
 				<thead>
 						<tr bgcolor="#C8C5C5">
 								<th></th>
@@ -62,11 +63,13 @@ $numrow=dbNumRows($result);
 		<div class="panel-footer">
 			<center>
 				<?php 
+				/*
 						page_link_border("solid","1px","gray");
 						page_link_bg_color("lightblue","pink");
 						page_link_font("14px");
 						page_link_color("blue","red");
 						page_echo_pagenums(10,true); 
+						*/
 				?>
 			</center>
 		</div>

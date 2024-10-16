@@ -100,7 +100,6 @@ if($u_id){
     <script>
       $(document).ready( function () {
           $('#myTable').DataTable();
-          $('.select-unit').select2();
       } );
 
     </script>
