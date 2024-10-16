@@ -2,6 +2,7 @@
 <script type="text/javascript" language="javascript" >
 			$(document).ready(function() {
 				var dataTable = $('#myTable').DataTable( {
+					"order": [[ 0, "desc" ]],
 					"processing": true,
 					"serverSide": true,
 					"ajax":{
@@ -23,12 +24,14 @@
 			<table id="myTable" cellpadding="0" cellspacing="0" border="0" class="display" width="100%">
 					<thead>
 						<tr>
+							<th>u_id</th>
 							<th>firstname</th>
 							<th>lastname</th>
 							<th>position</th>
 						</tr>
 					</thead>
 					<tfoot>
+							<th>u_id</th>
 							<th>firstname</th>
 							<th>lastname</th>
 							<th>position</th>

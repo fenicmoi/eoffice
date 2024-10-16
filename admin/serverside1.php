@@ -8,13 +8,16 @@ $requestData= $_REQUEST;
 //ฟิลด์ที่จะเอามาแสดงและค้นหา
 $columns = array( 
 // datatable column index  => database column name
-	0 => 'firstname', 
-	1 => 'lastname',
-	2 => 'position',
+
+	0 => 'u_id', 
+	1 => 'firstname',
+	2 => 'lastname',
+	3 => 'position',
+
 );
 
 // getting total number records without any search
-$sql = "SELECT firstname, lastname, position";
+$sql = "SELECT u_id, firstname, lastname, position";
 $sql.=" FROM user";
 
 $query = dbQuery($sql);
@@ -27,7 +30,7 @@ $totalData = dbNumRows($query) or die("serverside1.php: get user totalData");
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 
-$sql = "SELECT firstname, lastname, position ";
+$sql = "SELECT u_id, firstname, lastname, position ";
 $sql.=" FROM user WHERE 1=1";
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 	$sql.=" AND ( firstname LIKE '".$requestData['search']['value']."%' ";    
@@ -50,6 +53,7 @@ $query = dbQuery($sql) or die("serverside1.php: get use query3r");
 $data = array();
 while( $row= dbFetchArray($query) ) {  // preparing an array
 	$nestedData=array(); 
+	$nestedData[] = $row["u_id"];
 	$nestedData[] = $row["firstname"];
 	$nestedData[] = $row["lastname"];
 	$nestedData[] = $row["position"];
