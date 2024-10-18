@@ -62,21 +62,8 @@
 
 <link href="css/dataTables.css" rel="stylesheet">
 <script src="js/dataTables.js"></script>
-<script>
-      $(document).ready( function () {
-          $('#myTable').DataTable();
-      } );
-    </script>
 
-<!-- popup แสดงข่าวสารหน้าแรก-->
 
-<script type="text/javascript">
-/*
-	$(document).ready(function(){
-		$("#popupModal").modal('show');
-	});
-  */
-</script>
   </head>
   <body>
     <!-- Fixed navbar -->

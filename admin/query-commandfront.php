@@ -7,8 +7,6 @@ $requestData= $_REQUEST;
 
 //ฟิลด์ที่จะเอามาแสดงและค้นหา
 $columns = array( 
-// datatable column index  => database column name
-
 	0 => 'rec_id', 
 	1 => 'title',
 	2 => 'file_upload',
@@ -41,16 +39,11 @@ if( !empty($requestData['search']['value']) ) {   // if there is a search parame
 	$sql.=" OR dep_name LIKE '".$requestData['search']['value']."%' )";
 }
 
-//$query=mysqli_query($conn, $sql) or die("employee-grid-data.php: get employees");
 $query = dbQuery($sql) or die("query-commandfront.php: get view commandfront query2");
 $totalFiltered = dbNumRows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
-$sql.=" 
-        ORDER BY ". $columns[$requestData['order'][0]['column']]."   ".$requestData['order'][0]['dir']."  
+$sql.=" ORDER BY ". $columns[$requestData['order'][0]['column']]."   ".$requestData['order'][0]['dir']."  
 		LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
-/* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc*/	
-//$query=mysqli_query($conn, $sql) or die("employee-grid-data.php: get employees");
-//echo $requestData['length'];
-//echo $sql;
+
 
 $query = dbQuery($sql) or die("query-commandfront.php: get use query3r");
 

@@ -43,6 +43,13 @@ $ystatus=$ystatus;
                                 <th width="20%">เจ้าของเรื่อง</th>
                             </tr>
                         </thead>
+                        <tfoot>
+                        <th width="5%">เลขที่คำสั่ง</th>
+                                <th width="60%">เรื่อง</th>
+                                <th width="5%">ไฟล์แนบ</th>
+                                <th width="10%">ลงวันที่</th>
+                                <th width="20%">เจ้าของเรื่อง</th>
+                        </tfoot>
                        
                     </table>
             </div>
