@@ -71,7 +71,23 @@ $numrow=dbNumRows($result);
 												if($level_id>5) {?>
 														<td><kbd>จำกัดสิทธิ์</kbd></td>
 											 <?php } else{?>
-														<td><a class="btn btn-success" href="recive.php?pid=<?php echo $rowNew['pid']; ?>&sec_id=<?php echo $sec_id; ?>&dep_id=<?php echo $dep_id; ?>"><i class="fas fa-check"></i> ลงรับ</a></td>
+														<td>
+															<a class="btn btn-warning"
+															 href="recive.php?pid=<?php echo $rowNew['pid'];?>&sec_id=<?php echo $sec_id; ?>&dep_id=<?php echo $dep_id; ?>&confirm=1">
+																  
+															 <i class="fas fa-check"></i> ลงรับ
+															</a>
+														</td>
+											 <?php } ?>
+											 <?php
+												if($level_id>5) {?>
+														<td><kbd>จำกัดสิทธิ์</kbd></td>
+											 <?php } else{?>
+														<td><a class="btn btn-danger" 
+														       href="recive.php?pid=<?php echo $rowNew['pid'];?>&sec_id=<?php echo $sec_id; ?>&dep_id=<?php echo $dep_id; ?>&confirm=2">
+															   <i class="fa fa-close"></i> ส่งคืน
+															</a>
+														</td>
 											 <?php } ?>
 
 										</tr>

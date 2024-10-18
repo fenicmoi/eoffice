@@ -161,13 +161,20 @@ if($check==0){       // ถ้าค่าเป็น 0 หมายถึง�
                                         } ?>
                                     </td>
                                     <?php 
-                                     if($row['confirm']==1){?>
-                                    <td class="alert-success"><center><i class="fa fa-check-square-o"></i> ลงรับแล้ว</center></td> 
-                                      <td><?php echo thaiDate($row['confirmdate'])?></td>
-                                <?php } else { ?>
-                                      <td class="alert-danger"><center><i class="fa fa-window-close"></i> ยังไม่ลงรับ</center></td>
-                                      <td>-</td>
-                                <?php } ?>
+                                     $confirm = $row['confirm'];
+                                     if($confirm==1){
+                                        $msg = "<td class='alert-success'>รับแล้ว</td>";
+                                     }elseif($confirm==2){
+                                        $msg = "<td class='alert-danger'>ส่งคืน</td>";
+                                     }else{
+                                        $msg = "<td class='alert-danger'>ยังไม่รับ</td>";
+                                     }
+                                        echo $msg;
+                                     ?>
+                                   
+                                     <td>
+                                        <?php echo @thaiDate($row['confirmdate'])?>
+                                    </td>
                                      <td><?php echo $row['firstname'];?></td>
                                      <td><?php echo $row['phone']?></td>
                                 </tr>   

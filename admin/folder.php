@@ -42,7 +42,7 @@ $u_id=$_SESSION['ses_u_id'];
         <div class="panel-body">                  
 							<ul class="nav nav-tabs">
 								<li><a class="btn-danger fas fa-envelope"  href="paper.php"> หนังสือเข้า</a></li>
-								<li class="active"><a class="btn-danger fas fa-envelope-open"  href="folder.php"> หนังสือลงรับแล้ว</a></li>
+								<li class="active"><a class="btn-danger fas fa-envelope-open"  href="folder.php"> หนังสือลงรับ/ส่งคืน</a></li>
 								<li><a class="btn-danger fas fa-history" href="history.php"> ติดตามหนังสือส่ง</a></li>
 								<li ><a class="btn-danger fas fa-paper-plane" href="inside_all.php"> ส่งภายในหน่วย</a></li>
 								<li><a class="btn-danger fas fa-globe" href="outside_all.php"> ส่งระหว่างหน่วย</a></li>
@@ -76,16 +76,17 @@ $u_id=$_SESSION['ses_u_id'];
 						<th>หน่วยส่ง</th>
 						<th>กลุ่ม/กอง</th>
 						<th>ผู้ส่ง</th>
+						<th>สถานะ</th>
 					</tr>
 				</thead>
 				<tbody>
 					<?php
-					$sql="SELECT p.postdate,u.puid,u.pid,u.confirmdate,p.title,p.file,p.book_no,d.dep_name,s.sec_name,us.firstname FROM paperuser u
+					$sql="SELECT p.postdate,u.puid,u.pid,u.confirm,u.confirmdate,p.title,p.file,p.book_no,d.dep_name,s.sec_name,us.firstname FROM paperuser u
 						INNER JOIN paper p ON p.pid=u.pid
 						INNER JOIN depart d ON d.dep_id=p.dep_id
 						INNER JOIN section s ON s.sec_id=p.sec_id
 						INNER JOIN user us  ON us.u_id=p.u_id
-						WHERE u.dep_id=$dep_id AND u.u_id=$u_id  AND u.confirm=1 ";
+						WHERE u.dep_id=$dep_id AND u.u_id=$u_id  AND u.confirm > 0";
 						if ( isset($_POST['btnSearch' ] ) ) { //ถ้ามีการกดปุ่มค้นหา
 							@$typeSearch = $_POST[ 'typeSearch' ]; //ประเภทการค้นหา
 							@$txt_search = $_POST[ 'search' ]; //กล่องรับข้อความ
@@ -117,7 +118,16 @@ $u_id=$_SESSION['ses_u_id'];
 								<td><?php echo thaiDate($rowf['confirmdate']); ?></td>
 								<td><?php echo $rowf['dep_name'];?></td>
 								<td><?php echo $rowf['sec_name'];?></td>
-								<td><?php echo $rowf['firstname']; ?></td>
+								<td><?php echo $rowf['firstname'];?></td>
+								<td>
+									<?php 
+									  if ($rowf['confirm'] == 1){
+										echo "<font color='green'><b>ลงรับ</b></font>" ;
+									  }elseif($rowf['confirm'] == 2){
+										 echo "<font color='red'><b>ส่งคืน</b></font>" ;
+									  }
+									?>
+								</td>
 							</tr>
 						<?php } ?>
 						</tbody>

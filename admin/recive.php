@@ -6,6 +6,7 @@ include 'header.php';
 $pid=$_GET['pid'];
 $sec_id=$_GET['sec_id'];
 $dep_id=$_GET['dep_id'];
+$confirm=$_GET['confirm'];
 $dateRecive=date('Y-m-d H:m:s');
 
 $sql="SELECT  p.pid,p.insite,p.outsite FROM paper p
@@ -62,8 +63,8 @@ if(!$result){
       }
     }elseif($row['outsite']==1){
       //echo "นี่เป็นหนังสื่อส่งภายนอก";
-      $sql="UPDATE paperuser SET u_id=$u_id,confirm=1,confirmdate='$dateRecive' WHERE pid=$pid AND dep_id=$dep_id";
-      //print $sqlRecive;
+      $sql="UPDATE paperuser SET u_id=$u_id,confirm=$confirm,confirmdate='$dateRecive' WHERE pid=$pid AND dep_id=$dep_id";
+      //print $sql;
       $result=dbQuery($sql);
       if(!$result){
         echo "<script>
@@ -81,7 +82,7 @@ if(!$result){
       }else{
         echo "<script>
         swal({
-            title:'ลงรับหนังสือเรียบร้อยแล้ว !',
+            title:'ดำเนินการเรียบร้อยแล้ว!',
             type:'success',
             showConfirmButton:true
             },

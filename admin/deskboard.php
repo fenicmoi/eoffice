@@ -241,6 +241,7 @@
                     </div>
                </div>
 
+               
                <?php 
                if ($level_id == 1) {
                    //ตรวจสอบปีเอกสาร
@@ -265,6 +266,7 @@
                    $c5 = $row['c5'];
 
                    $sum = $c1 + $c2 + $c3 + $c4 + $c5; ?>
+
                <div class="row">  <!-- สถิติข้อมูล -->
                    <div  class="col-md-12">
                         <div class="panel panel-danger" >
