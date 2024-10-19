@@ -8,10 +8,11 @@ $requestData= $_REQUEST;
 //ฟิลด์ที่จะเอามาแสดงและค้นหา
 $columns = array( 
 	0 => 'rec_id', 
-	1 => 'title',
-    2 => 'dateline',
-	3 => 'file_upload',
-    4 => 'dep_name'
+    1 => 'yname',
+	2 => 'title',
+    3 => 'dateline',
+	4 => 'file_upload',
+    5 => 'dep_name'
 );
 
 // getting total number records without any search
@@ -57,10 +58,10 @@ $query = dbQuery($sql) or die("query-commandfront.php: get use queryr3");
 $data = array();
 while( $row= dbFetchArray($query) ) {  // preparing an array
 	$nestedData=array(); 
-	$nestedData[] = $row["rec_id"];
+	$nestedData[] = $row["rec_id"].'/'.$row['yname'];
 	$nestedData[] = $row["title"];
     $nestedData[] = $row["dateline"];
-	$nestedData[] = $row["file_upload"];
+	$nestedData[] = "<a href='$row[file_upload]'>Download</a>";
 	$nestedData[] = $row["dep_name"];
 	$data[] = $nestedData;
 }
