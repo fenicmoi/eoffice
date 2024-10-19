@@ -1,7 +1,7 @@
 <?php
-include 'function.php';
-include '../library/database.php';
-include '../library/config.php';
+include 'admin/function.php';
+include 'library/database.php';
+include 'library/config.php';
 // storing  request (ie, get/post) global array to a variable  
 $requestData= $_REQUEST;
 
@@ -9,8 +9,8 @@ $requestData= $_REQUEST;
 $columns = array( 
 	0 => 'rec_id', 
 	1 => 'title',
-	2 => 'file_upload',
-	3 => 'dateline',
+    2 => 'dateline',
+	3 => 'file_upload',
     4 => 'dep_name'
 );
 
@@ -22,7 +22,7 @@ $sql="SELECT c.*,y.yname,d.dep_name,u.firstname
 		INNER JOIN depart as d ON d.dep_id =c.dep_id
 		WHERE c.doc_status <> 2  AND c.file_upload <> ''
 		";
-
+//print $sql;
 $query = dbQuery($sql);
 
 $totalData = dbNumRows($query) or die("serverside1.php: get user totalData");
@@ -51,16 +51,16 @@ $totalFiltered = dbNumRows($query); // when there is a search parameter then we 
 $sql.=" ORDER BY ". $columns[$requestData['order'][0]['column']]."   ".$requestData['order'][0]['dir']."  
 		LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 
-print $sql;
-$query = dbQuery($sql) or die("query-commandfront.php: get use query3r");
+//print $sql;
+$query = dbQuery($sql) or die("query-commandfront.php: get use queryr3");
 
 $data = array();
 while( $row= dbFetchArray($query) ) {  // preparing an array
 	$nestedData=array(); 
 	$nestedData[] = $row["rec_id"];
 	$nestedData[] = $row["title"];
+    $nestedData[] = $row["dateline"];
 	$nestedData[] = $row["file_upload"];
-	$nestedData[] = $row["dateline"];
 	$nestedData[] = $row["dep_name"];
 	$data[] = $nestedData;
 }
