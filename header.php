@@ -70,10 +70,10 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav ">
               <li><a class="nav-link active"  href="index.php"><i class="fas fa-home"></i> หน้าแรก</a></li>
-               <li ><a class="btn-link" href="flow-circle-front.php"><i class="fas fa-users"></i> หนังสือเวียน</a></li>
+               <!-- <li ><a class="btn-link" href="flow-circle-front.php"><i class="fas fa-users"></i> หนังสือเวียน</a></li> -->
               <li><a class="btn-link"  href="flow-command-front.php"><i class="fas fa-retweet"></i> คำสั่งจังหวัด</a></li>
-              <li><a class="btn disabled"   href="flow-command-front.php"><i class="fas fa-list"></i> วาระงานผู้บริหาร </a></li> 
-              <li><a class="btn disabled"   href="flow-command-front.php"><i class="fas fa-calendar"></i> การใช้ห้องประชุมจังหวัด </a></li> 
+              <!-- <li><a class="btn disabled"   href="flow-command-front.php"><i class="fas fa-list"></i> วาระงานผู้บริหาร </a></li> 
+              <li><a class="btn disabled"   href="flow-command-front.php"><i class="fas fa-calendar"></i> การใช้ห้องประชุมจังหวัด </a></li>  -->
               <li class="dropdown">
                 <a class="btn-link"  class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fas fa-users"></i> ลงทะเบียน
                 <span class="caret"></span></a>
@@ -85,11 +85,12 @@
                 </ul>
               </li>
               <li><a  class="btn-link"  href="#" data-toggle="modal" data-target="#modelRule">ข้อตกลงการใช้งาน</a></li>
+              <li><a class="btn-link"  data-toggle="modal" data-target="#myModal"><i class="fas fa-key"></i> เข้าสู่ระบบ </a></li>
           </ul>
-          <ul class="nav navbar-nav navbar-right">
-            <li><a class="btn btn-default"  data-toggle="modal" data-target="#myModal"><i class="fas fa-key"></i> เข้าสู่ระบบ </a></li>
+          <!-- <ul class="nav navbar-nav navbar-right">
+            <li><a class="btn btn-warning"  data-toggle="modal" data-target="#myModal"><i class="fas fa-key"></i> เข้าสู่ระบบ </a></li>
             <li><i class="fas fa-key"></i></li>
-          </ul>
+          </ul> -->
     </nav>
         <!-- Modal -->
 <div id="modelRule" class="modal fade" role="dialog">
