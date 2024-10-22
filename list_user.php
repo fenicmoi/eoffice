@@ -1,3 +1,11 @@
+
+<script type="text/javascript" language="javascript" >
+			$(document).ready( function () {
+                 $('#myTable').DataTable();
+            } );
+</script>
+    
+</script>
 <?php
 // Display  user registry 
 date_default_timezone_set('Asia/Bangkok');
@@ -16,7 +24,7 @@ $result = dbQuery($sql);
    
     <div class ="col-md-12">
     <br><br><br>
-        <table class="table table-bordered table-hover" id="myTable">
+        <table class="myTable" id="myTable"  >
                         <thead class="alert alert-info">
                             <tr>
                                 <th>ส่วนราชการ</th>
