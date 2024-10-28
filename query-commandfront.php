@@ -38,7 +38,7 @@ $sql="SELECT c.*,y.yname,d.dep_name,u.firstname
 		INNER JOIN sys_year as y ON y.yid=c.yid
 		INNER JOIN user as u ON  u.u_id = c.u_id
 		INNER JOIN depart as d ON d.dep_id =c.dep_id
-		WHERE c.doc_status <> 2  AND c.file_upload <> ''
+		WHERE  c.file_upload <> ''
 		";
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
@@ -52,14 +52,14 @@ $totalFiltered = dbNumRows($query); // when there is a search parameter then we 
 $sql.=" ORDER BY ". $columns[$requestData['order'][0]['column']]."   ".$requestData['order'][0]['dir']."  
 		LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 
-//print $sql;
+
 $query = dbQuery($sql) or die("query-commandfront.php: get use queryr3");
 
 $data = array();
 while( $row= dbFetchArray($query) ) {  // preparing an array
 	$nestedData=array(); 
 	$nestedData[] = $row["rec_id"].'/'.$row['yname'];
-	$nestedData[] = $row["title"];
+	$nestedData[] =  $row["title"];
     $nestedData[] = $row["dateline"];
 	$nestedData[] = "<a href='admin/$row[file_upload]' target='_blank'>Download</a>";
 	$nestedData[] = $row["dep_name"];
@@ -74,5 +74,4 @@ $json_data = array(
 			);
 
 echo json_encode($json_data);  // send data as json format
-
 ?>

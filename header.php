@@ -50,7 +50,11 @@
 
 <link href="css/dataTables.css" rel="stylesheet">
 <script src="js/dataTables.js"></script>
-
+<!-- <script type="text/javascript" language="javascript" >
+			$(document).ready( function () {
+                 $('#myTable').DataTable();
+            } );
+</script> -->
 
   </head>
   <body>

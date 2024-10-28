@@ -2,7 +2,7 @@
 <script type="text/javascript" language="javascript" >
 			$(document).ready(function() {
 				var dataTable = $('#myTable').DataTable( {
-					"order": [[ 0, "desc" ]],
+					"order": [[ 3, "desc" ]],
 					"processing": true,
 					"serverSide": true,
 					"ajax":{
