@@ -39,7 +39,7 @@ elseif($u_pass==""){
               </script>";
 }
 else{
-	$sql="SELECT * FROM user WHERE u_name='".$u_name."' AND u_pass='".$u_pass."' AND status<>0";
+	$sql="SELECT u_id, sec_id, dep_id, level_id, u_name, u_pass, status  FROM user WHERE u_name='".$u_name."' AND u_pass='".$u_pass."' AND status<>0";
 	$result=  dbQuery($sql);
 	//p	rint $result;
 	$num= dbNumRows($result);
@@ -47,7 +47,7 @@ else{
 		$row=  dbFetchAssoc($result);
 		$sqlu="UPDATE user SET user_last_login='".date("Y-m-d H:i:s")."' WHERE u_id=".$row['u_id'];
 		dbQuery($sqlu);
-		echo "<br><br><br><br>";
+		echo "<br><br><br><br>";    
 		echo "<center><div class=\"loader\"></div></center>";
 		echo "<center><div class='col-md-12 alert alert-success'><h3>กรุณารอสักครู่</h3</div></center>";
 		$_SESSION['ses_u_id']=$row['u_id'];
@@ -74,8 +74,7 @@ else{
 		
 	}
 }
-echo "</div>";
-mysqli_close($mysqli);
+//echo "</div>";
 
 include 'footer.php';
 ?>

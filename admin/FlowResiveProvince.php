@@ -18,7 +18,7 @@ $u_id=$_SESSION['ses_u_id'];
 
         <div class="col-md-2" >
            <?php
-                $menu=  checkMenu($level_id);
+                $menu = checkMenu($level_id);
                 include $menu;
            ?>
         </div>
