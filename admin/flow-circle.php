@@ -45,8 +45,8 @@ $u_id=$_SESSION['ses_u_id'];
                                     $sql="SELECT * FROM  flowcircle WHERE dep_id=$dep_id  ORDER BY cid DESC ";
                                 }elseif($level_id==4){             //สารบรรณกลุ่มงาน  แสดงแค่กลุ่มของตนเอง
                                      $sql="SELECT * FROM  flowcircle WHERE dep_id=$dep_id AND sec_id=$sec_id  ORDER BY cid DESC ";
-                                }elseif($level_id==5){            // ผู้ใช้ทั่วไปแสดงแค่หนังสือที่ตนออก
-                                     $sql="SELECT * FROM  flowcircle WHERE dep_id=$dep_id AND sec_id=$sec_id  AND u_id=$u_id  ORDER BY cid DESC ";
+                                }elseif($level_id==5){            // ผู้ใช้ทั่วไปดูข้อมูลเฉพาะของกลุ่มตนเอง
+                                     $sql="SELECT * FROM  flowcircle WHERE dep_id=$dep_id AND sec_id=$sec_id   ORDER BY cid DESC ";
                                 }
                                 
                                 //print $sql;
