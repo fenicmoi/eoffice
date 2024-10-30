@@ -40,7 +40,9 @@ $u_id=$_SESSION['ses_u_id'];
                     </thead>
                     <tbody>
                     <?php
-                    $sql="SELECT c.*,y.yname FROM  flowcommand as c INNER JOIN sys_year as y ON y.yid=c.yid";
+                    $sql="SELECT c.*,y.yname FROM  flowcommand as c INNER JOIN sys_year as y ON y.yid = c.yid";
+
+                    //แบ่งระดับการมองเห็น
                     switch ($level_id) {
                         case 1:      //programmer
                             $sql=$sql;
@@ -59,6 +61,7 @@ $u_id=$_SESSION['ses_u_id'];
                             break;
                     }
                     $sql.=" ORDER BY c.cid DESC";
+                    print $sql;
                     $result = page_query( $dbConn, $sql, 10 );
 
                   
