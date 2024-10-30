@@ -3,6 +3,7 @@
 date_default_timezone_set('Asia/Bangkok');
 include "header.php"; 
 $u_id=$_SESSION['ses_u_id'];
+$dep_id = $_SESSION['ses_dep_id'];
 ?>
 <script>
 	$( document ).ready( function () {
@@ -94,7 +95,7 @@ $u_id=$_SESSION['ses_u_id'];
                                 if($level_id < 3){
                                     $sql="SELECT * FROM  flownormal ORDER BY cid DESC";
                                 }else{
-                                    $sql="SELECT * FROM  flownormal ORDER BY cid DESC";
+                                    $sql="SELECT * FROM  flownormal WHERE dep_id = $dep_id ORDER BY cid DESC";
                                 }
                                 
                                  //ส่วนการค้นหา
