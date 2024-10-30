@@ -94,7 +94,7 @@ $u_id=$_SESSION['ses_u_id'];
                                 if($level_id < 3){
                                     $sql="SELECT * FROM  flownormal ORDER BY cid DESC";
                                 }else{
-                                    $sql="SELECT * FROM  flownormal WHERE u_id = $u_id ORDER BY cid DESC";
+                                    $sql="SELECT * FROM  flownormal ORDER BY cid DESC";
                                 }
                                 
                                  //ส่วนการค้นหา
