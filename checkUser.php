@@ -39,7 +39,7 @@ elseif($u_pass==""){
               </script>";
 }
 else{
-	$sql="SELECT u_id, sec_id, dep_id, level_id, u_name, u_pass, status  FROM user WHERE u_name='".$u_name."' AND u_pass='".$u_pass."' AND status<>0";
+	$sql=" SELECT u_id, sec_id, dep_id, level_id, u_name, u_pass, status  FROM user WHERE u_name='".$u_name."' AND u_pass='".$u_pass."' AND status<>0";
 	$result=  dbQuery($sql);
 	//p	rint $result;
 	$num= dbNumRows($result);
@@ -74,7 +74,5 @@ else{
 		
 	}
 }
-//echo "</div>";
-
 include 'footer.php';
 ?>
