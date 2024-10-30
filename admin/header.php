@@ -1,8 +1,13 @@
 <?php
-session_start();
-if(!isset($_SESSION['ses_u_id'])){
-	header("location:../index.php");
-}
+if(!isset($_SESSION)) 
+{ 
+    session_start(); 
+    if(!isset($_SESSION['ses_u_id'])){
+      header("location:../index.php");
+    }
+} 
+
+
 
 
 date_default_timezone_set('Asia/Bangkok');
