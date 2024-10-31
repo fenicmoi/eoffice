@@ -4,8 +4,6 @@
         <?php  //ตรวจสอบสิทธิ์การใช้งานเมนู
         $menu = checkMenu($level_id);
         include $menu;
-
-        // echo "is".$level_id;
         ?>
     </div>
     <div class="col-md-10">
@@ -24,17 +22,17 @@
                         <center>
                          <a href="paper.php" data-toggle="tooltip1" title="เอกสารจากส่วนราชการต่าง ๆ!">
                             <i class="fas fa-envelope fa-4x"></i>
-                            <h5>เอกสารใหม่ <span class="badge"><?php echo $row['pcount']; ?></span></h5>
+                            <h5>เอกสารเข้าใหม่ <span class="badge"><?php echo $row['pcount']; ?></span></h5>
                          </a>
                         </center>
                         </div>
                     </div>
                     <?php
                     $sql = "SELECT m.book_id,m.rec_id,d.book_no,d.title,d.sendfrom,d.sendto,d.date_in,d.date_line,d.practice,d.status,s.sec_code
-                        FROM book_master m
-                        INNER JOIN book_detail d ON d.book_id = m.book_id
-                        INNER JOIN section s ON s.sec_id = m.sec_id
-                        WHERE m.type_id=1 AND d.status ='' AND d.practice=$dep_id";
+                            FROM book_master m
+                            INNER JOIN book_detail d ON d.book_id = m.book_id
+                            INNER JOIN section s ON s.sec_id = m.sec_id
+                            WHERE m.type_id=1 AND d.status ='' AND d.practice=$dep_id";
                 $result = dbQuery($sql);
                 $num = dbNumRows($result); ?>    
                 <div class="col-md-3">
@@ -62,8 +60,8 @@
                         <center>
                             <a href="paper.php">
                             <i class="fas fa-bell fa-4x"></i<i class="fas fa-book fa-4x"  ></i>
-                            <h5>ประชาสัมพันธ์ <span class="badge">5</span></h5>
-                                </a>
+                            <h5>ประชาสัมพันธ์ <span class="badge">0</span></h5>
+                             </a>
                         </center>
                     </div>
                 </div>
