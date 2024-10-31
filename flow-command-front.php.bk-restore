@@ -1,8 +1,8 @@
-
+<?php include "header.php";?>
 <script type="text/javascript" language="javascript" >
 			$(document).ready(function() {
 				var dataTable = $('#myTable').DataTable( {
-          order: [[ 0, 'desc' ], [ 0, 'asc' ]],
+					"order": [[ 0, "desc" ]],
 					"processing": true,
 					"serverSide": true,
 					"ajax":{
@@ -18,6 +18,15 @@
 				} );
 			} );
 </script>
+
+<?php
+include "admin/function.php"; 
+//ตรวจสอบปีเอกสาร
+list($yid,$yname,$ystatus)=chkYear();  
+$yid=$yid;
+$yname=$yname;
+$ystatus=$ystatus;
+?>
 <br><br><br>
         <div  class="col-md-12">
             <div class="panel panel-primary" style="margin: 20">

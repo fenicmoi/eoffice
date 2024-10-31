@@ -68,33 +68,23 @@
               <span class="icon-bar"></span>
            </button>
             <img src="images/logo.png" class="navbar-brand" height="80" width="80">
-            <a class="navbar-brand" href="index.php"><?php echo $title;
-?></a>
+            <a class="navbar-brand" href="index.php"><?php echo $title;?></a>
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav ">
-              <li><a class="nav-link active"  href="index.php"><i class="fas fa-home"></i> หน้าแรก</a></li>
-               <!-- <li ><a class="btn-link" href="flow-circle-front.php"><i class="fas fa-users"></i> หนังสือเวียน</a></li> -->
-              <li><a class="btn-link"  href="flow-command-front.php"><i class="fas fa-retweet"></i> คำสั่งจังหวัด</a></li>
-              <!-- <li><a class="btn disabled"   href="flow-command-front.php"><i class="fas fa-list"></i> วาระงานผู้บริหาร </a></li> 
-              <li><a class="btn disabled"   href="flow-command-front.php"><i class="fas fa-calendar"></i> การใช้ห้องประชุมจังหวัด </a></li>  -->
+              <li><a class="nav-link active"  href="index.php?menu=1"><i class="fas fa-home"></i> หน้าแรก</a></li>
+              <li><a class="btn-link"  href="index.php?menu=2"><i class="fas fa-retweet"></i> คำสั่งจังหวัด</a></li>
               <li class="dropdown">
                 <a class="btn-link"  class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fas fa-users"></i> ลงทะเบียน
                 <span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                   <li><a   href="list_user.php"><i class="fas fa-check-circle"></i> ตรวจสอบส่วนราชการ/หน่วยงานที่ลงทะเบียน </a></li>
+                   <li><a   href="index.php?menu=3"><i class="fas fa-check-circle"></i> ตรวจสอบส่วนราชการ/หน่วยงานที่ลงทะเบียน </a></li>
                   <li><a  data-toggle="modal" data-target="#modalAdd"><i class="fas fa-key"></i> ลงทะเบียนหน่วยงาน/เจ้าหน้าที่ </a></li>
-                  <!-- <li><a   data-toggle="modal" data-target="#modalRegister"><i class="fas fa-users"></i> ลงทะเบียนผู้ใช้ทั่วไป </a></li> -->
-                  <!-- <li><a href="admin/manual/manual-v1.pdf" target="_blank"><i class="fs fa-book"></i> คู่มือการใช้งาน</a></li> -->
                 </ul>
               </li>
               <li><a  class="btn-link"  href="#" data-toggle="modal" data-target="#modelRule">ข้อตกลงการใช้งาน</a></li>
               <li><a class="btn-link"  data-toggle="modal" data-target="#myModal"><i class="fas fa-key"></i> เข้าสู่ระบบ </a></li>
           </ul>
-          <!-- <ul class="nav navbar-nav navbar-right">
-            <li><a class="btn btn-warning"  data-toggle="modal" data-target="#myModal"><i class="fas fa-key"></i> เข้าสู่ระบบ </a></li>
-            <li><i class="fas fa-key"></i></li>
-          </ul> -->
     </nav>
         <!-- Modal -->
 <div id="modelRule" class="modal fade" role="dialog">

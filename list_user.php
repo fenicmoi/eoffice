@@ -3,12 +3,12 @@
 <?php
 // Display  user registry 
 date_default_timezone_set('Asia/Bangkok');
-include "header.php"; 
+//include "header.php"; 
 include_once 'admin/function.php';
 
 $sql = "SELECT *
         FROM  register_staf
-        ORDER BY reg_id ASC ";
+        ORDER BY reg_id desc ";
 
 $result = dbQuery($sql);
 

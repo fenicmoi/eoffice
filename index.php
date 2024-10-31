@@ -1,8 +1,22 @@
-<?php //include 'library/config.php';?>
+
 <?php include 'header.php';?>
 <?php    
+   $menu = $_GET['menu'];
+   switch ($menu) {
+    case 1:
+      include('content.php');
+      break;
+    case 2:
+      include('flow-command-front.php');
+      break;
+    case 3:
+      include('list_user.php');
+      break;  
+    default:
+      # code...
+      break;
+   }
 ?>
-<?php include 'content.php';?>
 <?php include 'footer.php'; ?> 
 
 <!-- Modal -->
