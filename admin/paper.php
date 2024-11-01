@@ -1,15 +1,6 @@
 
-<?php
-date_default_timezone_set('Asia/Bangkok');
-include "header.php";
-$u_id=$_SESSION['ses_u_id'];
-?>
-<div class="col-md-2" >
- <?php
-	$menu=  checkMenu($level_id);
-	include $menu;
- ?>
-</div>
+
+
 <?php
 
 $sql="SELECT u.puid, u.pid,p.postdate,p.title,p.file,p.book_no,d.dep_name,s.sec_name,us.firstname FROM paperuser u
@@ -27,7 +18,7 @@ $numrow=dbNumRows($result);
                 <div class="panel-heading"><i class="fas fa-share-square fa-2x"></i>  <strong>ส่งไฟล์เอกสาร</strong></div>
                 <div class="panel-body">                  
                             <ul class="nav nav-tabs">
-                                <li class="active"  ><a class="btn-danger fas fa-envelope"  href="paper.php">  จดหมายเข้า</a></li>
+                                <li class="active"  ><a class="btn-danger fas fa-envelope"  href="?imenu=newpaper">  จดหมายเข้า</a></li>
                                 <li><a class="btn-danger fas fa-envelope-open"  href="folder.php"> รับแล้ว</a></li>
                                 <li><a class="btn-danger fas fa-history" href="history.php"> ส่งแล้ว</a></li>
                                 <li><a class="btn-danger fas fa-paper-plane" href="inside_all.php"> ส่งภายใน</a></li>
@@ -98,11 +89,13 @@ $numrow=dbNumRows($result);
 		<div class="panel-footer">
 			<center>
 				<?php 
+				/*
 						page_link_border("solid","1px","gray");
 						page_link_bg_color("lightblue","pink");
 						page_link_font("14px");
 						page_link_color("blue","red");
 						page_echo_pagenums(10,true); 
+				*/
 				?>
 			</center>
 		</div>

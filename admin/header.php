@@ -20,6 +20,8 @@ include '../library/pagination.php';
 $u_id=(isset($_SESSION['ses_u_id']))?$_SESSION['ses_u_id']:'';
 $sec_id=(isset($_SESSION['ses_sec_id']))?$_SESSION['ses_sec_id']:'';
 $dep_id=(isset($_SESSION['ses_dep_id']))?$_SESSION['ses_dep_id']:'';
+$level_id=(isset($_SESSION['ses_level_id']))?$_SESSION['ses_level_id']:'';
+
 
 
 if($u_id){
