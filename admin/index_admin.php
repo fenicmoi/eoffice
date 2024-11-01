@@ -7,6 +7,8 @@ if(!isset($_SESSION))
     }
 } 
 
+$menu = $_GET['menu'];
+
 include 'header.php';
 include 'deskboard.php';
 include 'footer.php';

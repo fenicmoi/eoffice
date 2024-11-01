@@ -4,6 +4,8 @@
         <?php  //ตรวจสอบสิทธิ์การใช้งานเมนู
         $menu = checkMenu($level_id);
         include $menu;
+
+        // echo "is".$level_id;
         ?>
     </div>
     <div class="col-md-10">
@@ -22,17 +24,17 @@
                         <center>
                          <a href="paper.php" data-toggle="tooltip1" title="เอกสารจากส่วนราชการต่าง ๆ!">
                             <i class="fas fa-envelope fa-4x"></i>
-                            <h5>เอกสารเข้าใหม่ <span class="badge"><?php echo $row['pcount']; ?></span></h5>
+                            <h5>เอกสารใหม่ <span class="badge"><?php echo $row['pcount']; ?></span></h5>
                          </a>
                         </center>
                         </div>
                     </div>
                     <?php
                     $sql = "SELECT m.book_id,m.rec_id,d.book_no,d.title,d.sendfrom,d.sendto,d.date_in,d.date_line,d.practice,d.status,s.sec_code
-                            FROM book_master m
-                            INNER JOIN book_detail d ON d.book_id = m.book_id
-                            INNER JOIN section s ON s.sec_id = m.sec_id
-                            WHERE m.type_id=1 AND d.status ='' AND d.practice=$dep_id";
+                        FROM book_master m
+                        INNER JOIN book_detail d ON d.book_id = m.book_id
+                        INNER JOIN section s ON s.sec_id = m.sec_id
+                        WHERE m.type_id=1 AND d.status ='' AND d.practice=$dep_id";
                 $result = dbQuery($sql);
                 $num = dbNumRows($result); ?>    
                 <div class="col-md-3">
@@ -60,8 +62,8 @@
                         <center>
                             <a href="paper.php">
                             <i class="fas fa-bell fa-4x"></i<i class="fas fa-book fa-4x"  ></i>
-                            <h5>ประชาสัมพันธ์ <span class="badge">0</span></h5>
-                             </a>
+                            <h5>ประชาสัมพันธ์ <span class="badge">5</span></h5>
+                                </a>
                         </center>
                     </div>
                 </div>
@@ -123,7 +125,33 @@
                                                 </div>    
                                             </div>
                                         </div>
-                  
+                                        <!--
+                                        <div class="col-md-3">
+                                            <div class="bg-success">
+                                                 <div class="panel-group">
+                                                    <div class="panel panel-default">
+                                                    <div class="panel-heading">
+                                                        <h4 class="panel-title">
+                                                            <a data-toggle="collapse" href="#menu3"><center><i class="fas fa-address-card fa-2x"></i> <br> ระบบส่งเอกสาร</center></a>
+                                                        </h4>
+                                                    </div>
+                                                    <div id="menu3" class="panel-collapse collapse">
+                                                    
+                                                        <ul class="list-group">
+                                                        <li class="list-group-item"><a class="btn btn-primary" href="paper.php"><i class="fas fa-envelope  pull-left"></i>  จดหมายเข้า</a> <i class="fas fa-thumbtack"></i><small> เอกสารเข้าใหม่ที่ยังไม่เปิด</small></li>
+                                                        <li class="list-group-item"><a class="btn btn-primary" href="folder.php"><i class="far fa-envelope-open  pull-left"></i>  รับแล้ว</a> <i class="fas fa-thumbtack"></i><small>เอกสารที่รับแล้ว</small> </li>
+                                                        <li class="list-group-item"><a class="btn btn-primary" href="history.php"><i class="fas fa-folder-open  pull-left"></i>  ส่งแล้ว</a> <i class="fas fa-thumbtack"></i><small>เอกสารส่งแล้ว/ติดตามการส่ง</small> </li>
+                                                        <li class="list-group-item"><a class="btn btn-primary" href="inside_all.php"><i class="fas fa-home  pull-left"></i>  ส่งภายใน</a> <i class="fas fa-thumbtack"></i><small>ส่งเอกสารภายในสังกัด</small> </li>
+                                                        <li class="list-group-item"><a class="btn btn-primary" href="outside_all.php"><i class="fas fa-paper-plane pull-left"></i>  ส่งภายนอก</a> <i class="fas fa-thumbtack"></i><small>ส่งเอกสารนอกสังกัด/ข้ามหน่วยงาน</small> </li>
+                                                        </ul>
+                                                   
+                                                        <div class="panel-footer"></div>
+                                                    </div>
+                                                    </div>
+                                                </div>    
+                                            </div>
+                                        </div>
+                                        -->
                                         <div class="col-md-3">
                                             <div class="bg-success">
                                                  <div class="panel-group">
@@ -213,7 +241,6 @@
                     </div>
                </div>
 
-               
                <?php 
                if ($level_id == 1) {
                    //ตรวจสอบปีเอกสาร
@@ -238,7 +265,6 @@
                    $c5 = $row['c5'];
 
                    $sum = $c1 + $c2 + $c3 + $c4 + $c5; ?>
-
                <div class="row">  <!-- สถิติข้อมูล -->
                    <div  class="col-md-12">
                         <div class="panel panel-danger" >
