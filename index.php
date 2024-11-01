@@ -13,7 +13,7 @@
       include('list_user.php');
       break;  
     default:
-      # code...
+       include('content.php');
       break;
    }
 ?>
