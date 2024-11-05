@@ -199,7 +199,7 @@ if($cid){
                     </div>
                     <center>
                     <div class="form-group">
-                        <input type="hidden" name="file" value="<?php echo @$fileupload;?>"/>
+                        <input type="hidden" name="file" value="<?php echo $fileupload;?>"/>
                         <input type="hidden" name="dep_id" value="<?php echo $dep_id;?>"/>
                         <input type="hidden" name="sec_id" value="<?php echo $sec_id;?>"/>
                         <input type="hidden" name="user_id" id="user_id" value="<?php  echo $u_id;?>"/>  
@@ -240,50 +240,54 @@ if(isset($_POST['sendOut'])){//ตรวจสอบปุ่ม sendOut
 	
 	//$	book_id=$_GET['book_id'];
 	
-	if(isset($upload)){
-		$allowed_types = array('image/jpeg', 'image/png', 'application/pdf');  
+
+	if($upload<>''){
+		
 		$part="paper/";
-        
-        //ตรวจสอบประเภทของไฟล์
-        if(in_array($upload['type'], $allowed_types)){  
-            $type=  strrchr($_FILES['fileupload']['name'],".");   //เอาชื่อเก่าออกให้เหลือแต่นามสกุล
-		    $newname=$date.$numrand.$type;   //ตั้งชื่อไฟล์ใหม่โดยใช้เวลา 
-		    $part_copy=$part.$newname;
-		    $part_link="paper/".$newname;
-		    move_uploaded_file($_FILES['fileupload']['tmp_name'],$part_copy);    //คัดลอกไฟล์ไป Server
-
-
-            //กรณีส่งให้ทุกส่วนราชการ
-	    if($toAll!=''){
+		
+		$type=  strrchr($_FILES['fileupload']['name'],".");   //เอาชื่อเก่าออกให้เหลือแต่นามสกุล
+		$newname=$date.$numrand.$type;   //ตั้งชื่อไฟล์ใหม่โดยใช้เวลา 
+		$part_copy=$part.$newname;
+		$part_link="paper/".$newname;
+		move_uploaded_file($_FILES['fileupload']['tmp_name'],$part_copy);    //คัดลอกไฟล์ไป Server
+	}
+	
+	//กรณีส่งให้ทุกส่วนราชการ
+	if($toAll!=''){
 		//สงเอกสารถึงทุกส่วนราชการ
-            if($cid && $link_file<>null){
-                //ถ	้ามีการส่ง book_id มา
-                $sql="INSERT INTO paper(title,detail,file,postdate,u_id,sec_id,outsite,dep_id,book_no)
-                                VALUE('$title','$detail','$link_file','$date',$user_id,$sec_id,$outsite,$dep_id,'$book_no')";
-            }else{
-                //กรณีส่งเอกสารโดยไม่มีการออกเลข
-                $sql="INSERT INTO paper(title,detail,file,postdate,u_id,sec_id,outsite,dep_id,book_no)
-                                VALUE('$title','$detail','@$part_link','$date',$user_id,$sec_id,$outsite,$dep_id,'$book_no')";
-            }
-		    $result=dbQuery($sql);
-		    $lastid=dbInsertId();    //เลข ID จากตาราง paper ล่าสุด
-		    //เลือก User ทั้งหมด  1 ต้องเป็นระดับ 3 (ประจำส่วนราชการ) 2.มีสิทธิ์รับ (keyman=1)  3.ไม่ส่งให้ตัวเอง 
-            $sql="SELECT  u.u_id,u.firstname,s.sec_id,d.dep_id,d.dep_name  
-                    FROM user u 
-                    INNER JOIN section s ON s.sec_id=u.sec_id
-                    INNER JOIN depart d  ON d.dep_id=u.dep_id
-                    WHERE u.Level_id = 3     
-                    AND d.dep_id <> $dep_id ";    
-		    $result=  dbQuery($sql);
-
-            while($rowUser =  dbFetchArray($result)){
-                $u_id=$rowUser['u_id'];
-                $sec_id=$rowUser['sec_id'];
-                $dep_id=$rowUser['dep_id'];
-                $tb="paperuser";
-                $sql="insert into $tb (pid,u_id,sec_id,dep_id) values ($lastid,$u_id,$sec_id,$dep_id)";
-                $dbquery= dbQuery($sql);
-            }
+        echo "ไม่ว่าง";
+		if($cid && $link_file<>null){
+			//ถ	้ามีการส่ง book_id มา
+			$sql="INSERT INTO paper(title,detail,file,postdate,u_id,sec_id,outsite,dep_id,book_no)
+                              VALUE('$title','$detail','$link_file','$date',$user_id,$sec_id,$outsite,$dep_id,'$book_no')";
+		}else{
+			//กรณีส่งเอกสารโดยไม่มีการออกเลข
+			$sql="INSERT INTO paper(title,detail,file,postdate,u_id,sec_id,outsite,dep_id,book_no)
+                              VALUE('$title','$detail','$part_link','$date',$user_id,$sec_id,$outsite,$dep_id,'$book_no')";
+		}
+		
+		
+		
+		$result=dbQuery($sql);
+		$lastid=dbInsertId();    //เลข ID จากตาราง paper ล่าสุด
+		//เลือก User ทั้งหมด  1 ต้องเป็นระดับ 3 (ประจำส่วนราชการ) 2.มีสิทธิ์รับ (keyman=1)  3.ไม่ส่งให้ตัวเอง 
+		$sql="SELECT  u.u_id,u.firstname,s.sec_id,d.dep_id,d.dep_name  
+                FROM user u 
+                INNER JOIN section s ON s.sec_id=u.sec_id
+                INNER JOIN depart d  ON d.dep_id=u.dep_id
+                WHERE u.Level_id = 3     
+                AND d.dep_id <> $dep_id ";    
+        //echo $sql;
+        
+		$result=  dbQuery($sql);
+		while($rowUser=  dbFetchArray($result)){
+			$u_id=$rowUser['u_id'];
+			$sec_id=$rowUser['sec_id'];
+			$dep_id=$rowUser['dep_id'];
+			$tb="paperuser";
+			$sql="insert into $tb (pid,u_id,sec_id,dep_id) values ($lastid,$u_id,$sec_id,$dep_id)";
+			$dbquery= dbQuery($sql);
+		}
 		
 		echo "<script>
         swal({
@@ -313,7 +317,7 @@ if(isset($_POST['sendOut'])){//ตรวจสอบปุ่ม sendOut
             echo "checkpoint 1";
 		}else{
 			$sql="INSERT INTO paper(title,detail,file,postdate,u_id,outsite,sec_id,dep_id,book_no)
-                         VALUES('$title','$detail','@$part_link','$dateSend',$user_id,$outsite,$sec_id,$dep_id,'$book_no')";
+                         VALUES('$title','$detail','$part_link','$dateSend',$user_id,$outsite,$sec_id,$dep_id,'$book_no')";
           //  echo "$";
 		}
 		//print "คำสั่งส่งข้อมูลให้บางหน่วยงาน". $sqlSend;
@@ -431,31 +435,6 @@ if(isset($_POST['sendOut'])){//ตรวจสอบปุ่ม sendOut
 }
 
 
-
-
-
-
-
-
-
-
-
-        }else{
-            echo "<script>
-            swal({
-                title:'ไฟล์ที่  upload ไม่อยู่ในรูปแบบที่ได้รับอนุญาต ',
-                type:'success',
-                showConfirmButton:true
-                },
-                function(isConfirm){
-                    if(isConfirm){
-                        window.location.href='outside_all.php';
-                    }
-                }); 
-            </script>";
-        } 
-	}
-	
 ?>
 <!-- end process -->
 <script type='text/javascript'>

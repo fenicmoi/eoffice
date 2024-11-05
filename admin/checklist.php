@@ -74,6 +74,11 @@ $sql="SELECT pid FROM paperuser WHERE pid=$pid and confirm=0";
 $result=  dbQuery($sql);
 $resNumNo= dbNumRows($result);
 
+//ส่งคืน
+$sql="SELECT  pid  FROM paperuser WHERE pid=$pid and confirm=2";
+$result=dbQuery($sql);
+$resNumReject=  dbNumRows($result);
+
 
 /************** ตรวจสอบว่าเป็นหนังสื่อส่งภายนอกหรือภายใน */
 $sql="SELECT * FROM paperuser WHERE pid=$pid";
@@ -127,6 +132,7 @@ if($check==0){       // ถ้าค่าเป็น 0 หมายถึง�
         <div class="nav navbar">
             <center>
                 <button type="button" class="btn btn-success">ลงรับแล้ว <span class="badge"><h4><?php print $resNumOk ?></h4></span></button> 
+                <button type="button" class="btn btn-warning">ส่งคืน <span class="badge"><h4><?php print $resNumReject ?></h4></span></button>
                 <button type="button" class="btn btn-danger">ยังไม่ลงรับ <span class="badge"><h4><?php print $resNumNo ?></h4></span></button>
                 <a  class="btn btn-warning" href="report/rep-checklist.php?pid=<?php echo $pid;?>" target="_blank"> <i class="fa fa-print fa-3x"></i></a>
                 <button type="button" class="btn btn-primary" onclick="window.close()"<i class="fa fa-print"></i><i class="fa fa-window-close fa-3x"></i> <span class="badge"></span></button> 

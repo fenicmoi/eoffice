@@ -1,13 +1,8 @@
 <?php
-if(!isset($_SESSION)) 
-{ 
-    session_start(); 
-    if(!isset($_SESSION['ses_u_id'])){
-      header("location:../index.php");
-    }
-} 
-
-
+session_start();
+if(!isset($_SESSION['ses_u_id'])){
+	header("location:../index.php");
+}
 
 
 date_default_timezone_set('Asia/Bangkok');
@@ -20,19 +15,15 @@ include '../library/pagination.php';
 $u_id=(isset($_SESSION['ses_u_id']))?$_SESSION['ses_u_id']:'';
 $sec_id=(isset($_SESSION['ses_sec_id']))?$_SESSION['ses_sec_id']:'';
 $dep_id=(isset($_SESSION['ses_dep_id']))?$_SESSION['ses_dep_id']:'';
-$level_id=(isset($_SESSION['ses_level_id']))?$_SESSION['ses_level_id']:'';
-
 
 
 if($u_id){
-	$sql="SELECT u.u_id,u.u_name,u.u_pass,u.firstname,u.lastname,u.level_id,u.sec_id,
-               s.sec_name,d.dep_id,d.dep_name,l.level_id,l.level_name 
-        FROM user u 
-        INNER JOIN section s ON s.sec_id=u.sec_id 
-        INNER JOIN depart d ON d.dep_id=s.dep_id
-        INNER JOIN user_level l ON l.level_id=u.level_id
-        WHERE u.u_id=$u_id";
-        
+	$sql="SELECT u.u_id,u.u_name,u.u_pass,u.firstname,u.lastname,u.level_id,u.sec_id,s.sec_name,d.dep_id,d.dep_name,l.level_id,l.level_name 
+                 FROM user u 
+                 INNER JOIN section s ON s.sec_id=u.sec_id 
+                 INNER JOIN depart d ON d.dep_id=s.dep_id
+                 INNER JOIN user_level l ON l.level_id=u.level_id
+                 WHERE u.u_id=$u_id";
 	$result=  dbQuery($sql);
 	$num= dbNumRows($result);
 	if($num>0){
@@ -107,14 +98,37 @@ if($u_id){
 
     <script type="text/javascript" src="../js/jquery.alphanumeric.js"></script>
     <script>
-      /*
       $(document).ready( function () {
           $('#myTable').DataTable();
+          $('.select-unit').select2();
       } );
-      */
 
     </script>
 
+<!-- Chatra {literal} -->
+
+<script>
+/*
+    (function(d, w, c) {
+        w.ChatraID = '8hztemC96qH6pieSE';
+        var s = d.createElement('script');
+        w[c] = w[c] || function() {
+            (w[c].q = w[c].q || []).push(arguments);
+        };
+        s.async = true;
+        s.src = 'https://call.chatra.io/chatra.js';
+        if (d.head) d.head.appendChild(s);
+    })(document, window, 'Chatra');
+    */
+</script>
+
+<!-- /Chatra {/literal} -->
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
 
 <style type="text/css">
 body{
@@ -138,7 +152,7 @@ body{
   </head>
   
   <body>
-    <nav class="navbar navbar navbar-inverse ">
+      <nav class="navbar navbar navbar-inverse ">
           <!-- Brand and toggle get grouped for better mobile display -->
           <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
@@ -147,51 +161,60 @@ body{
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-              <a class="navbar-brand" href="#"><?php echo $title;?></a>
+              <a class="navbar-brand" href="#"><?php echo $title;
+
+?></a>
               <ul class="nav navbar-nav">
-                  <li>
-                    <a href="#"><i class="fas fa-users"></i> 
-                      <?php 
-                          echo $level ;
-                          echo "[".$firstname."]";
-                      ?>
-                    </a>
-                  </li>
+                  <li><a href="#"><i class="fas fa-users"></i> <?php echo $level ;
+echo "[".$firstname."]";
+?></a></li>
               </ul>
           </div>
 
-            <?php if(!$u_id){?>
+            <?php if(!$u_id){
+	
+	?>
              <ul class="nav navbar-nav navbar-right">
-              <form class="navbar-form navbar-left" name="login" method="post" action="checkUser.php">
-                      <label for="username">เข้าสู่ระบบ</label>
-                    <div class="form-group">
-                        <input type="text" name="username" class="form-control" placeholder="username" required="">
-                    </div>
-                    <div class="form-group">
-                        <input type="password" name="password" class="form-control" placeholder="password" required="">
-                    </div>
-                    <button type="submit" class="btn btn-primary">LOGIN</button>
-              </form>
+             <form class="navbar-form navbar-left" name="login" method="post" action="checkUser.php">
+                    <label for="username">เข้าสู่ระบบ</label>
+                  <div class="form-group">
+                      <input type="text" name="username" class="form-control" placeholder="username" required="">
+                  </div>
+                  <div class="form-group">
+                      <input type="password" name="password" class="form-control" placeholder="password" required="">
+                  </div>
+                  <button type="submit" class="btn btn-primary">LOGIN</button>
+            </form>
              </ul>
-            <?php }else{ ?>  
-             <ul class="nav navbar-nav navbar-right">
-                <li>
+         
+            <?php
+}
+
+else{
+
+?>
+             
+            <ul class="nav navbar-nav navbar-right">
+              <li>
                       <div class="chip">
                           <img src="../images/img_avatar.png" alt="Person" width="50" height="50">
                           <span class="badge" data-toggle="modal" title="Click"  data-target="#myModal"> ข้อมูลผู้ใช้ </span>
                      </div>
-                </li>
+              </li>
               <li>
                   <div class="chip">
                           <img src="../images/logout.png" alt="Person" width="50" height="50">
                           <a class="badge" href="../logout.php" onclick(return alert("hellojava"));> ออกจากระบบ</a>
-                  </div>
+                         
+                  <!--<a href="../logout.php">LOGOUT</a> -->
               </li>
             </ul>
           </div><!-- /.navbar-collapse -->
-          <?php } ?>
-    </nav>
+            <?php
+}
 
+?>
+    </nav>
       
    <div class="container-fluid">
        <!-- Model -->
@@ -219,6 +242,32 @@ body{
       </div>
     </div>
     <!-- End Model -->
+<?php  //useronline
+//user online
+$session=session_id();
+$time=time();
+$time_check=$time-600;
+//print $time_check;
+//กำหนดเวลาในที่นี้ผมกำหนด 10 นาที
+$sql="select * from user_online";
+//print $sql;
+$result = dbQuery($sql);
+$session_check = dbNumRows($result);
+//echo "session_check".$session_check;
+if ($session_check == 0) {
+    $sql="insert into user_online values ('$session',$time)";
+    //print $sql;
+    dbQuery($sql);
+}
+else {
+    $sql="update user_online set time='$time' where session='$session'";
+    //print $sql;
+	dbQuery($sql);
+}
+$sql="select count(*) from user_online";
+$result= dbQuery($sql);
+$user_online = dbNumRows($result);
 
+?>
     <div class="container-fluse">    
 

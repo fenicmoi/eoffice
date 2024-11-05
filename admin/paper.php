@@ -1,9 +1,18 @@
 
-
-
+<?php
+date_default_timezone_set('Asia/Bangkok');
+include "header.php";
+$u_id=$_SESSION['ses_u_id'];
+?>
+<div class="col-md-2" >
+ <?php
+	$menu=  checkMenu($level_id);
+	include $menu;
+ ?>
+</div>
 <?php
 
-$sql="SELECT u.puid, u.pid,p.postdate,p.title,p.file,p.book_no,d.dep_name,s.sec_name,us.firstname FROM paperuser u
+$sql="SELECT p.pid,u.puid, u.pid,p.postdate,p.title,p.file,p.book_no,d.dep_name,s.sec_name,us.firstname FROM paperuser u
       INNER JOIN paper p  ON p.pid=u.pid
       INNER JOIN depart d ON d.dep_id=p.dep_id
 	  INNER JOIN section s ON s.sec_id = p.sec_id
@@ -18,7 +27,7 @@ $numrow=dbNumRows($result);
                 <div class="panel-heading"><i class="fas fa-share-square fa-2x"></i>  <strong>ส่งไฟล์เอกสาร</strong></div>
                 <div class="panel-body">                  
                             <ul class="nav nav-tabs">
-                                <li class="active"  ><a class="btn-danger fas fa-envelope"  href="?imenu=newpaper">  จดหมายเข้า</a></li>
+                                <li class="active"  ><a class="btn-danger fas fa-envelope"  href="paper.php">  จดหมายเข้า</a></li>
                                 <li><a class="btn-danger fas fa-envelope-open"  href="folder.php"> รับแล้ว</a></li>
                                 <li><a class="btn-danger fas fa-history" href="history.php"> ส่งแล้ว</a></li>
                                 <li><a class="btn-danger fas fa-paper-plane" href="inside_all.php"> ส่งภายใน</a></li>
@@ -32,7 +41,7 @@ $numrow=dbNumRows($result);
 								<th>ที่</th>
 								<th>เรื่อง</th>
 								<th>หน่วยส่ง</th>
-								<th>กลุ่มงาน</th>
+								<th>ตรวจสอบ</th>
 								<th>วันที่ส่ง</th>
 								<th>รับ</th>
 								<th>คืน</th>
@@ -56,7 +65,7 @@ $numrow=dbNumRows($result);
 											</td>
 											<td><a href="<?php echo $rowNew['file'];?>" target="_blank">	<?php echo $rowNew['title']; ?></a></td>
 											<td><?php echo $rowNew['dep_name']; ?></td>
-											<td><?php echo $rowNew['sec_name'];?></td>
+											<td><a href="checklist.php?pid=<?php print $rowNew['pid'];?>" class="badge" target="_blank">ตรวจสอบผู้รับ</a></td>
 											<td><?php echo thaiDate(substr($rowNew['postdate'],0,10)) ?></td>
 											<?php
 												if($level_id>5) {?>
@@ -89,13 +98,11 @@ $numrow=dbNumRows($result);
 		<div class="panel-footer">
 			<center>
 				<?php 
-				/*
 						page_link_border("solid","1px","gray");
 						page_link_bg_color("lightblue","pink");
 						page_link_font("14px");
 						page_link_color("blue","red");
 						page_echo_pagenums(10,true); 
-				*/
 				?>
 			</center>
 		</div>

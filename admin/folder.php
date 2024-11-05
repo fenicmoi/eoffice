@@ -74,14 +74,15 @@ $u_id=$_SESSION['ses_u_id'];
 						<th>วันที่เข้า</th>
 						<th>วันที่รับ</th>
 						<th>หน่วยส่ง</th>
-						<th>กลุ่ม/กอง</th>
 						<th>ผู้ส่ง</th>
 						<th>สถานะ</th>
+						<th>ตรวจสอบ</th>
+						
 					</tr>
 				</thead>
 				<tbody>
 					<?php
-					$sql="SELECT p.postdate,u.puid,u.pid,u.confirm,u.confirmdate,p.title,p.file,p.book_no,d.dep_name,s.sec_name,us.firstname FROM paperuser u
+					$sql="SELECT p.pid,p.postdate,u.puid,u.pid,u.confirm,u.confirmdate,p.title,p.file,p.book_no,d.dep_name,s.sec_name,us.firstname FROM paperuser u
 						INNER JOIN paper p ON p.pid=u.pid
 						INNER JOIN depart d ON d.dep_id=p.dep_id
 						INNER JOIN section s ON s.sec_id=p.sec_id
@@ -113,11 +114,13 @@ $u_id=$_SESSION['ses_u_id'];
 										}
 									?>
 								</td>
-								<td><a href="<?php echo $rowf['file'];?>" target="_blank"><?php echo $rowf['title']; ?></a></td>
+								<td>
+									<a href="<?php echo $rowf['file'];?>" target="_blank"><?php echo $rowf['title'];?></a>
+									
+								</td>
 								<td><?php echo thaiDate($rowf['postdate']); ?></td>
 								<td><?php echo thaiDate($rowf['confirmdate']); ?></td>
 								<td><?php echo $rowf['dep_name'];?></td>
-								<td><?php echo $rowf['sec_name'];?></td>
 								<td><?php echo $rowf['firstname'];?></td>
 								<td>
 									<?php 
@@ -128,6 +131,7 @@ $u_id=$_SESSION['ses_u_id'];
 									  }
 									?>
 								</td>
+								<td><a href="checklist.php?pid=<?php print $rowf['pid'];?>" class="badge" target="_blank">Click</a></td>
 							</tr>
 						<?php } ?>
 						</tbody>
