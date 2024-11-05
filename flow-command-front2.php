@@ -1,29 +1,10 @@
 
 <script type="text/javascript" language="javascript" >
   new DataTable('#example', {
-    ajax: 'query-commandfront.php',
+    ajax: 'query-commandfront2.php',
     processing: true,
     serverSide: true
   });
-  /*
-			$(document).ready(function() {
-				var dataTable = $('#myTable').DataTable( {
-          order: [[ 0, 'desc' ], [ 0, 'asc' ]],
-					"processing": true,
-					"serverSide": true,
-					"ajax":{
-						url :"query-commandfront.php", // json datasource
-						type: "post",  // method  , by default get
-						error: function(){  // error handling
-							$(".myTable-error").html("");
-							$("#myTable").append('<tbody class="myTable-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
-							$("#myTable").css("display","none");
-							
-						}
-					}
-				} );
-			} );
-  */
 </script>
 <br><br><br>
         <div  class="col-md-12">
