@@ -1,11 +1,7 @@
 
 <script type="text/javascript" language="javascript" >
-  new DataTable('#example', {
-    ajax: 'query-commandfront.php',
-    processing: true,
-    serverSide: true
-  });
-  /*
+
+  
 			$(document).ready(function() {
 				var dataTable = $('#myTable').DataTable( {
           order: [[ 0, 'desc' ], [ 0, 'asc' ]],
@@ -23,7 +19,7 @@
 					}
 				} );
 			} );
-  */
+  
 </script>
 <br><br><br>
         <div  class="col-md-12">

@@ -31,7 +31,6 @@ $u_id=$_SESSION['ses_u_id'];
                                 <th>เลขหนังสือ</th>
                                 <th>เรื่อง</th>
                                 <th>ลงวันที่</th>
-                                <th>ผู้ส่ง</th>
                                 <th>แก้ไข</th>
                             </tr>
                         </thead>

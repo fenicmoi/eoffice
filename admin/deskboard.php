@@ -1,5 +1,11 @@
  <link rel="stylesheet" href="../css/note.css">
-
+ <div class="row">
+    <div class="col-md-2">
+        <?php  //ตรวจสอบสิทธิ์การใช้งานเมนู
+        $menu = checkMenu($level_id);
+        include $menu;
+        ?>
+    </div>
     <div class="col-md-10">
         <div class="container-fluid" >
             <?php
@@ -14,7 +20,7 @@
                 <div class="col-md-3">
                     <div class="bg-danger">
                         <center>
-                         <a href="?imenu=newpaper" data-toggle="tooltip1" title="เอกสารจากส่วนราชการต่าง ๆ!">
+                         <a href="paper.php" data-toggle="tooltip1" title="เอกสารจากส่วนราชการต่าง ๆ!">
                             <i class="fas fa-envelope fa-4x"></i>
                             <h5>เอกสารเข้าใหม่ <span class="badge"><?php echo $row['pcount']; ?></span></h5>
                          </a>
