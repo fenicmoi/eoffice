@@ -2,6 +2,9 @@
 date_default_timezone_set('Asia/Bangkok');
 include "header.php";
 $u_id=$_SESSION['ses_u_id'];
+$sec_id=$_SESSION['ses_sec_id'];
+$dep_id=$_SESSION['ses_dep_id'];
+$dateRecive=date('Y-m-d H:m:s');
 ?>
 <script>
 	$( document ).ready( function () {
@@ -74,6 +77,7 @@ $u_id=$_SESSION['ses_u_id'];
 						<th>วันที่รับ</th>
 						<th>หน่วยส่ง</th>
 						<th>ผู้ส่ง</th>
+						<th>แก้ไข</th>
 						<th>สถานะ</th>
 						<th>ตรวจสอบ</th>
 						
@@ -122,6 +126,20 @@ $u_id=$_SESSION['ses_u_id'];
 								<td><?php echo $rowf['dep_name'];?></td>
 								<td><?php echo $rowf['firstname'];?></td>
 								<td>
+									<?php  
+										switch ($rowf['confirm']) {
+											case  1 :
+												echo "<a class='btn btn-danger btn-sm' href=?pid=".$rowf['pid']."&sec_id=".$sec_id."&dep_id=".$dep_id."&confirm=2>ส่งคืน</a>";
+												break;
+											case 2 : 
+												echo "<a class='btn btn-success btn-sm' href=?pid=".$rowf['pid']."&sec_id=".$sec_id."&dep_id=".$dep_id."&confirm=1>ลงรับ</a>";
+												break;
+											default:
+												break;
+										}
+								    ?>
+								</td>
+								<td>
 									<?php 
 									  if ($rowf['confirm'] == 1){
 										echo "<font color='green'><b>ลงรับ</b></font>" ;
@@ -156,3 +174,44 @@ function checklist() {
     var myWindow = window.open("ddd", "ddd", "width=600,height=400");
 }
 </script>
+
+<?php    //ถ้ามีการกดปุ่มและส่งค่าเปลี่ยนแปลงรายการ
+if(isset($_GET['confirm'])){
+	$pid = $_GET['pid'];
+	$confirm = $_GET['confirm'];    //จะส่งค่ามาสองสถานะ  1  หรือ 2 
+	$sql="UPDATE paperuser SET confirm = $confirm, confirmdate='$dateRecive' WHERE pid = $pid AND dep_id=$dep_id";
+	//print $sql;
+	$result = dbQuery($sql);
+
+	if(!$result){
+        echo "<script>
+        swal({
+            title:'มีบางอย่างผิดพลาด !',
+            type:'error',
+            showConfirmButton:true
+            },
+            function(isConfirm){
+                if(isConfirm){
+                    window.location.href='folder.php';
+                }
+            }); 
+        </script>"; 
+    }else{
+        echo "<script>
+        swal({
+            title:'ดำเนินการเรียบร้อยแล้ว!',
+            type:'success',
+            showConfirmButton:true
+            },
+            function(isConfirm){
+                if(isConfirm){
+                    window.location.href='folder.php';
+                }
+            }); 
+        </script>"; 
+    }
+
+	
+}	
+?>
+
