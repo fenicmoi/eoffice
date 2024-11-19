@@ -49,13 +49,16 @@ $u_id=$_SESSION['ses_u_id'];
                             $sql=$sql;
                              break;
                         case 3:     //sub_admin
-                            $sql.=" WHERE c.dep_id=$dep_id";
+                           // $sql.=" WHERE c.dep_id=$dep_id";
+                           $sql=$sql;
                             break;
                         case 4:     //group_admin
-                            $sql.=" WHERE c.sec_id=$sec_id";
+                            //$sql.=" WHERE c.sec_id=$sec_id";
+                            $sql=$sql;  
                             break;
                         case 5:     //user
-                            $sql.=" WHERE c.u_id=$u_id";
+                           // $sql.=" WHERE c.u_id=$u_id";
+                            $sql=$sql;
                             break;
                     }
                     $sql.=" ORDER BY c.cid DESC";
