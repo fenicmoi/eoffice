@@ -215,12 +215,12 @@ if($cid){
 /*++++++++++++++++++++++++++++       ส่งภายนอก      +++++++++++++++++++++++++++*/
 
 
-if(isset($_POST['sendOut'])){//ตรวจสอบปุ่ม sendOut
-	$title=$_POST['title']; //ช	ื่อเอกสาร
-	$detail=$_POST['detail'];//รายละเอียด
-	$date=date('YmdHis');//ว	ันเวลาปัจจุบัน
-	$sec_id=$_POST['sec_id'];//ร	หัสแผนกที่ส่ง
-	$outsite=1;//ก	ำหนดค่าเอกสาร insite=ภายใน   outsite = ภายนอก
+if(isset($_POST['sendOut'])){ //ตรวจสอบปุ่ม sendOut
+	$title=$_POST['title'];   //ช	ื่อเอกสาร
+	$detail=$_POST['detail']; //รายละเอียด
+	$date=date('YmdHis');     //วันเวลาปัจจุบันที่จะเอาไปใส่ในระบบว่าส่งมาเมื่อไหร่
+	$sec_id=$_POST['sec_id']; //รหัสแผนกที่ส่ง
+	$outsite=1; //กำหนดค่าเอกสาร insite=ภายใน   outsite = ภายนอก
 	$user_id=$_POST['user_id'];//ร	หัสผู้ใช้
 	$dep_id=$_POST['dep_id'];//ร	หัสหน่วยงาน
 	
@@ -312,11 +312,11 @@ if(isset($_POST['sendOut'])){//ตรวจสอบปุ่ม sendOut
         if($cid && $link_file<>null){
 			
 			$sql="INSERT INTO paper(title,detail,file,postdate,u_id,outsite,sec_id,dep_id,book_no)
-                         VALUES('$title','$detail','$link_file','$dateSend',$user_id,$outsite,$sec_id,$dep_id,'$book_no')";
+                         VALUES('$title','$detail','$link_file','$date',$user_id,$outsite,$sec_id,$dep_id,'$book_no')";
             echo "checkpoint 1";
 		}else{
 			$sql="INSERT INTO paper(title,detail,file,postdate,u_id,outsite,sec_id,dep_id,book_no)
-                         VALUES('$title','$detail','$part_link','$dateSend',$user_id,$outsite,$sec_id,$dep_id,'$book_no')";
+                         VALUES('$title','$detail','$part_link','$date',$user_id,$outsite,$sec_id,$dep_id,'$book_no')";
           //  echo "$";
 		}
 		//print "คำสั่งส่งข้อมูลให้บางหน่วยงาน". $sqlSend;
@@ -375,11 +375,11 @@ if(isset($_POST['sendOut'])){//ตรวจสอบปุ่ม sendOut
 		//ส	่งเอกสารแบบเลือกเอง
 		if($cid<>''){
 			$sql="INSERT INTO paper(title,detail,file,postdate,u_id,outsite,sec_id,dep_id,book_no)
-                       VALUES('$title','$detail','$link_file','$dateSend',$user_id,$outsite,$sec_id,$dep_id,'$book_no')";
+                       VALUES('$title','$detail','$link_file','$date',$user_id,$outsite,$sec_id,$dep_id,'$book_no')";
 		}
 		else{
 			$sql="INSERT INTO paper(title,detail,file,postdate,u_id,outsite,sec_id,dep_id,book_no)
-                       VALUES('$title','$detail','$part_link','$dateSend',$user_id,$outsite,$sec_id,$dep_id,'$book_no')";
+                       VALUES('$title','$detail','$part_link','$date',$user_id,$outsite,$sec_id,$dep_id,'$book_no')";
 		}
 		
 		

@@ -73,6 +73,7 @@
 					<th>ที่</th>
 					<th>เรื่อง</th>
 					<th>วันที่ส่ง</th>
+					<th>เวลา</th>
 					<th>ตรวจสอบ</th>
 					<th>แก้ไข</th>
 					<th>ยกเลิก</th>
@@ -118,6 +119,7 @@ while ( $rowList = dbFetchArray( $result ) ) { ?>
 				</a>
 			</td>
 			<td><?php echo thaiDate($rowList['postdate']);?></td>
+			<td><?php echo substr($rowList['postdate'],10);?></td>
 			<td><a href="checklist.php?pid=<?php echo $rowList['pid'];?>" class="btn btn-warning" target="_blank"><i class="fab fa-wpexplorer"></i> ติดตาม</a></td>
 			<?php
 				$d1 = $rowList['postdate'];

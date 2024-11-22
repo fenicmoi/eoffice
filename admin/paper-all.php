@@ -34,6 +34,7 @@ $numrow=dbNumRows($result);
 								<th>หน่วยส่ง</th>
 								<th>กลุ่มงาน</th>
 								<th>วันที่ส่ง</th>
+								<th>เวลา</th>
 						</tr>
 				</thead>
 				 <tbody>
@@ -54,6 +55,7 @@ $numrow=dbNumRows($result);
 										<td><?php echo $rowNew['dep_name']; ?></td>
 										<td><?php echo $rowNew['sec_name'];?></td>
 										<td><?php echo thaiDate(substr($rowNew['postdate'],0,10)) ?></td>
+										<td><?php echo substr($rowNew['postdate'],10);?></td>
 									</tr>
 						<?php  }?>                              
 				</tbody>

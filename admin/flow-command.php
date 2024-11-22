@@ -41,6 +41,7 @@ $u_id=$_SESSION['ses_u_id'];
                     <tbody>
                     <?php
                     $sql="SELECT c.*,y.yname FROM  flowcommand as c INNER JOIN sys_year as y ON y.yid=c.yid";
+                    //กำหนดให้ดูได้เฉพาะที่เกี่ยวข้องกับตนเอง
                     switch ($level_id) {
                         case 1:      //programmer
                             $sql=$sql;
@@ -49,16 +50,13 @@ $u_id=$_SESSION['ses_u_id'];
                             $sql=$sql;
                              break;
                         case 3:     //sub_admin
-                           // $sql.=" WHERE c.dep_id=$dep_id";
-                           $sql=$sql;
+                            $sql.=" WHERE c.dep_id=$dep_id";
                             break;
                         case 4:     //group_admin
-                            //$sql.=" WHERE c.sec_id=$sec_id";
-                            $sql=$sql;  
+                            $sql.=" WHERE c.sec_id=$sec_id";
                             break;
                         case 5:     //user
-                           // $sql.=" WHERE c.u_id=$u_id";
-                            $sql=$sql;
+                            $sql.=" WHERE c.sec_id=$sec_id";
                             break;
                     }
                     $sql.=" ORDER BY c.cid DESC";
