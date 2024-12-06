@@ -274,7 +274,8 @@ if(isset($_POST['sendOut'])){ //ตรวจสอบปุ่ม sendOut
                 FROM user u 
                 INNER JOIN section s ON s.sec_id=u.sec_id
                 INNER JOIN depart d  ON d.dep_id=u.dep_id
-                WHERE u.Level_id = 3     
+                WHERE u.Level_id = 3  
+                AND u.keyman = 1    
                 AND d.dep_id <> $dep_id ";    
         //echo $sql;
         
