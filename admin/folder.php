@@ -73,8 +73,10 @@ $dateRecive=date('Y-m-d H:m:s');
 						<th></th>
 						<th>ที่</th>
 						<th>เรื่อง</th>
-						<th>วันที่เข้า</th>
+						<th>วันที่ส่ง</th>
+						<th>เวลาส่ง</th>
 						<th>วันที่รับ</th>
+						<th>เวลารับ</th>
 						<th>หน่วยส่ง</th>
 						<th>ผู้ส่ง</th>
 						<th>แก้ไข</th>
@@ -121,8 +123,10 @@ $dateRecive=date('Y-m-d H:m:s');
 									<a href="<?php echo $rowf['file'];?>" target="_blank"><?php echo $rowf['title'];?></a>
 									
 								</td>
-								<td><?php echo thaiDate($rowf['postdate']); ?></td>
-								<td><?php echo thaiDate($rowf['confirmdate']); ?></td>
+								<td><?php echo thaiDate($rowf['postdate']);?></td>
+								<td><?php echo substr($rowf['postdate'],10);?></td>
+								<td><?php echo thaiDate($rowf['confirmdate']);?></td>
+								<td><?php echo substr($rowf['confirmdate'],10);?></td>
 								<td><?php echo $rowf['dep_name'];?></td>
 								<td><?php echo $rowf['firstname'];?></td>
 								<td>
