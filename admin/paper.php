@@ -42,6 +42,7 @@ $numrow=dbNumRows($result);
 								<th>หน่วยส่ง</th>
 								<th>ตรวจสอบ</th>
 								<th>วันที่ส่ง</th>
+								<th>เวลา</th>
 								<th>รับ</th>
 								<th>คืน</th>
 						</tr>
@@ -64,8 +65,9 @@ $numrow=dbNumRows($result);
 											</td>
 											<td><a href="<?php echo $rowNew['file'];?>" target="_blank">	<?php echo $rowNew['title']; ?></a></td>
 											<td><?php echo $rowNew['dep_name']; ?></td>
-											<td><a href="checklist.php?pid=<?php print $rowNew['pid'];?>" class="badge" target="_blank">ตรวจสอบผู้รับ</a></td>
+											<td><a href="checklist.php?pid=<?php print $rowNew['pid'];?>" class="badge" target="_blank">หน่วยรับร่วม</a></td>
 											<td><?php echo thaiDate(substr($rowNew['postdate'],0,10)) ?></td>
+											<td><?php echo substr($rowNew['postdate'],10);?></td>
 											<?php
 												if($level_id>5) {?>
 														<td><kbd>จำกัดสิทธิ์</kbd></td>
