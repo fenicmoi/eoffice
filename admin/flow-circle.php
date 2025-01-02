@@ -74,9 +74,9 @@ $u_id=$_SESSION['ses_u_id'];
                                                 //$date_diff= DateDiff($curDate,$dateLine);
                                                 $date_diff = getNumDay($dateLine,$curDate);
 
-                                                if($date_diff <= 3){?>
+                                                if($date_diff <= 7){?>
                                                     <a class="btn btn-success btn-block" href="flow-circle-edit.php?u_id=<?=$u_id?>&cid=<?=$cid?>"><i  class="fas fa-edit"></i></a>
-                                                <?php }else if($date_diff > 3){ ?>
+                                                <?php }else if($date_diff > 7){ ?>
                                                     <center><i  class="fas fa-lock fa-2x"></i></center>
                                                 <?php } ?>   
                                         </td>

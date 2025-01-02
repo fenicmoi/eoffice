@@ -127,7 +127,7 @@ while ( $rowList = dbFetchArray( $result ) ) { ?>
 				$numday = getNumDay($d1,$d2);
 			
 			//กำหนดให้แก้ไขได้ 1 วันเท่านั้น
-			if ($numday > 3) {?>       
+			if ($numday > 7) {?>       
 				<td><center><i class="fab fa-expeditedssl fa-2x"></i></center></td>
 			<?php }else{
 						if($rowList['insite']==1){?>
@@ -138,7 +138,7 @@ while ( $rowList = dbFetchArray( $result ) ) { ?>
 				
 			<?php }?>
 			<td>
-			    <?php if($numday > 1){?>
+			    <?php if($numday > 7){?>
 					<center><i class="fab fa-expeditedssl fa-2x"></i></center>
 				<?php }else{?>
 					<a class="btn btn-default" href="in_out_del.php?pid=<?=$rowList['pid'];?>" onclick="return confirm('คุณกำลังจะลบข้อมูล !'); "> <i class="fas fa-trash-alt"></i> ยกเลิก</a>
