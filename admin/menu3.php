@@ -64,20 +64,19 @@ $num_row = dbNumRows($result);
         </h4>
       </div>
       <div id="collapse3" class="panel-collapse collapse">
-        <div class="panel-body">
-           <div class="panel-body">
-            <a class="btn btn-primary btn-block" href="flow-resive-province.php"><i class="far fa-arrow-alt-circle-right  pull-left"></i>หนังสือรับจังหวัด</a>
-            <a class="btn btn-primary btn-block" href="FlowResiveDepart.php"><i class="far fa-arrow-alt-circle-right  pull-left"></i> หนังสือรับหน่วยงาน</a>
-            <a class="btn btn-primary btn-block" href="flow-resive-group.php"><i class="far fa-arrow-alt-circle-right  pull-left"></i> หนังสือรับกลุ่มงาน</a>
-            <hr>
-            <a class="btn btn-warning btn-block" href="FlowResiveProvince.php"><i class="far fa-arrow-alt-circle-right  pull-left"></i> หนังสือเข้าใหม่<span class="badge"><?=$num_row; ?></span></a>
-            <a class="btn btn-warning btn-block" href="flow-resive-depart.php"><i class="far fa-arrow-alt-circle-right  pull-left"></i> ทะเบียนหนังสือรับจากจังหวัด</a>
-            <hr>
-            <a class="btn btn-info btn-block" href="flow-circle.php"><i class="far fa-arrow-alt-circle-right  pull-left"></i> หนังสือส่ง[เวียน]</a>
-            <a class="btn btn-info btn-block" href="flow-normal.php"><i class="far fa-arrow-alt-circle-right  pull-left"></i> หนังสือส่ง[ปกติ]</a>
-           <a class="btn btn-primary btn-block" href=""><i class="far fa-arrow-alt-circle-right  pull-left"></i> หนังสือส่ง[สำนักงาน]</a>
-            <a class="btn btn-primary btn-block" href="flow-command.php"><i class="far fa-arrow-alt-circle-right  pull-left"></i> ออกเลขคำสั่ง</a>
-        </div>
+          <div class="panel-body">
+            <div class="panel-body">
+              <a class="btn btn-primary btn-block" href="flow-resive-province.php">หนังสือรับจังหวัด</a>
+              <a class="btn btn-primary btn-block" href="FlowResiveDepart.php">หนังสือรับหน่วยงาน</a>
+              <a class="btn btn-primary btn-block" href="flow-resive-group.php">หนังสือรับกลุ่มงาน</a>
+              <hr>
+              <a class="btn btn-warning btn-block" href="FlowResiveProvince.php">หนังสือเข้าใหม่<span class="badge"><?=$num_row; ?></span></a>
+              <a class="btn btn-warning btn-block" href="flow-resive-depart.php">ทะเบียนหนังสือรับจังหวัด</a>
+              <hr>
+              <a class="btn btn-info btn-block" href="flow-circle.php">ทะเบียนหนังสือส่ง[เวียน]</a>
+              <a class="btn btn-info btn-block" href="flow-normal.php">ทะเบียนหนังสือส่ง[ปกติ]</a>
+              <a class="btn btn-primary btn-block" href="flow-command.php">ทะเบียนคำสั่งจังหวัด</a>
+          </div>
         </div>
       </div>
     </div>
@@ -102,22 +101,26 @@ $num_row = dbNumRows($result);
         </div>
       </div>
     </div>
-       <div class="panel panel-info">
-      <div class="panel-heading">
-        <h4 class="panel-title">
-            <i class="fab fa-app-store"></i></span><a data-toggle="collapse" data-parent="#accordion" href="#collapse5"> ระบบสนับสนุนอื่นๆ</a>
-        </h4>
-      </div>
-      <div id="collapse5" class="panel-collapse collapse">
-          <div class="panel-body">
-            <div class="panel-body">
-              <!-- <a class="btn btn-primary btn-block" href="http://www.phangnga.go.th/meeting/index.php" target="_blank">ระบบจองห้องประชุม</a>
-              <a class="btn btn-primary btn-block" href="http://www.phangnga.go.th/calendar/" target="_blank">ระบบนัดงานผู้บริหาร</a>
-              <a class="btn btn-primary btn-block" href="">ระบบลงประกาศ</a> -->
-          </div>
-      </div>
-      </div>
-    </div>
+    <?php
+      if($dep_id == 1){   //ถ้าเป็นสำนักงานจังหวัด ให้แสดงเมนู
+        echo"
+            <div class='panel panel-info'>
+              <div class='panel-heading'>
+                <h4 class='panel-title'>
+                  <i class = 'fab fa-app-store'></i><a data-toggle='collapse' data-parent='#accordion' href='#collapse5'>สำนักงานจังหวัด</a>
+                </h4>
+              <div id='collapse5' class='panel-collapse collapse'>
+                <div class='panel-body'>
+                   <a class='btn btn-warning btn-block' href='flow-circle.php'>ทะเบียนหนังสือส่ง[เวียน]</a>
+                   <a class='btn btn-warning btn-block' href='flow-normal.php'>ทะเบียนหนังสือส่ง[ปกติ]</a>
+                   <a class='btn btn-warning btn-block' href='flow-command.php'>ทะเบียนคำสั่งจังหวัด</a>
+                </div>
+              </div>
+              </div>
+            </div>
+        ";
+      }   
+    ?>
      <div class="panel panel-info">
         <div class="panel-heading">
           <h4 class="panel-title">
