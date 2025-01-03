@@ -144,9 +144,9 @@ $dep_id = $_SESSION['ses_dep_id'];
                                                 //$date_diff= DateDiff($curDate,$dateLine);
                                                 $date_diff = getNumDay($dateLine,$curDate);
 
-                                                if($date_diff <= 3){?>
+                                                if($date_diff <= 10){?>
                                                     <a class="btn btn-success" href="flow-normal-edit.php?u_id=<?=$u_id?>&cid=<?=$cid?>"><i  class="fas fa-edit"></i></a>
-                                                <?php }else if($date_diff > 3){ ?>
+                                                <?php }else if($date_diff > 10){ ?>
                                                     <center><i  class="fas fa-lock fa-2x"></i></center>
                                                 <?php } ?>   
                                     </td>
