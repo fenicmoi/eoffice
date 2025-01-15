@@ -44,7 +44,8 @@ $sql="SELECT p.pid,u.puid, u.pid,p.postdate,p.title,p.file,p.book_no,d.dep_name,
 	  INNER JOIN user as us ON us.u_id = p.u_id
       WHERE u.u_id=$u_id AND u.confirm=0 ORDER BY u.puid DESC" ;
 //print $sql;
-$result = page_query( $dbConn, $sql, 10 );
+//$result = page_query( $dbConn, $sql, 10 );
+$result = dbQuery($sql);
 $numrow=dbNumRows($result);
 ?>
  <div class="col-md-10">
@@ -121,16 +122,5 @@ $numrow=dbNumRows($result);
 				</tbody>
 		 </table>
 		 </div> <!-- panel body-->
-		<div class="panel-footer">
-			<center>
-				<?php 
-						page_link_border("solid","1px","gray");
-						page_link_bg_color("lightblue","pink");
-						page_link_font("14px");
-						page_link_color("blue","red");
-						page_echo_pagenums(10,true); 
-				?>
-			</center>
-		</div>
 	 </div> <!-- panel primary -->
 </div>
