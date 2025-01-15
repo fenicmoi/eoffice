@@ -21,7 +21,7 @@ $u_id=$_SESSION['ses_u_id'];
         <div  class="col-md-10">
             <div class="panel panel-default" >
                 <div class="panel-heading">
-                    <i class="fa fa-envelope fa-2x" aria-hidden="true"></i>  <strong>ทะเบียนหนังสือส่ง [เวียน]</strong>
+                    <i class="fa fa-envelope fa-2x" aria-hidden="true"></i>  <strong>ทะเบียนหนังสือส่งสำนักงานจังหวัด[เวียน]</strong>
                     <a href="" class="btn btn-danger btn-md pull-right" data-toggle="modal" data-target="#modalAdd"><i class="fa fa-plus " aria-hidden="true"></i> ลงทะเบียนส่ง</a>
                     <!-- <a href="" class="btn btn-default btn-md pull-right" data-toggle="modal" data-target="#modalReserv"><i class="fas fa-hand-point-up "></i> จองทะเบียนส่ง</a> -->
                 </div>
@@ -37,17 +37,8 @@ $u_id=$_SESSION['ses_u_id'];
                         <tbody>
                             <?php
                                 $count=1;
-                                if($level_id==1){   //กรณีเป็น Admin  สามารถดูได้ทั้งหมด
-                                     $sql="SELECT * FROM  flowcircle   ORDER BY cid DESC";    
-                                }elseif($level_id==2){   //สารบรรณกลาง  แสดงทั้งหมด
-                                     $sql="SELECT * FROM  flowcircle   ORDER BY cid DESC";    
-                                }elseif($level_id==3){             //สารบรรณหน่วยงาน   แสดงแค่หน่วยของตนเอง
-                                    $sql="SELECT * FROM  flowcircle WHERE dep_id=$dep_id  ORDER BY cid DESC ";
-                                }elseif($level_id==4){             //สารบรรณกลุ่มงาน  แสดงแค่กลุ่มของตนเอง
-                                     $sql="SELECT * FROM  flowcircle WHERE dep_id=$dep_id AND sec_id=$sec_id  ORDER BY cid DESC ";
-                                }elseif($level_id==5){            // ผู้ใช้ทั่วไปดูข้อมูลเฉพาะของกลุ่มตนเอง
-                                     $sql="SELECT * FROM  flowcircle WHERE dep_id=$dep_id AND sec_id=$sec_id   ORDER BY cid DESC ";
-                                }
+                                $sql="SELECT * FROM  flowcircle_depart   ORDER BY cid DESC";    
+                              
                                 
                                 //print $sql;
                                 $result = page_query( $dbConn, $sql, 10 );
@@ -403,14 +394,14 @@ if(isset($_POST['save'])){   //กดปุ่มบันทึกจากฟ�
         echo "<meta http-equiv='refresh' content='1;URL=flow-circle.php'>";
     }else{
            //ตัวเลขรันอัตโนมัติ
-            $sqlRun="SELECT cid,rec_no FROM flowcircle WHERE  yid=$yid  ORDER  BY cid DESC";
+            $sqlRun="SELECT cid,rec_no FROM flowcircle_depart WHERE  yid=$yid  ORDER  BY cid DESC";
             $resRun=  dbQuery($sqlRun);
             $rowRun= dbFetchArray($resRun);
             $rec_no=$rowRun['rec_no'];
             $rec_no++;
 
         dbQuery('BEGIN');    
-        $sqlInsert="INSERT INTO flowcircle
+        $sqlInsert="INSERT INTO flowcircle_depart
                          (rec_no,u_id,obj_id,yid,typeDoc,prefex,title,speed_id,sec_id,sendfrom,sendto,refer,attachment,practice,file_location,dateline,dateout,open,dep_id)    
                     VALUE($rec_no,$u_id,$obj_id,$yid,'$typeDoc','$prefex','$title',$speed_id,$sec_id,'$sendfrom','$sendto','$refer','$attachment','$practice','$file_location','$dateline','$datelout',$open,$dep_id)";
        // echo $sqlInsert;
@@ -426,7 +417,7 @@ if(isset($_POST['save'])){   //กดปุ่มบันทึกจากฟ�
                 },
                 function(isConfirm){
                     if(isConfirm){
-                        window.location.href='flow-circle.php';
+                        window.location.href='circleoffice.php';
                     }
                 }); 
             </script>";
@@ -440,7 +431,7 @@ if(isset($_POST['save'])){   //กดปุ่มบันทึกจากฟ�
                 },
                 function(isConfirm){
                     if(isConfirm){
-                        window.location.href='flow-circle.php';
+                        window.location.href='circleoffice.php';
                     }
                 }); 
             </script>";
@@ -459,7 +450,7 @@ if(isset($_POST['update'])){
         $attachment = $_POST['attachment'];
         $cid = $_POST['cid'];
     
-        $sql = "UPDATE flowcircle SET sendfrom = '$sendfrom', sendto = '$sendto', title = '$title', refer = '$refer', attachment = '$attachment' WHERE cid = $cid ";
+        $sql = "UPDATE flowcircle_depart SET sendfrom = '$sendfrom', sendto = '$sendto', title = '$title', refer = '$refer', attachment = '$attachment' WHERE cid = $cid ";
      
         $result = dbQuery($sql);
         if($result){
@@ -472,7 +463,7 @@ if(isset($_POST['update'])){
                 },
                 function(isConfirm){
                     if(isConfirm){
-                        window.location.href='flow-circle.php';
+                        window.location.href='circleoffice.php';
                     }
                 }); 
             </script>";
@@ -486,7 +477,7 @@ if(isset($_POST['update'])){
                 },
                 function(isConfirm){
                     if(isConfirm){
-                        window.location.href='flow-circle.php';
+                        window.location.href='circleoffice.php';
                     }
                 }); 
             </script>";
@@ -547,13 +538,13 @@ if(isset($_POST['btnReserv'])){
         $num = $_POST['num'];   //จำนวนหนังสือที่ต้องจอง
         $a=0;
         while ($a < $num) {
-            $sql = "SELECT max(rec_no) as rec_no FROM flowcircle where yid=$yid";
+            $sql = "SELECT max(rec_no) as rec_no FROM flowcircle_depart where yid=$yid";
             $result = dbQuery($sql);
             $row = dbFetchArray($result);
             $rec_no =$row['rec_no'];
             $rec_no = $rec_no + 1;
 
-            $sqlInsert="INSERT INTO flowcircle
+            $sqlInsert="INSERT INTO flowcircle_depart
                          (rec_no,u_id,obj_id,yid,typeDoc,prefex,title,speed_id,sec_id,sendfrom,sendto,refer,attachment,practice,file_location,dateline,dateout,dep_id)    
                     VALUE($rec_no,$u_id,$obj_id,$yid,'$typeDoc','$prefex','$title',$speed_id,$sec_id,'$sendfrom','$sendto','$refer','$attachment','$practice','$file_location','$dateline','$datelout',$dep_id)";
             $result = dbQuery($sqlInsert);
@@ -570,7 +561,7 @@ if(isset($_POST['btnReserv'])){
                         },
                         function(isConfirm){
                             if(isConfirm){
-                                window.location.href='flow-circle.php';
+                                window.location.href='circleoffice.php';
                             }
                         }); 
                     </script>";
@@ -584,7 +575,7 @@ if(isset($_POST['btnReserv'])){
                         },
                         function(isConfirm){
                             if(isConfirm){
-                                window.location.href='flow-circle.php';
+                                window.location.href='circleoffice.php';
                             }
                         }); 
                     </script>";
