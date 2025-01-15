@@ -4,6 +4,31 @@ date_default_timezone_set('Asia/Bangkok');
 include "header.php";
 $u_id=$_SESSION['ses_u_id'];
 ?>
+<script> //search option
+	$( document ).ready( function () {
+		// $("#btnSearch").prop("disabled",true); 
+		$( "#dateSearch" ).hide();
+		$( "tr" ).first().hide();
+
+
+		$( "#hideSearch" ).click( function () {
+			$( "tr" ).first().show( 1000 );
+		} );
+
+
+		$( '#typeSearch' ).change( function () {
+			var typeSearch = $( '#typeSearch' ).val();
+			if ( typeSearch == 4 ) {
+				$( "#dateSearch" ).show( 500 );
+				$( "#search" ).hide( 500 );
+			} else {
+				$( "#dateSearch" ).hide( 500 );
+				$( "#search" ).show( 500 );
+			}
+		} )
+	} );
+</script>
+
 <div class="col-md-2" >
  <?php
 	$menu=  checkMenu($level_id);
@@ -25,7 +50,7 @@ $numrow=dbNumRows($result);
  <div class="col-md-10">
 	            <div class="panel panel-primary">
                 <div class="panel-heading"><i class="fas fa-share-square fa-2x"></i>  <strong>ส่งไฟล์เอกสาร</strong></div>
-                <div class="panel-body">                  
+				<div class="panel-body">                  
                             <ul class="nav nav-tabs">
                                 <li class="active"  ><a class="btn-danger fas fa-envelope"  href="paper.php">  หนังสือเข้า</a></li>
                                 <li><a class="btn-danger fas fa-envelope-open"  href="folder.php"> รับแล้ว</a></li>
@@ -33,7 +58,7 @@ $numrow=dbNumRows($result);
                                 <li><a class="btn-danger fas fa-globe" href="outside_all.php"> ส่งหนังสือ</a></li>
                             </ul>
                
-			<table class="table table-bordered table-hover" id="tbNew" >
+			<table class="table table-bordered table-hover" id="myTable" >
 				<thead>
 						<tr bgcolor="#C8C5C5">
 								<th></th>

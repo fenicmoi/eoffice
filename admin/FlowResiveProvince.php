@@ -1,8 +1,10 @@
 
 <!-- หนังสือถึงส่วนราชการ-->
 <?php   
+
 include "header.php"; 
 $u_id=$_SESSION['ses_u_id'];
+
 ?>
 
 <script type="text/javascript" src="datePicket.js"></script>
@@ -63,29 +65,44 @@ $u_id=$_SESSION['ses_u_id'];
                                         <td><?php echo $row['book_no'];?></td>
                                         <td>
                                             <a href="#" 
-                                                    onclick="load_leave_data('<? print $u_id;?>','<? print $rec_id; ?>','<? print $book_id; ?>');" data-toggle="modal" data-target=".bs-example-modal-table">
+                                                    onclick=
+                                                    "load_leave_data(
+                                                                    '<?print $u_id;?>',
+                                                                    '<?print $rec_id; ?>',
+                                                                    '<?print $book_id; ?>
+                                                                    );"
+                                        
+                                                    data-toggle="modal" 
+                                                    data-target=".bs-example-modal-table">
                                                     <?php echo $row['title'];?> 
                                             </a>
                                         </td>
-                                        <td><?php echo $row['sendfrom']; ?></td>
-                                        <?php if($row['date_line']==null){
-                                            $date_line= "รอยืนยัน";
-                                        }else{
-                                            $date_line= thaiDate($row['date_line']);
-                                        }
+                                        <td>
+                                            <?php echo $row['sendfrom']; ?>
+                                        </td>
+                                        <?php 
+                                            if($row['date_line']==null){
+                                              $date_line = "รอยืนยัน";
+                                            }else{
+                                              $date_line = thaiDate($row['date_line']);
+                                            }
                                         ?>
                                         <td><?php echo $date_line; ?></td>
                                         <td>
-                                        <?php
-                                            if($row['file_location']==''){?>
-                                            ไม่มีไฟล์
-                                           <?php }else{ ?>
-                                            <a class="btn btn-info btn-xs btn-block" href="<?php echo $row['file_location'];?>" target="_bank"><i class="fas fa-download"></i></a>
-                                         <?   } ?>
+                                            <?php
+                                                if($row['file_location'] ==''){?>
+                                                ไม่มีไฟล์
+                                            <?php }else{ ?>
+                                                <a 
+                                                    class="btn btn-info btn-xs btn-block" 
+                                                    href="<?php echo $row['file_location'];?>" 
+                                                    target="_bank"><i class="fas fa-download"></i>
+                                                </a>
+                                            <?php } ?>
                                          </td>
                                     </tr>
 
-                                    <?php } ?> <!-- end while -->
+                                <?php } ?> <!-- end while -->
                                     
                         </tbody>
                     </table>
