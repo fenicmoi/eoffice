@@ -4,30 +4,6 @@ date_default_timezone_set('Asia/Bangkok');
 include "header.php";
 $u_id=$_SESSION['ses_u_id'];
 ?>
-<script> //search option
-	$( document ).ready( function () {
-		// $("#btnSearch").prop("disabled",true); 
-		$( "#dateSearch" ).hide();
-		$( "tr" ).first().hide();
-
-
-		$( "#hideSearch" ).click( function () {
-			$( "tr" ).first().show( 1000 );
-		} );
-
-
-		$( '#typeSearch' ).change( function () {
-			var typeSearch = $( '#typeSearch' ).val();
-			if ( typeSearch == 4 ) {
-				$( "#dateSearch" ).show( 500 );
-				$( "#search" ).hide( 500 );
-			} else {
-				$( "#dateSearch" ).hide( 500 );
-				$( "#search" ).show( 500 );
-			}
-		} )
-	} );
-</script>
 
 <div class="col-md-2" >
  <?php
@@ -110,10 +86,12 @@ $numrow=dbNumRows($result);
 												if($level_id>5) {?>
 														<td><kbd>จำกัดสิทธิ์</kbd></td>
 											 <?php } else{?>
-														<td><a class="btn btn-danger" 
-														       href="recive.php?pid=<?php echo $rowNew['pid'];?>&sec_id=<?php echo $sec_id; ?>&dep_id=<?php echo $dep_id; ?>&confirm=2">
-															   <i class="fa fa-close"></i> ส่งคืน
+														<td>
+															<a href="#" class="btn btn-danger" onClick="loadData('<?php print $rowNew['pid'];?>','<?php print $rowNew['puid'];?>');" 
+																	data-toggle="modal" data-target=".bs-example-modal-table">
+																แก้ไข
 															</a>
+														
 														</td>
 											 <?php } ?>
 
@@ -124,3 +102,35 @@ $numrow=dbNumRows($result);
 		 </div> <!-- panel body-->
 	 </div> <!-- panel primary -->
 </div>
+
+
+<!--  modal แสงรายละเอียดข้อมูล -->
+<div  class="modal fade bs-example-modal-table" tabindex="-1" aria-hidden="true" role="dialog">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header bg-danger">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title"><i class="fa fa-info"></i> รายละเอียด</h4>
+                    </div>
+                    <div class="modal-body no-padding">
+                        <div id="divDataview"></div>     
+                    </div> <!-- modal-body -->
+                    <div class="modal-footer bg-danger">
+                         <button type="button" class="btn btn-danger" data-dismiss="modal">ปิด X</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+<!-- จบส่วนแสดงรายละเอียดข้อมูล  -->
+
+
+<script type="text/javascript">
+	function loadData(pid,puid) {
+		var sdata = {
+			pid : pid,
+			puid : puid 
+		};
+	$('#divDataview').load('show_rejectpaper.php',sdata);
+	}
+</script>
+     
