@@ -87,12 +87,13 @@ $dateRecive=date('Y-m-d H:m:s');
 				</thead>
 				<tbody>
 					<?php
+					//แก้ไขให้เจ้าหน้าที่ทุกคนภายในหน่วยเดียวกันสามารถมองเห็นได้
 					$sql="SELECT p.pid,p.postdate,u.puid,u.pid,u.confirm,u.confirmdate,p.title,p.file,p.book_no,d.dep_name,s.sec_name,us.firstname FROM paperuser u
 						INNER JOIN paper p ON p.pid=u.pid
 						INNER JOIN depart d ON d.dep_id=p.dep_id
 						INNER JOIN section s ON s.sec_id=p.sec_id
 						INNER JOIN user us  ON us.u_id=p.u_id
-						WHERE u.dep_id=$dep_id AND u.u_id=$u_id  AND u.confirm > 0";
+						WHERE u.dep_id=$dep_id  AND u.confirm > 0";
 						if ( isset($_POST['btnSearch' ] ) ) { //ถ้ามีการกดปุ่มค้นหา
 							@$typeSearch = $_POST[ 'typeSearch' ]; //ประเภทการค้นหา
 							@$txt_search = $_POST[ 'search' ]; //กล่องรับข้อความ
