@@ -130,8 +130,11 @@ $dateRecive=date('Y-m-d H:m:s');
 								<td><?php echo substr($rowf['confirmdate'],10);?></td>
 								<td><?php echo $rowf['dep_name'];?></td>
 								<td><?php echo $rowf['firstname'];?></td>
-								<td>
-									<?php  
+								<?php   
+									if($level_id>3){    //ตรวจสอบผู้ใช้  ถ้าเป็นผู้ใช้ทั่วไปแก้ไขสถานะไม่ได้
+										echo "<td>-</td>";
+									}else {
+										echo "<td>";
 										switch ($rowf['confirm']) {
 											case  1 :
 												echo "<a class='btn btn-danger btn-sm' href=?pid=".$rowf['pid']."&sec_id=".$sec_id."&dep_id=".$dep_id."&confirm=2>ส่งคืน</a>";
@@ -142,8 +145,11 @@ $dateRecive=date('Y-m-d H:m:s');
 											default:
 												break;
 										}
-								    ?>
-								</td>
+
+										echo "</td>";
+									}
+								?>
+
 								<td>
 									<?php 
 									  if ($rowf['confirm'] == 1){
