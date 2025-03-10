@@ -265,10 +265,11 @@ if(isset($_POST['sendOut'])){ //ตรวจสอบปุ่ม sendOut
             $new_filename = $date . "_" . $random_num . "." . $file_extension;
             
             // พาธเต็มรูปแบบสำหรับบันทึกไฟล์
-            $destination = $upload_dir . $new_filename;
+            $link_file = $upload_dir . $new_filename;
+           // echo $destination;
 
             // ย้ายไฟล์ไปยังพาธปลายทาง
-            if (move_uploaded_file($upload['tmp_name'], $destination)) {
+            if (move_uploaded_file($upload['tmp_name'], $link_file)) {
                 echo "อัพโหลดสำเร็จ! ชื่อไฟล์: " . $new_filename;
             } else {
                 echo "เกิดข้อผิดพลาดในการบันทึกไฟล์";
@@ -288,7 +289,7 @@ if(isset($_POST['sendOut'])){ //ตรวจสอบปุ่ม sendOut
 		}else{
 			//กรณีส่งเอกสารโดยไม่มีการออกเลข
 			$sql="INSERT INTO paper(title,detail,file,postdate,u_id,sec_id,outsite,dep_id,book_no)
-                              VALUE('$title','$detail','$part_link','$date',$user_id,$sec_id,$outsite,$dep_id,'$book_no')";
+                              VALUE('$title','$detail','$link_file','$date',$user_id,$sec_id,$outsite,$dep_id,'$book_no')";
 		}
 		
 		
@@ -333,7 +334,7 @@ if(isset($_POST['sendOut'])){ //ตรวจสอบปุ่ม sendOut
 	
 //***เลือกเองตามประเภท 
 
-	if($toSome!=''){
+	if($toSome !=''){
 		//ส	่งเอกสารแยกตามประเภทหน่วยงาน
 		//if($cid && $link_file<>null){
         if($cid && $link_file<>null){
@@ -343,7 +344,7 @@ if(isset($_POST['sendOut'])){ //ตรวจสอบปุ่ม sendOut
             echo "checkpoint 1";
 		}else{
 			$sql="INSERT INTO paper(title,detail,file,postdate,u_id,outsite,sec_id,dep_id,book_no)
-                         VALUES('$title','$detail','$part_link','$date',$user_id,$outsite,$sec_id,$dep_id,'$book_no')";
+                         VALUES('$title','$detail','$link_file','$date',$user_id,$outsite,$sec_id,$dep_id,'$book_no')";
           //  echo "$";
 		}
 		//print "คำสั่งส่งข้อมูลให้บางหน่วยงาน". $sqlSend;
@@ -406,7 +407,7 @@ if(isset($_POST['sendOut'])){ //ตรวจสอบปุ่ม sendOut
 		}
 		else{
 			$sql="INSERT INTO paper(title,detail,file,postdate,u_id,outsite,sec_id,dep_id,book_no)
-                       VALUES('$title','$detail','$part_link','$date',$user_id,$outsite,$sec_id,$dep_id,'$book_no')";
+                       VALUES('$title','$detail','$link_file','$date',$user_id,$outsite,$sec_id,$dep_id,'$book_no')";
 		}
 		
 		
