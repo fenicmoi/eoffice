@@ -89,7 +89,7 @@ $numrow=dbNumRows($result);
 														<td>
 															<a href="#" class="btn btn-danger" onClick="loadData('<?php print $rowNew['pid'];?>','<?php print $rowNew['puid'];?>');" 
 																	data-toggle="modal" data-target=".bs-example-modal-table">
-																แก้ไข
+																ส่งคืน
 															</a>
 														
 														</td>
@@ -110,10 +110,10 @@ $numrow=dbNumRows($result);
                 <div class="modal-content">
                     <div class="modal-header bg-danger">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title"><i class="fa fa-info"></i> รายละเอียด</h4>
+                        <h4 class="modal-title"><i class="fa fa-info"></i> เหตุผลการส่งคืน</h4>
                     </div>
                     <div class="modal-body no-padding">
-                        <div id="divDataview"></div>     
+                        <div id="divDataview"> </div>     
                     </div> <!-- modal-body -->
                     <div class="modal-footer bg-danger">
                          <button type="button" class="btn btn-danger" data-dismiss="modal">ปิด X</button>
@@ -122,6 +122,49 @@ $numrow=dbNumRows($result);
             </div>
         </div>
 <!-- จบส่วนแสดงรายละเอียดข้อมูล  -->
+
+
+<?php   //ส่งข้อความกรณีส่งคืนไปยังหน่วยรับเพื่อทราบเหตุผลการส่งคืน
+	if(isset($_POST['btnReject'])){
+		$puid = $_POST["puid"];
+		$msg_reject = $_POST["msg_reject"];
+		$sql =  " UPDATE paperuser SET msg_reject = $msg_reject  WHERE puid = $puid";
+		echo $sql;
+	
+		$result = dbQuery($sql);
+		if($result){
+			echo "<script>
+			swal({
+				title:'เรียบร้อย',
+				text:'ดำเนินการส่งคืนเรียบร้อยแล้ว',
+				icon:'success',
+				type:'success',
+				showConfirmButton:true
+				},
+				function(isConfirm){
+					if(isConfirm){
+						window.location.href='paper.php';
+					}
+				}); 
+			</script>";
+		}
+		else{
+			echo "<script>
+			swal({
+				title:'มีบางอย่างผิดพลาด! กรุณาตรวจสอบ',
+				type:'error',
+				showConfirmButton:true
+				},
+				function(isConfirm){
+					if(isConfirm){
+						window.location.href='paper.php';
+					}
+				}); 
+			</script>";
+		}
+	}
+?>
+
 
 
 <script type="text/javascript">

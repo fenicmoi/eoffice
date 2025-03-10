@@ -241,20 +241,46 @@ if(isset($_POST['sendOut'])){ //ตรวจสอบปุ่ม sendOut
 	
 
 	if($upload<>''){
-		
-		$part="paper/";
-		
-		$type=  strrchr($_FILES['fileupload']['name'],".");   //เอาชื่อเก่าออกให้เหลือแต่นามสกุล
-		$newname=$date.$numrand.$type;   //ตั้งชื่อไฟล์ใหม่โดยใช้เวลา 
-		$part_copy=$part.$newname;
-		$part_link="paper/".$newname;
-		move_uploaded_file($_FILES['fileupload']['tmp_name'],$part_copy);    //คัดลอกไฟล์ไป Server
+		$upload_dir = "paper/";
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['fileupload'])) {
+            $upload = $_FILES['fileupload'];
+            
+            // ตรวจสอบข้อผิดพลาดการอัพโหลด
+            if ($upload['error'] !== UPLOAD_ERR_OK) {
+                die("เกิดข้อผิดพลาดในการอัพโหลด: " . $upload['error']);
+            }
+
+            // ตรวจสอบนามสกุลไฟล์
+            $allowed_extensions = array('pdf','png','jpg','xls','xlsx','doc','docx','zip','7zip');
+            $file_extension = strtolower(pathinfo($upload['name'], PATHINFO_EXTENSION));
+            
+            if (!in_array($file_extension, $allowed_extensions)) {
+                die("<script> alert('ไฟล์ดังกล่าวไม่ได้รับการอนุญาต กรุณาติดต่อ Admin')</script>");
+            }
+
+            // ตั้งชื่อไฟล์ใหม่ไม่ให้ซ้ำ
+            $date = date("YmdHis"); // รูปแบบปีเดือนวันชั่วโมงนาทีวินาที
+            $random_num = mt_rand(100000, 999999); // สุ่มตัวเลข 6 หลัก
+            $new_filename = $date . "_" . $random_num . "." . $file_extension;
+            
+            // พาธเต็มรูปแบบสำหรับบันทึกไฟล์
+            $destination = $upload_dir . $new_filename;
+
+            // ย้ายไฟล์ไปยังพาธปลายทาง
+            if (move_uploaded_file($upload['tmp_name'], $destination)) {
+                echo "อัพโหลดสำเร็จ! ชื่อไฟล์: " . $new_filename;
+            } else {
+                echo "เกิดข้อผิดพลาดในการบันทึกไฟล์";
+            }
+        }
+	
 	}
 	
 	//กรณีส่งให้ทุกส่วนราชการ
 	if($toAll!=''){
 		//สงเอกสารถึงทุกส่วนราชการ
-        echo "ไม่ว่าง";
+      //  echo "ไม่ว่าง";
 		if($cid && $link_file<>null){
 			//ถ	้ามีการส่ง book_id มา
 			$sql="INSERT INTO paper(title,detail,file,postdate,u_id,sec_id,outsite,dep_id,book_no)
