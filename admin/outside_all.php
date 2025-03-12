@@ -252,7 +252,7 @@ if(isset($_POST['sendOut'])){ //ตรวจสอบปุ่ม sendOut
             }
 
             // ตรวจสอบนามสกุลไฟล์
-            $allowed_extensions = array('pdf','png','jpg','xls','xlsx','doc','docx','zip','7zip');
+            $allowed_extensions = array('pdf','png','jpg','xls','xlsx','doc','docx','zip','7z','rar','zipx');
             $file_extension = strtolower(pathinfo($upload['name'], PATHINFO_EXTENSION));
             
             if (!in_array($file_extension, $allowed_extensions)) {
