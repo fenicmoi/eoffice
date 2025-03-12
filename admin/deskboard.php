@@ -10,7 +10,7 @@
         <div class="container-fluid" >
             <?php
             $sql = "SELECT COUNT(puid) AS pcount FROM paperuser WHERE confirm = 0 AND dep_id = $dep_id AND sec_id = $sec_id";
-            echo $sql;
+            //echo $sql;
             $result = dbQuery($sql);
             $row = dbFetchArray($result);
             ?>
