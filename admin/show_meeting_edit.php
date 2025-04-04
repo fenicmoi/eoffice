@@ -17,9 +17,7 @@ include '../library/database.php';
 $room_id=$_POST['room_id'];
 $u_id=$_POST['u_id'];
 
-$sql="SELECT r.*,d.dep_name FROM meeting_room as r
-      INNER JOIN depart as d ON d.dep_id = r.dep_id
-      WHERE r.room_id=$room_id";
+$sql="SELECT *  FROM meeting_room WHERE room_id = $room_id";
 //print $sql;
 $result=dbQuery($sql);
 $row=dbFetchAssoc($result);
@@ -73,28 +71,6 @@ $row=dbFetchAssoc($result);
                   <input name="t3" type="checkbox" value="1" checked>ระบบประชุมทางไกล
               <?php }?>
          </td>
-    </tr>
-    <tr>
-        <td><label>เจ้าของห้อง:</label></td>
-        <td><input name="dept" type="text" value="<?php print $row['dep_name']?>" size="80" disabled></td>
-    </tr>
-    <tr>
-        <td> <label>เปลี่ยนเจ้าของห้อง</label> </td>
-        <td>
-                <?php 
-                    $sql = "SELECT dep_id,dep_name FROM depart ORDER BY dep_id ASC";
-                    $result = dbQuery($sql);
-                ?>
-                <select name="dep_id" id="dep_id" class="selectpicker" data-live-search="true" title="โปรดระบุ">
-                <?php  
-                    while ($row = dbFetchArray($result)) {?>
-                    <option value="<?php echo $row['dep_id'];?>" 
-                    <?php if($row['dep_id'] = $dep_id){ echo "selected"; }?> 
-                        >
-                    <?php echo $row['dep_name'];?> </option>
-                <?php } ?> 
-                </select>
-        </td>
     </tr>
     <tr>
          <td><label>เบอร์ติดต่อ:</label></td>

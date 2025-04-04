@@ -241,20 +241,46 @@ if(isset($_POST['sendOut'])){ //ตรวจสอบปุ่ม sendOut
 	
 
 	if($upload<>''){
-		
-		$part="paper/";
-		
-		$type=  strrchr($_FILES['fileupload']['name'],".");   //เอาชื่อเก่าออกให้เหลือแต่นามสกุล
-		$newname=$date.$numrand.$type;   //ตั้งชื่อไฟล์ใหม่โดยใช้เวลา 
-		$part_copy=$part.$newname;
-		$part_link="paper/".$newname;
-		move_uploaded_file($_FILES['fileupload']['tmp_name'],$part_copy);    //คัดลอกไฟล์ไป Server
+		$upload_dir = "paper/";
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['fileupload'])) {
+            $upload = $_FILES['fileupload'];
+            
+            // ตรวจสอบข้อผิดพลาดการอัพโหลด
+            if ($upload['error'] !== UPLOAD_ERR_OK) {
+                die("เกิดข้อผิดพลาดในการอัพโหลด: " . $upload['error']);
+            }
+
+            // ตรวจสอบนามสกุลไฟล์
+            $allowed_extensions = array('pdf','png','jpg','xls','xlsx','doc','docx','zip','7z','rar','zipx');
+            $file_extension = strtolower(pathinfo($upload['name'], PATHINFO_EXTENSION));
+            
+            if (!in_array($file_extension, $allowed_extensions)) {
+                die("<script> alert('ไฟล์ดังกล่าวไม่ได้รับการอนุญาต กรุณาติดต่อ Admin')</script>");
+            }
+
+            // ตั้งชื่อไฟล์ใหม่ไม่ให้ซ้ำ
+            $date = date("YmdHis"); // รูปแบบปีเดือนวันชั่วโมงนาทีวินาที
+            $random_num = mt_rand(100000, 999999); // สุ่มตัวเลข 6 หลัก
+            $new_filename = $date . "_" . $random_num . "." . $file_extension;
+            
+            // พาธเต็มรูปแบบสำหรับบันทึกไฟล์
+            $link_file = $upload_dir . $new_filename;
+           // echo $destination;
+
+            // ย้ายไฟล์ไปยังพาธปลายทาง
+            if (move_uploaded_file($upload['tmp_name'], $link_file)) {
+               // echo "อัพโหลดสำเร็จ! ชื่อไฟล์: " . $new_filename;
+            } else {
+                echo "เกิดข้อผิดพลาดในการบันทึกไฟล์";
+            }
+        }
+	
 	}
 	
 	//กรณีส่งให้ทุกส่วนราชการ
 	if($toAll!=''){
 		//สงเอกสารถึงทุกส่วนราชการ
-        echo "ไม่ว่าง";
 		if($cid && $link_file<>null){
 			//ถ	้ามีการส่ง book_id มา
 			$sql="INSERT INTO paper(title,detail,file,postdate,u_id,sec_id,outsite,dep_id,book_no)
@@ -262,7 +288,7 @@ if(isset($_POST['sendOut'])){ //ตรวจสอบปุ่ม sendOut
 		}else{
 			//กรณีส่งเอกสารโดยไม่มีการออกเลข
 			$sql="INSERT INTO paper(title,detail,file,postdate,u_id,sec_id,outsite,dep_id,book_no)
-                              VALUE('$title','$detail','$part_link','$date',$user_id,$sec_id,$outsite,$dep_id,'$book_no')";
+                              VALUE('$title','$detail','$link_file','$date',$user_id,$sec_id,$outsite,$dep_id,'$book_no')";
 		}
 		
 		
@@ -274,7 +300,7 @@ if(isset($_POST['sendOut'])){ //ตรวจสอบปุ่ม sendOut
                 FROM user u 
                 INNER JOIN section s ON s.sec_id=u.sec_id
                 INNER JOIN depart d  ON d.dep_id=u.dep_id
-                WHERE u.Level_id = 3     
+                WHERE u.Level_id = 3  
                 AND d.dep_id <> $dep_id ";    
         //echo $sql;
         
@@ -285,6 +311,7 @@ if(isset($_POST['sendOut'])){ //ตรวจสอบปุ่ม sendOut
 			$dep_id=$rowUser['dep_id'];
 			$tb="paperuser";
 			$sql="insert into $tb (pid,u_id,sec_id,dep_id) values ($lastid,$u_id,$sec_id,$dep_id)";
+            echo "<script>console.log('$sql')</script>";
 			$dbquery= dbQuery($sql);
 		}
 		
@@ -306,7 +333,7 @@ if(isset($_POST['sendOut'])){ //ตรวจสอบปุ่ม sendOut
 	
 //***เลือกเองตามประเภท 
 
-	if($toSome!=''){
+	if($toSome !=''){
 		//ส	่งเอกสารแยกตามประเภทหน่วยงาน
 		//if($cid && $link_file<>null){
         if($cid && $link_file<>null){
@@ -316,7 +343,7 @@ if(isset($_POST['sendOut'])){ //ตรวจสอบปุ่ม sendOut
             echo "checkpoint 1";
 		}else{
 			$sql="INSERT INTO paper(title,detail,file,postdate,u_id,outsite,sec_id,dep_id,book_no)
-                         VALUES('$title','$detail','$part_link','$date',$user_id,$outsite,$sec_id,$dep_id,'$book_no')";
+                         VALUES('$title','$detail','$link_file','$date',$user_id,$outsite,$sec_id,$dep_id,'$book_no')";
           //  echo "$";
 		}
 		//print "คำสั่งส่งข้อมูลให้บางหน่วยงาน". $sqlSend;
@@ -379,7 +406,7 @@ if(isset($_POST['sendOut'])){ //ตรวจสอบปุ่ม sendOut
 		}
 		else{
 			$sql="INSERT INTO paper(title,detail,file,postdate,u_id,outsite,sec_id,dep_id,book_no)
-                       VALUES('$title','$detail','$part_link','$date',$user_id,$outsite,$sec_id,$dep_id,'$book_no')";
+                       VALUES('$title','$detail','$link_file','$date',$user_id,$outsite,$sec_id,$dep_id,'$book_no')";
 		}
 		
 		

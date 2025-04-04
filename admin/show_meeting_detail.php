@@ -7,10 +7,7 @@ include '../library/database.php';
 $room_id=$_POST['room_id'];
 $u_id=$_POST['u_id'];
 
-$sql="SELECT r.*,d.dep_name
-      FROM meeting_room as r
-      INNER JOIN depart as d ON d.dep_id = r.dep_id
-      WHERE r.room_id=$room_id";
+$sql="SELECT * FROM meeting_room   WHERE  room_id=$room_id";
 
 //print $sql;
 $result=dbQuery($sql);
@@ -57,10 +54,6 @@ $row=dbFetchAssoc($result);
                   <input type="checkbox" checked>ระบบประชุมทางไกลกระทรวงมหาดไทย
                 <?php }?>
          </td>
-    </tr>
-    <tr>
-         <td><label>เจ้าของห้อง:</label></td>
-         <td><?php print $row['dep_name']?></td>
     </tr>
     <tr>
          <td><label>เบอร์ติดต่อ:</label></td>

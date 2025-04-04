@@ -3,30 +3,6 @@ include "header.php";
 $yid=chkYearMonth(); 
 $u_id=$_SESSION['ses_u_id'];
 ?>
-<script>
-	$( document ).ready( function () {
-		// $("#btnSearch").prop("disabled",true); 
-		$( "#dateSearch" ).hide();
-		$( "tr" ).first().hide();
-
-
-		$( "#hideSearch" ).click( function () {
-			$( "tr" ).first().show( 1000 );
-		} );
-
-
-		$( '#typeSearch' ).change( function () {
-			var typeSearch = $( '#typeSearch' ).val();
-			if ( typeSearch == 4 ) {
-				$( "#dateSearch" ).show( 500 );
-				$( "#search" ).hide( 500 );
-			} else {
-				$( "#dateSearch" ).hide( 500 );
-				$( "#search" ).show( 500 );
-			}
-		} )
-	} );
-</script>
     <div class="row">
         <div class="col-md-2" >
              <?php
@@ -44,17 +20,6 @@ $u_id=$_SESSION['ses_u_id'];
                 <table class="table table-bordered" >
                 <thead class="bg-info">
                     <tr>
-                         <th>ชื่อห้อง</th>
-                         <th>สถานะ</th>
-                         <th>ที่อยู่</th>
-                         <th>ความจุ</th>
-                         <th>ราคาเต็มวัน</th>
-						 <th>ราคาครึ่งวัน</th>
-                         <th>รายละเอียด</th>
-                         <th>แก้ไข</th>
-                         <th>ลบ</th>
-                     </tr>
-                      <tr>
                          <th>ชื่อห้อง</th>
                          <th>สถานะ</th>
                          <th>ที่อยู่</th>
@@ -166,21 +131,6 @@ $u_id=$_SESSION['ses_u_id'];
                               <input type="text" class="form-control" id="tel" name="tel"  placeholder="เบอร์โทร"  required="">
                           </div>
                         </div>
-                         <div class="form-group">
-                          <div class="input-group">
-                              <span class="input-group-addon"><span class="	glyphicon glyphicon-user">เจ้าของห้อง</span></span>
-                               <?php 
-                                    $sql = "SELECT dep_id,dep_name FROM depart ORDER BY dep_id ASC";
-                                    $result = dbQuery($sql);
-                                ?>
-                                <select name="dep_id" id="dep_id" class="selectpicker" data-live-search="true" title="โปรดระบุ">
-                                <?php  
-                                    while ($row = dbFetchArray($result)) {?>
-                                    <option value="<?php echo $row['dep_id'];?>" > <?php echo $row['dep_name'];?> </option>
-                                <?php } ?> 
-                                </select>
-                          </div>
-                        </div>
                         <div class="form-group">
                           <h5><i class="fas fa-volume-up"></i> อุปกรณ์อำนวยความสะดวก</h5>
                           <div class="checkbox">
@@ -274,8 +224,8 @@ if(isset($_POST['save'])){
   
 	
 	
-	$sql="INSERT INTO  meeting_room(roomname,roomplace,roomcount,roomimg,tel,room_status,money1,money2,sound,vga,vcs,dep_id)
-                VALUES('$roomname','$roomplace',$roomcount,'$roomimg','$tel',1,$money1,$money2,$t1,$t2,$t3,$dep_id)";
+	$sql="INSERT INTO  meeting_room(roomname,roomplace,roomcount,roomimg,tel,room_status,money1,money2,sound,vga,vcs)
+                VALUES('$roomname','$roomplace',$roomcount,'$roomimg','$tel',1,$money1,$money2,$t1,$t2,$t3)";
 
 	$result=dbQuery($sql);
 	if($result){
@@ -346,26 +296,25 @@ if(isset($_GET['del'])){
 //แก้ไขข้อมูล
 if(isset($_POST['edit'])){
     $room_id=$_POST['room_id'];
-	$roomname=$_POST['roomname'];         //ชื่อห้องประชุม
+	$roomname=$_POST['roomname'];      //ชื่อห้องประชุม
 	$roomplace=$_POST['roomplace'];    //สถานที่
-	$roomcount=$_POST['roomcount'];  //ความจุ
-	$money1=$_POST['money1'];      //ค่าธรรมเนียมเต็มวัน
-	$money2=$_POST['money2'];    //ค่าธรรมเนียมครึ่งวัน
-	$tel=$_POST['tel'];         //เบอร์โทรศัพท์
-    $dep_id=$_POST['dep_id'];       //เจ้าของห้อง
-    $t1=$_POST['t1'];       //เสียง
+	$roomcount=$_POST['roomcount'];    //ความจุ
+	$money1=$_POST['money1'];          //ค่าธรรมเนียมเต็มวัน
+	$money2=$_POST['money2'];          //ค่าธรรมเนียมครึ่งวัน
+	$tel=$_POST['tel'];                //เบอร์โทรศัพท์
+    $t1=$_POST['t1'];                  //เสียง
     $t2=$_POST['t2'];
-    $t3=$_POST['t3'];       //ประชุมทางไกล
+    $t3=$_POST['t3'];                  //ประชุมทางไกล
     $room_status=$_POST['room_status'];
     if (move_uploaded_file($_FILES["fileUpload"]["tmp_name"], "doc/" . $_FILES["fileUpload"]["name"])) {
         $roomimg= $_FILES["fileUpload"]["name"];
         $sql = "UPDATE meeting_room 
-                SET roomname='$roomname',roomplace='$roomplace',roomcount=$roomcount,roomimg='$roomimg',dep_id=$dep_id,tel='$tel',room_status=$room_status,
+                SET roomname='$roomname',roomplace='$roomplace',roomcount=$roomcount,roomimg='$roomimg',tel='$tel',room_status=$room_status,
                     money1=$money1,money2=$money2,sound=$t1,vga=$t2,vcs=$t3
                 WHERE room_id=$room_id";
     }else{
         $sql = "UPDATE meeting_room 
-                SET roomname='$roomname',roomplace='$roomplace',roomcount=$roomcount,dep_id=$dep_id,tel='$tel',room_status=$room_status,
+                SET roomname='$roomname',roomplace='$roomplace',roomcount=$roomcount,tel='$tel',room_status=$room_status,
                     money1=$money1,money2=$money2,sound=$t1,vga=$t2,vcs=$t3
                 WHERE room_id=$room_id";
     }
