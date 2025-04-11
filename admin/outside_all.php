@@ -212,29 +212,28 @@ if($cid){
 </div>    
 
 <?php
-/*++++++++++++++++++++++++++++       ส่งภายนอก      +++++++++++++++++++++++++++*/
+/*++++++++++++++++++++++++++++ส่งภายนอก+++++++++++++++++++++++++++*/
 
-
-if(isset($_POST['sendOut'])){ //ตรวจสอบปุ่ม sendOut
-	$title=$_POST['title'];   //ช	ื่อเอกสาร
-	$detail=$_POST['detail']; //รายละเอียด
-	$date=date('YmdHis');     //วันเวลาปัจจุบันที่จะเอาไปใส่ในระบบว่าส่งมาเมื่อไหร่
-	$sec_id=$_POST['sec_id']; //รหัสแผนกที่ส่ง
-	$outsite=1; //กำหนดค่าเอกสาร insite=ภายใน   outsite = ภายนอก
-	$user_id=$_POST['user_id'];//ร	หัสผู้ใช้
-	$dep_id=$_POST['dep_id'];//ร	หัสหน่วยงาน
+if(isset($_POST['sendOut'])){           //ตรวจสอบปุ่ม sendOut
+	$title=$_POST['title'];             //ชื่ออเอกสาร
+	$detail=$_POST['detail'];           //รายละเอียด
+	$date=date('YmdHis');               //วันเวลาปัจจุบันที่จะเอาไปใส่ในระบบว่าส่งมาเมื่อไหร่
+	$sec_id=$_POST['sec_id'];           //รหัสแผนกที่ส่ง
+	$outsite=1;                         //กำหนดค่าเอกสาร insite=ภายใน   outsite = ภายนอก
+	$user_id=$_POST['user_id'];         //ไอดีผู้ใช้
+	$dep_id=$_POST['dep_id'];           //ไอดีหน่วยงาน
 	
-	@$toAll=$_POST['toAll'];//ส	่งเอกสารถึงทุกคน
-	@$toSome=$_POST['toSome'];//ส	่งตามประเภท
-	@$toSomeOne=$_POST['toSomeOne'];//ส	่งแบบเลือกเอง
+	@$toAll=$_POST['toAll'];            //ส่งถึงทุกส่วน
+	@$toSome=$_POST['toSome'];          //ส่งตามประเภท
+	@$toSomeOne=$_POST['toSomeOne'];    //ส่งแบบเจาะจง
 	
-	@$toSomeUser=$_POST['toSomeUser'];//ช	่องส่งแยกประเภทตามหน่วยงาน
-	@$toSomeOneUser=$_POST['toSomeOneUser'];//ช	่องรับรหัสแบบเลือกเอง
+	@$toSomeUser=$_POST['toSomeUser'];          // INPUT ส่งแยกประเภทตามหน่วยงาน
+	@$toSomeOneUser=$_POST['toSomeOneUser'];    // INPUT รับรหัสแบบเลือกเอง
 	
-	@$fileupload=$_POST['file'];//ไฟล์เอกสาร
-	$numrand=(mt_rand());//สุ่มตัวเลข
-	@$upload=$_FILES['fileupload'];//เพิ่มไฟล์
-    $dateSend=date('Y-m-d');//ว	ันที่ส่งเอกสาร  (มีปัญหายังแก้ไม่ได้)
+	@$fileupload=$_POST['file'];                //ไฟล์เอกสาร
+	$numrand=(mt_rand());                       //สุ่มตัวเลข
+	@$upload=$_FILES['fileupload'];             //เพิ่มไฟล์
+    $dateSend=date('Y-m-d');                    //วันที่ส่งเอกสาร  (มีปัญหายังแก้ไม่ได้)
     $book_no=$_POST['book_no'];
 	
 	//$	book_id=$_GET['book_id'];

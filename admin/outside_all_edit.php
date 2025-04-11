@@ -54,7 +54,8 @@ $link_file=$row['file'];
                     <div class="form-group">
                 
                         <input type="hidden" name="pid" id="pid" value="<?php  print $row['pid'];?>"/>  
-                        <input type="submit" name="sendOut" class="btn btn-success btn-lg" value="บันทึก"/>
+                        <input type="submit" name="sendOut" class="btn btn-primary btn-lg" value="บันทึก"/>
+                        <a href="history.php" class="btn btn-danger btn-lg">ยกเลิก</a>
                     </div>
                     </center>
                 </form>
@@ -65,15 +66,19 @@ $link_file=$row['file'];
 
 <?php
 /*++++++++++++++++++++++++++++PROCESS+++++++++++++++++++++++++++*/
-if(isset($_POST['sendOut'])){//ตรวจสอบปุ่ม sendOut
-    $pid=$_POST['pid'];
-	$title=$_POST['title']; //ช	ื่อเอกสาร
-    $date=date('YmdHis');//วันเวลาปัจจุบัน
-    $detail=$_POST['detail'];
-	$numrand=(mt_rand());//ส	ุ่มตัวเลข
-    $dateSend=date('Y-m-d');//ว	ันที่ส่งเอกสาร  (มีปัญหายังแก้ไม่ได้)
-    $book_no=$_POST['book_no'];
 
+if(isset($_POST['sendOut'])){                   //ตรวจสอบปุ่ม sendOut
+    $pid=$_POST['pid'];                         //รหัสเอกสารส่งที่ต้องการแก้ไข
+	$title=$_POST['title'];                     //ช	ื่อเอกสาร
+    $date=date('YmdHis');                       //วันเวลาปัจจุบัน
+    $detail=$_POST['detail'];                   //รายละเอียด
+	$numrand=(mt_rand());                       //สุ่มตัวเลข
+    $dateSend=date('Y-m-d');                    //วันที่ส่งเอกสาร  (มีปัญหายังแก้ไม่ได้)
+    $book_no=$_POST['book_no'];                 //เลขที่หนังสือ
+   // @$upload=$_FILES['fileupload'];             //Directory สำหรับเก็บไฟล์เอกสาร
+    $upload_dir = "paper/";
+
+/*
 	if($_FILES['fileupload']['name']){
 		$part="paper/";
 		$type=  strrchr($_FILES['fileupload']['name'],".");
@@ -85,6 +90,47 @@ if(isset($_POST['sendOut'])){//ตรวจสอบปุ่ม sendOut
     }else{
         $sql="UPDATE paper SET title ='$title',detail='$detail',book_no='$book_no',edit='$date' WHERE pid=$pid ";
     }
+
+
+*/
+    
+        //ตรวจสอบว่าการแนบไฟล์มาหรือไม่
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['fileupload'])) {
+            $upload = $_FILES['fileupload'];
+            
+            if ($upload['error'] !== UPLOAD_ERR_OK) {                                    // ตรวจสอบข้อผิดพลาดการอัพโหลด
+                die("เกิดข้อผิดพลาดในการอัพโหลด: " . $upload['error']);
+            }
+
+            // ตรวจสอบนามสกุลไฟล์
+            $allowed_extensions = array('pdf','png','jpg','xls','xlsx','doc','docx','zip','7z','rar','zipx');
+            $file_extension = strtolower(pathinfo($upload['name'], PATHINFO_EXTENSION));
+            
+            if (!in_array($file_extension, $allowed_extensions)) {
+                die("<script> alert('ไฟล์ดังกล่าวไม่ได้รับการอนุญาต กรุณาติดต่อ Admin')</script>");
+            }
+
+            // ตั้งชื่อไฟล์ใหม่ไม่ให้ซ้ำ
+            $date = date("YmdHis"); // รูปแบบปีเดือนวันชั่วโมงนาทีวินาที
+            $random_num = mt_rand(100000, 999999); // สุ่มตัวเลข 6 หลัก
+            $new_filename = $date . "_" . $random_num . "." . $file_extension;
+            
+            // พาธเต็มรูปแบบสำหรับบันทึกไฟล์
+            $link_file = $upload_dir . $new_filename;
+           // echo $destination;
+
+            // ย้ายไฟล์ไปยังพาธปลายทาง
+            if (move_uploaded_file($upload['tmp_name'], $link_file)) {
+                echo "อัพโหลดสำเร็จ! ชื่อไฟล์: " . $new_filename;
+            } else {
+                echo "เกิดข้อผิดพลาดในการบันทึกไฟล์";
+            }
+            $sql="UPDATE paper SET title ='$title',detail='$detail',file='$link_file',book_no='$book_no',edit='$date' WHERE pid=$pid ";
+        }else{  //กรณีไม่ได้แนบไฟล์ใดๆ
+            $sql="UPDATE paper SET title ='$title',detail='$detail',book_no='$book_no',edit='$date' WHERE pid=$pid ";
+        }
+
+
 
     $result=  dbQuery($sql);
                  if(!$result){
