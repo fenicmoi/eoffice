@@ -1,10 +1,17 @@
 <?php
 date_default_timezone_set('Asia/Bangkok');
 include "header.php";
-$u_id=$_SESSION['ses_u_id'];
-$sec_id=$_SESSION['ses_sec_id'];
-$dep_id=$_SESSION['ses_dep_id'];
-$dateRecive=date('Y-m-d H:m:s');
+
+//checkuser login
+if (!isset($_SESSION['ses_u_id'])) {
+    header("Location: ../index.php");
+    exit();
+}else{
+	$u_id=$_SESSION['ses_u_id'];
+	$sec_id=$_SESSION['ses_sec_id'];
+	$dep_id=$_SESSION['ses_dep_id'];
+	$dateRecive=date('Y-m-d H:m:s');
+}
 ?>
 <script>
 	$( document ).ready( function () {

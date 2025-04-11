@@ -2,8 +2,16 @@
 <?php  
 date_default_timezone_set('Asia/Bangkok');
 include "header.php";
-$u_id=$_SESSION['ses_u_id'];
-$pid=$_GET['pid'];
+
+//checkuser login
+if (!isset($_SESSION['ses_u_id'])) {
+    header("Location: ../index.php");
+    exit();
+}else{
+    $u_id=$_SESSION['ses_u_id'];
+    $pid=$_GET['pid'];
+}
+
 
 $sql="SELECT pid,title,book_no,file FROM paper  WHERE pid=$pid";
 $result=dbQuery($sql);

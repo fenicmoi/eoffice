@@ -1,3 +1,5 @@
+
+
 <script>
 $(document).ready( function () {
     $('#tbOutside   ').DataTable();
@@ -6,13 +8,19 @@ $(document).ready( function () {
 <?php  
 date_default_timezone_set('Asia/Bangkok');
 include "header.php";
-$u_id=$_SESSION['ses_u_id'];
 
-@$cid=$_GET['cid'];
-@$doctype=$_GET['doctype'];
+//checkuser login
+if (!isset($_SESSION['ses_u_id'])) {
+    header("Location: ../index.php");
+    exit();
+}else{
+    $u_id=$_SESSION['ses_u_id'];
+    @$cid=$_GET['cid'];
+    @$doctype=$_GET['doctype'];
+} 
+
 if($doctype=="flow-circle"){
 	$tb="flowcircle";
-	
 }elseif ($doctype=="flow-normal") {
 	$tb="flownormal";
 }
@@ -29,8 +37,8 @@ if($cid){
 ?>
 <div class="col-md-2" >
 	<?php
-	$menu=  checkMenu($level_id);
-	include $menu;
+	    $menu=  checkMenu($level_id);           //check permision menu
+	    include $menu;                          //include menu
 	?>
 </div>
 <div class="col-md-10">
