@@ -56,8 +56,8 @@ $today="$curDay-$curMonth-$curYear";
                     </a>
 
                 </div> 
-                <?php include "calendar.php";?>
-                <?php include "meet_listFront.php";?>
+                <?php //include "calendar.php";?>
+                <?php //include "meet_listFront.php";?>
             <div>
         </div> <!-- col-md- -->
     </div>    <!-- end row  -->
