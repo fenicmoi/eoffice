@@ -52,7 +52,7 @@ if (!isset($_SESSION['ses_u_id'])) {
         <div class="panel-body">                  
 							<ul class="nav nav-tabs">
                                 <li><a class="btn-danger fas fa-envelope"  href="paper.php"> หนังสือเข้า</a></li>
-                                <li class="active"><a class="btn-danger fas fa-envelope-open"  href="folder.php"> รับแล้ว</a></li>
+                                <li class="active"><a class="btn-danger fas fa-envelope-open"  href="folder.php">สถานะ(รับ/คืน)</a></li>
                                 <li><a class="btn-danger fas fa-history" href="history.php"> ส่งแล้ว</a></li>
                                 <li><a class="btn-danger fas fa-globe" href="outside_all.php"> ส่งหนังสือ</a></li>
                             </ul>       
@@ -82,7 +82,7 @@ if (!isset($_SESSION['ses_u_id'])) {
 						<th>เรื่อง</th>
 						<th>วันที่ส่ง</th>
 						<th>เวลาส่ง</th>
-						<th>วันที่รับ</th>
+						<th>วันที่(รับ/คืน)</th>
 						<th>เวลารับ</th>
 						<th>หน่วยส่ง</th>
 						<th>ผู้ส่ง</th>

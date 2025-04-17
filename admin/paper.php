@@ -10,6 +10,8 @@ if (!isset($_SESSION['ses_u_id'])) {
     exit();
 }else{
 	$u_id=$_SESSION['ses_u_id'];
+	$dep_id = $_SESSION['ses_dep_id'];
+	print $dep_id;
 }
 
 ?>
@@ -38,8 +40,8 @@ $numrow=dbNumRows($result);
                 <div class="panel-heading"><i class="fas fa-share-square fa-2x"></i>  <strong>ส่งไฟล์เอกสาร</strong></div>
 				<div class="panel-body">                  
                             <ul class="nav nav-tabs">
-                                <li class="active"  ><a class="btn-danger fas fa-envelope"  href="paper.php">  หนังสือเข้า</a></li>
-                                <li><a class="btn-danger fas fa-envelope-open"  href="folder.php"> รับแล้ว</a></li>
+                                <li class="active"  ><a class="btn-danger fas fa-envelope"  href="paper.php">หนังสือเข้า</a></li>
+                                <li><a class="btn-danger fas fa-envelope-open"  href="folder.php">สถานะ(รับ/คืน)</a></li>
                                 <li><a class="btn-danger fas fa-history" href="history.php"> ส่งแล้ว</a></li>
                                 <li><a class="btn-danger fas fa-globe" href="outside_all.php"> ส่งหนังสือ</a></li>
                             </ul>
@@ -75,7 +77,9 @@ $numrow=dbNumRows($result);
 												?>
 											</td>
 											<td><a href="<?php echo $rowNew['file'];?>" target="_blank">	<?php echo $rowNew['title']; ?></a></td>
-											<td><?php echo $rowNew['dep_name']; ?></td>
+											<td><?php 
+													echo $rowNew['dep_name']; ?>
+											</td>
 											<td><a href="checklist.php?pid=<?php print $rowNew['pid'];?>" class="badge" target="_blank">หน่วยรับร่วม</a></td>
 											<td><?php echo thaiDate(substr($rowNew['postdate'],0,10)) ?></td>
 											<td><?php echo substr($rowNew['postdate'],10);?></td>
@@ -94,9 +98,9 @@ $numrow=dbNumRows($result);
 											 <?php
 												if($level_id>5) {?>
 														<td><kbd>จำกัดสิทธิ์</kbd></td>
-											 <?php } else{?>
+											 <?php }else{?>
 														<td>
-															<a href="#" class="btn btn-danger" onClick="loadData('<?php print $rowNew['pid'];?>','<?php print $rowNew['puid'];?>');" 
+															<a href="#" class="btn btn-danger" onClick="loadData('<?php print $rowNew['pid'];?>','<?php print $rowNew['puid'];?>','<?php print $dep_id;?>');" 
 																	data-toggle="modal" data-target=".bs-example-modal-table">
 																ส่งคืน
 															</a>
@@ -117,7 +121,7 @@ $numrow=dbNumRows($result);
 <div  class="modal fade bs-example-modal-table" tabindex="-1" aria-hidden="true" role="dialog">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
-                    <div class="modal-header bg-danger">
+                    <div class="modal-header bg-warning">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                         <h4 class="modal-title"><i class="fa fa-info"></i> เหตุผลการส่งคืน</h4>
                     </div>
@@ -135,9 +139,15 @@ $numrow=dbNumRows($result);
 
 <?php   //ส่งข้อความกรณีส่งคืนไปยังหน่วยรับเพื่อทราบเหตุผลการส่งคืน
 	if(isset($_POST['btnReject'])){
-		$puid = $_POST["puid"];
-		$msg_reject = $_POST["msg_reject"];
-		$sql =  " UPDATE paperuser SET msg_reject = $msg_reject  WHERE puid = $puid";
+		$pid = $_POST["pid"];   				// รหัสเอกสารส่ง  paper
+		$puid = $_POST["puid"]; 				// รหัสหน่วยส่ง   paperuser
+		$dep_id = $_POST["dep_id"];				// รหัสหน่วยงาน  depart
+		$msg_reject = $_POST["msg_reject"];		// เหตุแห่งการส่งคืน
+		$dateRecive = date('Y-m-d H:m:s');
+
+		//ส่งคืนหนังสือ โดยมีเงื่อนไข คือ ต้องเป็นรหัสหนังสือส่งเดี่ยวกัน และรหัสผู้รับเดี่ยวกัน
+		//$sql =  " UPDATE paperuser SET msg_reject = '$msg_reject'  WHERE pid= $pid and puid = $puid";
+		$sql =  " UPDATE paperuser SET confirm = 2, confirmdate = '$dateRecive', msg_reject = '$msg_reject'  WHERE pid= $pid and dep_id = $dep_id";
 		echo $sql;
 	
 		$result = dbQuery($sql);
@@ -177,10 +187,11 @@ $numrow=dbNumRows($result);
 
 
 <script type="text/javascript">
-	function loadData(pid,puid) {
+	function loadData(pid,puid,dep_id) {
 		var sdata = {
 			pid : pid,
-			puid : puid 
+			puid : puid ,
+			dep_id : dep_id
 		};
 	$('#divDataview').load('show_rejectpaper.php',sdata);
 	}
