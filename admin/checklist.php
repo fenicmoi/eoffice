@@ -107,7 +107,7 @@ if($check==0){       // ถ้าค่าเป็น 0 หมายถึง�
           INNER JOIN depart d ON p.dep_id=d.dep_id
           WHERE p.sec_id=0 AND pid=$pid";  
 }else{
-    $sql="SELECT p.pid,p.u_id,p.sec_id,p.confirm,p.confirmdate,p.dep_id,d.dep_name,d.phone,s.sec_name,u.firstname
+    $sql="SELECT p.pid,p.u_id,p.sec_id,p.confirm,p.confirmdate,p.dep_id,p.msg_reject,d.dep_name,d.phone,s.sec_name,u.firstname
       FROM  paperuser p
       INNER JOIN depart d   ON  p.dep_id=d.dep_id
       INNER JOIN section s ON s.sec_id=p.sec_id
@@ -126,7 +126,7 @@ if($check==0){       // ถ้าค่าเป็น 0 หมายถึง�
     <div class="container-fluid">
         <div class="well" style="background-color: #006699">
             <h3 style="color: white">
-                <i class="fa fa-check-square-o fa-2x"></i> ตรวจสอบผู้รับเอกสาร
+                <i class="fa fa-check-square-o fa-2x"></i> ตรวจสอบสถานะหนังสือ
             </h3>
         </div>
         <div class="nav navbar">
@@ -147,10 +147,11 @@ if($check==0){       // ถ้าค่าเป็น 0 หมายถึง�
                             <th>หน่วยงาน</th>
                             <th>กลุ่มงาน</th>
                             <th>สถานะ</th>
-                            <th>วันที่รับ</th>
-                            <th>เวลารับ</th>
-                            <th>ผู้รับ</th>
+                            <th>วันที่</th>
+                            <th>เวลา</th>
+                            <th>เจ้าหน้าที่</th>
                             <th>เบอร์ติดต่อ</th>
+                            <th>หมายเหตุ</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -185,6 +186,7 @@ if($check==0){       // ถ้าค่าเป็น 0 หมายถึง�
                                     <td><?php echo substr($row['confirmdate'],10);?></td>
                                      <td><?php echo $row['firstname'];?></td>
                                      <td><?php echo $row['phone']?></td>
+                                     <td><?php echo $row['msg_reject']?></td>
                                 </tr>   
                         <?php $count++; } ?>
                     </tbody>

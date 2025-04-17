@@ -83,7 +83,7 @@ if (!isset($_SESSION['ses_u_id'])) {
 						<th>วันที่ส่ง</th>
 						<th>เวลาส่ง</th>
 						<th>วันที่(รับ/คืน)</th>
-						<th>เวลารับ</th>
+						<th>เวลา</th>
 						<th>หน่วยส่ง</th>
 						<th>ผู้ส่ง</th>
 						<th>แก้ไข</th>
@@ -197,7 +197,11 @@ function checklist() {
 if(isset($_GET['confirm'])){
 	$pid = $_GET['pid'];
 	$confirm = $_GET['confirm'];    //จะส่งค่ามาสองสถานะ  1  หรือ 2 
-	$sql="UPDATE paperuser SET confirm = $confirm, confirmdate='$dateRecive' WHERE pid = $pid AND dep_id=$dep_id";
+	if ($confirm == 1) {
+		$sql="UPDATE paperuser SET confirm = $confirm, confirmdate ='$dateRecive', msg_reject = 'ลงรับ'  WHERE pid = $pid AND dep_id = $dep_id";
+	} else {
+		$sql="UPDATE paperuser SET confirm = $confirm, confirmdate ='$dateRecive', msg_reject = 'ไม่เกี่ยวข้อง'  WHERE pid = $pid AND dep_id = $dep_id";
+	}
 	//print $sql;
 	$result = dbQuery($sql);
 
@@ -228,8 +232,6 @@ if(isset($_GET['confirm'])){
             }); 
         </script>"; 
     }
-
-	
 }	
 ?>
 
