@@ -108,13 +108,13 @@ if($check==0){       // ถ้าค่าเป็น 0 หมายถึง�
           WHERE p.sec_id=0 AND pid=$pid";  
 }else{
     $sql="SELECT p.pid,p.u_id,p.sec_id,p.confirm,p.confirmdate,p.dep_id,p.msg_reject,d.dep_name,d.phone,s.sec_name,u.firstname
-      FROM  paperuser p
-      INNER JOIN depart d   ON  p.dep_id=d.dep_id
-      INNER JOIN section s ON s.sec_id=p.sec_id
-      INNER JOIN user u ON u.u_id=p.u_id
-      WHERE pid=$pid  
-      ";
-    
+          FROM  paperuser p
+                INNER JOIN depart d   ON  p.dep_id=d.dep_id
+                INNER JOIN section s ON s.sec_id=p.sec_id
+                INNER JOIN user u ON u.u_id=p.u_id
+          WHERE pid=$pid  
+        ";
+        
 }
 //print $sql;
  $result= dbQuery($sql);
@@ -186,7 +186,7 @@ if($check==0){       // ถ้าค่าเป็น 0 หมายถึง�
                                     <td><?php echo substr($row['confirmdate'],10);?></td>
                                      <td><?php echo $row['firstname'];?></td>
                                      <td><?php echo $row['phone']?></td>
-                                     <td><?php echo $row['msg_reject']?></td>
+                                     <td><?php echo $row['msg_reject'];?></td>
                                 </tr>   
                         <?php $count++; } ?>
                     </tbody>

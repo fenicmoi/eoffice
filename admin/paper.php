@@ -143,11 +143,12 @@ $numrow=dbNumRows($result);
 		$puid = $_POST["puid"]; 				// รหัสหน่วยส่ง   paperuser
 		$dep_id = $_POST["dep_id"];				// รหัสหน่วยงาน  depart
 		$msg_reject = $_POST["msg_reject"];		// เหตุแห่งการส่งคืน
+		$message = $_POST['message'];			// ข้อความเพิ่มเติม
 		$dateRecive = date('Y-m-d H:m:s');
 
-		//ส่งคืนหนังสือ โดยมีเงื่อนไข คือ ต้องเป็นรหัสหนังสือส่งเดี่ยวกัน และรหัสผู้รับเดี่ยวกัน
-		//$sql =  " UPDATE paperuser SET msg_reject = '$msg_reject'  WHERE pid= $pid and puid = $puid";
-		$sql =  " UPDATE paperuser SET confirm = 2, confirmdate = '$dateRecive', msg_reject = '$msg_reject'  WHERE pid= $pid and dep_id = $dep_id";
+		$sql =  " UPDATE paperuser 
+				  SET confirm = 2, confirmdate = '$dateRecive', msg_reject = '$msg_reject'
+				  WHERE pid= $pid and dep_id = $dep_id";
 		echo $sql;
 	
 		$result = dbQuery($sql);
