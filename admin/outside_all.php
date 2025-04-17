@@ -302,13 +302,17 @@ if(isset($_POST['sendOut'])){           //ตรวจสอบปุ่ม send
 		
 		$result=dbQuery($sql);
 		$lastid=dbInsertId();    //เลข ID จากตาราง paper ล่าสุด
-		//เลือก User ทั้งหมด  1 ต้องเป็นระดับ 3 (ประจำส่วนราชการ) 2.มีสิทธิ์รับ (keyman=1)  3.ไม่ส่งให้ตัวเอง 
-		$sql="SELECT  u.u_id,u.firstname,s.sec_id,d.dep_id,d.dep_name  
+		//เลือก User ทั้งหมด  1 ต้องเป็นระดับ 3 (ประจำส่วนราชการ) 2.ต้องไม่ส่งให้หน่วยงานตนเอง 3. ต้องไม่ส่งให้หน่วยงานที่มีสถานะยกเลิกการใช้งาน
+		$sql="SELECT  u.u_id, u.firstname, s.sec_id, d.dep_id, d.dep_name, d.stusus
                 FROM user u 
                 INNER JOIN section s ON s.sec_id=u.sec_id
                 INNER JOIN depart d  ON d.dep_id=u.dep_id
-                WHERE u.Level_id = 3  
-                AND d.dep_id <> $dep_id ";    
+                WHERE 
+                      u.Level_id = 3      
+                AND d.dep_id <> $dep_id 
+                AND d.status <> 0 
+                ";    
+
         //echo $sql;
         
 		$result=  dbQuery($sql);
@@ -415,9 +419,6 @@ if(isset($_POST['sendOut'])){           //ตรวจสอบปุ่ม send
 			$sql="INSERT INTO paper(title,detail,file,postdate,u_id,outsite,sec_id,dep_id,book_no)
                        VALUES('$title','$detail','$link_file','$date',$user_id,$outsite,$sec_id,$dep_id,'$book_no')";
 		}
-		
-		
-		// 		print $sql;
 		
 		
 		$result=dbQuery($sql);
