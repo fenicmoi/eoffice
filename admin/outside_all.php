@@ -303,7 +303,7 @@ if(isset($_POST['sendOut'])){           //ตรวจสอบปุ่ม send
 		$result=dbQuery($sql);
 		$lastid=dbInsertId();    //เลข ID จากตาราง paper ล่าสุด
 		//เลือก User ทั้งหมด  1 ต้องเป็นระดับ 3 (ประจำส่วนราชการ) 2.ต้องไม่ส่งให้หน่วยงานตนเอง 3. ต้องไม่ส่งให้หน่วยงานที่มีสถานะยกเลิกการใช้งาน
-		$sql="SELECT  u.u_id, u.firstname, s.sec_id, d.dep_id, d.dep_name, d.stusus
+		$sql="SELECT  u.u_id, u.firstname, s.sec_id, d.dep_id, d.dep_name, d.status
                 FROM user u 
                 INNER JOIN section s ON s.sec_id=u.sec_id
                 INNER JOIN depart d  ON d.dep_id=u.dep_id
@@ -316,14 +316,13 @@ if(isset($_POST['sendOut'])){           //ตรวจสอบปุ่ม send
         //echo $sql;
         
 		$result=  dbQuery($sql);
-		while($rowUser=  dbFetchArray($result)){
-			$u_id=$rowUser['u_id'];
-			$sec_id=$rowUser['sec_id'];
-			$dep_id=$rowUser['dep_id'];
-			$tb="paperuser";
-			$sql="insert into $tb (pid,u_id,sec_id,dep_id) values ($lastid,$u_id,$sec_id,$dep_id)";
-            echo "<script>console.log('$sql')</script>";
-			$dbquery= dbQuery($sql);
+		while($rowUser = dbFetchArray($result)){
+			 $u_id=$rowUser['u_id'];
+			 $sec_id=$rowUser['sec_id'];
+			 $dep_id=$rowUser['dep_id'];
+			 $tb="paperuser";
+			 $sql="insert into $tb (pid,u_id,sec_id,dep_id) values ($lastid,$u_id,$sec_id,$dep_id)";
+			 $dbquery= dbQuery($sql);
 		}
 		
 		echo "<script>
