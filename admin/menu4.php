@@ -89,8 +89,8 @@ if(!isset($_SESSION['ses_u_id'])){
            
             <a class="btn btn-primary btn-block" href="flow-circle.php"><i class="far fa-arrow-alt-circle-right  pull-left"></i> เลขหนังสือส่ง[เวียน]</a>
             <a class="btn btn-primary btn-block" href="flow-normal.php"><i class="far fa-arrow-alt-circle-right  pull-left"></i> เลขหนังสือส่ง[ปกติ]</a>
-             <a class="btn btn-primary btn-block" href="underconstruction.php"><i class="far fa-arrow-alt-circle-right  pull-left"></i> ออกเลข[หน่วยงาน]</a> 
-             <a class="btn btn-primary btn-block" href="flow-command.php"><i class="far fa-arrow-alt-circle-right  pull-left"></i> เลขคำสั่งจังหวัด</a> 
+            <a class="btn btn-primary btn-block" href="flow-command.php"><i class="far fa-arrow-alt-circle-right  pull-left"></i> เลขคำสั่งจังหวัด</a> 
+            <a class="btn btn-primary btn-block" href="underconstruction.php"><i class="far fa-arrow-alt-circle-right  pull-left"></i> เลขหนังสื่อส่ง[หน่วยงาน]</a> 
         </div>
         </div>
       </div>
@@ -119,15 +119,17 @@ if(!isset($_SESSION['ses_u_id'])){
     <div class="panel panel-info">
       <div class="panel-heading">
         <h4 class="panel-title">
-            <i class="fab fa-app-store"></i><a data-toggle="collapse" data-parent="#accordion" href="#collapse5"> ระบบสนับสนุนอื่นๆ</a>
+            <i class="fab fa-app-store"></i><a data-toggle="collapse" data-parent="#accordion" href="#collapse5"> สำนักงานจังหวัด</a>
         </h4>
       </div>
       <div id="collapse5" class="panel-collapse collapse">
             <div class="panel-body">
             <div class="panel-body">
-            <!-- <a class="btn btn-primary btn-block" href="http://www.phangnga.go.th/meeting/index.php" target="_blank"><i class="far fa-arrow-alt-circle-right  pull-left"></i> ระบบจองห้องประชุม</a>
-            <a class="btn btn-primary btn-block" href="http://www.phangnga.go.th/calendar/" target="_blank"><i class="far fa-arrow-alt-circle-right  pull-left"></i> ระบบนัดงานผู้บริหาร</a>
-            <a class="btn btn-primary btn-block" href="">ระบบลงประกาศ</a> -->
+            <a class="btn btn-primary btn-block" href="flow-depart.php" ><i class="far fa-arrow-alt-circle-right  pull-left"></i> ทะเบียนหนังสือส่ง</a>
+            <a class="btn btn-primary btn-block" href="" target="_blank"><i class="far fa-arrow-alt-circle-right  pull-left"></i> ระบบนัดงานผู้บริหาร</a>
+            <a class="btn btn-primary btn-block" href="">ระบบลงประกาศ</a>
+            <a class="btn btn-primary btn-block" href="http://mbrs.phatthalung.go.th/" target="_blank"><i class="far fa-arrow-alt-circle-right  pull-left"></i> ระบบจองห้องประชุม</a>
+
             </div>
         </div>
       </div>
