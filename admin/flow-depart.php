@@ -47,11 +47,11 @@ $dep_id = $_SESSION['ses_dep_id'];
             <div class="panel panel-default" >
                 <div class="panel-heading">
                     <i class="fa fa-envelope fa-2x" aria-hidden="true"></i>  <strong>ทะเบียนหนังสือส่งสำนักงาน</strong>
-                    <a href="" class="btn btn-default pull-right" data-toggle="modal" data-target="#modalReserv">
+                    <a href="" class="btn btn-info pull-right" data-toggle="modal" data-target="#modalReserv">
                     <i class="fas fa-hand-point-up"></i> จองเลข
                      </a>
-                    <a href="" class="btn btn-default btn-md pull-right" data-toggle="modal" data-target="#modalAdd"><i class="fa fa-plus " aria-hidden="true"></i> ลงทะเบียนส่ง</a>
-                    <button id="hideSearch" class="btn btn-default pull-right"><i class="fas fa-search"> ค้นหา</i></button>
+                    <a href="" class="btn btn-success btn-md pull-right" data-toggle="modal" data-target="#modalAdd"><i class="fa fa-plus " aria-hidden="true"></i> ลงทะเบียนส่ง</a>
+                    <button id="hideSearch" class="btn btn-warning pull-right"><i class="fas fa-search"> ค้นหา</i></button>
                 </div>
                  <table class="table table-bordered table-hover">
                         <thead class="bg-info">
@@ -118,8 +118,8 @@ $dep_id = $_SESSION['ses_dep_id'];
                                     }
 
                                  }//isset 
-                              // print $level_id;
-                                //print $sql;
+                              // echo $level_id;
+                                //echo $sql;
                                 $result = page_query( $dbConn, $sql, 10 );
                                 while($row = dbFetchArray($result)){?>
                                     <tr>
@@ -130,7 +130,7 @@ $dep_id = $_SESSION['ses_dep_id'];
                                          $doctype='flow-depart';  //ใช้แยกประเภทตารางเพื่อส่งไปให้ file paper
                                          ?>
                                         <a href="#" 
-                                            onClick="loadData('<?php print $cid;?>','<?php print $u_id; ?>');" 
+                                            onClick="loadData('<?php echo $cid;?>','<?php echo $u_id; ?>');" 
                                             data-toggle="modal" data-target=".bs-example-modal-table">
                                              <?php echo $row['title'];?> 
                                     </a>
@@ -192,7 +192,7 @@ $dep_id = $_SESSION['ses_dep_id'];
                                 <td>
                                     <div class="form-group form-inline">
                                         <label for="yearDoc">ปีเอกสาร : </label>
-                                        <input class="form-control"  name="yearDoc" type="text" value="<?php print $yname; ?>" disabled="">
+                                        <input class="form-control"  name="yearDoc" type="text" value="<?php echo $yname; ?>" disabled="">
                                     </div>
                                 </td>
                             </tr>
@@ -200,7 +200,7 @@ $dep_id = $_SESSION['ses_dep_id'];
                                 <td>
                                      <div class="form-group form-inline">
                                         <label for="currentDate">วันที่ทำรายการ :</label>
-                                        <input class="form-control" type="text" name="currentDate" value="<?php print DateThai();?>" disabled="">
+                                        <input class="form-control" type="text" name="currentDate" value="<?php echo htmlspecialchars(DateThai()); ?>" disabled>
                                     </div>
                                 </td>
                                 <td>
@@ -212,7 +212,7 @@ $dep_id = $_SESSION['ses_dep_id'];
                                                 $sql="SELECT * FROM object ORDER BY obj_id";
                                                 $result = dbQuery($sql);
                                                 while ($row=dbFetchArray($result)){
-                                                echo "<option  value=".$row['obj_id'].">".$row['obj_name']."</option>";
+                                                echo '<option value="' . (int)$row['obj_id'] . '">' . htmlspecialchars($row['obj_name']) . '</option>';
                                             }?>
                                         </select>
                                     </div>
@@ -220,17 +220,17 @@ $dep_id = $_SESSION['ses_dep_id'];
                             </tr>
                             <?php 
                                 $sql = "SELECT section.sec_code,user.firstname,user.sec_id  FROM section,user  WHERE user.u_id = $u_id AND user.sec_id = section.sec_id " ;
-                                //print $sql;
-                                $result =  dbQuery($sql);
-                                $rowPrefex= dbFetchArray($result);
-                                $prefex=$rowPrefex['sec_code'];
-                                $firstname=$rowPrefex['firstname'];
+                                //echo $sql;
+                                $result = dbQuery($sql);
+                                $rowPrefex= $result ? dbFetchArray($result) : ['sec_code' => '', 'firstname' => ''];
+                                $prefex= isset($rowPrefex['sec_code']) ? htmlspecialchars($rowPrefex['sec_code']) : '';
+                                $firstname= isset($rowPrefex['firstname']) ? htmlspecialchars($rowPrefex['firstname']) : '';
                             ?>
                             <tr>
                                 <td>
                                     <div class="form-group form-inline">
                                         <label for="prefex">เลขประจำส่วนราชการ : </label>
-                                        <input type="text" class="form-control" name="prefex" id="prefex"  value="<?php print $prefex;?>">
+                                        <input type="text" class="form-control" name="prefex" id="prefex"  value="<?php echo $prefex;?>">
                                     </div>    
                                 </td>
                                 <td>
@@ -541,7 +541,7 @@ if (isset($_POST['update'])) {
          <div class="form-group col-sm-6">
             <div class="input-group">
                 <span class="input-group-addon">เลขหน่วยงาน:</span>
-                <input type="prefex" class="form-control" name="prefex" max=10  placeholder="เลขหน่วยงาน">
+                <input type="text" class="form-control" name="prefex" max=10  placeholder="เลขหน่วยงาน">
             </div>
           </div>
 

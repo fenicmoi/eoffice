@@ -75,54 +75,52 @@ if($u_id){
      <link rel="stylesheet" href="../css/jquery-ui-1.11.4.custom.css" />
      <link rel="stylesheet" href="../css/SpecialDateSheet.css" />
    
-    <!-- หน้าต่างแจ้งเตือน -->
-    <script  src="../js/jquery_notification_v.1.js"> </script>  <!-- Notification -->
-    <link href="../css/jquery_notification.css" type="text/css" rel="stylesheet"/>
-    
+    <!-- Notification -->
+    <script src="../js/jquery_notification_v.1.js"></script>
+    <link href="../css/jquery_notification.css" type="text/css" rel="stylesheet" />
+
     <link href="../css/dataTables.css" rel="stylesheet">
     <script src="../js/dataTables.js"></script>
 
     <link rel="stylesheet" type="text/css" href="../select/selection.css">
     <link href="https://fonts.googleapis.com/css?family=Taviraj" rel="stylesheet">
-    
-   <!-- bootstrap select  autocomplete -->
-    <link rel="stylesheet" href="css/bootstrap-select.css">	
+
+    <!-- Bootstrap select autocomplete -->
+    <link rel="stylesheet" href="css/bootstrap-select.css">
     <script src="js/bootstrap-select.js"></script>
     <script type="text/javascript">
-        $('.selectpicker').selectpicker({
-          });
+      $(function() {
+        $('.selectpicker').selectpicker();
+      });
     </script>
 
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <script type="text/javascript" src="../js/jquery.alphanumeric.js"></script>
     <script>
-      $(document).ready( function () {
-          $('#myTable').DataTable();
-          $('.select-unit').select2();
-      } );
-
+      $(document).ready(function () {
+        $('#myTable').DataTable();
+        $('.select-unit').select2();
+      });
     </script>
 
-<!-- Chatra {literal} -->
+    <!-- Chatra (commented out, remove if not used) -->
+    <!--
+    <script>
+      // (function(d, w, c) {
+      //   w.ChatraID = '8hztemC96qH6pieSE';
+      //   var s = d.createElement('script');
+      //   w[c] = w[c] || function() {
+      //     (w[c].q = w[c].q || []).push(arguments);
+      //   };
+      //   s.async = true;
+      //   s.src = 'https://call.chatra.io/chatra.js';
+      //   if (d.head) d.head.appendChild(s);
+      // })(document, window, 'Chatra');
+    </script>
+    -->
 
-<script>
-/*
-    (function(d, w, c) {
-        w.ChatraID = '8hztemC96qH6pieSE';
-        var s = d.createElement('script');
-        w[c] = w[c] || function() {
-            (w[c].q = w[c].q || []).push(arguments);
-        };
-        s.async = true;
-        s.src = 'https://call.chatra.io/chatra.js';
-        if (d.head) d.head.appendChild(s);
-    })(document, window, 'Chatra');
-    */
-</script>
-
-<!-- /Chatra {/literal} -->
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -196,17 +194,16 @@ else{
              
             <ul class="nav navbar-nav navbar-right">
               <li>
-                      <div class="chip">
-                          <img src="../images/img_avatar.png" alt="Person" width="50" height="50">
-                          <span class="badge" data-toggle="modal" title="Click"  data-target="#myModal"> ข้อมูลผู้ใช้ </span>
-                     </div>
+                <div class="chip">
+                  <img src="../images/img_avatar.png" alt="Person" width="50" height="50">
+                  <span class="badge" data-toggle="modal" title="Click" data-target="#myModal"> ข้อมูลผู้ใช้ </span>
+                </div>
               </li>
               <li>
-                  <div class="chip">
-                          <img src="../images/logout.png" alt="Person" width="50" height="50">
-                          <a class="badge" href="../logout.php" onclick(return alert("hellojava"));> ออกจากระบบ</a>
-                         
-                  <!--<a href="../logout.php">LOGOUT</a> -->
+                <div class="chip">
+                  <img src="../images/logout.png" alt="Person" width="50" height="50">
+                  <a class="badge" href="../logout.php" onclick="return confirm('คุณต้องการออกจากระบบหรือไม่?');"> ออกจากระบบ</a>
+                </div>
               </li>
             </ul>
           </div><!-- /.navbar-collapse -->
@@ -229,10 +226,10 @@ else{
             <h4 class="modal-title"><i class="fa fa-address-card" aria-hidden="true"></i>User Profile</h4>
           </div>
           <div class="modal-body">
-              <p><i class="fa fa-tag"></i> ชื่อ  <?php print $firstname ?>    <?php print $lastname ?></p>
-              <p><i class="fa fa-tag"></i><?php print $secname?></p>
-              <p><i class="fa fa-tag"></i><?php print $depart?></p>
-              <p><i class="fa fa-tag"></i>สถานะผู้ใช้งาน  <?php print $level ?></p>
+              <p><i class="fa fa-tag"></i> ชื่อ  <?php echo htmlspecialchars($firstname); ?> <?php echo htmlspecialchars($lastname); ?></p>
+              <p><i class="fa fa-tag"></i><?php echo htmlspecialchars($secname); ?></p>
+              <p><i class="fa fa-tag"></i><?php echo htmlspecialchars($depart); ?></p>
+              <p><i class="fa fa-tag"></i>สถานะผู้ใช้งาน  <?php echo htmlspecialchars($level); ?></p>
           </div>
           <div class="modal-footer bg-primary">
               <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i></button>
@@ -269,5 +266,5 @@ $result= dbQuery($sql);
 $user_online = dbNumRows($result);
 
 ?>
-    <div class="container-fluse">    
+    <div class="container-fluse">
 
