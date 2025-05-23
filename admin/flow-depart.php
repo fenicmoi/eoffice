@@ -462,7 +462,7 @@ if(isset($_POST['save'])){   //กดปุ่มบันทึกจากฟ�
                 },
                 function(isConfirm){
                     if(isConfirm){
-                        window.location.href='flow-normal.php';
+                        window.location.href='flow-depart.php';
                     }
                 }); 
             </script>";
@@ -476,7 +476,7 @@ if(isset($_POST['save'])){   //กดปุ่มบันทึกจากฟ�
                 },
                 function(isConfirm){
                     if(isConfirm){
-                        window.location.href='flow-normal.php';
+                        window.location.href='flow-depart.php';
                     }
                 }); 
             </script>";
@@ -519,7 +519,7 @@ if(isset($_POST['update'])){
         exit;
     }else{
       echo "<script>swal(\"Good job!\", \"แก้ไขข้อมูลแล้ว!\", \"success\")</script>";                 
-      echo "<meta http-equiv='refresh' content='1;URL=flow-departl.php'>";  
+      echo "<meta http-equiv='refresh' content='1;URL=flow-depart.php'>";  
     }
 }       
 ?>
@@ -568,8 +568,6 @@ if(isset($_POST['update'])){
 <?php
 if(isset($_POST['btnReserv'])){
 
-       
-
         $u_id = $_SESSION['ses_u_id'];
         $obj_id = 1;
         $yid = $yid;
@@ -604,7 +602,7 @@ if(isset($_POST['btnReserv'])){
     
 
         while ($a < $num) {
-            $sql = "SELECT max(rec_no) as rec_no FROM flownormal where yid=$yid";
+            $sql = "SELECT max(rec_no) as rec_no FROM flowdepart where yid=$yid";
             $result = dbQuery($sql);
             $row = dbFetchArray($result);
             $rec_no = $row['rec_no'];
@@ -619,7 +617,7 @@ if(isset($_POST['btnReserv'])){
             $a++;
         }
         
-        if($a == $num){
+        if($a >= $num){
             echo "<script>
             swal({
                 title:'เรียบร้อย',
