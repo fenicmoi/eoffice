@@ -1,4 +1,3 @@
-
 <?php
 date_default_timezone_set('Asia/Bangkok');
 include "header.php"; 
@@ -486,7 +485,7 @@ if(isset($_POST['save'])){   //กดปุ่มบันทึกจากฟ�
 }
 
 
-if(isset($_POST['update'])){
+if (isset($_POST['update'])) {
     $cid = $_POST['cid'];
     $obj = $_POST['obj'];
     $dateout = $_POST['dateout'];
@@ -500,26 +499,26 @@ if(isset($_POST['update'])){
     $practice = $_POST['practice'];
     $file_location = $_POST['file_location'];
 
-     $sql = "UPDATE flownormal SET
-                    obj_id = $obj,
-                    title = '$title',
-                    speed_id = $speed,
-                    sendfrom = '$sendfrom',
-                    sendto = '$sendto',
-                    refer = '$refer',
-                    attachment = '$attachment',
-                    practice = '$practice',
-                    file_location = '$file_location',
-                    dateout = '$dateout'
+    $sql = "UPDATE flownormal SET
+                obj_id = $obj,
+                title = '$title',
+                speed_id = $speed,
+                sendfrom = '$sendfrom',
+                sendto = '$sendto',
+                refer = '$refer',
+                attachment = '$attachment',
+                practice = '$practice',
+                file_location = '$file_location',
+                dateout = '$dateout'
             WHERE cid = $cid";
     $resUpdate = dbQuery($sql);
-    if(!$resUpdate){
-        echo "<script>swal(\"Good job!\", \"ไม่สำเร็จ!\", \"error\")</script>";                 
-        echo "<meta http-equiv='refresh' content='1;URL=flow-depart.php'>";  
+    if (!$resUpdate) {
+        echo "<script>swal(\"Good job!\", \"ไม่สำเร็จ!\", \"error\")</script>";
+        echo "<meta http-equiv='refresh' content='1;URL=flow-depart.php'>";
         exit;
-    }else{
-      echo "<script>swal(\"Good job!\", \"แก้ไขข้อมูลแล้ว!\", \"success\")</script>";                 
-      echo "<meta http-equiv='refresh' content='1;URL=flow-depart.php'>";  
+    } else {
+        echo "<script>swal(\"Good job!\", \"แก้ไขข้อมูลแล้ว!\", \"success\")</script>";
+        echo "<meta http-equiv='refresh' content='1;URL=flow-depart.php'>";
     }
 }       
 ?>
@@ -645,4 +644,4 @@ function loadData(cid,u_id) {
 $('#divDataview').load('show-flow-depart.php',sdata);
 }
 </script>
-  
+
