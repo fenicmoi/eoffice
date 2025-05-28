@@ -114,18 +114,22 @@ $level_id = $_SESSION['ses_level_id'];
 }
 #calendar-container {
     width: 100%;
-    min-height: 500px;
+    min-height: 420px;
+    max-width: 100%;
+    margin: 0 auto;
     padding: 0;
     overflow-x: auto;
 }
 #calendar-container .fc {
-    max-width: 100%;
+    width: 100% !important;
+    max-width: 100% !important;
     margin: 0 auto;
+    font-size: 1.1em;
 }
 @media (max-width: 991px) {
     #calendar-container {
-        min-height: 350px;
-        font-size: 12px;
+        min-height: 340px;
+        font-size: 1em;
     }
     .fc-toolbar-title {
         font-size: 1.1em !important;
@@ -133,8 +137,8 @@ $level_id = $_SESSION['ses_level_id'];
 }
 @media (max-width: 768px) {
     #calendar-container {
-        min-height: 250px;
-        font-size: 11px;
+        min-height: 220px;
+        font-size: 0.95em;
     }
     .fc .fc-toolbar {
         flex-direction: column;
