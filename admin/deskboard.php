@@ -264,27 +264,21 @@ $level_id = isset($level_id) ? (int)$level_id : 0;
                                     <div id="piechart"></div>
                                     <script type="text/javascript" src="../js/chart/loader.js"></script>
                                     <script type="text/javascript">
-                                    // Load google charts
+                                    // Load google charts (โหลดครั้งเดียว)
                                     google.charts.load('current', {'packages':['corechart']});
-                                    google.charts.setOnLoadCallback(drawChart);
-
-                                    // Draw the chart and set the chart values
-                                    function drawChart() {
-                                    var data = google.visualization.arrayToDataTable([
-                                    ['Task', 'Hours per Day'],
-                                    ['ผู้ดูแลระบบ', <?=$c1; ?>],
-                                    ['สารบรรณจังหวัด', <?=$c2; ?>],
-                                    ['สารบรรณหน่วยงาน', <?=$c3; ?>],
-                                    ['สารบรรณกลุ่ม', <?=$c4; ?>],
-                                    ['ผู้ใช้ทั่วไป',<?=$c5; ?>]
-                                    ]);
-
-                                    // Optional; add a title and set the width and height of the chart
-                                    var options = {'title':'สัดส่วนผู้ใช้งาน', 'width':550, 'height':400};
-
-                                    // Display the chart inside the <div> element with id="piechart"
-                                    var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-                                    chart.draw(data, options);
+                                    google.charts.setOnLoadCallback(drawUserChart);
+                                    function drawUserChart() {
+                                        var data = google.visualization.arrayToDataTable([
+                                            ['Task', 'Hours per Day'],
+                                            ['ผู้ดูแลระบบ', <?=$c1; ?>],
+                                            ['สารบรรณจังหวัด', <?=$c2; ?>],
+                                            ['สารบรรณหน่วยงาน', <?=$c3; ?>],
+                                            ['สารบรรณกลุ่ม', <?=$c4; ?>],
+                                            ['ผู้ใช้ทั่วไป', <?=$c5; ?>]
+                                        ]);
+                                        var options = {'title':'สัดส่วนผู้ใช้งาน', 'width':550, 'height':400};
+                                        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+                                        chart.draw(data, options);
                                     }
                                     </script>
                                 </div> <!-- col-md-6 -->
@@ -292,32 +286,26 @@ $level_id = isset($level_id) ? (int)$level_id : 0;
                             <div class="row">
                                 <div class="col-md-6">
                                     <div id="depart" style="width: 700px; height: 350px;"></div>
-                                    <script type="text/javascript" src="js/chart/loader.js"></script>
                                     <script type="text/javascript">
-                                    // Load google charts
-                                    google.charts.load('current', {'packages':['corechart']});
-                                    google.charts.setOnLoadCallback(drawChart);
-
-                                    // Draw the chart and set the chart values
-                                    function drawChart() {
-                                    var data = google.visualization.arrayToDataTable([
-                                    ['Task', 'Hours per Day'],
-                                    ['ส่วนกลาง', <?=$c1; ?>],
-                                    ['ส่วนภูมิภาค', <?=$c2; ?>],
-                                    ['ส่วนท้องถิ่น', <?=$c3; ?>],
-                                    ['รัฐวิสาหกิจ', <?=$c4; ?>],
-                                    ['อื่น',<?=$c5; ?>]
-                                    ]);
-
-                                    // Optional; add a title and set the width and height of the chart
-                                    var options = {
-                                        title: 'ส่วนราชการ',
-                                        pieHole: 0.4,
-                                    };
-
-                                    // Display the chart inside the <div> element with id="depart"
-                                    var chart = new google.visualization.PieChart(document.getElementById('depart'));
-                                    chart.draw(data, options);
+                                    // ไม่ต้องโหลดซ้ำ google.charts.load
+                                    google.charts.setOnLoadCallback(drawDepartChart);
+                                    function drawDepartChart() {
+                                        var data = google.visualization.arrayToDataTable([
+                                            ['Task', 'Hours per Day'],
+                                            ['ส่วนกลาง', <?=$c1; ?>],
+                                            ['ส่วนภูมิภาค', <?=$c2; ?>],
+                                            ['ส่วนท้องถิ่น', <?=$c3; ?>],
+                                            ['รัฐวิสาหกิจ', <?=$c4; ?>],
+                                            ['อื่น', <?=$c5; ?>]
+                                        ]);
+                                        var options = {
+                                            title: 'ส่วนราชการ',
+                                            pieHole: 0.4,
+                                            width: 550,
+                                            height: 400
+                                        };
+                                        var chart = new google.visualization.PieChart(document.getElementById('depart'));
+                                        chart.draw(data, options);
                                     }
                                     </script>
                                 </div>

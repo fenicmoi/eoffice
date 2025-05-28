@@ -12,6 +12,17 @@
                 initialView: 'dayGridMonth', // มุมมองเริ่มต้น (รายสัปดาห์แบบตารางเวลา)
                                              // ลองเปลี่ยนเป็น 'dayGridMonth', 'timeGridDay' ได้
                 locale: 'th', // ตั้งค่าภาษาเป็นไทย (ต้องแน่ใจว่า CDN หรือไฟล์ที่ใช้รองรับ)
+                buttonText: {
+                    today: 'วันนี้',
+                    month: 'เดือน',
+                    week: 'สัปดาห์',
+                    day: 'วัน',
+                    list: 'รายการ'
+                },
+                titleFormat: { year: 'numeric', month: 'long', day: 'numeric' },
+                allDayText: 'ทั้งวัน',
+                weekText: 'สัปดาห์',
+                dayMaxEventRows: true,
                 headerToolbar: { // การตั้งค่าปุ่มบนหัวปฏิทิน
                     left: 'prev,next today',
                     center: 'title',

@@ -1,7 +1,6 @@
-
 <?php include 'header.php';?>
 <?php    
-   $menu = $_GET['menu'];
+   $menu = isset($_GET['menu']) ? (int)$_GET['menu'] : 1;
    switch ($menu) {
     case 1:
       include('content.php');
