@@ -15,81 +15,85 @@ $dep_id = isset($dep_id) ? (int)$dep_id : 0;
         ?>
     </div>
     <div class="col-md-10">
-        <div class="panel panel-primary" style="margin: 20px;">
-            <div class="panel-heading">
-                <i class="fas fa-book-reader fa-2x" aria-hidden="true"></i> <strong>จัดการห้องประชุม</strong>
-                <a href="#" class="btn btn-success pull-right" data-toggle="modal" data-target="#modalAdd">
+        <div class="panel panel-primary shadow" style="margin: 20px; border-radius: 12px;">
+            <div class="panel-heading" style="border-radius: 12px 12px 0 0; background: linear-gradient(90deg, #2980b9 0%, #6dd5fa 100%); color: #fff;">
+                <i class="fas fa-book-reader fa-2x" aria-hidden="true"></i>
+                <strong style="font-size:1.3em;">จัดการห้องประชุม</strong>
+                <a href="#" class="btn btn-success pull-right" data-toggle="modal" data-target="#modalAdd" style="border-radius: 20px;">
                     <i class="fa fa-plus" aria-hidden="true"></i> เพิ่มห้องประชุม
                 </a>
             </div>
-            <br>
-            <table class="table table-bordered">
-                <thead class="bg-info">
-                    <tr>
-                        <th>ชื่อห้อง</th>
-                        <th>สถานะ</th>
-                        <th>ที่อยู่</th>
-                        <th>ความจุ</th>
-                        <th>ราคาเต็มวัน</th>
-                        <th>ราคาครึ่งวัน</th>
-                        <th>รายละเอียด</th>
-                        <th>แก้ไข</th>
-                        <th>ลบ</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    if ($level_id == 1) {
-                        $sql = "SELECT * FROM meeting_room ORDER BY room_id DESC";
-                    } else {
-                        $sql = "SELECT * FROM meeting_room WHERE dep_id = $dep_id";
-                    }
-                    $result = dbQuery($sql);
-                    while ($row = dbFetchArray($result)) {
-                        $room_id = (int)$row['room_id'];
-                        ?>
-                        <tr>
-                            <td><?php echo htmlspecialchars($row['roomname']); ?></td>
-                            <td>
-                                <?php
-                                if ($row['room_status'] == 0) {
-                                    echo "<i class='fas fa-window-close'> ระงับการใช้</i>";
-                                } elseif ($row['room_status'] == 1) {
-                                    echo "<i class='fas fa-laptop'> จองผ่านระบบ</i>";
-                                } else {
-                                    echo "<i class='fas fa-book-open'> จองผ่านสมุด</i>";
-                                }
+            <div class="panel-body" style="background: #f7fafd;">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover" style="background: #fff; border-radius: 8px;">
+                        <thead class="bg-info" style="background: #2980b9; color: #fff;">
+                            <tr style="font-size:1.08em;">
+                                <th>ชื่อห้อง</th>
+                                <th>สถานะ</th>
+                                <th>ที่อยู่</th>
+                                <th>ความจุ</th>
+                                <th>ราคาเต็มวัน</th>
+                                <th>ราคาครึ่งวัน</th>
+                                <th>รายละเอียด</th>
+                                <th>แก้ไข</th>
+                                <th>ลบ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            if ($level_id == 1) {
+                                $sql = "SELECT * FROM meeting_room ORDER BY room_id DESC";
+                            } else {
+                                $sql = "SELECT * FROM meeting_room WHERE dep_id = $dep_id";
+                            }
+                            $result = dbQuery($sql);
+                            while ($row = dbFetchArray($result)) {
+                                $room_id = (int)$row['room_id'];
                                 ?>
-                            </td>
-                            <td><?php echo htmlspecialchars($row['roomplace']); ?></td>
-                            <td><?php echo (int)$row['roomcount']; ?></td>
-                            <td><?php echo htmlspecialchars($row['money1']); ?> บาท</td>
-                            <td><?php echo htmlspecialchars($row['money2']); ?> บาท</td>
-                            <td>
-                                <a class="btn btn-info" href="#"
-                                   onClick="loadData('<?php echo $room_id; ?>','<?php echo $u_id; ?>');"
-                                   data-toggle="modal" data-target=".bs-example-modal-table">
-                                    <i class="fas fa-info-circle"></i>
-                                </a>
-                            </td>
-                            <td>
-                                <a class="btn btn-warning" href="#"
-                                   onClick="editData('<?php echo $room_id; ?>','<?php echo $u_id; ?>');"
-                                   data-toggle="modal" data-target=".bs-edit-modal-table">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                            </td>
-                            <td>
-                                <a class="btn btn-danger" href="?del=<?php echo $room_id; ?>"
-                                   onclick="return confirm('คุณกำลังจะลบห้องประชุม !');">
-                                    <i class="fas fa-trash"></i>
-                                </a>
-                            </td>
-                        </tr>
-                    <?php } ?>
-                </tbody>
-            </table>
-            <div class="panel-footer"></div>
+                                <tr>
+                                    <td style="vertical-align:middle;"><?= htmlspecialchars($row['roomname']); ?></td>
+                                    <td style="vertical-align:middle;">
+                                        <?php
+                                        if ($row['room_status'] == 0) {
+                                            echo "<span class='label label-danger'><i class='fas fa-window-close'></i> ระงับการใช้</span>";
+                                        } elseif ($row['room_status'] == 1) {
+                                            echo "<span class='label label-success'><i class='fas fa-laptop'></i> จองผ่านระบบ</span>";
+                                        } else {
+                                            echo "<span class='label label-warning'><i class='fas fa-book-open'></i> จองผ่านสมุด</span>";
+                                        }
+                                        ?>
+                                    </td>
+                                    <td style="vertical-align:middle;"><?= htmlspecialchars($row['roomplace']); ?></td>
+                                    <td style="vertical-align:middle;"><?= (int)$row['roomcount']; ?></td>
+                                    <td style="vertical-align:middle;"><?= htmlspecialchars($row['money1']); ?> บาท</td>
+                                    <td style="vertical-align:middle;"><?= htmlspecialchars($row['money2']); ?> บาท</td>
+                                    <td style="vertical-align:middle;">
+                                        <a class="btn btn-info btn-sm" href="#"
+                                           onClick="loadData('<?php echo $room_id; ?>','<?php echo $u_id; ?>');"
+                                           data-toggle="modal" data-target=".bs-example-modal-table" title="ดูรายละเอียด">
+                                            <i class="fas fa-info-circle"></i>
+                                        </a>
+                                    </td>
+                                    <td style="vertical-align:middle;">
+                                        <a class="btn btn-warning btn-sm" href="#"
+                                           onClick="editData('<?php echo $room_id; ?>','<?php echo $u_id; ?>');"
+                                           data-toggle="modal" data-target=".bs-edit-modal-table" title="แก้ไข">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                    </td>
+                                    <td style="vertical-align:middle;">
+                                        <a class="btn btn-danger btn-sm" href="?del=<?php echo $room_id; ?>"
+                                           onclick="return confirm('คุณกำลังจะลบห้องประชุม !');" title="ลบ">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            <?php } ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="panel-footer" style="border-radius: 0 0 12px 12px; background: #eaf6fb;"></div>
         </div>
 
         <!-- Model -->
@@ -225,7 +229,7 @@ if (isset($_POST['save'])) {
     $money1 = (float)$_POST['money1'];
     $money2 = (float)$_POST['money2'];
     $tel = htmlspecialchars(trim($_POST['tel']));
-    $dep_id = (int)$_POST['dep_id'];
+    //$dep_id = $_POST['dep_id'];
     $t1 = isset($_POST['t1']) ? 1 : 0;
     $t2 = isset($_POST['t2']) ? 1 : 0;
     $t3 = isset($_POST['t3']) ? 1 : 0;
@@ -241,8 +245,9 @@ if (isset($_POST['save'])) {
         }
     }
 
-    $sql = "INSERT INTO meeting_room(roomname,roomplace,roomcount,roomimg,tel,room_status,money1,money2,sound,vga,vcs,dep_id)
-            VALUES('$roomname','$roomplace',$roomcount,'$roomimg','$tel',1,$money1,$money2,$t1,$t2,$t3,$dep_id)";
+    $sql = "INSERT INTO meeting_room(roomname,roomplace,roomcount,roomimg,tel,room_status,money1,money2,sound,vga,vcs)
+            VALUES('$roomname','$roomplace',$roomcount,'$roomimg','$tel',1,$money1,$money2,$t1,$t2,$t3)";
+    print $sql;
     $result = dbQuery($sql);
     if ($result) {
         dbQuery("COMMIT");
@@ -259,7 +264,9 @@ if (isset($_POST['save'])) {
             }); 
         </script>";
     } else {
+        
         dbQuery("ROLLBACK");
+        /*
         echo "<script>
         swal({
             title:'มีบางอย่างผิดพลาด! กรุณาตรวจสอบ',
@@ -271,7 +278,8 @@ if (isset($_POST['save'])) {
                     window.location.href='meet_room.php';
                 }
             }); 
-        </script>";
+            
+        </script>";*/
     }
 }
 
@@ -404,3 +412,28 @@ function editData(room_id, u_id) {
     $('#divEditview').load('show_meeting_edit.php', edata);
 }
 </script>
+
+<style>
+/* เพิ่มเงาและความโค้งมนให้ panel และปุ่ม */
+.panel-primary.shadow {
+    box-shadow: 0 4px 18px rgba(44, 62, 80, 0.13);
+}
+.btn-success, .btn-info, .btn-warning, .btn-danger {
+    border-radius: 20px;
+}
+.table > thead > tr > th, .table > tbody > tr > td {
+    text-align: center;
+    vertical-align: middle !important;
+}
+@media (max-width: 767px) {
+    .panel-body, .table-responsive {
+        padding: 0 !important;
+    }
+    .table {
+        font-size: 0.95em;
+    }
+    .btn {
+        margin-bottom: 5px;
+    }
+}
+</style>
