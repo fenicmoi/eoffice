@@ -148,7 +148,7 @@ if ($u_id) {
                 <li>
                     <div class="chip">
                         <img src="../images/logout.png" alt="Person" width="50" height="50">
-                        <a class="badge" href="../logout.php" onclick="return confirm('คุณต้องการออกจากระบบหรือไม่?');">ออกจากระบบ</a>
+                        <a class="badge" href="#" id="logout-btn">ออกจากระบบ</a>
                     </div>
                 </li>
             </ul>
@@ -200,4 +200,25 @@ $user_online = dbNumRows($result);
 ?>
 <!-- เปลี่ยน container-fluse เป็น container-fluid -->
 <div class="container-fluid">
+<script>
+$(document).ready(function() {
+    $('#logout-btn').on('click', function(e) {
+        e.preventDefault();
+        swal({
+            title: "ยืนยันการออกจากระบบ",
+            text: "คุณต้องการออกจากระบบหรือไม่?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "ออกจากระบบ",
+            cancelButtonText: "ยกเลิก"
+        }, function(isConfirm) {
+            if (isConfirm) {
+                window.location.href = "../logout.php";
+            }
+        });
+    });
+});
+</script>
 
