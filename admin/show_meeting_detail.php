@@ -1,64 +1,56 @@
-
 <?php
 date_default_timezone_set('Asia/Bangkok');
 include 'function.php';
 include '../library/database.php';
 
-$room_id=$_POST['room_id'];
-$u_id=$_POST['u_id'];
+// ป้องกัน SQL Injection
+$room_id = isset($_POST['room_id']) ? (int)$_POST['room_id'] : 0;
+$u_id = isset($_POST['u_id']) ? (int)$_POST['u_id'] : 0;
 
-$sql="SELECT * FROM meeting_room   WHERE  room_id=$room_id";
+$sql = "SELECT * FROM meeting_room WHERE room_id = $room_id";
+$result = dbQuery($sql);
+$row = dbFetchAssoc($result);
 
-//print $sql;
-$result=dbQuery($sql);
-$row=dbFetchAssoc($result);
-?>  
-<table class="table-bordered table-hover" width=100% >
+// ตรวจสอบไฟล์รูปภาพก่อนแสดง
+$roomimg = (!empty($row['roomimg']) && file_exists("doc/" . $row['roomimg'])) ? htmlspecialchars($row['roomimg']) : "no-image.png";
+?>
+<table class="table table-bordered table-hover" width="100%">
     <tr>
-        <td colspan="2">
-          <center>
-               <img src="doc/<?php echo $row['roomimg'];?>" class="img-responsive img-rounded " width=300px height=250px alt="">
-          </center></td>
+        <td colspan="2" class="text-center">
+            <img src="doc/<?= $roomimg ?>" class="img-responsive img-rounded" style="max-width:300px; height:auto;" alt="รูปห้องประชุม">
+        </td>
     </tr>
     <tr>
-         <td width="20%"><label>ชื่อห้อง:</label></td>
-         <td><?php print $row['roomname']?></td>
+        <td width="20%"><label>ชื่อห้อง:</label></td>
+        <td><?= htmlspecialchars($row['roomname']) ?></td>
     </tr>
     <tr>
-         <td><label>ที่อยู่:</label></td>
-         <td><?php print $row['roomplace']?></td>
+        <td><label>ที่อยู่:</label></td>
+        <td><?= htmlspecialchars($row['roomplace']) ?></td>
     </tr>
     <tr>
-         <td><label>ความจุผู้เข้าประชุม:</label></td>
-         <td><?php print $row['roomcount']?>.คน</td>
+        <td><label>ความจุผู้เข้าประชุม:</label></td>
+        <td><?= (int)$row['roomcount'] ?> คน</td>
     </tr>
     <tr>
-         <td><label>ค่าธรรมเนียมเต็มวัน:</label></td>
-         <td><?php print $row['money1']?>.บาท</td>
-    </tr>
-     <tr>
-         <td><label>ค่าธรรมเนียมครึ่งวัน:</label></td>
-         <td><?php print $row['money2']?>.บาท</td>
-    </tr>
-     <tr>
-         <td><label>อุปกรณ์อำนวยความสะดวก:</label></td>
-         <td>
-            <?php 
-                if($row['sound']==1){?>
-                  <input type="checkbox" checked>ระบบเสียง
-                <?php }
-                if($row['sound']==1){?>
-                  <input type="checkbox" checked>ระบบแสดงผล
-                <?php }
-                if($row['sound']==1){?>
-                  <input type="checkbox" checked>ระบบประชุมทางไกลกระทรวงมหาดไทย
-                <?php }?>
-         </td>
+        <td><label>ค่าธรรมเนียมเต็มวัน:</label></td>
+        <td><?= htmlspecialchars($row['money1']) ?> บาท</td>
     </tr>
     <tr>
-         <td><label>เบอร์ติดต่อ:</label></td>
-         <td><?php print $row['tel']?></td>
+        <td><label>ค่าธรรมเนียมครึ่งวัน:</label></td>
+        <td><?= htmlspecialchars($row['money2']) ?> บาท</td>
     </tr>
-
+    <tr>
+        <td><label>อุปกรณ์อำนวยความสะดวก:</label></td>
+        <td>
+            <input type="checkbox" disabled <?= $row['sound'] == 1 ? 'checked' : '' ?>> ระบบเสียง
+            <input type="checkbox" disabled <?= $row['vga'] == 1 ? 'checked' : '' ?>> ระบบแสดงผล
+            <input type="checkbox" disabled <?= $row['vcs'] == 1 ? 'checked' : '' ?>> ระบบประชุมทางไกล
+        </td>
+    </tr>
+    <tr>
+        <td><label>เบอร์ติดต่อ:</label></td>
+        <td><?= htmlspecialchars($row['tel']) ?></td>
+    </tr>
 </table>
 
