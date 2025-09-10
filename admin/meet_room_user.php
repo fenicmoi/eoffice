@@ -2,86 +2,152 @@
 include "header.php";
 $yid = chkYearMonth();
 $u_id = $_SESSION['ses_u_id'];
-$level_id = isset($level_id) ? (int)$level_id : 0;
 ?>
 <div class="row">
     <div class="col-md-2">
         <?php
-            $menu = checkMenu($level_id);
-            include $menu;
+        $menu =  checkMenu($level_id);
+        include $menu;
         ?>
     </div>
     <div class="col-md-10">
-        <div class="panel panel-primary" style="margin: 20px; border-radius: 12px; box-shadow: 0 4px 18px rgba(44,62,80,0.13);">
-            <div class="panel-heading" style="border-radius: 12px 12px 0 0; background: linear-gradient(90deg, #2980b9 0%, #6dd5fa 100%); color: #fff;">
-                <i class="fas fa-book-reader fa-2x" aria-hidden="true"></i>
-                <strong style="font-size:1.3em;">รายชื่อห้องประชุม</strong>
-                <a class="btn btn-info pull-right" href="meet_index.php" style="border-radius: 20px;">
-                    <i class="fas fa-calendar"></i> ปฏิทิน
-                </a>
+        <div class="panel panel-primary" style="margin: 20">
+            <div class="panel-heading"><i class="fas fa-book-reader fa-2x" aria-hidden="true"></i> <strong>รายชื่อห้องประชุม</strong>
+                <a class="btn btn-default pull-right" href="meet_index.php"><i class="fas fa-calendar"></i> ปฏิทิน</a>
             </div>
-            <div class="panel-body" style="background: #f7fafd;">
-                <div class="table-responsive">
-                    <table class="table table-bordered table-hover" style="background: #fff; border-radius: 8px;">
-                        <thead class="bg-info" style="background: #2980b9; color: #fff;">
-                            <tr>
-                                <th>สถานะ</th>
-                                <th>ชื่อห้อง</th>
-                                <th>ที่อยู่</th>
-                                <th>ความจุ</th>
-                                <th>ราคาเต็มวัน</th>
-                                <th>ราคาครึ่งวัน</th>
-                                <th>รายละเอียด</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                            $sql = "SELECT * FROM meeting_room";
-                            $result = dbQuery($sql);
-                            while ($row = dbFetchArray($result)) {
-                                $room_id = (int)$row['room_id'];
+            <br>
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>สถานะ</th>
+                        <th>ชื่อห้อง</th>
+                        <th>ที่อยู่</th>
+                        <th>ความจุ</th>
+                        <th>ราคาเต็มวัน</th>
+                        <th>ราคาครึ่งวัน</th>
+                        <th>รายละเอียด</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $sql = "SELECT *  FROM meeting_room ";
+                    $result = dbQuery($sql);
+                    while ($row = dbFetchArray($result)) {
+                        $room_id = $row['room_id']; ?>
+                        <tr>
+                            <td>
+                                <?php
+                                if ($row['room_status'] == 0) {
+                                    echo "<b>ระงับการใช้</b>";
+                                } else {
+                                    echo "ใช้ปกติ";
+                                }
                                 ?>
-                                <tr>
-                                    <td style="vertical-align:middle;">
-                                        <?php
-                                        if ($row['room_status'] == 0) {
-                                            echo "<span class='label label-danger'><i class='fas fa-window-close'></i> ระงับการใช้</span>";
-                                        } else {
-                                            echo "<span class='label label-success'><i class='fas fa-check-circle'></i> ใช้ปกติ</span>";
-                                        }
-                                        ?>
-                                    </td>
-                                    <td style="vertical-align:middle;"><?= htmlspecialchars($row['roomname']); ?></td>
-                                    <td style="vertical-align:middle;"><?= htmlspecialchars($row['roomplace']); ?></td>
-                                    <td style="vertical-align:middle;"><?= (int)$row['roomcount']; ?></td>
-                                    <td style="vertical-align:middle;"><?= htmlspecialchars($row['money1']); ?> บาท</td>
-                                    <td style="vertical-align:middle;"><?= htmlspecialchars($row['money2']); ?> บาท</td>
-                                    <td style="vertical-align:middle;">
-                                        <a class="btn btn-info btn-block" href="#"
-                                           onClick="loadData('<?= $room_id; ?>','<?= $u_id; ?>');"
-                                           data-toggle="modal" data-target=".bs-example-modal-table">
-                                            <i class="fas fa-eye"></i> ดูรายละเอียด
-                                        </a>
-                                    </td>
-                                </tr>
-                            <?php } ?>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="panel-footer" style="border-radius: 0 0 12px 12px; background: #eaf6fb;"></div>
-            </div>
+                            </td>
+                            <td><?php print $row['roomname']; ?></td>
+                            <td><?php print $row['roomplace']; ?></td>
+                            <td><?php print $row['roomcount']; ?></td>
+                            <td><?php print $row['money1']; ?>.บาท</td>
+                            <td><?php print $row['money2']; ?>.บาท</td>
+                            <td>
+                                <a class="btn btn-info btn-block" href="#"
+                                    onClick="loadData('<?php print $room_id; ?>','<?php print $u_id; ?>');"
+                                    data-toggle="modal" data-target=".bs-example-modal-table">
+                                    <i class="fas fa-eye"></i> Click..
+                                </a>
+                            </td>
+                        </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+            <div class="panel-footer"></div>
         </div>
 
-        <!-- Modal แสดงรายละเอียดข้อมูล -->
-        <div class="modal fade bs-example-modal-table" tabindex="-1" aria-hidden="true" role="dialog">
-            <div class="modal-dialog modal-lg">
+        <!-- Model -->
+        <div id="modalAdd" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
                 <div class="modal-content">
                     <div class="modal-header bg-primary">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title"><i class="fa fa-info"></i> รายละเอียด</h4>
+                        <h4 class="modal-title"><i class="fa fa-list"></i> เพิ่มห้องประชุม</h4>
                     </div>
-                    <div class="modal-body no-padding">
-                        <div id="divDataview"></div>
+                    <div class="modal-body">
+                        <form method="post" action="meet_room.php" enctype="multipart/form-data">
+                            <label for="">วันที่ทำรายการ: <?php echo DateThai(); ?></label>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-list"></span></span>
+                                    <input type="text" class="form-control" id="roomname" name="roomname" placeholder="ชื่อห้องประชุม" required="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><span class="	glyphicon glyphicon-map-marker"></span></span>
+                                    <input type="text" class="form-control" id="place" name="place" placeholder="สถานที่" required="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><span class="	glyphicon glyphicon-user"></span></span>
+                                    <input type="text" class="form-control" id="capacity" name="capacity" placeholder="ความจุผู้เข้าประชุม" required="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group col-xs-6">
+                                    <span class="input-group-addon"><span class="	glyphicon glyphicon-usd"></span></span>
+                                    <input type="text" class="form-control" id="money1" name="money1" placeholder="ค่าธรรมเนียมเต็มวัน" required="">
+                                    <span class="input-group-addon">บาท</span></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group col-xs-6">
+                                    <span class="input-group-addon"><span class="	glyphicon glyphicon-usd"></span></span>
+                                    <input type="text" class="form-control" id="money2" name="money2" placeholder="ค่าธรรมเนียมครึ่งวัน" required="">
+                                    <span class="input-group-addon">บาท</span></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group col-xs-6">
+                                    <span class="input-group-addon"><span class="	glyphicon glyphicon-phone"></span></span>
+                                    <input type="text" class="form-control" id="tel" name="tel" placeholder="เบอร์โทร" required="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group col-xs-6">
+                                    <span class="input-group-addon"><span class="	glyphicon glyphicon-user"></span></span>
+                                    <input type="text" class="form-control" id="owner" name="owner" placeholder="เจ้าของห้อง" required="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <h5><i class="fas fa-volume-up"></i> อุปกรณ์อำนวยความสะดวก</h5>
+                                <div class="checkbox">
+                                    <div class="checkbox"><label><input type="checkbox" id="t1" name="t1" value="1">ระบบเสียง</label></div>
+                                    <div class="checkbox"><label><input type="checkbox" id="t2" name="t2" value="1">ระบบแสดงผล</label></div>
+                                    <div class="checkbox"><label><input type="checkbox" id="t3" name="t3" value="1">ระบบประชุมวีดีทัศน์ทางไกล</label></div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>รูปห้องประชุม</label>
+                                <input type="file" name="fileUpload">
+                            </div>
+                            <?php
+                            $sql = "SELECT * FROM depart WHERE dep_id=$dep_id";
+                            $result = dbQuery($sql);
+                            $row = dbFetchArray($result);
+                            ?>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><span class="fa fa-building"></span></span>
+                                    <input type="text" class="form-control" id="dep_id" name="dep_id" value="<?php print $row['dep_name']; ?>">
+                                </div>
+                            </div>
+                            <center>
+                                <button class="btn btn-success btn-lg" type="submit" name="save">
+                                    <i class="fas fa-save fa-2x"></i> บันทึก
+                                </button>
+                            </center>
+                        </form>
                     </div>
                     <div class="modal-footer bg-primary">
                         <button type="button" class="btn btn-danger" data-dismiss="modal">ปิด X</button>
@@ -89,91 +155,245 @@ $level_id = isset($level_id) ? (int)$level_id : 0;
                 </div>
             </div>
         </div>
-        <!-- End Modal -->
-
-        <!-- Modal แก้ไขข้อมูล (ถ้ามีสิทธิ์) -->
-        <div class="modal fade bs-edit-modal-table" tabindex="-1" aria-hidden="true" role="dialog">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header bg-primary">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title"><i class="fa fa-edit"></i> แก้ไขข้อมูล</h4>
-                    </div>
-                    <div class="modal-body no-padding">
-                        <div id="divEditview"></div>
-                    </div>
-                    <div class="modal-footer bg-primary">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">ปิด X</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- End Modal -->
+        <!-- End Model -->
     </div>
 </div>
+<!--  modal แสงรายละเอียดข้อมูล -->
+<div class="modal fade bs-example-modal-table" tabindex="-1" aria-hidden="true" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> รายละเอียด</h4>
+            </div>
+            <div class="modal-body no-padding">
+                <div id="divDataview"></div>
+            </div> <!-- modal-body -->
+            <div class="modal-footer bg-primary">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">ปิด X</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- จบส่วนแสดงรายละเอียดข้อมูล  -->
 
-<style>
-.panel.panel-primary {
-    border-radius: 12px;
-    box-shadow: 0 4px 18px rgba(44, 62, 80, 0.13);
-    border: none;
-}
-.panel-heading {
-    background: linear-gradient(90deg, #2980b9 0%, #6dd5fa 100%) !important;
-    color: #fff !important;
-    border-radius: 12px 12px 0 0;
-    min-height: 70px;
-    padding-top: 18px;
-    padding-bottom: 18px;
-    box-shadow: 0 2px 8px rgba(41,128,185,0.08);
-}
-.panel-heading strong {
-    font-size: 1.35em;
-    letter-spacing: 1px;
-}
-.table > thead > tr > th, .table > tbody > tr > td {
-    text-align: center;
-    vertical-align: middle !important;
-}
-.label {
-    font-size: 1em;
-    padding: 6px 12px;
-    border-radius: 12px;
-}
-.btn-info.btn-block {
-    border-radius: 18px;
-    font-weight: 500;
-    font-size: 1em;
-    margin-top: 2px;
-    margin-bottom: 2px;
-}
-@media (max-width: 991px) {
-    .panel-body, .table-responsive {
-        padding: 0 !important;
+<!--  modal แก้ไขข้อมูล-->
+<div class="modal fade bs-edit-modal-table" tabindex="-1" aria-hidden="true" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> แก้ไขข้อมูล</h4>
+            </div>
+            <div class="modal-body no-padding">
+                <div id="divEditview"></div>
+            </div> <!-- modal-body -->
+            <div class="modal-footer bg-primary">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">ปิด X</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- จบส่วนแก้ไข  -->
+
+
+<?php
+//ส่วนประมวลผล
+if (isset($_POST['save'])) {
+
+    $roomname = $_POST['roomname'];         //ชื่อห้องประชุม
+    $roomplace = $_POST['place'];    //สถานที่
+    $roomcount = $_POST['capacity'];  //ความจุ
+    $money1 = $_POST['money1'];      //ค่าธรรมเนียมเต็มวัน
+    $money2 = $_POST['money2'];    //ค่าธรรมเนียมครึ่งวัน
+    $tel = $_POST['tel'];         //เบอร์โทรศัพท์
+    $dept = $_POST['owner'];       //เจ้าของห้อง
+    $t1 = $_POST['t1'];       //เสียง
+    $t2 = $_POST['t2'];
+    $t3 = $_POST['t3'];       //ประชุมทางไกล
+
+    $filename = $_FILES['fileUpload']['name'];
+    // --- ดึงนามสกุล (ตัวพิมพ์เล็ก) ---
+    $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+    // --- รายการนามสกุลที่อนุญาต (รูปภาพ + เอกสาร) ---
+    $allowed = array('jpg', 'jpeg', 'png', 'gif', 'pdf', 'doc', 'docx', 'xls', 'xlsx');
+    // --- ตรวจสอบว่าไฟล์อยู่ในรายการอนุญาตไหม ---
+    if (!in_array($ext, $allowed)) {
+        echo "<script>alert('ไม่อนุญาตให้อัปโหลดไฟล์ .$ext'); window.history.back();</script>";
+        exit;
     }
-    .table {
-        font-size: 0.95em;
+
+    $filename = $_FILES['fileUpload']['name'];
+    // --- ดึงนามสกุล (ตัวพิมพ์เล็ก) ---
+    $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+    // --- รายการนามสกุลที่อนุญาต (รูปภาพ + เอกสาร) ---
+    $allowed = array('jpg', 'jpeg', 'png', 'gif', 'pdf', 'doc', 'docx', 'xls', 'xlsx');
+    // --- ตรวจสอบว่าไฟล์อยู่ในรายการอนุญาตไหม ---
+    if (!in_array($ext, $allowed)) {
+        echo "<script>alert('ไม่อนุญาตให้อัปโหลดไฟล์ .$ext'); window.history.back();</script>";
+        exit;
     }
-    .btn {
-        margin-bottom: 5px;
+
+    if (move_uploaded_file($_FILES["fileUpload"]["tmp_name"], "doc/" . $_FILES["fileUpload"]["name"])) {
+        $roomimg = $_FILES["fileUpload"]["name"];
+    }
+
+
+    /*
+	$sql="INSERT INTO  meeting_room(roomname,roomplace,roomcount,roomimg,dept,tel,room_status,money1,money2,sound,vga,vcs)
+                VALUES('$roomname','$roomplace',$roomcount,'$roomimg','$dept','$tel',1,$money1,$money2,$t1,$t2,$t3)";
+	//echo $sql;
+	
+	$result=dbQuery($sql);
+	if($result){
+		dbQuery("COMMIT");
+		echo "<script>
+        swal({
+            title:'เรียบร้อย',
+            type:'success',
+            showConfirmButton:true
+            },
+            function(isConfirm){
+                if(isConfirm){
+                    window.location.href='meet_room.php';
+                }
+            }); 
+        </script>";
+	}else{
+		dbQuery("ROLLBACK");
+		echo "<script>
+        swal({
+            title:'มีบางอย่างผิดพลาด! กรุณาตรวจสอบ',
+            type:'error',
+            showConfirmButton:true
+            },
+            function(isConfirm){
+                if(isConfirm){
+                    window.location.href='meet_room.php';
+                }
+            }); 
+        </script>";
+	}*/
+}
+
+//ลบห้องประชุม
+if (isset($_GET['del'])) {
+    $sql = "DELETE FROM meeting_room WHERE room_id=" . $_GET['del'];
+    $result = dbQuery($sql);
+    if (!$result) {
+        echo "<script>
+        swal({
+         title:'มีบางอย่างผิดพลาด! กรุณาตรวจสอบ',
+         type:'error',
+         showConfirmButton:true
+         },
+         function(isConfirm){
+             if(isConfirm){
+                 window.location.href='meet_room.php';
+             }
+         }); 
+       </script>";
+    } else {
+        echo "<script>
+        swal({
+         title:'เรียบร้อย',
+         type:'success',
+         showConfirmButton:true
+         },
+         function(isConfirm){
+             if(isConfirm){
+                 window.location.href='meet_room.php';
+             }
+         }); 
+       </script>";
     }
 }
-</style>
+//แก้ไขข้อมูล
+if (isset($_POST['edit'])) {
+    $roomname = $_POST['roomname'];         //ชื่อห้องประชุม
+    $roomplace = $_POST['roomplace'];    //สถานที่
+    $roomcount = $_POST['roomcount'];  //ความจุ
+    $money1 = $_POST['money1'];      //ค่าธรรมเนียมเต็มวัน
+    $money2 = $_POST['money2'];    //ค่าธรรมเนียมครึ่งวัน
+    $tel = $_POST['tel'];         //เบอร์โทรศัพท์
+    $dept = $_POST['dept'];       //เจ้าของห้อง
+    $t1 = $_POST['t1'];       //เสียง
+    $t2 = $_POST['t2'];
+    $t3 = $_POST['t3'];       //ประชุมทางไกล
+    $room_status = $_POST['room_status'];
+
+    $filename = $_FILES['fileUpload']['name'];
+    // --- ดึงนามสกุล (ตัวพิมพ์เล็ก) ---
+    $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+    // --- รายการนามสกุลที่อนุญาต (รูปภาพ + เอกสาร) ---
+    $allowed = array('jpg', 'jpeg', 'png', 'gif', 'pdf', 'doc', 'docx', 'xls', 'xlsx');
+    // --- ตรวจสอบว่าไฟล์อยู่ในรายการอนุญาตไหม ---
+    if (!in_array($ext, $allowed)) {
+        echo "<script>alert('ไม่อนุญาตให้อัปโหลดไฟล์ .$ext'); window.history.back();</script>";
+        exit;
+    }
+
+    if (move_uploaded_file($_FILES["fileUpload"]["tmp_name"], "doc/" . $_FILES["fileUpload"]["name"])) {
+        $roomimg = $_FILES["fileUpload"]["name"];
+        $sql = "UPDATE meeting_room 
+                SET roomname='$roomname',roomplace='$roomplace',roomcount=$roomcount,roomimg='$roomimg',dept='$dept',tel='$tel',room_status=$room_status,
+                    money1=$money1,money2=$money2,sound=$t1,vga=$t2,vcs=$t3
+                WHERE room_id=$room_id";
+    } else {
+        $sql = "UPDATE meeting_room 
+                SET roomname='$roomname',roomplace='$roomplace',roomcount=$roomcount,dept='$dept',tel='$tel',room_status=$room_status,
+                    money1=$money1,money2=$money2,sound=$t1,vga=$t2,vcs=$t3
+                WHERE room_id=$room_id";
+    }
+    print $sql;
+
+    $result = dbQuery($sql);
+    if ($result) {
+        echo "<script>
+        swal({
+            title:'เรียบร้อย',
+            type:'success',
+            showConfirmButton:true
+            },
+            function(isConfirm){
+                if(isConfirm){
+                    window.location.href='meet_room.php';
+                }
+            }); 
+        </script>";
+    } else {
+        echo "<script>
+        swal({
+            title:'มีบางอย่างผิดพลาด! กรุณาตรวจสอบ',
+            type:'error',
+            showConfirmButton:true
+            },
+            function(isConfirm){
+                if(isConfirm){
+                    window.location.href='meet_room.php';
+                }
+            }); 
+        </script>";
+    }
+}
+
+?>
 
 <script type="text/javascript">
-function loadData(room_id, u_id) {
-    var sdata = {
-        room_id: room_id,
-        u_id: u_id
-    };
-    $('#divDataview').load('show_meeting_detail.php', sdata);
-}
+    function loadData(room_id, u_id) {
+        var sdata = {
+            room_id: room_id,
+            u_id: u_id
+        };
+        $('#divDataview').load('show_meeting_detail.php', sdata);
+    }
 
-function editData(room_id, u_id) {
-    var edata = {
-        room_id: room_id,
-        u_id: u_id
-    };
-    $('#divEditview').load('show_meeting_edit.php', edata);
-}
+
+    function editData(room_id, u_id) {
+        var edata = {
+            room_id: room_id,
+            u_id: u_id
+        };
+        $('#divEditview').load('show_meeting_edit.php', edata);
+    }
 </script>

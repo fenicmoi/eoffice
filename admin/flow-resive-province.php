@@ -1,45 +1,45 @@
 <!-- หนังสือรับถึงจังหวัด -->
 <?php
 include "header.php";
-$u_id = $_SESSION[ 'ses_u_id' ];
+$u_id = $_SESSION['ses_u_id'];
 ?>
 
 <script>
-	$( document ).ready( function () {
-		$( "#dateSearch" ).hide();
-		$( "tr" ).first().hide();
+	$(document).ready(function() {
+		$("#dateSearch").hide();
+		$("tr").first().hide();
 
 
-		$( "#hideSearch" ).click( function () {
-			$( "tr" ).first().show( 1000 );
-		} );
+		$("#hideSearch").click(function() {
+			$("tr").first().show(1000);
+		});
 
 
-		$( '#typeSearch' ).change( function () {
-			var typeSearch = $( '#typeSearch' ).val();
-			if ( typeSearch == 4 ) {
-				$( "#dateSearch" ).show( 500 );
-				$( "#search" ).hide( 500 );
+		$('#typeSearch').change(function() {
+			var typeSearch = $('#typeSearch').val();
+			if (typeSearch == 4) {
+				$("#dateSearch").show(500);
+				$("#search").hide(500);
 			} else {
-				$( "#dateSearch" ).hide( 500 );
-				$( "#search" ).show( 500 );
+				$("#dateSearch").hide(500);
+				$("#search").show(500);
 			}
-		} )
+		})
 
 
-	} );
+	});
 </script>
 
 <?php
 //ตรวจสอบปีเอกสาร
-list( $yid, $yname, $ystatus ) = chkYear();
+list($yid, $yname, $ystatus) = chkYear();
 $yid = $yid;
 $yname = $yname;
 $ystatus = $ystatus;
 ?>
 <div class="col-md-2">
 	<?php
-	$menu = checkMenu( $level_id );
+	$menu = checkMenu($level_id);
 	include $menu;
 	?>
 </div>
@@ -47,12 +47,12 @@ $ystatus = $ystatus;
 	<div class="panel panel-primary">
 		<div class="panel-heading">
 			<i class="fas fa-university fa-2x" aria-hidden="true"></i> <strong>ทะเบียนหนังสือรับ [ถึงจังหวัด]</strong>
-					:::สำหรับหนังสือราชการที่ส่งถึง ผวจ
+			:::สำหรับหนังสือราชการที่ส่งถึง ผวจ
 			<div class="btn-group pull-right">
-					<a href="" class="btn btn-warning" data-toggle="modal" data-target="#modalAdd"><i class="fa fa-plus "></i> ลงทะเบียนรับ</a>
+				<a href="" class="btn btn-warning" data-toggle="modal" data-target="#modalAdd"><i class="fa fa-plus "></i> ลงทะเบียนรับ</a>
 				<div class="btn-group">
-					<button class="btn btn-warning  dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-print"></i> รายงาน      
-                            <span class="caret"></span></button>
+					<button class="btn btn-warning  dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-print"></i> รายงาน
+						<span class="caret"></span></button>
 					<ul class="dropdown-menu">
 						<li><a href="#" data-toggle="modal" data-target="#myReport"><i class="fas fa-calendar"></i> ประจำวัน</a>
 						</li>
@@ -87,8 +87,8 @@ $ystatus = $ystatus;
 										</div>
 										<div class="input-group-btn">
 											<button class="btn btn-primary" type="submit" name="btnSearch" id="btnSearch">
-                                                    <i class="fas fa-search "></i>
-                                                </button>
+												<i class="fas fa-search "></i>
+											</button>
 										</div>
 									</div>
 								</div>
@@ -108,54 +108,54 @@ $ystatus = $ystatus;
 				</thead>
 				<tbody>
 					<?php
-						
+
 					####ส่วนการแสดงผล
-				 $count = 1;
-				 $sql = "SELECT m.book_id ,m.rec_id ,m.dep_id ,m.u_id ,d.book_no,d.title ,d.sendfrom ,d.sendto ,d.date_book,d.date_in,d.date_line,
+					$count = 1;
+					$sql = "SELECT m.book_id ,m.rec_id ,m.dep_id ,m.u_id ,d.book_no,d.title ,d.sendfrom ,d.sendto ,d.date_book,d.date_in,d.date_line,
 					            d.practice, d.file_location, d.status,s.sec_code,y.yname
                   FROM book_master m
                   INNER JOIN book_detail d ON d.book_id = m.book_id
                   INNER JOIN section s ON s.sec_id = m.sec_id 
                   INNER JOIN sys_year y ON y.yid = m.yid ";
-                  // echo $sql;
-					
-					//ตรวจสอบการกดปุ่มค้นหา
-					if ( isset( $_POST[ 'btnSearch' ] ) ) { //ถ้ามีการกดปุ่มค้นหา
-						@$typeSearch = $_POST[ 'typeSearch' ]; //ประเภทการค้นหา
-						@$txt_search = $_POST[ 'search' ]; //กล่องรับข้อความ
-						@$dateStart = $_POST[ 'dateStart' ];
-						@$dateEnd = $_POST[ 'dateEnd' ];
+					// echo $sql;
 
-						if ( @$typeSearch == 1 ) { //ทะเบียนรับ
-							if($level_id <= 2){
+					//ตรวจสอบการกดปุ่มค้นหา
+					if (isset($_POST['btnSearch'])) { //ถ้ามีการกดปุ่มค้นหา
+						@$typeSearch = $_POST['typeSearch']; //ประเภทการค้นหา
+						@$txt_search = $_POST['search']; //กล่องรับข้อความ
+						@$dateStart = $_POST['dateStart'];
+						@$dateEnd = $_POST['dateEnd'];
+
+						if (@$typeSearch == 1) { //ทะเบียนรับ
+							if ($level_id <= 2) {
 								$sql .= " WHERE m.rec_id LIKE '%$txt_search%'  ORDER BY m.book_id  DESC";
-							}else{
+							} else {
 								$sql .= " WHERE m.rec_id LIKE '%$txt_search%'  AND m.dep_id=$dep_id  ORDER BY m.book_id  DESC";
 							}
-						} elseif ( @$typeSearch == 2 ) { //เลขหนังสือ
-							if($level_id <=2){
+						} elseif (@$typeSearch == 2) { //เลขหนังสือ
+							if ($level_id <= 2) {
 								$sql .= " WHERE d.book_no LIKE '%$txt_search%'  ORDER BY m.book_id DESC ";
-							}else{
+							} else {
 								$sql .= " WHERE d.book_no LIKE '%$txt_search%'   AND m.dep_id=$dep_id  ORDER BY m.book_id DESC ";
 							}
-						} elseif ( @$typeSearch == 3 ) { //เรื่อง
-							if($level_id <=2){
+						} elseif (@$typeSearch == 3) { //เรื่อง
+							if ($level_id <= 2) {
 								$sql .= " WHERE d.title LIKE '%$txt_search%'  ORDER BY m.book_id DESC ";
-							}else{
+							} else {
 								$sql .= " WHERE d.title LIKE '%$txt_search%'   AND m.dep_id=$dep_id  ORDER BY m.book_id DESC ";
 							}
-						} elseif ( @$typeSearch == 4 ) { //ตามเวลา
-							if($level_id <= 2){
+						} elseif (@$typeSearch == 4) { //ตามเวลา
+							if ($level_id <= 2) {
 								$sql .= " WHERE  (d.date_book BETWEEN '$dateStart' AND '$dateEnd')  ORDER BY m.book_id DESC ";
-							}else{
+							} else {
 								$sql .= " WHERE  (d.date_book BETWEEN '$dateStart' AND '$dateEnd') AND m.dep_id=$dep_id  ORDER BY m.book_id DESC ";
 							}
 						}
 
 						//$result=dbQuery($sql);
-						$result = page_query( $dbConn, $sql, 100 );
-						$numrow = dbNumRows( $result );
-						if ( $numrow == 0 ) {
+						$result = page_query($dbConn, $sql, 100);
+						$numrow = dbNumRows($result);
+						if ($numrow == 0) {
 							echo "<script>
                        				swal({
                                             title:'ไม่พบข้อมูล!',
@@ -170,9 +170,8 @@ $ystatus = $ystatus;
                                                 }); 
                                         </script>";
 						}
-
 					} else { //กรณีโหลดเพจ หรือไม่มีการกดปุ่มใดๆ
-						switch ( $level_id ) {
+						switch ($level_id) {
 							case 1: //admin
 								$sql .= " WHERE m.type_id=1 ORDER BY m.book_id DESC ";       //type_id = ดูหนังสือได้ทั้งหมด
 								break;
@@ -189,88 +188,88 @@ $ystatus = $ystatus;
 								$sql .= " WHERE m.type_id=1 AND m.dep_id=$dep_id AND m.u_id=$u_id ORDER BY m.book_id DESC  ";
 								break;
 						}
-						
-						$result = page_query( $dbConn, $sql, 10 );
+
+						$result = page_query($dbConn, $sql, 10);
 					}
-					
-					while ( $row = dbFetchArray( $result ) ) {
-						?>
-					<?php $rec_id=$row['rec_id']; ?><!-- กำหนดตัวแปรเพื่อส่งไปกับลิงค์ -->
-					<?php $book_id=$row['book_id']; ?><!-- กำหนดตัวแปรเพื่อส่งไปกับลิงค์ -->
-					<?php 
+
+					while ($row = dbFetchArray($result)) {
+					?>
+						<?php $rec_id = $row['rec_id']; ?><!-- กำหนดตัวแปรเพื่อส่งไปกับลิงค์ -->
+						<?php $book_id = $row['book_id']; ?><!-- กำหนดตัวแปรเพื่อส่งไปกับลิงค์ -->
+						<?php
 						if (isset($row['file_location'])) {
 							$showFile = "<a href='$row[file_location]' target='_balnk'>Download</a>";
-						}else{
+						} else {
 							$showFile = "ไม่มีไฟล์";
 						}
-					?>      
-					
-
-					<tr>
-						<td>
-							<?php echo $row['rec_id']; ?>/<?php echo $row['yname'];?>
-						</td>
-						<td>
-							<?php echo $row['book_no']; ?>
-						</td>
-						<td>
-							<a href="#" onclick="load_leave_data('<?php print $u_id;?>','<?php print $rec_id; ?>','<?php print $book_id; ?>');" data-toggle="modal" data-target=".bs-example-modal-table">
-								<?php echo $row['title'];?>
-							</a>
-
-						</td>
-						<td>
-							<?php echo $showFile;?>
-						</td>
-						<td>
-							<?php echo $row['sendfrom']; ?>
-						</td>
-						<td>
-							<?php echo thaiDate($row['date_book']); ?>
-						</td>
-						<!--  ส่วนตรวจสอบจำนวนวันที่กำหนดให้แก้ไขได้ไม่เกิน 7 วัน  -->
-						<?php
-						$d1 = $row[ 'date_in' ];
-						$d2 = date( 'Y-m-d' );
-						$numday = getNumDay( $d1, $d2 );
 						?>
-						<td>
-							<?php 
-							 if($level_id>3){
-								  echo '<i class="fas fa-ban"></i>ไม่มีสิทธิ์';
-							 }else{
-								  if($numday >= $dayEdit){  //$dayEdit เอามาจากค่า config
+
+
+						<tr>
+							<td>
+								<?php echo $row['rec_id']; ?>/<?php echo $row['yname']; ?>
+							</td>
+							<td>
+								<?php echo $row['book_no']; ?>
+							</td>
+							<td>
+								<a href="#" onclick="load_leave_data('<?php print $u_id; ?>','<?php print $rec_id; ?>','<?php print $book_id; ?>');" data-toggle="modal" data-target=".bs-example-modal-table">
+									<?php echo $row['title']; ?>
+								</a>
+
+							</td>
+							<td>
+								<?php echo $showFile; ?>
+							</td>
+							<td>
+								<?php echo $row['sendfrom']; ?>
+							</td>
+							<td>
+								<?php echo thaiDate($row['date_book']); ?>
+							</td>
+							<!--  ส่วนตรวจสอบจำนวนวันที่กำหนดให้แก้ไขได้ไม่เกิน 7 วัน  -->
+							<?php
+							$d1 = $row['date_in'];
+							$d2 = date('Y-m-d');
+							$numday = getNumDay($d1, $d2);
+							?>
+							<td>
+								<?php
+								if ($level_id > 3) {
+									echo '<i class="fas fa-ban"></i>ไม่มีสิทธิ์';
+								} else {
+									if ($numday >= $dayEdit) {  //$dayEdit เอามาจากค่า config
 										echo '<i class="fab fa-expeditedssl fa-2x"></i>';
-									}else{
-										echo '<a href="show_resive_province_edit.php?book_id='.$book_id.'"><i class="btn btn-info fas fa-edit"></i></a>';
+									} else {
+										echo '<a href="show_resive_province_edit.php?book_id=' . $book_id . '"><i class="btn btn-info fas fa-edit"></i></a>';
 									}
-							 }
-						  ?>
-						</td>
-						<td>
-							<?php 
-                if($row['status']==0){
-                   echo "<i class='btn btn-danger fa fa-envelope'></i>";
-                }else if($row['status']==1){
-                   echo "<i class='btn btn-success fa fa-envelope-open'></i>";
-                }else{
-                   echo "<i class='btn btn-warning fa fa-reply'></i>";
-                }
-              ?>
-						</td>
-					</tr>
+								}
+								?>
+							</td>
+							<td>
+								<?php
+								if ($row['status'] == 0) {
+									echo "<i class='btn btn-danger fa fa-envelope'></i>";
+								} else if ($row['status'] == 1) {
+									echo "<i class='btn btn-success fa fa-envelope-open'></i>";
+								} else {
+									echo "<i class='btn btn-warning fa fa-reply'></i>";
+								}
+								?>
+							</td>
+						</tr>
 
 					<?php } ?>
 					<tr>
 						<td colspan="8">
 							<center>
 								<a href="flow-resive-province.php" class="btn btn-primary"><i class="fas fa-home"></i></a>
-								<?php 
-								page_link_border("solid","1px","gray");
-								page_link_bg_color("lightblue","pink");
+								<?php
+								page_link_border("solid", "1px", "gray");
+								page_link_bg_color("lightblue", "pink");
 								page_link_font("14px");
-								page_link_color("blue","red");
-								page_echo_pagenums(6,true); 
+								page_link_color("blue", "red");
+								page_echo_pagenums(6, true);
 								?>
 							</center>
 						</td>
@@ -282,8 +281,8 @@ $ystatus = $ystatus;
 		</div>
 		<!-- panal-body -->
 		<div class="panel-footer">
-			<kbd>หมายเหตุ >></kbd> <i class='btn btn-danger fa fa-envelope'></i >รอรับ  
-                       <i class='btn btn-success fa fa-envelope-open'></i>รับแล้ว
+			<kbd>หมายเหตุ >></kbd> <i class='btn btn-danger fa fa-envelope'></i>รอรับ
+			<i class='btn btn-success fa fa-envelope-open'></i>รับแล้ว
 			<i class='btn btn-warning fa fa-reply'></i>ส่งคืน
 			<i class="fab fa-expeditedssl fa-2x"></i>เกินกำหนดแก้ไข (3 วัน)
 		</div>
@@ -321,7 +320,7 @@ $ystatus = $ystatus;
 									<div class="form-group">
 										<div class="input-group">
 											<span class="input-group-addon"><i class="far fa-calendar-alt"></i> วันที่ลงรับ</span>
-											<input class="form-control" type="text" name="date_in" id="date_in" value="<?php print DateThai();?>">
+											<input class="form-control" type="text" name="date_in" id="date_in" value="<?php print DateThai(); ?>">
 										</div>
 									</div>
 								</td>
@@ -353,17 +352,17 @@ $ystatus = $ystatus;
 							<?php
 							//ชั้นความเร็ว
 							$sql = "SELECT * FROM speed ORDER BY speed_id";
-							$result = dbQuery( $sql );
+							$result = dbQuery($sql);
 							?>
 							<td>
 								<div class="form-group">
 									<div class="input-group col-xs-4 ">
 										<span class="input-group-addon"><i class="fas fa-space-shuttle"></i> ชั้นความเร็ว</span>
 										<select name="speed_id" id="speed_id">
-											<?php 
-                                                        while ($rowSpeed= dbFetchArray($result)){
-                                                            echo "<option  value=".$rowSpeed['speed_id'].">".$rowSpeed['speed_name']."</option>";
-                                                    }?>
+											<?php
+											while ($rowSpeed = dbFetchArray($result)) {
+												echo "<option  value=" . $rowSpeed['speed_id'] . ">" . $rowSpeed['speed_name'] . "</option>";
+											} ?>
 										</select>
 									</div>
 								</div>
@@ -371,7 +370,7 @@ $ystatus = $ystatus;
 							<?php
 							//ชั้นความลับ
 							$sql = "SELECT * FROM priority ORDER BY pri_id";
-							$result = dbQuery( $sql );
+							$result = dbQuery($sql);
 							?>
 							<td>
 								<div class="form-group">
@@ -379,8 +378,8 @@ $ystatus = $ystatus;
 										<span class="input-group-addon"><i class="fas fa-user-secret"></i> ชั้นความลับ</span>
 										<select name="pri_id" id="pri_id">
 											<?php
-											while ( $rowSecret = dbFetchArray( $result ) ) {
-												echo "<option value=" . $rowSecret[ 'pri_id' ] . ">" . $rowSecret[ 'pri_name' ] . "</option>";
+											while ($rowSecret = dbFetchArray($result)) {
+												echo "<option value=" . $rowSecret['pri_id'] . ">" . $rowSecret['pri_name'] . "</option>";
 											}
 											?>
 										</select>
@@ -391,16 +390,16 @@ $ystatus = $ystatus;
 								<?php
 								//วัตถุประสงค์
 								$sql = "SELECT * FROM object ORDER BY obj_id";
-								$result = dbQuery( $sql )
+								$result = dbQuery($sql)
 								?>
 								<div class="form-group">
 									<div class="input-group col-xs-4 ">
 										<span class="input-group-addon"><i class="fas fa-crosshairs"></i> วัตถุประสงค์</span>
 										<select name="obj_id" required>
-											<?php 
-                                                    while ($row= dbFetchArray($result)){
-                                                        echo "<option  value=".$row['obj_id'].">".$row['obj_name']."</option>";
-                                                }?>
+											<?php
+											while ($row = dbFetchArray($result)) {
+												echo "<option  value=" . $row['obj_id'] . ">" . $row['obj_name'] . "</option>";
+											} ?>
 										</select>
 									</div>
 								</div>
@@ -483,15 +482,15 @@ $ystatus = $ystatus;
 									<div class="form-group">
 										<div class="input-group col-xs-8">
 											<span class="input-group-addon"><i class="fab fa-wpforms"></i> หน่วยปฏิบัติ</span>
-											 <select name="dep_id" id="dep__id" class="selectpicker" data-live-search="true" title="โปรดระบุ" required >
+											<select name="dep_id" id="dep__id" class="selectpicker" data-live-search="true" title="โปรดระบุ" required>
 												<?php
-													$sql_dep ="SELECT dep_id,dep_name FROM depart";
-													$result_dep = dbQuery($sql_dep);
-													while ($row_dep = dbFetchArray($result_dep)) {?>
-														<option value="<?php echo $row_dep['dep_id'];?>">
-															<?php echo $row_dep['dep_name'];?>
-														</option>
-											<?php }?>
+												$sql_dep = "SELECT dep_id,dep_name FROM depart";
+												$result_dep = dbQuery($sql_dep);
+												while ($row_dep = dbFetchArray($result_dep)) { ?>
+													<option value="<?php echo $row_dep['dep_id']; ?>">
+														<?php echo $row_dep['dep_name']; ?>
+													</option>
+												<?php } ?>
 											</select>
 										</div>
 									</div>
@@ -507,12 +506,12 @@ $ystatus = $ystatus;
 						</table><br>
 						<center>
 							<button class="btn btn-success" type="submit" name="save">
-                                    <i class="fa fa-database"></i> ตกลง
-                                    <input id="u_id" name="u_id" type="hidden" value="<?php echo $u_id; ?>"> 
-                                    <input id="sec_id" name="u_id" type="hidden" value="<?php echo $sec_id; ?>"> 
-                                    <input id="dep_id" name="u_id" type="hidden" value="<?php echo $dep_id; ?>"> 
-                                    <input id="yid" name="yid" type="hidden" value="<?php echo $yid; ?>"> 
-                                    </button>
+								<i class="fa fa-database"></i> ตกลง
+								<input id="u_id" name="u_id" type="hidden" value="<?php echo $u_id; ?>">
+								<input id="sec_id" name="u_id" type="hidden" value="<?php echo $sec_id; ?>">
+								<input id="dep_id" name="u_id" type="hidden" value="<?php echo $dep_id; ?>">
+								<input id="yid" name="yid" type="hidden" value="<?php echo $yid; ?>">
+							</button>
 						</center>
 					</form>
 				</div>
@@ -541,16 +540,16 @@ $ystatus = $ystatus;
 					<span>เลือกวันที่</span>
 					<input class="form-control" id="dateprint" name="dateprint" type="date">
 					<button type="submit" class="btn btn-lg btn-primary">
-                                    <span class="glyphicon glyphicon-floppy-saved"></span>&nbspตกลง
-                                </button>
-				
+						<span class="glyphicon glyphicon-floppy-saved"></span>&nbspตกลง
+					</button>
 
 
-					<input type="hidden" name="yid" value="<?=$yid?>">
-					<input type="hidden" name="uid" value="<?=$uid?>">
+
+					<input type="hidden" name="yid" value="<?= $yid ?>">
+					<input type="hidden" name="uid" value="<?= $uid ?>">
 
 					</td>
-					<input type="hidden" name="username" value="<?=$username?>">
+					<input type="hidden" name="username" value="<?= $username ?>">
 					</td>
 				</form>
 			</div>
@@ -589,15 +588,15 @@ $ystatus = $ystatus;
 							</div>
 						</div>
 						<button type="submit" class="btn btn-success btn-lg">
-                                    <i class="fas fa-search"></i>
-                        </button>
-					
+							<i class="fas fa-search"></i>
+						</button>
+
 
 					</center>
-					<input type="hidden" name="yid" value="<?=$yid?>">
-					<input type="hidden" name="uid" value="<?=$uid?>">
+					<input type="hidden" name="yid" value="<?= $yid ?>">
+					<input type="hidden" name="uid" value="<?= $uid ?>">
 					</td>
-					<input type="hidden" name="username" value="<?=$username?>">
+					<input type="hidden" name="username" value="<?= $username ?>">
 					</td>
 				</form>
 			</div>
@@ -632,31 +631,32 @@ $ystatus = $ystatus;
 	</div>
 </div>
 </div>
-<?php //include "footer.php"; ?>
+<?php //include "footer.php"; 
+?>
 
 
 <!-- ส่วนเพิ่มข้อมูล  -->
 <?php
-if ( isset( $_POST[ 'save' ] ) ) { //กดปุ่มบันทึกจากฟอร์มบันทึก
+if (isset($_POST['save'])) { //กดปุ่มบันทึกจากฟอร์มบันทึก
 
 	//#######  ข้อมูลสำหรับตาราง book_master ########################################
 	$type_id = 1; //ชนิดของหนังสือ  1  หนังสือรับ-ถึงจังหวัด
 	/*$dep_id=$_SESSION['dep_id'];     //รหัสหน่วยงาน   รับค่ามาจาก session จาก header แล้ว
 	$sec_id=$_SESSION['sec_id'];       //รหัสกลุ่มงาน  */
-	$uid = $_POST[ 'u_id' ]; //รหัสผู้ใช้
-	$obj_id = $_POST[ 'obj_id' ]; //รหัสวัตถุประสงค์
-	$pri_id = $_POST[ 'pri_id' ]; //รหัสชั้นความลับ
-	$yid = $_POST[ 'yid' ]; //รหัสปีปัจจุบัน
-	$typeDoc = $_POST[ 'typeDoc' ]; //รหัสประเภทหนังสือ   1ปกติ 2 เวียน
-	$speed_id = $_POST[ 'speed_id' ];
+	$uid = $_POST['u_id']; //รหัสผู้ใช้
+	$obj_id = $_POST['obj_id']; //รหัสวัตถุประสงค์
+	$pri_id = $_POST['pri_id']; //รหัสชั้นความลับ
+	$yid = $_POST['yid']; //รหัสปีปัจจุบัน
+	$typeDoc = $_POST['typeDoc']; //รหัสประเภทหนังสือ   1ปกติ 2 เวียน
+	$speed_id = $_POST['speed_id'];
 
 	//(1) เลือกข้อมูลเพื่อรันเลขรับ  โดยมีเงื่อนไขให้ตรงกับหน่วยงานของผู้ใช้ ###########################
 	$sql = "SELECT rec_id FROM book_master WHERE   yid=$yid  ORDER BY book_id DESC LIMIT 1";
 	//print $sql;
-	$result = dbQuery( $sql );
-	$rowRun = dbFetchArray( $result );
-	$rec_id = $rowRun[ 'rec_id' ];
-	if ( $rec_id == 0 ) {
+	$result = dbQuery($sql);
+	$rowRun = dbFetchArray($result);
+	$rec_id = $rowRun['rec_id'];
+	if ($rec_id == 0) {
 		$rec_id = 1;
 	} else {
 		$rec_id++;
@@ -667,66 +667,78 @@ if ( isset( $_POST[ 'save' ] ) ) { //กดปุ่มบันทึกจา�
 	// ##### ตาราง book_master
 
 	$sql = "SHOW TABLE STATUS LIKE 'book_master'"; //ส่วนหา ID ล่าสุด
-	$result = dbQuery( $sql );
-	$row = dbFetchAssoc( $result );
-	$book_id = ( int )$row[ 'Auto_increment' ];
+	$result = dbQuery($sql);
+	$row = dbFetchAssoc($result);
+	$book_id = (int)$row['Auto_increment'];
 
 	//#######  ข้อมูลสำหรับตาราง book_detail  #########################################
 	// $book_id=dbInsertId($dbConn);  //เลือก ID ล่าสุดจากตาราง book_master
-	$book_no = $_POST[ 'book_no' ]; // หมายเลขประจำหนังสือ
-	$title = $_POST[ 'title' ]; // เรื่อง   
-	$owner = $_POST[ 'owner' ]; // เจ้าของเรื่อง
-	$date_in = date( 'Y-m-d' ); //วันที่ลงรับ
-	$date_book = $_POST[ 'date_book' ]; // เอกสารลงวันที่
-	$sendfrom = $_POST[ 'sendfrom' ]; // ผู้ส่ง
-	$sendto = $_POST[ 'sendto' ]; // ผู้รับ
-	$refer = $_POST[ 'refer' ]; // อ้างถึง
+	$book_no = $_POST['book_no']; // หมายเลขประจำหนังสือ
+	$title = $_POST['title']; // เรื่อง   
+	$owner = $_POST['owner']; // เจ้าของเรื่อง
+	$date_in = date('Y-m-d'); //วันที่ลงรับ
+	$date_book = $_POST['date_book']; // เอกสารลงวันที่
+	$sendfrom = $_POST['sendfrom']; // ผู้ส่ง
+	$sendto = $_POST['sendto']; // ผู้รับ
+	$refer = $_POST['refer']; // อ้างถึง
 
-	$follow = $_POST[ 'follow' ]; // ติดตามหนังสือ
-	$publice_book = $_POST[ 'open' ]; // เปิดเผยหนังสือ
-	$attachment = $_POST[ 'attachment' ]; //เอกสารแนบ
+	$follow = $_POST['follow']; // ติดตามหนังสือ
+	$publice_book = $_POST['open']; // เปิดเผยหนังสือ
+	$attachment = $_POST['attachment']; //เอกสารแนบ
 
 	// $practice=$_POST['toSomeOneUser'];         // ผู้ปฏิบัติ
-	$practice = $_POST[ 'dep_id' ];
+	$practice = $_POST['dep_id'];
 
 
 	// $fileupload=$_REQUEST['fileupload'];  //การจัดการ fileupload
-	@$fileupload = $_POST[ 'fileupload' ];
-	@$upload = $_FILES[ 'fileupload' ]; //เพิ่มไฟล์
+	@$fileupload = $_POST['fileupload'];
+	@$upload = $_FILES['fileupload']; //เพิ่มไฟล์
 
 
-	if ( $upload != '' ) {
+	if ($upload != '') {
 
-		$date = date( 'Y-m-d' ); //กำหนดรูปแบบวันที่
-		$numrand = ( mt_rand() ); //สุ่มตัวเลข
+		$date = date('Y-m-d'); //กำหนดรูปแบบวันที่
+		$numrand = (mt_rand()); //สุ่มตัวเลข
 		$part = "recive-to-province/"; //โฟลเดอร์เก็บเอกสาร
-		$type = strrchr( $_FILES[ 'fileupload' ][ 'name' ], "." ); //เอาชื่อเก่าออกให้เหลือแต่นามสกุล
+		$type = strrchr($_FILES['fileupload']['name'], "."); //เอาชื่อเก่าออกให้เหลือแต่นามสกุล
 		$newname = $date . $numrand . $type; //ตั้งชื่อไฟล์ใหม่โดยใช้เวลา
 		$part_copy = $part . $newname;
 		$part_link = "recive-to-province/" . $newname;
-		move_uploaded_file( $_FILES[ 'fileupload' ][ 'tmp_name' ], $part_copy ); //คัดลอกไฟล์ไป Server
+
+		$filename = $_FILES['fileupload']['name'];
+		// --- ดึงนามสกุล (ตัวพิมพ์เล็ก) ---
+		$ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+		// --- รายการนามสกุลที่อนุญาต (รูปภาพ + เอกสาร) ---
+		$allowed = array('jpg', 'jpeg', 'png', 'gif', 'pdf', 'doc', 'docx', 'xls', 'xlsx');
+		// --- ตรวจสอบว่าไฟล์อยู่ในรายการอนุญาตไหม ---
+		if (!in_array($ext, $allowed)) {
+			echo "<script>alert('ไม่อนุญาตให้อัปโหลดไฟล์ .$ext'); window.history.back();</script>";
+			exit;
+		}
+
+		move_uploaded_file($_FILES['fileupload']['tmp_name'], $part_copy); //คัดลอกไฟล์ไป Server
 	} else {
 		$part_copy = '';
 	}
 
-	$datelout = date( 'Y-m-d H:i:s' );
+	$datelout = date('Y-m-d H:i:s');
 
 
 	//transection
-	dbQuery( 'BEGIN' );
+	dbQuery('BEGIN');
 
 	$sql = "INSERT INTO book_master (rec_id,type_id,dep_id,sec_id,u_id,obj_id,pri_id,yid,typeDoc,speed_id) 
             VALUES ($rec_id,$type_id,$dep_id,$sec_id,$u_id,$obj_id,$pri_id,$yid,$typeDoc,$speed_id)";
-	$result1 = dbQuery( $sql );
+	$result1 = dbQuery($sql);
 
-	$date_line = date( 'Y-m-d H:i:s' );
+	$date_line = date('Y-m-d H:i:s');
 	$sql = "INSERT INTO book_detail (book_id,book_no,title,owner,sendfrom,sendto,reference,attachment,date_book,date_in,practice,follow,publice_book,status,date_line,file_upload)
             VALUES($book_id,'$book_no','$title','$owner','$sendfrom','$sendto','$refer','$attachment','$date_book','$date_in','$practice','$follow','$publice_book',0,'$date_line','$part_copy')";
 	// echo $sql;
-	$result2 = dbQuery( $sql );
+	$result2 = dbQuery($sql);
 
-	if ( $result1 && $result2 ) {
-		dbQuery( "COMMIT" );
+	if ($result1 && $result2) {
+		dbQuery("COMMIT");
 		echo "<script>
             swal({
                 title:'เรียบร้อย',
@@ -740,7 +752,7 @@ if ( isset( $_POST[ 'save' ] ) ) { //กดปุ่มบันทึกจา�
                 }); 
             </script>";
 	} else {
-		dbQuery( "ROLLBACK" );
+		dbQuery("ROLLBACK");
 		echo "<script>
             swal({
                 title:'มีบางอย่างผิดพลาด! กรุณาตรวจสอบ',
@@ -836,13 +848,14 @@ if ( isset( $_POST[ 'save' ] ) ) { //กดปุ่มบันทึกจา�
 
 <!-- ส่วนนำข้อมูลไปแสดงผลบน Modal -->
 <script type="text/javascript">
-	function load_leave_data( u_id, rec_id, book_id ) {
+	function load_leave_data(u_id, rec_id, book_id) {
 		var sdata = {
 			u_id: u_id,
 			rec_id: rec_id,
 			book_id: book_id
 		};
-		$( '#divDataview' ).load( 'show_resive_province_detail.php', sdata );
+		$('#divDataview').load('show_resive_province_detail.php', sdata);
 	}
 </script>
-<?php //mysqli_close($dbConn); ?>
+<?php //mysqli_close($dbConn); 
+?>

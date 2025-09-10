@@ -1,160 +1,382 @@
-<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
 <?php
-include "header.php"; 
+include "header.php";
 //$yid=chkYearMonth();  //return   ปี พ.ศ.
-$u_id=$_SESSION['ses_u_id'];
-$level_id=$_SESSION['ses_level_id'];
+$u_id = $_SESSION['ses_u_id'];
+$level_id = $_SESSION['ses_level_id'];
+?>
+<?php
+$monthname = array("มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม");
+$curDay = date("j");   //day  01,02,03
+$curMonth = date("n");   //month 01-12
+$curYear = date("Y") + 543;  //year chang to pudda  2559
+$year = date("Y");  // year cris
+
+$today = "$curDay-$curMonth-$curYear";
+@$startdate = $_GET['startdate'];
+
 ?>
 
-<!-- ปรับปรุง UI ให้สวยงามและทันสมัย -->
+<? if ($curMonth == '1') {
+    $showmonth = 'มกราคม';
+} ?>
+<? if ($curMonth == '2') {
+    $showmonth = 'กุมภาพันธ์';
+} ?>
+<? if ($curMonth == '3') {
+    $showmonth = 'มีนาคม';
+} ?>
+<? if ($curMonth == '4') {
+    $showmonth = 'เมษายน';
+} ?>
+<? if ($curMonth == '5') {
+    $showmonth = 'พฤษภาคม';
+} ?>
+<? if ($curMonth == '6') {
+    $showmonth = 'มิถุนายน';
+} ?>
+<? if ($curMonth == '7') {
+    $showmonth = 'กรกฏาคม';
+} ?>
+<? if ($curMonth == '8') {
+    $showmonth = 'สิงหาคม';
+} ?>
+<? if ($curMonth == '9') {
+    $showmonth = 'กันยายน';
+} ?>
+<? if ($curMonth == '10') {
+    $showmonth = 'ตุลาคม';
+} ?>
+<? if ($curMonth == '11') {
+    $showmonth = 'พฤศจิกายน';
+} ?>
+<? if ($curMonth == '12') {
+    $showmonth = 'ธันวาคม';
+} ?>
+
+<? $today = "$curDay $showmonth $curYear"; ?>
 <div class="row">
     <div class="col-md-2">
         <?php
-            $menu = checkMenu($level_id);
-            include $menu;
+        $menu =  checkMenu($level_id);
+        include $menu;
         ?>
     </div> <!-- col-md-2 -->
     <div class="col-md-10">
-        <div class="panel panel-primary shadow" style="margin: 18px; border-radius: 16px;">
-            <div class="panel-heading d-flex flex-wrap align-items-center justify-content-between" style="gap:10px; background: linear-gradient(90deg, #2980b9 0%, #6dd5fa 100%); color: #fff; border-radius: 16px 16px 0 0;">
-                <span>
-                    <i class="fas fa-calendar fa-2x" aria-label="ปฏิทิน"></i>
-                    <strong style="font-size:1.3em; letter-spacing:1px;">ปฏิทินการใช้ห้องประชุม</strong>
-                </span>
-                <div class="btn-group meeting-btn-group" role="group" aria-label="meeting-actions">
-                    <a class="btn btn-success" href="#"
-                        onclick="loadReserve('<?php echo htmlspecialchars($u_id); ?>','<?php echo htmlspecialchars($level_id); ?>');"
-                        data-toggle="modal" data-target=".modal-reserv">
-                        <i class="fas fa-plus" aria-label="จองห้องประชุม"></i> จองห้องประชุม
-                    </a>
-                    <a class="btn btn-info" href="meet_room_user.php">
-                        <i class="fas fa-info" aria-label="ดูห้องประชุม"></i> ดูห้องประชุม
-                    </a>
-                    <a class="btn btn-danger" href="meet_history.php">
-                        <i class="fas fa-history" aria-label="ยกเลิกใช้ห้อง"></i> ยกเลิกใช้ห้อง
-                    </a>
-                    <a class="btn btn-warning" href="doc/form_meeting.pdf" target="_blank">
-                        <i class="fab fa-wpforms" aria-label="แบบขออนุมัติ"></i> แบบขออนุมัติ
-                    </a>
-                </div>
+        <div class="panel panel-primary" style="margin: 10">
+            <div class="panel-heading"><i class="fas fa-calendar fa-2x"></i> <strong>ปฏิทินการใช้ห้องประชุม</strong>
+                <a class="btn btn-default pull-right" href="#"
+                    onClick="loadReserve('<?php echo $u_id; ?>','<?php echo $level_id; ?>');"
+                    data-toggle="modal" data-target=".modal-reserv">
+                    <i class="fas fa-plus"></i> จองห้องประชุม
+                </a>
+                <a class="btn btn-default pull-right" href="meet_room_user.php">
+                    <i class="fas fa-info"></i> ดูห้องประชุม
+                </a>
+                <a class="btn btn-danger pull-right" href="meet_history.php">
+                    <i class="fas fa-history"></i> ยกเลิกใช้ห้อง
+                </a>
+                <a class="btn btn-default pull-right" href="doc/form_meeting.pdf" target="_blank">
+                    <i class="fab fa-wpforms"></i> แบบขออนุมัติ
+                </a>
+
             </div>
-            <div class="panel-body" style="background: #f7fafd; border-radius: 0 0 16px 16px;">
-                <div id="calendar-container" style="width: 100%; min-height: 500px;">
-                    <?php include "calendar.php"; ?>
+            <?php include "calendar.php"; ?>
+            <?php include "meet_listFront.php"; ?>
+            <div>
+            </div> <!-- col-md- -->
+        </div> <!-- end row  -->
+
+        <!--  modal แสงรายละเอียดข้อมูล -->
+        <div class="modal fade modal-reserv" tabindex="-1" aria-hidden="true" role="dialog">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header bg-primary">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title"><i class="fa fa-info"></i> รายละเอียด</h4>
+                    </div>
+                    <div class="modal-body no-padding">
+                        <div id="divReserv"></div>
+                    </div> <!-- modal-body -->
+                    <div class="modal-footer bg-primary">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">ปิด X</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div> <!-- col-md-10 -->
-</div> <!-- end row -->
-<style>
-.panel.panel-primary.shadow {
-    border-radius: 16px;
-    box-shadow: 0 6px 24px rgba(44, 62, 80, 0.13);
-    border: none;
-}
-.panel-heading {
-    min-height: 70px;
-    padding-top: 18px;
-    padding-bottom: 18px;
-    box-shadow: 0 2px 8px rgba(41,128,185,0.08);
-}
-.panel-heading strong {
-    font-size: 1.35em;
-    letter-spacing: 1px;
-}
-.meeting-btn-group .btn {
-    margin-left: 8px;
-    margin-bottom: 0;
-    border-radius: 22px;
-    font-size: 1.07em;
-    font-weight: 500;
-    box-shadow: 0 2px 8px rgba(41,128,185,0.08);
-    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
-}
-.meeting-btn-group .btn:first-child {
-    margin-left: 0;
-}
-.meeting-btn-group .btn-success {
-    background: linear-gradient(90deg, #43cea2 0%, #185a9d 100%);
-    border: none;
-    color: #fff;
-}
-.meeting-btn-group .btn-success:hover {
-    background: linear-gradient(90deg, #185a9d 0%, #43cea2 100%);
-    color: #fff;
-}
-.meeting-btn-group .btn-info {
-    background: linear-gradient(90deg, #36d1c4 0%, #5b86e5 100%);
-    border: none;
-    color: #fff;
-}
-.meeting-btn-group .btn-info:hover {
-    background: linear-gradient(90deg, #5b86e5 0%, #36d1c4 100%);
-    color: #fff;
-}
-.meeting-btn-group .btn-danger {
-    background: linear-gradient(90deg, #ff5858 0%, #f09819 100%);
-    border: none;
-    color: #fff;
-}
-.meeting-btn-group .btn-danger:hover {
-    background: linear-gradient(90deg, #f09819 0%, #ff5858 100%);
-    color: #fff;
-}
-.meeting-btn-group .btn-warning {
-    background: linear-gradient(90deg, #f7971e 0%, #ffd200 100%);
-    border: none;
-    color: #fff;
-}
-.meeting-btn-group .btn-warning:hover {
-    background: linear-gradient(90deg, #ffd200 0%, #f7971e 100%);
-    color: #fff;
-}
-.meeting-btn-group .btn i {
-    margin-right: 6px;
-    font-size: 1.1em;
-    vertical-align: middle;
-}
-#calendar-container .fc {
-    max-width: 100%;
-    margin: 0 auto;
-}
-.panel-body {
-    background: #f7fafd;
-    border-radius: 0 0 16px 16px;
-}
-@media (max-width: 991px) {
-    .meeting-btn-group {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        width: 100%;
-        margin-top: 10px;
-        justify-content: flex-start;
-    }
-    .meeting-btn-group .btn {
-        width: 100%;
-        margin-left: 0 !important;
-        margin-bottom: 8px;
-        text-align: left;
-    }
-    .panel-heading.d-flex {
-        flex-direction: column;
-        align-items: flex-start !important;
-    }
-}
-@media (max-width: 768px) {
-    #calendar-container {
-        min-height: 350px;
-        font-size: 12px;
-    }
-    .panel-heading strong {
-        font-size: 1.1em;
-    }
-    .panel-heading {
-        padding-top: 12px;
-        padding-bottom: 12px;
-    }
-}
-</style>
+        <!-- จบส่วนแสดงรายละเอียดข้อมูล  -->
 
+        <?php
+        // ส่วนตรวจสอบและบันทึกข้อมูล
+        if (isset($_POST['save_reserv'])) {
+
+            $subject = $_POST['subject'];
+            $head = $_POST['head'];
+            $numpeople = $_POST['numpeople'];
+            $room_id = $_POST['room_id'];
+            $startdate = $_POST['startdate'];
+            $starttime = $_POST['starttime'];
+            $endtime = $_POST['endtime'];
+            $bookingdate = date("Y-m-d");
+            $conf_status = 1;
+            $catgory = $_POST['catgory'];
+
+            //่ส่วนสลับวันที่วันประชุม
+            list($year, $month, $day) = preg_split('[-]', $startdate);    //นำมาแยก ปี-เดือน-วัน
+            $date = "$day-$month-$year";
+
+            //ส่วนแปลงวันที่ประชุม
+            $expire_explode = explode("-", $startdate);
+            $expire_year = $expire_explode[0];
+            $expire_month = $expire_explode[1];
+            $expire_day = $expire_explode[2];
+
+            //ส่วนแปลงวันที่ปัจจุบัน
+            $today_explode = explode("-", date("Y-m-d"));
+            $today_year = $today_explode[0];
+            $today_month = $today_explode[1];
+            $today_day = $today_explode[2];   // [2]
+
+            //ส่วนใช้เปรียบเทียบค่าของวันที่มากกว่าน้อยกว่า
+            $expire = gregoriantojd($expire_month, $expire_day, $expire_year);
+            $today = gregoriantojd($today_month, $today_day, $today_year);
+
+            $sql = "SELECT * FROM meeting_room WHERE room_id = $room_id";
+            $result = dbQuery($sql);
+            $row = dbFetchArray($result);
+
+
+            $sql1 = "";
+
+            //ความจุห้องประชุม
+            if ($numpeople > $row['roomcount']) {         //เช็คจำนวนผู้เข้าประชุม
+                over_limit();
+            } else {  //ถ้าจำนวนผู้ประชุมถูกต้อง
+                if ($expire < $today) {   //ป้องกันเลือกวันที่ย้อนหลัง
+                    day_history();
+                } else {  //กรณีวันถูกต้องแล้ว
+                    list($hour, $minute) = preg_split('[:]', $starttime);    //แยกเวลาเริ่มประชุม ชั่วโมง นาที
+                    $starttime = "$hour:$minute";
+
+                    list($hour, $minute) = preg_split('[:]', $endtime);      //แยกเวลาสิ้นสุดประชุม  ชั่วโมง:นาที
+                    $endtime = "$hour:$minute";
+
+                    if ($starttime > $endtime) {
+                        time_rang();
+                    } else {  //ตรวจสอบห้องประชุมที่เลือก
+                        $sql = "SELECT * FROM meeting_booking WHERE startdate ='$startdate' AND room_id='$room_id'";
+                        $result = dbQuery($sql);
+                        $numrow = dbNumRows($result);
+
+                        if ($numrow == 0) {  //ถ้าไม่มีการจองห้องประชุมเลย
+                            if (!empty($_FILES)) {            //ตรวจสอบไฟล์ upload
+                                $name = $_FILES['fileUpload']['name'];
+                                $tmp = $_FILES['fileUpload']['tmp_name'];
+                                if (strlen($name)) {
+                                    list($txt, $ext) = explode(".", $name);
+                                    $filename  = date("Ymdhis");
+                                    $filename = $filename . "-" . rand(1, 1000);
+                                    $fileupload = $filename . "." . $ext;       //ชื่อไฟล์ใหม่ที่ได้
+
+                                    $filename = $_FILES['fileUpload']['name'];
+                                    // --- ดึงนามสกุล (ตัวพิมพ์เล็ก) ---
+                                    $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+                                    // --- รายการนามสกุลที่อนุญาต (รูปภาพ + เอกสาร) ---
+                                    $allowed = array('jpg', 'jpeg', 'png', 'gif', 'pdf', 'doc', 'docx', 'xls', 'xlsx');
+                                    // --- ตรวจสอบว่าไฟล์อยู่ในรายการอนุญาตไหม ---
+                                    if (!in_array($ext, $allowed)) {
+                                        echo "<script>alert('ไม่อนุญาตให้อัปโหลดไฟล์ .$ext'); window.history.back();</script>";
+                                        exit;
+                                    }
+
+                                    if (move_uploaded_file($tmp, "form-meeting/" . $fileupload)) {
+
+                                        $sql = "INSERT INTO meeting_booking(subject,head,numpeople,room_id,startdate,starttime,endtime,bookingdate,user_id,conf_status,dep_id,catgory,fileupload)
+                                            VALUES('$subject','$head',$numpeople,$room_id,'$startdate','$starttime','$endtime','$bookingdate',$u_id,$conf_status,$dep_id,$catgory,'$fileupload') ";
+
+
+                                        $result = dbQuery($sql);
+                                        if ($result) {
+                                            success();
+                                        } else {
+                                            nosuccess();
+                                        }
+                                    }  //upload file
+                                } //strlen
+                            } // file  
+                        } else if ($numrow <> 0) {    //ถ้ามีนี้มีการใช้  ให้เชคต่อไปว่าเวลาตรงกันหรือไม่
+                            $sql = "SELECT MIN(starttime) as st,MAX(endtime) as et FROM meeting_booking WHERE startdate ='$startdate'AND room_id='$room_id'";
+                            $result = dbQuery($sql);
+                            while ($row = dbFetchArray($result)) {
+                                $st = $row['st'];  //เวลาเริ่มประชุม
+                                $et = $row['et'];  //เวลาสิ้นสุดการประชุม
+
+                                $sql2 = "SELECT * FROM meeting_booking           
+								 WHERE startdate='$startdate'           
+								 AND room_id='$room_id'                
+								 AND ('$starttime' BETWEEN '$st' and '$et')
+                                 AND ('$endtime' BETWEEN '$st' and '$et')
+                                 AND (conf_status >=1)";
+
+                                $dbquery2 = dbQuery($sql2);
+                                $numrows = dbNumRows($dbquery2);
+                                //print $numrows;
+
+                                if ($numrows <> 0) {
+                                    reserve();
+                                } elseif ($numrows == 0) {
+                                    if (!empty($_FILES)) {            //ตรวจสอบไฟล์ upload
+                                        $name = $_FILES['fileUpload']['name'];
+                                        $tmp = $_FILES['fileUpload']['tmp_name'];
+                                        if (strlen($name)) {
+                                            list($txt, $ext) = explode(".", $name);
+                                            $filename  = date("Ymdhis");
+                                            $filename = $filename . "-" . rand(1, 1000);
+                                            $fileupload = $filename . "." . $ext;       //ชื่อไฟล์ใหม่ที่ได้
+
+                                            $filename = $_FILES['fileUpload']['name'];
+                                            // --- ดึงนามสกุล (ตัวพิมพ์เล็ก) ---
+                                            $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+                                            // --- รายการนามสกุลที่อนุญาต (รูปภาพ + เอกสาร) ---
+                                            $allowed = array('jpg', 'jpeg', 'png', 'gif', 'pdf', 'doc', 'docx', 'xls', 'xlsx');
+                                            // --- ตรวจสอบว่าไฟล์อยู่ในรายการอนุญาตไหม ---
+                                            if (!in_array($ext, $allowed)) {
+                                                echo "<script>alert('ไม่อนุญาตให้อัปโหลดไฟล์ .$ext'); window.history.back();</script>";
+                                                exit;
+                                            }
+
+                                            if (move_uploaded_file($tmp, "form-meeting/" . $fileupload)) {
+                                                $sql = "INSERT INTO meeting_booking(subject,head,numpeople,room_id,startdate,starttime,endtime,bookingdate,user_id,conf_status,dep_id,catgory,fileupload)
+                                                    VALUES('$subject','$head',$numpeople,$room_id,'$startdate','$starttime','$endtime','$bookingdate',$u_id,$conf_status,$dep_id,$catgory,'$fileupload')";
+
+                                                $result = dbQuery($sql);
+                                                if ($result) {
+                                                    success();
+                                                } else {
+                                                    nosuccess();
+                                                }
+                                            }  //upload file
+                                        } //strlen
+                                    } // file
+                                }
+                            }  //end while    
+                        } //ตรวจสอบว่าห้องประชุมว่างตามช่วงเวลาดังกล่าวหรือไม่
+                    } //ป้องกันเลือกเวลาผิด  
+                } //ป้องกันเลือกวันย้อนหลัง
+            } // ผู้เข้าประชุม
+        } //check button
+        ?>
+
+        <script>
+            function loadReserve(u_id, level_id) {
+                var sdata = {
+                    u_id: u_id,
+                    level_id: level_id
+                };
+                $('#divReserv').load('meet_reserv.php', sdata);
+            }
+        </script>
+
+        <?php
+        function success()
+        {
+            echo "<script>
+                swal({
+                    title:'จองห้องเรียบร้อยแล้ว',
+                    text:'ติดตามผลการอนุมัติต่อไป',
+                    type:'success',
+                    showConfirmButton:true
+                },
+                function(isConfirm){
+                    if(isConfirm){
+                        window.location.href='meet_index.php';
+                    }
+                }); 
+            </script>";
+        }
+
+        function over_limit()
+        {
+            echo "<script>
+        swal({
+            title:'เกินความจุห้องประชุม',
+            text:'กรุณาเลือกห้องประชุมที่เหมาะสม หากยืนยันจะใช้ ให้ระบุตัวเลขผู้เข้าร่วมไม่เกินความจุห้องประชุม',
+            type:'warning',
+            showConfirmButton:true
+            },
+            function(isConfirm){
+                if(isConfirm){
+                    window.location.href='meet_index.php';
+                }
+            }); 
+        </script>";
+        }
+
+        function day_history()
+        {
+            echo "<script>
+            swal({
+                title:'คุณเลือกวันย้อนหลัง',
+                text:'กรุณาตรวจสอบ',
+                type:'warning',
+                showConfirmButton:true
+                },
+                function(isConfirm){
+                    if(isConfirm){
+                        window.location.href='meet_index.php';
+                    }
+                }); 
+            </script>";
+        }
+
+        function time_rang()
+        {
+            echo "<script>
+                    swal({
+                        title:'ระบุเวลาช่วงประชุมผิด',
+                        text:'กรุณาตรวจสอบเวลาเริ่ม-เลิก ประชุม ',
+                        type:'warning',
+                        showConfirmButton:true
+                        },
+                        function(isConfirm){
+                            if(isConfirm){
+                                window.location.href='meet_index.php';
+                            }
+                        }); 
+                    </script>";
+        }
+
+        function no_success()
+        {
+            echo "<script>
+                                            swal({
+                                                title:'ไม่สำเร็จ',
+                                                text:'มีบางอย่างผิดพลาด กรุณาลองใหม่อีกครั้ง',
+                                                type:'warning',
+                                                showConfirmButton:true
+                                                },
+                                                function(isConfirm){
+                                                    if(isConfirm){
+                                                        window.location.href='meet_index.php';
+                                                    }
+                                                }); 
+                                            </script>";
+        }
+
+        function reserve()
+        {
+            echo "<script>
+                                swal({
+                                    title:'ห้องประชุมไม่ว่างในช่วงเวลาดังกล่าว',
+                                    text:'อาจอยู่ระหว่างติดจอง/รออนุมัติ  กรุณาตรวจสอบ',
+                                    type:'warning',
+                                    showConfirmButton:true
+                                    },
+                                    function(isConfirm){
+                                        if(isConfirm){
+                                            window.location.href='meet_index.php';
+                                        }
+                                    }); 
+                                </script>";
+        }
+
+        ?>

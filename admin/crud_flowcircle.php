@@ -1,30 +1,42 @@
 <?php
 
 include_once 'function.php';
-error_reporting( error_reporting() & ~E_NOTICE );//ปิดการแจ้งเตือน
+error_reporting(error_reporting() & ~E_NOTICE); //ปิดการแจ้งเตือน
 date_default_timezone_set('Asia/Bangkok'); //วันที่
 
-   
 
 
-if(isset($_POST['update'])){
-            $fileupload=$_REQUEST['fileupload'];  //การจัดการ fileupload
-            $date=date('Y-m-d');
-            $numrand=(mt_rand()); //สุ่มตัวเลข
-            $upload=$_FILES['fileupload']; //เพิ่มไฟล์
-        if($upload<>''){
-            $part="flow-circle/";   //โฟลเดอร์เก็บเอกสาร
-            $type=  strrchr($_FILES['fileupload']['name'],".");   //เอาชื่อเก่าออกให้เหลือแต่นามสกุล
-            $newname=$date.$numrand.$type;   //ตั้งชื่อไฟล์ใหม่โดยใช้เวลา
-            $part_copy=$part.$newname;
-            $part_link="flow-circle/".$newname;
-            move_uploaded_file($_FILES['fileupload']['tmp_name'],$part_copy);  //คัดลอกไฟล์ไป Server
-            
-            $sqlUpdate="UPDATE flowcircle SET file_upload='$part_copy' WHERE cid=$cid";
-            //print $sqlUpdate;
-            $resUpdate=  dbQuery($sqlUpdate);
-             if($resUpdate){
-                echo "<script>
+
+if (isset($_POST['update'])) {
+    $fileupload = $_REQUEST['fileupload'];  //การจัดการ fileupload
+    $date = date('Y-m-d');
+    $numrand = (mt_rand()); //สุ่มตัวเลข
+    $upload = $_FILES['fileupload']; //เพิ่มไฟล์
+    if ($upload <> '') {
+        $part = "flow-circle/";   //โฟลเดอร์เก็บเอกสาร
+        $type =  strrchr($_FILES['fileupload']['name'], ".");   //เอาชื่อเก่าออกให้เหลือแต่นามสกุล
+        $newname = $date . $numrand . $type;   //ตั้งชื่อไฟล์ใหม่โดยใช้เวลา
+        $part_copy = $part . $newname;
+        $part_link = "flow-circle/" . $newname;
+        
+        $filename = $_FILES['fileupload']['name'];
+        // --- ดึงนามสกุล (ตัวพิมพ์เล็ก) ---
+        $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+        // --- รายการนามสกุลที่อนุญาต (รูปภาพ + เอกสาร) ---
+        $allowed = array('jpg', 'jpeg', 'png', 'gif', 'pdf', 'doc', 'docx', 'xls', 'xlsx');
+        // --- ตรวจสอบว่าไฟล์อยู่ในรายการอนุญาตไหม ---
+        if (!in_array($ext, $allowed)) {
+            echo "<script>alert('ไม่อนุญาตให้อัปโหลดไฟล์ .$ext'); window.history.back();</script>";
+            exit;
+        }
+
+        move_uploaded_file($_FILES['fileupload']['tmp_name'], $part_copy);  //คัดลอกไฟล์ไป Server
+
+        $sqlUpdate = "UPDATE flowcircle SET file_upload='$part_copy' WHERE cid=$cid";
+        //print $sqlUpdate;
+        $resUpdate =  dbQuery($sqlUpdate);
+        if ($resUpdate) {
+            echo "<script>
                 swal({
                     title:'เรียบร้อย',
                     type:'success',
@@ -36,8 +48,8 @@ if(isset($_POST['update'])){
                         }
                     }); 
                 </script>";
-            }else{
-                echo "<script>
+        } else {
+            echo "<script>
                 swal({
                     title:'มีบางอย่างผิดพลาด! กรุณาตรวจสอบ',
                     type:'error',
@@ -49,10 +61,8 @@ if(isset($_POST['update'])){
                         }
                     }); 
                 </script>";
-            } 
-        }else{
-            echo "<meta http-equiv='refresh' content='1;URL=flow-circle.php'>";
         }
-        
-}    
-?>
+    } else {
+        echo "<meta http-equiv='refresh' content='1;URL=flow-circle.php'>";
+    }
+}
