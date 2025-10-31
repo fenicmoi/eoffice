@@ -1,10 +1,9 @@
 <?php
-
 /**
  * This file is part of FPDI
  *
  * @package   setasign\Fpdi
- * @copyright Copyright (c) 2023 Setasign GmbH & Co. KG (https://www.setasign.com)
+ * @copyright Copyright (c) 2019 Setasign - Jan Slabon (https://www.setasign.com)
  * @license   http://opensource.org/licenses/mit-license The MIT License
  */
 
@@ -15,7 +14,6 @@ use setasign\Fpdi\PdfParser\PdfParser;
 use setasign\Fpdi\PdfParser\PdfParserException;
 use setasign\Fpdi\PdfParser\Type\PdfArray;
 use setasign\Fpdi\PdfParser\Type\PdfDictionary;
-use setasign\Fpdi\PdfParser\Type\PdfIndirectObject;
 use setasign\Fpdi\PdfParser\Type\PdfIndirectObjectReference;
 use setasign\Fpdi\PdfParser\Type\PdfNumeric;
 use setasign\Fpdi\PdfParser\Type\PdfType;
@@ -23,6 +21,8 @@ use setasign\Fpdi\PdfParser\Type\PdfTypeException;
 
 /**
  * A PDF reader class
+ *
+ * @package setasign\Fpdi\PdfReader
  */
 class PdfReader
 {
@@ -39,7 +39,7 @@ class PdfReader
     /**
      * Indirect objects of resolved pages.
      *
-     * @var PdfIndirectObjectReference[]|PdfIndirectObject[]
+     * @var PdfIndirectObjectReference[]
      */
     protected $pages = [];
 
@@ -59,6 +59,7 @@ class PdfReader
     public function __destruct()
     {
         if ($this->parser !== null) {
+            /** @noinspection PhpInternalEntityUsedInspection */
             $this->parser->cleanUp();
         }
     }
@@ -164,22 +165,9 @@ class PdfReader
             $page = $this->parser->getIndirectObject($page->value);
             $dict = PdfType::resolve($page, $this->parser);
             $type = PdfDictionary::get($dict, 'Type');
-
             if ($type->value === 'Pages') {
                 $kids = PdfType::resolve(PdfDictionary::get($dict, 'Kids'), $this->parser);
-                try {
-                    $page = $this->pages[$pageNumber - 1] = $readPages($kids);
-                } catch (PdfReaderException $e) {
-                    if ($e->getCode() !== PdfReaderException::KIDS_EMPTY) {
-                        throw $e;
-                    }
-
-                    // let's reset the pages array and read all page objects
-                    $this->pages = [];
-                    $this->readPages(true);
-                    // @phpstan-ignore-next-line
-                    $page = $this->pages[$pageNumber - 1];
-                }
+                $page = $this->pages[$pageNumber - 1] = $readPages($kids);
             } else {
                 $this->pages[$pageNumber - 1] = $page;
             }
@@ -191,26 +179,24 @@ class PdfReader
     /**
      * Walk the page tree and resolve all indirect objects of all pages.
      *
-     * @param bool $readAll
+     * @throws PdfTypeException
      * @throws CrossReferenceException
      * @throws PdfParserException
-     * @throws PdfTypeException
      */
-    protected function readPages($readAll = false)
+    protected function readPages()
     {
         if (\count($this->pages) > 0) {
             return;
         }
 
-        $expectedPageCount = $this->getPageCount();
-        $readPages = function ($kids, $count) use (&$readPages, $readAll, $expectedPageCount) {
+        $readPages = function ($kids, $count) use (&$readPages) {
             $kids = PdfArray::ensure($kids);
-            $isLeaf = ($count->value === \count($kids->value));
+            $isLeaf = $count->value === \count($kids->value);
 
             foreach ($kids->value as $reference) {
                 $reference = PdfIndirectObjectReference::ensure($reference);
 
-                if (!$readAll && $isLeaf) {
+                if ($isLeaf) {
                     $this->pages[] = $reference;
                     continue;
                 }
@@ -222,11 +208,6 @@ class PdfReader
                     $readPages(PdfDictionary::get($object->value, 'Kids'), PdfDictionary::get($object->value, 'Count'));
                 } else {
                     $this->pages[] = $object;
-                }
-
-                // stop if all pages are read - faulty documents exists with additional entries with invalid data.
-                if (count($this->pages) === $expectedPageCount) {
-                    break;
                 }
             }
         };

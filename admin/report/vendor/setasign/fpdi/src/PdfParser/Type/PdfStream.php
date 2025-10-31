@@ -1,10 +1,9 @@
 <?php
-
 /**
  * This file is part of FPDI
  *
  * @package   setasign\Fpdi
- * @copyright Copyright (c) 2023 Setasign GmbH & Co. KG (https://www.setasign.com)
+ * @copyright Copyright (c) 2019 Setasign - Jan Slabon (https://www.setasign.com)
  * @license   http://opensource.org/licenses/mit-license The MIT License
  */
 
@@ -23,6 +22,8 @@ use setasign\FpdiPdfParser\PdfParser\Filter\Predictor;
 
 /**
  * Class representing a PDF stream object
+ *
+ * @package setasign\Fpdi\PdfParser\Type
  */
 class PdfStream extends PdfType
 {
@@ -37,7 +38,7 @@ class PdfStream extends PdfType
      */
     public static function parse(PdfDictionary $dictionary, StreamReader $reader, PdfParser $parser = null)
     {
-        $v = new self();
+        $v = new self;
         $v->value = $dictionary;
         $v->reader = $reader;
         $v->parser = $parser;
@@ -46,20 +47,25 @@ class PdfStream extends PdfType
 
         // Find the first "newline"
         while (($firstByte = $reader->getByte($offset)) !== false) {
-            $offset++;
-            if ($firstByte === "\n" || $firstByte === "\r") {
+            if ($firstByte !== "\n" && $firstByte !== "\r") {
+                $offset++;
+            } else {
                 break;
             }
         }
 
-        if ($firstByte === false) {
+        if (false === $firstByte) {
             throw new PdfTypeException(
                 'Unable to parse stream data. No newline after the stream keyword found.',
                 PdfTypeException::NO_NEWLINE_AFTER_STREAM_KEYWORD
             );
         }
 
-        $sndByte = $reader->getByte($offset);
+        $sndByte = $reader->getByte($offset + 1);
+        if ($firstByte === "\n" || $firstByte === "\r") {
+            $offset++;
+        }
+
         if ($sndByte === "\n" && $firstByte !== "\n") {
             $offset++;
         }
@@ -80,7 +86,7 @@ class PdfStream extends PdfType
      */
     public static function create(PdfDictionary $dictionary, $stream)
     {
-        $v = new self();
+        $v = new self;
         $v->value = $dictionary;
         $v->stream = (string) $stream;
 
@@ -109,7 +115,7 @@ class PdfStream extends PdfType
     /**
      * The stream reader instance.
      *
-     * @var StreamReader|null
+     * @var StreamReader
      */
     protected $reader;
 
@@ -202,36 +208,7 @@ class PdfStream extends PdfType
             }
         }
 
-        // There are streams in the wild, which have only white signs in them but need to be parsed manually due
-        // to a problem encountered before (e.g. Length === 0). We should set them to empty streams to avoid problems
-        // in further processing (e.g. applying of filters).
-        if (trim($buffer) === '') {
-            $buffer = '';
-        }
-
         return $buffer;
-    }
-
-    /**
-     * Get all filters defined for this stream.
-     *
-     * @return PdfType[]
-     * @throws PdfTypeException
-     */
-    public function getFilters()
-    {
-        $filters = PdfDictionary::get($this->value, 'Filter');
-        if ($filters instanceof PdfNull) {
-            return [];
-        }
-
-        if ($filters instanceof PdfArray) {
-            $filters = $filters->value;
-        } else {
-            $filters = [$filters];
-        }
-
-        return $filters;
     }
 
     /**
@@ -244,9 +221,15 @@ class PdfStream extends PdfType
     public function getUnfilteredStream()
     {
         $stream = $this->getStream();
-        $filters = $this->getFilters();
-        if ($filters === []) {
+        $filters = PdfDictionary::get($this->value, 'Filter');
+        if ($filters instanceof PdfNull) {
             return $stream;
+        }
+
+        if ($filters instanceof PdfArray) {
+            $filters = $filters->value;
+        } else {
+            $filters = [$filters];
         }
 
         $decodeParams = PdfDictionary::get($this->value, 'DecodeParms');
@@ -323,21 +306,6 @@ class PdfStream extends PdfType
                     $filterObject = new AsciiHex();
                     $stream = $filterObject->decode($stream);
                     break;
-
-                case 'Crypt':
-                    if (!$decodeParam instanceof PdfDictionary) {
-                        break;
-                    }
-                    // Filter is "Identity"
-                    $name = PdfDictionary::get($decodeParam, 'Name');
-                    if (!$name instanceof PdfName || $name->value !== 'Identity') {
-                        break;
-                    }
-
-                    throw new FilterException(
-                        'Support for Crypt filters other than "Identity" is not implemented.',
-                        FilterException::UNSUPPORTED_FILTER
-                    );
 
                 default:
                     throw new FilterException(

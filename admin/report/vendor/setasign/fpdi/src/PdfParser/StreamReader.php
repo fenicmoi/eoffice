@@ -1,10 +1,9 @@
 <?php
-
 /**
  * This file is part of FPDI
  *
  * @package   setasign\Fpdi
- * @copyright Copyright (c) 2023 Setasign GmbH & Co. KG (https://www.setasign.com)
+ * @copyright Copyright (c) 2019 Setasign - Jan Slabon (https://www.setasign.com)
  * @license   http://opensource.org/licenses/mit-license The MIT License
  */
 
@@ -12,6 +11,8 @@ namespace setasign\Fpdi\PdfParser;
 
 /**
  * A stream reader class
+ *
+ * @package setasign\Fpdi\PdfParser
  */
 class StreamReader
 {
@@ -113,12 +114,6 @@ class StreamReader
             );
         }
 
-        if (fseek($stream, 0) === -1) {
-            throw new \InvalidArgumentException(
-                'Given stream is not seekable!'
-            );
-        }
-
         $this->stream = $stream;
         $this->closeStream = $closeStream;
         $this->reset();
@@ -197,9 +192,8 @@ class StreamReader
     public function getByte($position = null)
     {
         $position = (int) ($position !== null ? $position : $this->offset);
-        if (
-            $position >= $this->bufferLength
-            && (!$this->increaseLength() || $position >= $this->bufferLength)
+        if ($position >= $this->bufferLength &&
+            (!$this->increaseLength() || $position >= $this->bufferLength)
         ) {
             return false;
         }
@@ -232,9 +226,8 @@ class StreamReader
             $offset = $this->offset;
         }
 
-        if (
-            $offset >= $this->bufferLength
-            && ((!$this->increaseLength()) || $offset >= $this->bufferLength)
+        if ($offset >= $this->bufferLength &&
+            ((!$this->increaseLength()) || $offset >= $this->bufferLength)
         ) {
             return false;
         }
@@ -252,7 +245,7 @@ class StreamReader
      *
      * @param int $length
      * @param int|null $position
-     * @return string|false
+     * @return string
      */
     public function readBytes($length, $position = null)
     {
@@ -269,9 +262,8 @@ class StreamReader
             $offset = $this->offset;
         }
 
-        if (
-            ($offset + $length) > $this->bufferLength
-            && ((!$this->increaseLength($length)) || ($offset + $length) > $this->bufferLength)
+        if (($offset + $length) > $this->bufferLength &&
+            ((!$this->increaseLength($length)) || ($offset + $length) > $this->bufferLength)
         ) {
             return false;
         }
@@ -441,8 +433,7 @@ class StreamReader
      */
     public function ensure($pos, $length)
     {
-        if (
-            $pos >= $this->position
+        if ($pos >= $this->position
             && $pos < ($this->position + $this->bufferLength)
             && ($this->position + $this->bufferLength) >= ($pos + $length)
         ) {
