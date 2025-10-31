@@ -1,5 +1,9 @@
 <?php
-session_start();
+// ป้องกัน Notice หาก session ถูกเริ่มไปแล้วที่ไฟล์อื่น
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 if(!isset($_SESSION['ses_u_id'])){
 	header("location:../index.php");
 }

@@ -287,7 +287,7 @@ if (isset($_POST['save'])) {
 
     $sql = "INSERT INTO  meeting_room(roomname,roomplace,roomcount,roomimg,tel,room_status,money1,money2,sound,vga,vcs,dep_id)
                 VALUES('$roomname','$roomplace',$roomcount,'$roomimg','$tel',1,$money1,$money2,$t1,$t2,$t3,$dep_id)";
-
+    print $sql;
     $result = dbQuery($sql);
     if ($result) {
         dbQuery("COMMIT");
