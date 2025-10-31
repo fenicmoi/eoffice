@@ -9,6 +9,12 @@ $dbUser = 'root';
 $dbPass = '';
 $dbName = 'phatthalun_eoffice';
 
+
+$DB_HOST = 'localhost';
+$DB_USER = 'root';
+$DB_PASS = '';
+$DB_NAME = 'phatthalun_eoffice';
+
 // Server พัทลุง
 
 /*
