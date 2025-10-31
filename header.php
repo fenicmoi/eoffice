@@ -1,6 +1,7 @@
 <?php 
  include 'library/config.php';
  include 'library/database.php';
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -29,7 +30,7 @@
     <link href="https://fonts.googleapis.com/css?family=Taviraj" rel="stylesheet">
     <link rel="stylesheet" href="css/sweetalert.css">
     <script src="js/sweetalert.min.js"></script>   
-    <script src="js/script_dropdown.js"></script>
+  <script src="js/script_dropdown.js"></script>
  
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -140,7 +141,7 @@
           </div>
         </div>
 
-    <div class="container-fluid">
+    <div class="container-fluse">
 <!-- Modal Add -->
         <div id="modalAdd" class="modal fade" role="dialog">
           <div class="modal-dialog">
@@ -272,67 +273,30 @@
         </div>  
 <?php
 if(isset($_POST['add'])){       // check button  
-    $depart = trim(strip_tags($_POST['depart'] ?? ''));
-    $book_no = trim(strip_tags($_POST['book_no'] ?? ''));
-    $address = trim(strip_tags($_POST['address'] ?? ''));
-    $office_tel = trim(strip_tags($_POST['o_tel'] ?? ''));
-    $office_fax = trim(strip_tags($_POST['o_fax'] ?? ''));
-    $website = trim($_POST['website'] ?? '');
-    $email = trim($_POST['email'] ?? '');
-    $fname = trim(strip_tags($_POST['fname'] ?? ''));
-    $lname = trim(strip_tags($_POST['lname'] ?? ''));
-    $position = trim(strip_tags($_POST['position'] ?? ''));
-    $tel = trim(strip_tags($_POST['tel'] ?? ''));
-    $fax = trim(strip_tags($_POST['fax'] ?? ''));
-    $status = 0;
+	$depart=$_POST['depart'];
+	$book_no=$_POST['book_no'];
+	$address=$_POST['address'];
+	$office_tel=$_POST['o_tel'];
+	$office_fax=$_POST['o_fax'];
+	$website=$_POST['website'];
+	$email=$_POST['email'];
+	$fname=$_POST['fname'];
+	$lname=$_POST['lname'];
+	$position=$_POST['position'];
+	$tel=$_POST['tel'];
+	$fax=$_POST['fax'];
+	// $username=$_POST['username'];
+	// $password=$_POST['password'];
+	$status=0;
+	$sql="INSERT INTO register_staf(depart,book_no,address,office_tel,office_fax,website,fname,lname,position,tel,fax,email,status) VALUES('$depart','$book_no','$address','$office_tel','$office_fax','$website','$fname','$lname','$position','$tel','$fax','$email',$status)";
+	// 	print $sql;
 
-    $inserted = false;
-
-    // พยายามใช้ mysqli prepared statement (ต้องมีค่าคอนสแตนท์ใน config.php)
-    if (defined('DB_HOST') && defined('DB_USER') && defined('DB_PASS') && defined('DB_NAME')) {
-        $mysqli = @new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-        if ($mysqli && $mysqli->connect_errno === 0) {
-            $stmt = $mysqli->prepare("INSERT INTO register_staf (depart,book_no,address,office_tel,office_fax,website,fname,lname,position,tel,fax,email,status) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)");
-            if ($stmt) {
-                // 12 strings + 1 int => 'ssssssssssssi'
-                $stmt->bind_param('ssssssssssssi', $depart, $book_no, $address, $office_tel, $office_fax, $website, $fname, $lname, $position, $tel, $fax, $email, $status);
-                $inserted = $stmt->execute();
-                if (!$inserted) {
-                    error_log('Register insert error (stmt): ' . $stmt->error);
-                }
-                $stmt->close();
-            } else {
-                error_log('Prepare failed (mysqli): ' . $mysqli->error);
-            }
-            $mysqli->close();
-        } else {
-            error_log('MySQL connect failed in header.php');
-        }
-    }
-
-    // Fallback: ถ้าไม่สำเร็จด้วย mysqli ให้ escape อย่างน้อยแล้วใช้ dbQuery เดิม
-    if (!$inserted) {
-        $depart_e = addslashes($depart);
-        $book_no_e = addslashes($book_no);
-        $address_e = addslashes($address);
-        $office_tel_e = addslashes($office_tel);
-        $office_fax_e = addslashes($office_fax);
-        $website_e = addslashes($website);
-        $fname_e = addslashes($fname);
-        $lname_e = addslashes($lname);
-        $position_e = addslashes($position);
-        $tel_e = addslashes($tel);
-        $fax_e = addslashes($fax);
-        $email_e = addslashes($email);
-
-        $sql = "INSERT INTO register_staf(depart,book_no,address,office_tel,office_fax,website,fname,lname,position,tel,fax,email,status) VALUES('$depart_e','$book_no_e','$address_e','$office_tel_e','$office_fax_e','$website_e','$fname_e','$lname_e','$position_e','$tel_e','$fax_e','$email_e',$status)";
-        $result = dbQuery($sql);
-        if ($result) $inserted = true;
-        else error_log('Fallback dbQuery failed in header.php: ' . $sql);
-    }
-
-    if(!$inserted){
-        echo "<script>
+  //echo $sql;
+  
+	
+	$result=dbQuery($sql);
+	if(!$result){
+		echo "<script>
                   swal({
                     title:'ลงทะเบียนไม่สำเร็จ  กรุณาตรวจสอบ',
                     text: 'อาจมีบางอย่างผิดพลาด โปรดลองอีกครั้ง',
@@ -345,9 +309,9 @@ if(isset($_POST['add'])){       // check button
                         }
                     }); 
                   </script>";
-    }
-    else{
-        echo "<script>
+	}
+	else{
+		echo "<script>
                 swal({
                     title:'ลงทะเบียนเรียบร้อยแล้ว ;-)',
                     text: 'จังหวัดพัทลุงจะชี้แจงแนวทางการใช้งานอีกครั้ง',
@@ -356,11 +320,11 @@ if(isset($_POST['add'])){       // check button
                     },
                     function(isConfirm){
                         if(isConfirm){
-                            window.location.href='index.php?menu=3';
+                            window.location.href='list_user.php';
                         }
                     }); 
                 </script>";
-    }
+	}
                 
 }
 ?>

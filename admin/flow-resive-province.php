@@ -1,7 +1,8 @@
 <!-- หนังสือรับถึงจังหวัด -->
 <?php
 include "header.php";
-$u_id = $_SESSION['ses_u_id'];
+$uid = isset($_SESSION['ses_u_id']) ? $_SESSION['ses_u_id'] : 0;
+$username = isset($_SESSION['username']) ? $_SESSION['username'] : '';
 ?>
 
 <script>
