@@ -2,11 +2,6 @@
 // 1. เริ่มต้น Session และ Autoload mPDF ก่อน HTML/Output
 session_start();
 
-// แก้ไขพาธ Autoload ตามที่ติดตั้ง Composer
-// หากโฟลเดอร์ vendor อยู่ที่ C:\wamp64\www\eoffice2025\vendor
-// และไฟล์รายงานอยู่ที่ C:\wamp64\www\eoffice2025\eoffice\admin\report\
-// ต้องย้อนกลับไป 3 ระดับ: report -> admin -> eoffice -> eoffice2025(vendor)
-// **ข้อแนะนำ: ควรแก้ไขพาธตามโครงสร้างไฟล์จริงของคุณ**
 require_once(__DIR__ . '/vendor/autoload.php'); 
 
 // 2. เริ่มเก็บ Output (บัฟเฟอร์) ก่อนการสร้าง HTML
@@ -15,7 +10,7 @@ ob_start();
 // 3. ดึงค่าจาก Session และ POST
 $dep_id   = $_SESSION['ses_dep_id'];
 $sec_id   = $_SESSION['ses_sec_id'];
-$dateprint = $_POST['dateprint'];
+$dateprint = DATE($_POST['dateprint']);
 $uid       = $_POST['uid'];
 $yid       = $_POST['yid'];
 $username  = $_POST['username'];
@@ -50,44 +45,61 @@ $row=dbFetchArray($result);
 /* ปรับปรุง CSS สำหรับการแสดงผลใน mPDF */
 body {
     font-family: 'Garuda', sans-serif; /* แนะนำให้ระบุฟอนต์ที่รองรับภาษาไทยใน mPDF */
+    font-size: 11pt
 }
 table {
     width: 100%; /* ใช้ความกว้างเต็มที่ */
     border-collapse: collapse; /* ทำให้เส้นตารางเชื่อมต่อกัน */
+    margin-bottom: 10px;
 }
-td {
-    border: 1px solid #000; /* เปลี่ยนจาก dashed เป็น solid เพื่อให้ mPDF แสดงผลชัดเจน */
-    padding: 3px;
-    line-height: 1.2;
+td, th {
+    border: 1px solid #000; /* ใช้เส้นทึบสีดำ (solid) เพื่อความคมชัด */
+    padding: 6px 4px; /* เพิ่ม padding ให้มีพื้นที่หายใจ */
+    line-height: 1.3;
+    vertical-align: top;
 }
 th {
-    background-color: #C0C0C0;
+   background-color: #D3D3D3; /* เปลี่ยนสีพื้นหลังส่วนหัวให้ดูเป็นทางการขึ้น */
+    color: #000;
     text-align: center;
-    padding: 5px;
+    font-weight: bold;
 }
 .header-bg {
-    background-color: #C0C0C0;
+   background-color: #EFEFEF; /* สีอ่อนสำหรับพื้นหลังส่วนหัวรายงาน */
+    border: none;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
+.total-row {
+    background-color: #C0C0C0; /* สีเทาเข้มสำหรับแถวสรุปยอดรวม */
+    font-weight: bold;
+    text-align: center;
+}
+h4 {
+    margin: 3px 0; /* จัดระยะห่างหัวข้อให้เหมาะสม */
+}
+/* ================================================= */
 </style>
 </head>
 <body>
 
     <table cellspacing="0" cellpadding="1" border="0" style="width:100%;">
         <tr> 
-            <td class="header-bg" colspan="7"><center><h3>รายงานทะเบียนหนังสือรับ ประจำวันที่ <?= thaiDate($dateprint)?></h3></center></td>
+            <td class="header-bg" colspan="8"><center><h4>รายงานทะเบียนรับหนังสือจังหวัดพัทลุง ประจำวันที่ <?= thaiDate($dateprint)?></h4></center></td>
         </tr> 
         <tr>
-            <td class="header-bg" colspan="7"><center><h4>หน่วยรับ: <?php echo $row['dep_name'];?></h4></center></td>
+            <td class="header-bg" colspan="8"><center><h4>หน่วยรับ: <?php echo $row['dep_name'];?></h4></center></td>
         </tr>
         <tr>
-            <td class="header-bg" colspan="7"><center><h4>กลุ่มงาน/หน่วยงานย่อย: <?php echo $row['sec_name'];?> &nbsp;|&nbsp; วันที่ออกรายงาน: <?php echo DateThai();?></h4></center></td>
+            <td class="header-bg" colspan="8"><center><h4>กลุ่มงาน/หน่วยงานย่อย: <?php echo $row['sec_name'];?> &nbsp;|&nbsp; วันที่ออกรายงาน: <?php echo DateThai();?></h4></center></td>
         </tr>
         <tr>
             <th width="5%" >#</th>
-            <th width="10%">เลขรับ</th>
-            <th width="15%">เลขหนังสือ</th>
-            <th>เรื่อง</th>
+            <th width="5%">เลขรับ</th>
+             <th width="5%">วันที่รับ</th>
+            <th width="10%">เลขหนังสือ</th>
             <th width="10%">ลงวันที่</th>
+            <th width="40">เรื่อง</th>
             <th width="15%">หน่วยปฏิบัติ</th>
             <th width="10%">ลงชื่อผู้รับ</th> 
         </tr>
@@ -98,7 +110,7 @@ th {
               INNER JOIN book_detail d ON d.book_id = m.book_id
               INNER JOIN section s ON s.sec_id = m.sec_id 
               INNER JOIN depart dep ON dep.dep_id= d.practice
-              WHERE m.type_id=1 AND d.date_line='$dateprint' AND m.dep_id=$dep_id
+              WHERE m.type_id=1 AND DATE(d.date_in) ='$dateprint' AND m.dep_id=$dep_id
               ORDER BY m.rec_id DESC";
         
         // **การนับแถวด้วย dbNumRows(sql) ก่อนรัน dbQuery ซ้ำ อาจทำให้โค้ดทำงานซ้ำซ้อน**
@@ -113,16 +125,17 @@ th {
         <tr>
             <td align="center"><?=$i?></td> 
             <td >&nbsp;<?=$rs['rec_id']?></td>
+            <td >&nbsp;<?=thaiDate($rs['date_in'])?></td>
             <td >&nbsp;<?=$rs['book_no']?></td>
-            <td >&nbsp;<?=$rs['title']?></td>
             <td >&nbsp;<?=thaiDate($rs['date_book'])?></td>
+            <td >&nbsp;<?=$rs['title']?></td>
             <td >&nbsp;<?=$rs['dep_name']?></td>
             <td >&nbsp;</td>
         </tr>
         <?php $i++; } ?> 
         <tr>
-            <td class="header-bg" colspan="5" align="right"><b>รวมหนังสือรับ</b></td>
-            <td class="header-bg" colspan="2" align="center"><b><?=$total_rows?> ฉบับ</b></td>
+            <td class="header-bg" colspan="7" align="right"><b>รวมหนังสือรับ</b></td>
+            <td class="header-bg" colspan="1" align="center"><b><?=$total_rows?> ฉบับ</b></td>
         </tr>
     </table>
 <h4>*หมายเหตุ: ใช้สำหรับเจ้าหน้าที่นำส่งเอกสารลงชื่อรับเอกสารตัวจริง</h4>
@@ -138,7 +151,12 @@ $mpdf = new \Mpdf\Mpdf([
     'format' => 'A4-L', // A4-L คือแนวนอน
     'tempDir' => __DIR__ . '/temp', // แนะนำให้กำหนด Temp Directory ที่เขียนได้
     'autoScriptToLang' => true,
-    'autoLangToFont' => true
+    'autoLangToFont' => true,
+    // 💡 เพิ่มการตั้งค่าระยะขอบกระดาษตรงนี้ (หน่วยเป็นมิลลิเมตร)
+    'margin_left' => 10,  // ขอบซ้าย 10 มม.
+    'margin_right' => 10, // ขอบขวา 10 มม.
+    'margin_top' => 10,   // ขอบบน 15 มม. (เผื่อพื้นที่ส่วนหัว)
+    'margin_bottom' => 10, // ขอบล่าง 15 มม. (เผื่อพื้นที่ส่วนท้าย)
 ]); 
 // **หมายเหตุ:** mPDF เวอร์ชันใหม่จะไม่รับพารามิเตอร์แบบเดิมแล้ว
 
