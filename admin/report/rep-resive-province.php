@@ -1,10 +1,10 @@
 <?php
-// 1. เริ่มต้น Session และ Autoload mPDF ก่อน HTML/Output
+
 session_start();
 
 require_once(__DIR__ . '/vendor/autoload.php'); 
 
-// 2. เริ่มเก็บ Output (บัฟเฟอร์) ก่อนการสร้าง HTML
+
 ob_start();
 
 // 3. ดึงค่าจาก Session และ POST
@@ -15,21 +15,15 @@ $uid       = $_POST['uid'];
 $yid       = $_POST['yid'];
 $username  = $_POST['username'];
 
-// 4. ไม่จำเป็นต้องใช้ header() สำหรับการแสดงผล HTML ก่อนการสร้าง PDF
-// header("Content-type:text/html; charset=UTF-8");                
-// header("Cache-Control: no-store, no-cache, must-revalidate");               
-// header("Cache-Control: post-check=0, pre-check=0", false);    
-
-// 5. Include ไฟล์ที่จำเป็น
 include "../../library/config.php";
 include "../../library/database.php";
 include "../function.php"; // ต้องแน่ใจว่าฟังก์ชัน thaiDate() และ DateThai() อยู่ในไฟล์นี้
 
-// 6. ดึงข้อมูลหน่วยงาน (ใช้ mysqli_real_escape_string หรือเตรียมคำสั่งเพื่อความปลอดภัย)
+
 $sql="SELECT d.dep_name,s.sec_id,s.sec_name 
       FROM depart as d
-      INNER JOIN section as s ON s.sec_id=$sec_id
-      WHERE d.dep_id=$dep_id";
+      INNER JOIN section as s ON s.sec_id='$sec_id'
+      WHERE d.dep_id = '$dep_id'";
 
 $result=dbQuery($sql);
 $row=dbFetchArray($result);
@@ -91,7 +85,7 @@ h4 {
             <td class="header-bg" colspan="8"><center><h4>หน่วยรับ: <?php echo $row['dep_name'];?></h4></center></td>
         </tr>
         <tr>
-            <td class="header-bg" colspan="8"><center><h4>กลุ่มงาน/หน่วยงานย่อย: <?php echo $row['sec_name'];?> &nbsp;|&nbsp; วันที่ออกรายงาน: <?php echo DateThai();?></h4></center></td>
+            <td class="header-bg" colspan="8"><center><h4>กลุ่มงาน: <?php echo $row['sec_name'];?> &nbsp;|&nbsp; วันที่ออกรายงาน: <?php echo DateThai();?></h4></center></td>
         </tr>
         <tr>
             <th width="5%" >#</th>
@@ -110,14 +104,13 @@ h4 {
               INNER JOIN book_detail d ON d.book_id = m.book_id
               INNER JOIN section s ON s.sec_id = m.sec_id 
               INNER JOIN depart dep ON dep.dep_id= d.practice
-              WHERE m.type_id=1 AND DATE(d.date_in) ='$dateprint' AND m.dep_id=$dep_id
+              WHERE m.type_id=1 AND DATE(d.date_in) ='$dateprint' AND m.dep_id = '$dep_id'
               ORDER BY m.rec_id DESC";
         
         // **การนับแถวด้วย dbNumRows(sql) ก่อนรัน dbQuery ซ้ำ อาจทำให้โค้ดทำงานซ้ำซ้อน**
         // ควรใช้ $i=1; และนับไปเรื่อยๆ ในลูป หรือใช้ dbNumRows(result) หลังการ Query
         
         $result=dbQuery($sql);
-        $total_rows = dbNumRows($result); // นับจำนวนแถวจากผลลัพธ์
         $i=1; // เริ่มนับที่ 1 ใหม่
         
         while($rs=dbFetchArray($result)){
@@ -135,16 +128,17 @@ h4 {
         <?php $i++; } ?> 
         <tr>
             <td class="header-bg" colspan="7" align="right"><b>รวมหนังสือรับ</b></td>
-            <td class="header-bg" colspan="1" align="center"><b><?=$total_rows?> ฉบับ</b></td>
+            <td class="header-bg" colspan="1" align="center"><b><?=$i-1?> ฉบับ</b></td>
         </tr>
     </table>
 <h4>*หมายเหตุ: ใช้สำหรับเจ้าหน้าที่นำส่งเอกสารลงชื่อรับเอกสารตัวจริง</h4>
 </body>
-</html>    
+</html>
 <?Php
 // 7. สิ้นสุดการเก็บ Output และสร้าง PDF
 
 $html = ob_get_clean(); // ใช้ ob_get_clean() แทน ob_end_clean() เพื่อดึงค่าและปิดบัฟเฟอร์
+
 // **การตั้งค่า mPDF สำหรับเวอร์ชันใหม่ (ใช้ Namespace)**
 $mpdf = new \Mpdf\Mpdf([
     'mode' => 'utf-8', 

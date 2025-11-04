@@ -540,8 +540,8 @@ $ystatus = $ystatus;
 				<form class="form-inline" role="form" id="form_other" name="form_other" method="POST" action="report/rep-resive-province.php" target="_blank">
 					<span>เลือกวันที่</span>
 					<input class="form-control" id="dateprint" name="dateprint" type="date">
-					<button type="submit" class="btn btn-lg btn-primary">
-						<span class="glyphicon glyphicon-floppy-saved"></span>&nbspตกลง
+					<button type="submit" class="btn btn-lg btn-success">
+						<span class="glyphicon glyphicon-print"></span>
 					</button>
 
 
@@ -555,7 +555,7 @@ $ystatus = $ystatus;
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">X</button>
 			</div>
 		</div>
 
@@ -588,8 +588,8 @@ $ystatus = $ystatus;
 								<input class="form-control" id="dateEnd" name="dateEnd" type="date">
 							</div>
 						</div>
-						<button type="submit" class="btn btn-success btn-lg">
-							<i class="fas fa-search"></i>
+						<button type="submit" class="btn btn-lg btn-success">
+							<span class="glyphicon glyphicon-print"></span>
 						</button>
 
 
@@ -602,7 +602,7 @@ $ystatus = $ystatus;
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">X</button>
 			</div>
 		</div>
 
