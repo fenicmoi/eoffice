@@ -1,7 +1,6 @@
 <?php 
  include 'library/config.php';
  include 'library/database.php';
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
