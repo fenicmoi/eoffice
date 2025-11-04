@@ -35,45 +35,7 @@ $row=dbFetchArray($result);
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>พิมพ์รายงานหนังสือรับประจำวัน[สารบรรณกลาง]</title>
-<style>
-/* ปรับปรุง CSS สำหรับการแสดงผลใน mPDF */
-body {
-    font-family: 'Garuda', sans-serif; /* แนะนำให้ระบุฟอนต์ที่รองรับภาษาไทยใน mPDF */
-    font-size: 11pt
-}
-table {
-    width: 100%; /* ใช้ความกว้างเต็มที่ */
-    border-collapse: collapse; /* ทำให้เส้นตารางเชื่อมต่อกัน */
-    margin-bottom: 10px;
-}
-td, th {
-    border: 1px solid #000; /* ใช้เส้นทึบสีดำ (solid) เพื่อความคมชัด */
-    padding: 6px 4px; /* เพิ่ม padding ให้มีพื้นที่หายใจ */
-    line-height: 1.3;
-    vertical-align: top;
-}
-th {
-   background-color: #D3D3D3; /* เปลี่ยนสีพื้นหลังส่วนหัวให้ดูเป็นทางการขึ้น */
-    color: #000;
-    text-align: center;
-    font-weight: bold;
-}
-.header-bg {
-   background-color: #EFEFEF; /* สีอ่อนสำหรับพื้นหลังส่วนหัวรายงาน */
-    border: none;
-    padding-top: 5px;
-    padding-bottom: 5px;
-}
-.total-row {
-    background-color: #C0C0C0; /* สีเทาเข้มสำหรับแถวสรุปยอดรวม */
-    font-weight: bold;
-    text-align: center;
-}
-h4 {
-    margin: 3px 0; /* จัดระยะห่างหัวข้อให้เหมาะสม */
-}
-/* ================================================= */
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
