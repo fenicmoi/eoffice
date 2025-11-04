@@ -159,7 +159,7 @@ $level_id = isset($level_id) ? (int)$level_id : 0;
                     </div>
                 </div>
             </div> <!-- row -->
-            <div class="row">
+            <!-- <div class="row">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="quote-container">
@@ -190,7 +190,7 @@ $level_id = isset($level_id) ? (int)$level_id : 0;
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <?php 
             if ($level_id == 1) {
                 // ตรวจสอบปีเอกสาร
