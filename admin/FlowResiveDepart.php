@@ -54,9 +54,8 @@ $ystatus = $ystatus;
 						<i class="fas fa-print"></i> รายงาน<span class="caret"></span>
 					</button>
 					<ul class="dropdown-menu">
-						<li><a href="#" data-toggle="modal" data-target="#myReport"><i class="fas fa-calendar"></i> ประจำวัน</a>
-						</li>
-						<li><a href="#" data-toggle="modal" data-target="#myReport1"><i class="fas fa-calendar-alt"></i> ตามช่วงเวลา</a>
+						
+						<li><a href="#" data-toggle="modal" data-target="#myReport1"><i class="fas fa-calendar-alt"></i> รายงานทะเบียนรับ</a>
 						</li>
 					</ul>
 				</div>

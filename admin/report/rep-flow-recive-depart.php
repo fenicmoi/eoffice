@@ -65,7 +65,6 @@ $row=dbFetchAssoc($result);
         $sql ="SELECT f.*, s.sec_name FROM flow_recive_depart as f 
                INNER JOIN section as s ON s.sec_id = f.remark 
                WHERE f.datein = DATE('$dateprint')
-               AND 
                AND f.dep_id = $dep_id
                ORDER BY f.cid DESC";
         
