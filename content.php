@@ -178,22 +178,21 @@
 <?php 
 if(isset($_POST['save'])){
 	
-	$type_id=$_POST['province'];
-	$dep_id=$_POST['amphur'];
-	$sec_id=$_POST['district'];
+	$type_id=$_POST['province']; // ประเภทหน่วยงาน
+	$dep_id=$_POST['amphur'];   // รหัสหน่วยงาน
+	$sec_id=$_POST['district'];  // รหัสกลุ่มงาน
 	$level_id=5;
-	$u_name=$_POST['u_name'];
-	$u_pass=$_POST['u_pass'];
-	$firstname=$_POST['firstname'];
-	$lastname=$_POST['lastname'];
-	$position=$_POST['position'];
-	$date_create=$_POST['date_user'];
-	$email=$_POST['email'];
+	$u_name=$_POST['u_name'];   // ชื่อผู้ใช้
+	$u_pass=$_POST['u_pass'];   // รหัสผ่าน
+	$firstname=$_POST['firstname']; // ชื่อ
+	$lastname=$_POST['lastname'];   // นามสกุล
+	$position=$_POST['position'];      // ตำแหน่ง
+	$date_create=$_POST['date_user'];   // วันที่สร้าง
+	$email=$_POST['email'];         // อีเมลล์
 	
-	// 	print $sql;
-	$sql="SELECT u_name FROM user WHERE u_name='".trim($u_name)."'";
-	//p	rint $sql;
-	
+	// ตรวจสอบชื่อผู้ใช้ซ้ำ
+	$sql="SELECT u_name FROM user WHERE u_name='".dbEscapeString($u_name)."'";
+
 	$result= dbQuery($sql);
 	$numrow= dbNumRows($result);
 	if($numrow>=1){

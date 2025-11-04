@@ -70,6 +70,13 @@ function dbInsertId()
        
 }
 
+function dbEscapeString($text)
+{
+    global $dbConn;
+    // ใช้ mysqli_real_escape_string เนื่องจากมีการสร้าง $dbConn เป็นวัตถุ mysqli
+    return mysqli_real_escape_string($dbConn, $text); 
+}
+
 function always_run(){
         global $dbConn;
         mysqli_close($dbConn);
