@@ -1,23 +1,22 @@
 <?php
 
 session_start();
-
 require_once(__DIR__ . '/vendor/autoload.php'); 
-
-
 ob_start();
-
-// 3. ดึงค่าจาก Session และ POST
-$dep_id   = $_SESSION['ses_dep_id'];
-$sec_id   = $_SESSION['ses_sec_id'];
-$dateprint = DATE($_POST['dateprint']);
-$uid       = $_POST['uid'];
-$yid       = $_POST['yid'];
-$username  = $_POST['username'];
 
 include "../../library/config.php";
 include "../../library/database.php";
 include "../function.php"; // ต้องแน่ใจว่าฟังก์ชัน thaiDate() และ DateThai() อยู่ในไฟล์นี้
+
+
+// 3. ดึงค่าจาก Session และ POST
+$dep_id   = $_SESSION['ses_dep_id'];
+$sec_id   = $_SESSION['ses_sec_id'];
+$dateprint = DATE($_POST['dateprint']);  // วันที่พิมพ์รายงาน
+$uid       = $_POST['uid'];
+$yid       = $_POST['yid'];
+$username  = $_POST['username'];
+
 
 
 $sql="SELECT d.dep_name,s.sec_id,s.sec_name 
@@ -52,7 +51,7 @@ $row=dbFetchArray($result);
         <tr>
             <th width="5%" >#</th>
             <th width="5%">เลขรับ</th>
-             <th width="5%">วันที่รับ</th>
+            <th width="10%">วันที่รับ</th>
             <th width="10%">เลขหนังสือ</th>
             <th width="10%">ลงวันที่</th>
             <th width="40">เรื่อง</th>
@@ -60,7 +59,7 @@ $row=dbFetchArray($result);
             <th width="10%">ลงชื่อผู้รับ</th> 
         </tr>
         <?php
-        $i=1;
+        $i=1;  // ตัวนับลำดับแถว
         $sql="SELECT m.book_id,m.rec_id,m.dep_id,d.book_no,d.title,d.sendfrom,d.sendto,d.date_book,d.date_in,d.date_line,d.practice,d.status,s.sec_code,dep.dep_name
               FROM book_master m
               INNER JOIN book_detail d ON d.book_id = m.book_id
@@ -96,6 +95,7 @@ $row=dbFetchArray($result);
 <h4>*หมายเหตุ: ใช้สำหรับเจ้าหน้าที่นำส่งเอกสารลงชื่อรับเอกสารตัวจริง</h4>
 </body>
 </html>
+
 <?Php
 // 7. สิ้นสุดการเก็บ Output และสร้าง PDF
 

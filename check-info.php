@@ -7,7 +7,9 @@
 </head>
 <body>
     <h1>
-       jhellojava
+       <?php  
+       print phpinfo();
+         ?>
     </h1>
 </body>
 </html>
