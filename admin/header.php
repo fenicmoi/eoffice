@@ -15,8 +15,10 @@ include '../library/database.php';
 include '../library/config.php';
 include '../library/pagination.php';
 
+// **[START] การปรับปรุงความปลอดภัย SQL Injection (User ID) **
+$u_id_raw = (isset($_SESSION['ses_u_id'])) ? $_SESSION['ses_u_id'] : '';
+$u_id = (int)$u_id_raw; // Type casting
 
-$u_id=(isset($_SESSION['ses_u_id']))?$_SESSION['ses_u_id']:'';
 $sec_id=(isset($_SESSION['ses_sec_id']))?$_SESSION['ses_sec_id']:'';
 $dep_id=(isset($_SESSION['ses_dep_id']))?$_SESSION['ses_dep_id']:'';
 
@@ -28,8 +30,8 @@ if($u_id){
                  INNER JOIN depart d ON d.dep_id=s.dep_id
                  INNER JOIN user_level l ON l.level_id=u.level_id
                  WHERE u.u_id=$u_id";
-	$result=  dbQuery($sql);
-	$num= dbNumRows($result);
+	$result =  dbQuery($sql);
+	$num = dbNumRows($result);
 	if($num>0){
 		$row= dbFetchAssoc($result);
 		$u_name=$row['u_name'];
@@ -243,32 +245,5 @@ else{
       </div>
     </div>
     <!-- End Model -->
-<?php  //useronline
-//user online
-$session=session_id();
-$time=time();
-$time_check=$time-600;
-//print $time_check;
-//กำหนดเวลาในที่นี้ผมกำหนด 10 นาที
-$sql="select * from user_online";
-//print $sql;
-$result = dbQuery($sql);
-$session_check = dbNumRows($result);
-//echo "session_check".$session_check;
-if ($session_check == 0) {
-    $sql="insert into user_online values ('$session',$time)";
-    //print $sql;
-    dbQuery($sql);
-}
-else {
-    $sql="update user_online set time='$time' where session='$session'";
-    //print $sql;
-	dbQuery($sql);
-}
-$sql="select count(*) from user_online";
-$result= dbQuery($sql);
-$user_online = dbNumRows($result);
 
-?>
-    <div class="container-fluse">
 
