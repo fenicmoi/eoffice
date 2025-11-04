@@ -1,13 +1,7 @@
 <?php
-// ป้องกัน Notice หาก session ถูกเริ่มไปแล้วที่ไฟล์อื่น
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-
-if(!isset($_SESSION['ses_u_id'])){
-	header("location:../index.php");
-}
-
 
 date_default_timezone_set('Asia/Bangkok');
 include 'function.php';
@@ -15,10 +9,8 @@ include '../library/database.php';
 include '../library/config.php';
 include '../library/pagination.php';
 
-// **[START] การปรับปรุงความปลอดภัย SQL Injection (User ID) **
-$u_id_raw = (isset($_SESSION['ses_u_id'])) ? $_SESSION['ses_u_id'] : '';
-$u_id = (int)$u_id_raw; // Type casting
 
+$u_id=(isset($_SESSION['ses_u_id']))?$_SESSION['ses_u_id']:'';
 $sec_id=(isset($_SESSION['ses_sec_id']))?$_SESSION['ses_sec_id']:'';
 $dep_id=(isset($_SESSION['ses_dep_id']))?$_SESSION['ses_dep_id']:'';
 
@@ -30,8 +22,8 @@ if($u_id){
                  INNER JOIN depart d ON d.dep_id=s.dep_id
                  INNER JOIN user_level l ON l.level_id=u.level_id
                  WHERE u.u_id=$u_id";
-	$result =  dbQuery($sql);
-	$num = dbNumRows($result);
+	$result=  dbQuery($sql);
+	$num= dbNumRows($result);
 	if($num>0){
 		$row= dbFetchAssoc($result);
 		$u_name=$row['u_name'];
@@ -81,52 +73,54 @@ if($u_id){
      <link rel="stylesheet" href="../css/jquery-ui-1.11.4.custom.css" />
      <link rel="stylesheet" href="../css/SpecialDateSheet.css" />
    
-    <!-- Notification -->
-    <script src="../js/jquery_notification_v.1.js"></script>
-    <link href="../css/jquery_notification.css" type="text/css" rel="stylesheet" />
-
+    <!-- หน้าต่างแจ้งเตือน -->
+    <script  src="../js/jquery_notification_v.1.js"> </script>  <!-- Notification -->
+    <link href="../css/jquery_notification.css" type="text/css" rel="stylesheet"/>
+    
     <link href="../css/dataTables.css" rel="stylesheet">
     <script src="../js/dataTables.js"></script>
 
     <link rel="stylesheet" type="text/css" href="../select/selection.css">
     <link href="https://fonts.googleapis.com/css?family=Taviraj" rel="stylesheet">
-
-    <!-- Bootstrap select autocomplete -->
-    <link rel="stylesheet" href="css/bootstrap-select.css">
+    
+   <!-- bootstrap select  autocomplete -->
+    <link rel="stylesheet" href="css/bootstrap-select.css">	
     <script src="js/bootstrap-select.js"></script>
     <script type="text/javascript">
-      $(function() {
-        $('.selectpicker').selectpicker();
-      });
+        $('.selectpicker').selectpicker({
+          });
     </script>
 
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <script type="text/javascript" src="../js/jquery.alphanumeric.js"></script>
     <script>
-      $(document).ready(function () {
-        $('#myTable').DataTable();
-        $('.select-unit').select2();
-      });
+      $(document).ready( function () {
+          $('#myTable').DataTable();
+          $('.select-unit').select2();
+      } );
+
     </script>
 
-    <!-- Chatra (commented out, remove if not used) -->
-    <!--
-    <script>
-      // (function(d, w, c) {
-      //   w.ChatraID = '8hztemC96qH6pieSE';
-      //   var s = d.createElement('script');
-      //   w[c] = w[c] || function() {
-      //     (w[c].q = w[c].q || []).push(arguments);
-      //   };
-      //   s.async = true;
-      //   s.src = 'https://call.chatra.io/chatra.js';
-      //   if (d.head) d.head.appendChild(s);
-      // })(document, window, 'Chatra');
-    </script>
-    -->
+<!-- Chatra {literal} -->
 
+<script>
+/*
+    (function(d, w, c) {
+        w.ChatraID = '8hztemC96qH6pieSE';
+        var s = d.createElement('script');
+        w[c] = w[c] || function() {
+            (w[c].q = w[c].q || []).push(arguments);
+        };
+        s.async = true;
+        s.src = 'https://call.chatra.io/chatra.js';
+        if (d.head) d.head.appendChild(s);
+    })(document, window, 'Chatra');
+    */
+</script>
+
+<!-- /Chatra {/literal} -->
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -200,16 +194,17 @@ else{
              
             <ul class="nav navbar-nav navbar-right">
               <li>
-                <div class="chip">
-                  <img src="../images/img_avatar.png" alt="Person" width="50" height="50">
-                  <span class="badge" data-toggle="modal" title="Click" data-target="#myModal"> ข้อมูลผู้ใช้ </span>
-                </div>
+                      <div class="chip">
+                          <img src="../images/img_avatar.png" alt="Person" width="50" height="50">
+                          <span class="badge" data-toggle="modal" title="Click"  data-target="#myModal"> ข้อมูลผู้ใช้ </span>
+                     </div>
               </li>
               <li>
-                <div class="chip">
-                  <img src="../images/logout.png" alt="Person" width="50" height="50">
-                  <a class="badge" href="../logout.php" onclick="return confirm('คุณต้องการออกจากระบบหรือไม่?');"> ออกจากระบบ</a>
-                </div>
+                  <div class="chip">
+                          <img src="../images/logout.png" alt="Person" width="50" height="50">
+                          <a class="badge" href="../logout.php" onclick(return alert("hellojava"));> ออกจากระบบ</a>
+                         
+                  <!--<a href="../logout.php">LOGOUT</a> -->
               </li>
             </ul>
           </div><!-- /.navbar-collapse -->
@@ -232,10 +227,10 @@ else{
             <h4 class="modal-title"><i class="fa fa-address-card" aria-hidden="true"></i>User Profile</h4>
           </div>
           <div class="modal-body">
-              <p><i class="fa fa-tag"></i> ชื่อ  <?php echo htmlspecialchars($firstname); ?> <?php echo htmlspecialchars($lastname); ?></p>
-              <p><i class="fa fa-tag"></i><?php echo htmlspecialchars($secname); ?></p>
-              <p><i class="fa fa-tag"></i><?php echo htmlspecialchars($depart); ?></p>
-              <p><i class="fa fa-tag"></i>สถานะผู้ใช้งาน  <?php echo htmlspecialchars($level); ?></p>
+              <p><i class="fa fa-tag"></i> ชื่อ  <?php print $firstname ?>    <?php print $lastname ?></p>
+              <p><i class="fa fa-tag"></i><?php print $secname?></p>
+              <p><i class="fa fa-tag"></i><?php print $depart?></p>
+              <p><i class="fa fa-tag"></i>สถานะผู้ใช้งาน  <?php print $level ?></p>
           </div>
           <div class="modal-footer bg-primary">
               <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i></button>
@@ -245,5 +240,32 @@ else{
       </div>
     </div>
     <!-- End Model -->
+<?php  //useronline
+//user online
+$session=session_id();
+$time=time();
+$time_check=$time-600;
+//print $time_check;
+//กำหนดเวลาในที่นี้ผมกำหนด 10 นาที
+$sql="select * from user_online";
+//print $sql;
+$result = dbQuery($sql);
+$session_check = dbNumRows($result);
+//echo "session_check".$session_check;
+if ($session_check == 0) {
+    $sql="insert into user_online values ('$session',$time)";
+    //print $sql;
+    dbQuery($sql);
+}
+else {
+    $sql="update user_online set time='$time' where session='$session'";
+    //print $sql;
+	dbQuery($sql);
+}
+$sql="select count(*) from user_online";
+$result= dbQuery($sql);
+$user_online = dbNumRows($result);
 
+?>
+    <div class="container-fluse">    
 
