@@ -49,12 +49,6 @@
 
 <link href="css/dataTables.css" rel="stylesheet">
 <script src="js/dataTables.js"></script>
-<!-- <script type="text/javascript" language="javascript" >
-			$(document).ready( function () {
-                 $('#myTable').DataTable();
-            } );
-</script> -->
-
   </head>
   <body>
     <!-- Fixed navbar -->
@@ -272,20 +266,19 @@
         </div>  
 <?php
 if(isset($_POST['add'])){       // check button  
-	$depart=$_POST['depart'];
-	$book_no=$_POST['book_no'];
-	$address=$_POST['address'];
-	$office_tel=$_POST['o_tel'];
-	$office_fax=$_POST['o_fax'];
-	$website=$_POST['website'];
-	$email=$_POST['email'];
-	$fname=$_POST['fname'];
-	$lname=$_POST['lname'];
-	$position=$_POST['position'];
-	$tel=$_POST['tel'];
-	$fax=$_POST['fax'];
-	// $username=$_POST['username'];
-	// $password=$_POST['password'];
+	$depart = dbEscapeString($_POST['depart']);
+	$book_no = dbEscapeString($_POST['book_no']);
+	$address = dbEscapeString($_POST['address']);
+	$office_tel= dbEscapeString($_POST['o_tel']);
+	$office_fax = dbEscapeString($_POST['o_fax']);
+	$website = dbEscapeString($_POST['website']);
+	$email = dbEscapeString($_POST['email']);
+	$fname = dbEscapeString($_POST['fname']);
+	$lname = dbEscapeString($_POST['lname']);
+	$position = dbEscapeString($_POST['position']);
+	$tel= dbEscapeString($_POST['tel']);
+	$fax = dbEscapeString($_POST['fax']);
+
 	$status=0;
 	$sql="INSERT INTO register_staf(depart,book_no,address,office_tel,office_fax,website,fname,lname,position,tel,fax,email,status) VALUES('$depart','$book_no','$address','$office_tel','$office_fax','$website','$fname','$lname','$position','$tel','$fax','$email',$status)";
 	// 	print $sql;

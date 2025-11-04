@@ -178,17 +178,17 @@
 <?php 
 if(isset($_POST['save'])){
 	
-	$type_id=$_POST['province']; // ประเภทหน่วยงาน
-	$dep_id=$_POST['amphur'];   // รหัสหน่วยงาน
-	$sec_id=$_POST['district'];  // รหัสกลุ่มงาน
-	$level_id=5;
-	$u_name=$_POST['u_name'];   // ชื่อผู้ใช้
-	$u_pass=$_POST['u_pass'];   // รหัสผ่าน
-	$firstname=$_POST['firstname']; // ชื่อ
-	$lastname=$_POST['lastname'];   // นามสกุล
-	$position=$_POST['position'];      // ตำแหน่ง
-	$date_create=$_POST['date_user'];   // วันที่สร้าง
-	$email=$_POST['email'];         // อีเมลล์
+	$type_id = dbEscapeString($_POST['province']); // ประเภทหน่วยงาน
+	$dep_id = dbEscapeString($_POST['amphur']);   // รหัสหน่วยงาน
+	$sec_id = dbEscapeString($_POST['district']);  // รหัสกลุ่มงาน
+	$level_id = 5;
+	$u_name = dbEscapeString($_POST['u_name']);   // ชื่อผู้ใช้
+	$u_pass = dbEscapeString($_POST['u_pass']);   // รหัสผ่าน
+	$firstname = dbEscapeString($_POST['firstname']); // ชื่อ
+	$lastname = dbEscapeString($_POST['lastname']);   // นามสกุล
+	$position =  dbEscapeString($_POST['position']);      // ตำแหน่ง
+	$date_create = dbEscapeString($_POST['date_user']);   // วันที่สร้าง
+	$email = dbEscapeString($_POST['email']);         // อีเมลล์
 	
 	// ตรวจสอบชื่อผู้ใช้ซ้ำ
 	$sql="SELECT u_name FROM user WHERE u_name='".dbEscapeString($u_name)."'";
@@ -257,28 +257,4 @@ if(isset($_POST['save'])){
 )
 </script> 
 
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script type="text/javascript" src="js/script_dropdown.js"></script>
-
-    <script type="text/javascript">
-      google.charts.load('current', {
-	'packages':['corechart']
-}
-);
-google.charts.setOnLoadCallback(drawChart);
-function drawChart() {
-	var data = google.visualization.arrayToDataTable([
-	          ['Task', 'Hours per Day'],
-	          ['ส่วนกลาง',     <?php echo $dep1;?>],
-              ['ส่วนภูมิภาค',      <?php echo $dep2;?>],
-              ['ส่วนท้องถิ่น',      <?php echo $dep3;?>],
-              ['อื่นๆ',      <?php echo $dep4;?>],
-        ]);
-        var options = {
-          title: 'ผู้ใช้งานทั้งหมด'
-        };
-        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-        chart.draw(data, options);
-      }
-</script>
 
