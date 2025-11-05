@@ -66,15 +66,25 @@ $query = dbQuery($sql) or die("section 3");
 
 $data = array();
 while( $row= dbFetchArray($query) ) {  // preparing an array
+
+    $datein = new DateTime($row["datein"]); // วันที่บันทึก
+    $today = new DateTime(); // วันที่ปัจจุบัน
+    $interval = $datein->diff($today);
+    $days_diff = (int)$interval->days; // ผลต่างเป็นจำนวนวัน
+
+    $is_disabled = ($days_diff > 3) ? 'disabled' : '';
+    $edit_button = "<a href='#' data-toggle='modal' data-target='.bs-example-modal-table' onclick='loadEditForm(".$row['hire_id'].")' class='btn btn-sm btn-primary ".$is_disabled."'>แก้ไข</a>";
+    
+
 	$nestedData=array(); 
 	$nestedData[] = $row["rec_no"].'/'.$row['yname'];
     $nestedData[] = thaiDate($row["datein"]);
 	$nestedData[] = "<a href='#' data-toggle='modal' data-target='.bs-example-modal-table' onclick='loadData(".$row['hire_id'].",".$u_id.")'>".$row["title"]."</a>";
     $nestedData[] = number_format($row["money"],2);
 	$nestedData[] = $row["dep_name"];
-    $nestedData[] = "<a href='report/rep-hire-item.php?hire_id=".$row['hire_id']."' class='btn btn-sm btn-warning' target='_blank'>พิมพ์</a>"; // แก้ไข
-    $nestedData[] = $nestedData[] = "<a href='#' data-toggle='modal' data-target='.bs-example-modal-table' onclick='loadEditForm(".$row['hire_id'].")' class='btn btn-sm btn-primary'>แก้ไข</a>"; // แก้ไข
-	$data[] = $nestedData;
+    $nestedData[] = "<a href='report/rep-hire-item.php?hire_id=".$row['hire_id']."' class='btn btn-sm btn-warning' target='_blank'>พิมพ์</a>"; 
+	$nestedData[] = $edit_button ;
+    $data[] = $nestedData;
 }
 
 $json_data = array(
