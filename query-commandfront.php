@@ -21,7 +21,7 @@ $sql="SELECT cid FROM flowcommand";
 //print $sql;
 $query = dbQuery($sql);
 
-$totalData = dbNumRows($query) or die("serverside1.php: get user totalData");
+$totalData = dbNumRows($query) or die("query-commandfront.php: get user totalData");
 //print $totalData;
 
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
@@ -36,9 +36,16 @@ $sql="SELECT c.*,y.yname,d.dep_name,u.firstname
 		";
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
-	$sql.=" AND ( rec_id LIKE '".$requestData['search']['value']."%' ";    
-	$sql.=" OR title  LIKE '".$requestData['search']['value']."%' ";
-	$sql.=" OR dep_name LIKE '".$requestData['search']['value']."%' )";
+
+	$searchValue = dbEscapeString($requestData['search']['value']); 
+	$searchTerm = "%" . $searchValue . "%";
+
+	// $sql.=" AND ( rec_id LIKE '".$requestData['search']['value']."%' ";    
+	// $sql.=" OR title  LIKE '".$requestData['search']['value']."%' ";
+	// $sql.=" OR dep_name LIKE '".$requestData['search']['value']."%' )";
+	$sql.=" AND ( rec_id LIKE '$searchTerm' ";    
+	$sql.=" OR title  LIKE '$searchTerm' ";
+	$sql.=" OR dep_name LIKE '$searchTerm' )";
 }
 
 

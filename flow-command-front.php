@@ -12,7 +12,7 @@
 						type: "post",  // method  , by default get
 						error: function(){  // error handling
 							$(".myTable-error").html("");
-							$("#myTable").append('<tbody class="myTable-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
+							$("#myTable").append('<tbody class="myTable-error"><tr><th colspan="3">ไม่มีข้อมูล</th></tr></tbody>');
 							$("#myTable").css("display","none");
 							
 						}
