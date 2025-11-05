@@ -167,7 +167,27 @@ $u_id=$_SESSION['ses_u_id'];
                 </div>
               </div>
             </div>
-            <!-- End Model -->  
+<!-- End Model -->  
+
+<!--เพิ่มข้อมูล -->
+ <div id="modalEdit" class="modal fade" role="dialog" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header bg-primary">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="exampleModalLabel"><i class="fa fa-list"></i> ออกเลขสัญญาจ้าง</h4>
+                  </div>
+                  <div class="modal-body">
+                     <div id="divEditForm"></div>
+                  </div>
+                  <div class="modal-footer bg-primary">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+    <!-- End Model -->  
+    
     
 
 <!--  modal แสงรายละเอียดข้อมูล -->
@@ -268,6 +288,16 @@ function loadData(hire_id,u_id) {
         u_id : u_id 
     };
 $('#divDataview').load('show_hire_detail.php',sdata);
+}
+
+function loadEditForm(hire_id) {
+    var sdata = {
+        hire_id : hire_id
+    };
+ 
+    $('#divDataview').load('load_hire_edit_form.php', sdata, function() {
+        $('.bs-example-modal-table').modal('show'); 
+    });
 }
 </script>
 

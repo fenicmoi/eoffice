@@ -73,7 +73,7 @@ while( $row= dbFetchArray($query) ) {  // preparing an array
     $nestedData[] = number_format($row["money"],2);
 	$nestedData[] = $row["dep_name"];
     $nestedData[] = "<a href='report/rep-hire-item.php?hire_id=".$row['hire_id']."' class='btn btn-sm btn-warning' target='_blank'>พิมพ์</a>"; // แก้ไข
-    $nestedData[] = "<a href='hire-form.php?hire_id=".$row['hire_id']."' class='btn btn-sm btn-primary'>แก้ไข</a>"; // แก้ไข
+    $nestedData[] = $nestedData[] = "<a href='#' data-toggle='modal' data-target='.bs-example-modal-table' onclick='loadEditForm(".$row['hire_id'].")' class='btn btn-sm btn-primary'>แก้ไข</a>"; // แก้ไข
 	$data[] = $nestedData;
 }
 
