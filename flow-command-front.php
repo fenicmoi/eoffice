@@ -1,12 +1,13 @@
 
 <script type="text/javascript" language="javascript" >
 
-  
 			$(document).ready(function() {
 				var dataTable = $('#myTable').DataTable( {
           order: [[ 0, 'desc' ], [ 0, 'asc' ]],
 					"processing": true,
 					"serverSide": true,
+          "resonsive": true,
+        
           "language": {
                 "sLengthMenu": "แสดง _MENU_ เร็คคอร์ด ต่อหน้า",
                 "sZeroRecords": "ไม่พบข้อมูลที่ค้นหา",
@@ -33,9 +34,9 @@
 					}
 				} );
 			} );
-  
 </script>
 <br><br><br>
+<div class ="row"
         <div  class="col-md-12">
             <div class="panel panel-primary" style="margin: 20">
                 <div class="panel-heading">
@@ -48,7 +49,6 @@
                                 <th>เรื่อง</th>
                                 <th>ลงวันที่</th>
                                 <th>ไฟล์แนบ</th>
-                               
                                 <th >เจ้าของเรื่อง</th>
                             </tr>
                         </thead>
@@ -57,14 +57,13 @@
                                 <th>เรื่อง</th>
                                 <th>ลงวันที่</th>
                                 <th>ไฟล์แนบ</th>
-                               
                                 <th>เจ้าของเรื่อง</th>
                         </tfoot>
-                       
                     </table>
             </div>
         </div>  <!-- col-md-10 -->
-    </div>  <!-- container -->
+    </div> <!-- row -->
+  </div>  <!-- container -->
 
 
  <!-- Modal แสดงรายละเอียด -->

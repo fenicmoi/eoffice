@@ -62,7 +62,7 @@ while( $row= dbFetchArray($query) ) {  // preparing an array
 	$nestedData=array(); 
 	$nestedData[] = $row["rec_id"].'/'.$row['yname'];
 	$nestedData[] =  $row["title"];
-    $nestedData[] = $row["dateline"];
+    $nestedData[] = thaiDate($row["dateline"]);
 	$nestedData[] = "<a href='admin/$row[file_upload]' target='_blank'>Download</a>";
 	$nestedData[] = $row["dep_name"];
 	$data[] = $nestedData;

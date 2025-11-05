@@ -103,6 +103,9 @@
     </div>
   </div>
 </div>
+
+<div class="container-fluse">
+  
 <!-- Modal Login -->
         <div id="myModal" class="modal fade" role="dialog">
           <div class="modal-dialog">
@@ -320,4 +323,4 @@ if(isset($_POST['add'])){       // check button
                 
 }
 ?>
-<div class="container-fluse">
+
