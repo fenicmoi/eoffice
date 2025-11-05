@@ -3,17 +3,16 @@
 <?php
 include "header.php"; 
 $yid=chkYear();
-//print $yid[0];
 $u_id=$_SESSION['ses_u_id'];
 ?>
-    <div class="row">
 
+    <div class="row">
         <div class="col-md-2" >
              <?php
                  $menu=  checkMenu($level_id);
                  include $menu;
              ?>
-        </div>  <!-- col-md-2 -->
+        </div>  
 
         <div class="col-md-10">
             <div class="panel panel-default" style="margin: 20">
@@ -21,6 +20,27 @@ $u_id=$_SESSION['ses_u_id'];
                     <a href="add_object.php" class="btn btn-primary  pull-right" data-toggle="modal" data-target="#modalAdd"><i class="fa fa-plus" aria-hidden="true"></i> ออกเลขที่สัญญา</a>
                 </div> 
                 <br>
+
+                    <table id="myTable" cellpadding="0" cellspacing="0"  class="display" width="100%">
+                        <thead class="bg-info">
+                            <tr>
+                                <th>เลขที่คำสั่ง</th>
+                                <th>เรื่อง</th>
+                                <th>ลงวันที่</th>
+                                <th>ไฟล์แนบ</th>
+                                <th >เจ้าของเรื่อง</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                                <th>เลขที่คำสั่ง</th>
+                                <th>เรื่อง</th>
+                                <th>ลงวันที่</th>
+                                <th>ไฟล์แนบ</th>
+                                <th>เจ้าของเรื่อง</th>
+                        </tfoot>
+                    </table>
+
+                    
                 <table class="table table-bordered table-hover" id="tbHire">
                  <thead class="bg-info">
                      <tr>
@@ -40,14 +60,6 @@ $u_id=$_SESSION['ses_u_id'];
                         $row=dbFetchAssoc($result);
                         $last_id = $row['maxid']; // คืนค่า id ที่ insert สูงสุด
    
-                        //แสดงข้อมูล
-                        // $sql="SELECT h.*,d.dep_name,y.yname
-                        //       FROM hire h
-                        //       INNER JOIN depart d ON d.dep_id=h.dep_id
-                        //       INNER JOIN sys_year y ON h.yid=y.yid
-                        //       WHERE h.yid=$yid[0]
-                        //       ORDER BY hire_id DESC
-                        //       ";
                         $sql="SELECT h.*,d.dep_name,y.yname
                               FROM hire h
                               INNER JOIN depart d ON d.dep_id=h.dep_id
@@ -55,7 +67,7 @@ $u_id=$_SESSION['ses_u_id'];
                               WHERE h.dep_id=$dep_id
                               ORDER BY hire_id DESC
                               ";
-                        //print $sql;
+                     
                         $result = dbQuery($sql);
                         while($row=dbFetchArray($result)){?>
                             <tr>
@@ -87,6 +99,9 @@ $u_id=$_SESSION['ses_u_id'];
                  </tbody>
                 </table>
             </div>
+
+
+
             <!--เพิ่มข้อมูล -->
             <div id="modalAdd" class="modal fade" role="dialog">
               <div class="modal-dialog">

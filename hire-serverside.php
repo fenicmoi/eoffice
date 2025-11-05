@@ -7,13 +7,11 @@ $requestData= $_REQUEST;
 
 //ฟิลด์ที่จะเอามาแสดงและค้นหา
 $columns = array( 
-	0 => 'cid',
-	1 => 'rec_id', 
-    2 => 'yname',
-	3 => 'title',
-    4 => 'dateline',
-	5 => 'file_upload',
-    6 => 'dep_name'
+	0 => 'rec_no',  //เลขที่สัญญาจ้าง
+	1 => 'title',   //รายการจ้าง 
+    2 => 'datein',  //วันที่บันทึก
+	3 => 'money',   //วงเงิน
+    4 => 'dep_name',  //หน่วยงาน
 );
 
 // getting total number records without any search
@@ -29,16 +27,20 @@ $totalFiltered = $totalData;  // when there is no search parameter then total nu
 
 
 $sql="SELECT c.*,y.yname,d.dep_name,u.firstname
-	  FROM  flowcommand as c
-	  INNER JOIN sys_year as y ON y.yid=c.yid
-	  INNER JOIN user as u ON  u.u_id = c.u_id
-	  INNER JOIN depart as d ON d.dep_id =c.dep_id
+		FROM  flowcommand as c
+		INNER JOIN sys_year as y ON y.yid=c.yid
+		INNER JOIN user as u ON  u.u_id = c.u_id
+		INNER JOIN depart as d ON d.dep_id =c.dep_id
 		";
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 
 	$searchValue = dbEscapeString($requestData['search']['value']); 
 	$searchTerm = "%" . $searchValue . "%";
+
+	// $sql.=" AND ( rec_id LIKE '".$requestData['search']['value']."%' ";    
+	// $sql.=" OR title  LIKE '".$requestData['search']['value']."%' ";
+	// $sql.=" OR dep_name LIKE '".$requestData['search']['value']."%' )";
 	$sql.=" AND ( rec_id LIKE '$searchTerm' ";    
 	$sql.=" OR title  LIKE '$searchTerm' ";
 	$sql.=" OR dep_name LIKE '$searchTerm' )";
@@ -51,7 +53,6 @@ $totalFiltered = dbNumRows($query); // when there is a search parameter then we 
 $sql.=" ORDER BY ". $columns[$requestData['order'][0]['column']]."   ".$requestData['order'][0]['dir']."  
 		LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 
-		//print $sql;
 $query = dbQuery($sql) or die("query-commandfront.php: get use queryr3");
 
 $data = array();

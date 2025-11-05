@@ -1,6 +1,5 @@
 
 <script type="text/javascript" language="javascript" >
-
 			$(document).ready(function() {
 				var dataTable = $('#myTable').DataTable( {
           order: [[ 0, 'desc' ], [ 0, 'asc' ]],
@@ -35,6 +34,7 @@
 				} );
 			} );
 </script>
+
 <br><br><br>
 <div class ="row"
         <div  class="col-md-12">

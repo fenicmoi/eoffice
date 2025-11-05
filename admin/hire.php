@@ -5,34 +5,46 @@ include "header.php";
 $yid=chkYearMonth();
 $u_id=$_SESSION['ses_u_id'];
 ?>
-<script>
-	$( document ).ready( function () {
-		// $("#btnSearch").prop("disabled",true); 
-		$( "#dateSearch" ).hide();
-		$( "tr" ).first().hide();
-
-
-		$( "#hideSearch" ).click( function () {
-			$( "tr" ).first().show( 1000 );
-		} );
-
-
-		$( '#typeSearch' ).change( function () {
-			var typeSearch = $( '#typeSearch' ).val();
-			if ( typeSearch == 4 ) {
-				$( "#dateSearch" ).show( 500 );
-				$( "#search" ).hide( 500 );
-				//   $("#btnSearch").prop("disabled",false); 
-			} else {
-				$( "#dateSearch" ).hide( 500 );
-				$( "#search" ).show( 500 );
-				//   $("#search").keydown(function(){
-				//     $("#btnSearch").prop("disabled",false); 
-				//   });
-			}
-		} )
-	} );
+<script type="text/javascript" language="javascript" >
+			$(document).ready(function() {
+				var dataTable = $('#myTable').DataTable( {
+          order: [[ 0, 'desc' ], [ 0, 'asc' ]],
+					"processing": true,
+					"serverSide": true,
+          "resonsive": true,
+        
+          "language": {
+                "sLengthMenu": "แสดง _MENU_ เร็คคอร์ด ต่อหน้า",
+                "sZeroRecords": "ไม่พบข้อมูลที่ค้นหา",
+                "sInfo": "แสดง _START_ ถึง _END_ ของ _TOTAL_ เร็คคอร์ด",
+                "sInfoEmpty": "แสดง 0 ถึง 0 ของ 0 เร็คคอร์ด",
+                "sInfoFiltered": "(จากเร็คคอร์ดทั้งหมด _MAX_ เร็คคอร์ด)",
+                "sSearch": "ค้นหา: ",
+                "oPaginate": {
+                    "sFirst":    "หน้าแรก",
+                    "sPrevious": "ก่อนหน้า",
+                    "sNext":     "ถัดไป",
+                    "sLast":     "หน้าสุดท้าย"
+                }
+            },
+					"ajax":{
+						url :"hire-serverside.php", // json datasource
+						type: "post",  // method  , by default get
+                        data:{
+                            level_id: '<?php echo $level_id; ?>',
+                            dep_id: '<?php echo $dep_id; ?>'
+                        },
+						error: function(){  // error handling
+							$(".myTable-error").html("");
+							$("#myTable").append('<tbody class="myTable-error"><tr><th colspan="3">ไม่มีข้อมูล</th></tr></tbody>');
+							$("#myTable").css("display","none");
+							
+						}
+					}
+				} );
+			} );
 </script>
+
     <div class="row">
         <div class="col-md-2" >
              <?php
@@ -50,150 +62,29 @@ $u_id=$_SESSION['ses_u_id'];
 						<a href="buy.php" class="btn btn-default pull-right"><i class="fas fa-home"></i> หน้าหลัก</a>
                 </div>  
                 <br>
-                <table class="table table-bordered table-hover" id="tbHire">
-                 <thead class="bg-info">
-									 	 <tr bgcolor="black">
-											<td colspan="6">
-												<form class="form-inline" method="post" name="frmSearch" id="frmSearch">
-													<div class="form-group">
-														<select class="form-control" id="typeSearch" name="typeSearch">
-															<option value="1"><i class="fas fa-star"></i> เลขที่สัญญา</option>
-															<option value="2" selected>เรื่องสัญญา</option>
-														</select>
 
-														<div class="input-group">
-															<input class="form-control" id="search" name="search" type="text" size="80" placeholder="Keyword สั้นๆ">
-															<div class="input-group-btn">
-																<button class="btn btn-primary" type="submit" name="btnSearch" id="btnSearch">
-																	 <i class="fas fa-search "></i>
-																</button>
-															</div>
-														</div>
-													</div>
-												</form>
-											</td>
-										</tr>
-                                        <tr> 
-                                            <th>เลขสัญญา</th>
-                                            <th>รายการจ้าง</th>
-                                            <th>วันที่บันทึก</th>
-                                            <th>วงเงิน</th>
-                                            <th>เจ้าของเรื่อง</th>
-                                            <th>พิมพ์</th>
-                                            <th>แก้ไข</th>
-                                        </tr>
-                 </thead>
-                 <tbody>
-                 <?php
-                        //คนหา ID ล่าสุด
-                        $sql = "SELECT MAX(hire_id) AS maxid FROM hire"; // query อ่านค่า id สูงสุด
-                        $result = dbQuery($sql);
-                        $row=dbFetchAssoc($result);
-                        $last_id = $row['maxid']; // คืนค่า id ที่ insert สูงสุด
-   
-                        $sql="SELECT h.*,d.dep_name,y.yname
-                              FROM hire h
-                              INNER JOIN depart d ON d.dep_id=h.dep_id
-                              INNER JOIN  year_money y ON h.yid=y.yid
-                              ";
-                        //ส่วนการค้นหา
-									 if ( isset( $_POST[ 'btnSearch' ] ) ) { //ถ้ามีการกดปุ่มค้นหา
-												@$typeSearch = $_POST[ 'typeSearch' ]; //ประเภทการค้นหา
-												@$txt_search = $_POST[ 'search' ]; //กล่องรับข้อความ
-
-											if ( @$typeSearch == 1 ) { //ทะเบียนรับ
-												$sql .= " WHERE h.rec_no LIKE '%$txt_search%'   ORDER BY hire_id  DESC";
-											} elseif ( @$typeSearch == 2 ) { //เลขหนังสือ
-												$sql .= " WHERE h.title LIKE '%$txt_search%'     ORDER BY hire_id DESC ";
-											} 
-										 //print $sql;
-										//$result=dbQuery($sql);
-										$result = page_query( $dbConn, $sql, 10 );
-										$numrow = dbNumRows( $result );
-										if ( $numrow == 0 ) {
-											echo "<script>
-															 swal({
-																			title:'ไม่พบข้อมูล!',
-																			type:'warning',
-																			text:'กรุณาตรวจสอบคำค้น...หรือเลือกเงื่อนไขการค้นหาใหม่อีกครั้งนะครับ',
-																			showConfirmButton:true
-																														},
-																			function(isConfirm){
-																					if(isConfirm){
-																						window.location.href='hire.php';
-																					}
-																			}); 
-												</script>";
-										}
-
-										} else { //กรณีโหลดเพจ หรือไม่มีการกดปุ่มใดๆ
-											switch ( $level_id ) {
-												case 1: //admin
-													$sql .= " ORDER BY hire_id  DESC ";
-													break;
-												case 2: //สารบรรณจังหวัด    ดูได้ทั้งจังหวัด
-													$sql .= " ORDER BY hire_id  DESC ";
-													break;
-												case 3: //สารบรรณหน่วยงาน  ดูได้ทั้งหน่วยงาน
-													$sql .= " WHERE d.dep_id=$dep_id ORDER BY h.hire_id  DESC  ";
-													break;
-												case 4: //สารบรรณกลุ่มงาน  ดูได้ทั้งหน่วย  แต่แก้ไม่ได้
-													$sql .= " WHERE  d.dep_id=$dep_id ORDER BY h.hire_id  DESC  ";
-													break;
-												case 5: //สารบรรณกลุ่มงาน  ดูได้เฉพาะของตนเอง
-													$sql .= " WHERE  d.dep_id=$dep_id   ORDER BY h.hire_id  DESC  ";
-													break;
-											}
-
-											$result = page_query( $dbConn, $sql, 10 );
-										}
-					
-					while ( $row = dbFetchArray( $result ) ) {
-						?>
+                  <table id="myTable" cellpadding="0" cellspacing="0"  class="display" width="100%">
+                        <thead class="bg-info">
                             <tr>
-                                <td>
-                                <?php
-                                    if($row['hire_id']==$last_id){
-                                        echo $row['rec_no']; ?>/<?php echo $row['yname'];  
-                                    }else{
-                                        echo $row['rec_no']; ?>/<?php echo $row['yname'];
-                                    }
-                                ?>
-                                 </td>
-                               
-                                <?php 
-                                    $hire_id=$row['hire_id'];
-                                   // print $hire_id;
-                                ?>
-                                <td>
-									<a href="#" onClick="loadData('<?php print $hire_id;?>','<?php print $u_id; ?>');" 
-                                            data-toggle="modal" data-target=".bs-example-modal-table">
-                                        <?php echo iconv_substr($row['title'],0,200,"UTF-8")."...";?> 
-                                    </a>
-                                </td>  
-								<td><?php echo thaiDate($row['datein']); ?></td>
-                               <td><?php echo number_format($row['money']); ?></td>
-								<td><?php echo $row['dep_name'];?></td>
-								<td><a href="report/rep-hire-item.php?hire_id=<?php print $hire_id?>" class="btn btn-info" target="_blank"><i class="fas fa-print"></i></a></td>
-                                <td><a href="#" class="btn btn-warning"><i class="fas fa-edit"></i></a></td>
+                                
+                                <th class="dt-nowrap">เลขที่สัญญา</th>
+                                <th class="dt-nowrap">วันที่บันทึก</th>
+                                <th>เรื่อง</th>
+                                <th class="dt-nowrap">จำนวนเงิน</th>
+                                <th>หน่วยงาน</th>
+                                <th>พิมพ์</th>
+                                <th>แก้ไข</th>
                             </tr>
-                        <?php } ?>
-                 </tbody>
+                        </thead>
+                        <!-- <tfoot>
+                                
+                                <th>เลขที่สัญญา</th>
+                                <th>วันที่บันทึก</th>
+                                <th>เรื่อง</th>
+                                <th>จำนวนเงิน</th>
+                                <th>หน่วยงาน</th>
+                        </tfoot> -->
                 </table>
-							<div class="panel-footer">
-								<center>
-												<a href="hire.php" class="btn btn-primary">
-														<i class="fas fa-home"></i> หน้าหลัก
-												</a>
-													<?php 
-													page_link_border("solid","1px","gray");
-													page_link_bg_color("lightblue","pink");
-													page_link_font("14px");
-													page_link_color("blue","red");
-													page_echo_pagenums(10,true); 
-													?>
-								</center>
-							</div>
             </div> 
         </div> <!-- col-md-10 -->
     </div>    <!-- end row  -->
@@ -263,9 +154,6 @@ $u_id=$_SESSION['ses_u_id'];
                                 <input type="number" class="form-control" id="guarantee" name="guarantee"  value="0"  required="" ;> 
                             </div>
                         </div>
-                       
-                       
-                        
                             <center>
                                 <button class="btn btn-success" type="submit" name="save">
                                     <i class="fa fa-save fa-2x"></i> บันทึก
@@ -334,11 +222,8 @@ if(isset($_POST['save'])){
     }else{
        $rec_no++; 
     } 
-    //echo "rec_no=".$rec_no;
+   
 
-    
-    //echo "This is $rec_no=".$rec_no;
-    //dbQuery('BEGIN');
     $sql="INSERT INTO hire (rec_no,datein,title,money,employee,date_hire,signer,guarantee,date_submit,dep_id,sec_id,u_id,yid)
                 VALUES($rec_no,'$datein','$title',$money,'$employee','$datehire','$signer',$guarantee,'$date_submit',$dep_id,$sec_id,$u_id,$yid[0])";
     
