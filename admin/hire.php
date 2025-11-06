@@ -2,6 +2,15 @@
 <!--  ทะเบียนคุมสัญญาจ้าง -->
 <?php
 include "header.php"; 
+
+// เพิ่มโค้ดนี้เพื่อตรวจสอบการเข้าสู่ระบบ
+if (!isset($_SESSION['ses_u_id']) || empty($_SESSION['ses_u_id'])) {
+    // หากไม่มีเซสชันหรือค่าว่าง ให้เปลี่ยนเส้นทางไปยังหน้า Login หรือแสดงข้อความปฏิเสธ
+    header("Location: login.php"); // เปลี่ยน 'login.php' เป็นชื่อไฟล์หน้าล็อกอินของคุณ
+    exit();
+}
+
+
 $yid=chkYearMonth();
 $u_id=$_SESSION['ses_u_id'];
 ?>

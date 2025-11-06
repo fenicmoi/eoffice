@@ -1,4 +1,11 @@
-<footer class="footer" style="background-color:black; padding-top: 15px; padding-bottom: 5px; position: static;">
+<?php
+if (!defined('IS_SYSTEM_RUNNING')) {
+    // หากค่าคงที่ไม่ได้ถูกกำหนด แปลว่าเป็นการเข้าถึงโดยตรง
+    die('การเข้าถึงโดยตรงไม่ได้รับอนุญาต!');
+}
+?>
+
+<footer class="footer" style="background-color:black; padding-top: 15px; padding-bottom: 5px;">
     <div class="container">
         <p class="text-muted mb-0"> <kbd>E-Office จังหวัดพัทลุง</kbd>  
             พัฒนาโดย:สำนักงานจังหวัดพัทลุง <i class="fas fa-user"></i>  <i class="fas fa-fax" ></i> 074-613409 

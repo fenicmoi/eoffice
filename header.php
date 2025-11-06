@@ -1,4 +1,7 @@
 <?php 
+
+define('IS_SYSTEM_RUNNING', true);
+
  include 'library/config.php';
  include 'library/database.php';
 ?>
@@ -19,7 +22,7 @@
 
 <!-- Bootstrap -->
     <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link href="css/sticky-footer-navbar.css" rel="stylesheet">
+    <!-- <link href="css/sticky-footer-navbar.css" rel="stylesheet"> -->
     <link rel="stylesheet" href="css/loader.css"> 
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
@@ -41,10 +44,19 @@
 
 <!-- /Chatra {/literal} -->
 <style>
-  body{
+body{
     font-family: 'Taviraj', serif;
-    height:100%;
+   
   }
+  .footer {
+    position: absolute; 
+    bottom: 0;
+    width: 100%;
+    height: 50px;
+    line-height: 30px;
+  }
+
+ 
 </style>
 
 <link href="css/dataTables.css" rel="stylesheet">
