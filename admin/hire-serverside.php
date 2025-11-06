@@ -72,9 +72,23 @@ while( $row= dbFetchArray($query) ) {  // preparing an array
     $interval = $datein->diff($today);
     $days_diff = (int)$interval->days; // ผลต่างเป็นจำนวนวัน
 
-    $is_disabled = ($days_diff > 3) ? 'disabled' : '';
-    $edit_button = "<a href='#' data-toggle='modal' data-target='.bs-example-modal-table' onclick='loadEditForm(".$row['hire_id'].")' class='btn btn-sm btn-primary ".$is_disabled."'>แก้ไข</a>";
+    // $is_disabled = ($days_diff > 3) ? 'disabled' : '';
+    // $edit_button = "<a href='#' data-toggle='modal' data-target='.bs-example-modal-table' onclick='loadEditForm(".$row['hire_id'].")' class='btn btn-sm btn-primary ".$is_disabled."'>แก้ไข</a>";
     
+    // ตรวจสอบเงื่อนไขเพื่อกำหนดปุ่ม
+    if ($days_diff > 3) {
+        // รายการเกิน 3 วัน: ใช้ปุ่ม disabled พร้อมไอคอนกุญแจล็อก
+        $edit_button = "<a href='#' data-toggle='modal' data-target='.bs-example-modal-table' class='btn btn-sm btn-danger disabled' title='เกิน 3 วัน ไม่สามารถแก้ไขได้' role='button' aria-disabled='true'>
+                            <i class='fa fa-lock'></i> 
+                        </a>";
+    } else {
+        // รายการไม่เกิน 3 วัน: ใช้ปุ่มแก้ไขตามปกติ
+        $edit_button = "<a href='#' data-toggle='modal' data-target='.bs-example-modal-table' onclick='loadEditForm(".$row['hire_id'].")' class='btn btn-sm btn-primary'>
+                            แก้ไข
+                        </a>";
+    }
+
+
 
 	$nestedData=array(); 
     $nestedData[] = $row["hire_id"];
