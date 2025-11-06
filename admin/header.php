@@ -199,7 +199,9 @@ else{
               <li>
                   <div class="chip">
                           <img src="../images/logout.png" alt="Person" width="50" height="50">
-                          <a class="badge" href="../logout.php" onclick(return alert("hellojava"));> ออกจากระบบ</a>
+                          <a href="#" onclick="confirmLogout(); return false;">
+                              <i class="fa fa-sign-out"></i> ออกจากระบบ
+                          </a>
                          
                   <!--<a href="../logout.php">LOGOUT</a> -->
               </li>
@@ -264,5 +266,25 @@ $result= dbQuery($sql);
 $user_online = dbNumRows($result);
 
 ?>
+<script>
+function confirmLogout() {
+    swal({
+        title: "คุณแน่ใจหรือไม่?",
+        text: "คุณกำลังจะออกจากระบบ!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55", // สีแดง
+        confirmButtonText: "ใช่, ออกจากระบบ!",
+        cancelButtonText: "ยกเลิก",
+        closeOnConfirm: false // ให้สคริปต์เปลี่ยนหน้าเองหลังกด
+    },
+    function(isConfirm){
+        if (isConfirm) {
+            // ถ้ายืนยัน ให้เปลี่ยนเส้นทางไปยังไฟล์ logout.php
+            window.location.href = "../logout.php"; 
+        }
+    });
+}
+</script>
     <div class="container-fluse">    
 
