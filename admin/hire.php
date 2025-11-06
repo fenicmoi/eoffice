@@ -21,6 +21,13 @@ $u_id=$_SESSION['ses_u_id'];
 					"processing": true,
 					"serverSide": true,
           "resonsive": true,
+          "columnDefs": [
+                {
+                    "targets": [ 0 ], // ตำแหน่งคอลัมน์ที่ 0 (hire_id)
+                    "visible": false, // ซ่อนคอลัมน์
+                    "searchable": false // ไม่ให้ค้นหาในคอลัมน์นี้ด้วย
+                }
+            ],
         
           "language": {
                 "sLengthMenu": "แสดง _MENU_ เร็คคอร์ด ต่อหน้า",
@@ -68,14 +75,14 @@ $u_id=$_SESSION['ses_u_id'];
                      		<i class="fas fa-plus"></i> ออกเลขสัญญา
                     	</a>
 						<!-- <button id="hideSearch" class="btn btn-default pull-right"><i class="fas fa-search"> ค้นหา</i></button> -->
-						<a href="buy.php" class="btn btn-default pull-right"><i class="fas fa-home"></i> หน้าหลัก</a>
+						<a href="hire.php" class="btn btn-default pull-right"><i class="fas fa-home"></i> หน้าหลัก</a>
                 </div>  
-                <br>
+               
 
                   <table id="myTable" cellpadding="0" cellspacing="0"  class="display" width="100%">
                         <thead class="bg-info">
                             <tr>
-                                
+                                <th>ที่</th>
                                 <th class="dt-nowrap">เลขที่สัญญา</th>
                                 <th class="dt-nowrap">วันที่บันทึก</th>
                                 <th>เรื่อง</th>
@@ -85,14 +92,8 @@ $u_id=$_SESSION['ses_u_id'];
                                 <th>แก้ไข</th>
                             </tr>
                         </thead>
-                        <!-- <tfoot>
-                                
-                                <th>เลขที่สัญญา</th>
-                                <th>วันที่บันทึก</th>
-                                <th>เรื่อง</th>
-                                <th>จำนวนเงิน</th>
-                                <th>หน่วยงาน</th>
-                        </tfoot> -->
+                        <tbody>
+                        </tbody>
                 </table>
             </div> 
         </div> <!-- col-md-10 -->

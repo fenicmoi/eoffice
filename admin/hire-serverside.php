@@ -16,12 +16,12 @@ $dep_id = isset($requestData['dep_id']) ? $requestData['dep_id'] : 0;
 
 //ฟิลด์ที่จะเอามาแสดงและค้นหา
 $columns = array( 
-	
-	0 => 'rec_no', 
-    1 => 'datein',
-	2 => 'title',
-    3 => 'money',
-	4 => 'dep_name',
+	0 => 'hire_id',
+	1 => 'rec_no', 
+    2 => 'datein',
+	3 => 'title',
+    4 => 'money',
+	5 => 'dep_name',
 );
 
 // getting total number records without any search
@@ -77,6 +77,7 @@ while( $row= dbFetchArray($query) ) {  // preparing an array
     
 
 	$nestedData=array(); 
+    $nestedData[] = $row["hire_id"];
 	$nestedData[] = $row["rec_no"].'/'.$row['yname'];
     $nestedData[] = thaiDate($row["datein"]);
 	$nestedData[] = "<a href='#' data-toggle='modal' data-target='.bs-example-modal-table' onclick='loadData(".$row['hire_id'].",".$u_id.")'>".$row["title"]."</a>";

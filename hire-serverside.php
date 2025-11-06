@@ -7,11 +7,12 @@ $requestData= $_REQUEST;
 
 //ฟิลด์ที่จะเอามาแสดงและค้นหา
 $columns = array( 
-	0 => 'rec_no',  //เลขที่สัญญาจ้าง
-	1 => 'title',   //รายการจ้าง 
-    2 => 'datein',  //วันที่บันทึก
-	3 => 'money',   //วงเงิน
-    4 => 'dep_name',  //หน่วยงาน
+	0 => 'hire_id',
+	1 => 'rec_no',  //เลขที่สัญญาจ้าง
+	2 => 'title',   //รายการจ้าง 
+    3 => 'datein',  //วันที่บันทึก
+	4 => 'money',   //วงเงิน
+    5 => 'dep_name',  //หน่วยงาน
 );
 
 // getting total number records without any search
@@ -58,9 +59,10 @@ $query = dbQuery($sql) or die("query-commandfront.php: get use queryr3");
 $data = array();
 while( $row= dbFetchArray($query) ) {  // preparing an array
 	$nestedData=array(); 
-	$nestedData[] = $row["rec_id"].'/'.$row['yname'];
+	$nestedData[] = $row["hire_id"];
+	$nestedData[] = $row["rec_no"].'/'.$row['yname'];
 	$nestedData[] =  $row["title"];
-    $nestedData[] = thaiDate($row["dateline"]);
+    $nestedData[] = thaiDate($row["datein"]);
 	$nestedData[] = "<a href='admin/$row[file_upload]' target='_blank'>Download</a>";
 	$nestedData[] = $row["dep_name"];
 	$data[] = $nestedData;
