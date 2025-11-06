@@ -85,7 +85,7 @@ while( $row= dbFetchArray($query) ) {  // preparing an array
 
     $nestedData[] = number_format($row["money"],2); // 4. จำนวนเงิน
 	$nestedData[] = $row["dep_name"]; // 5. หน่วยงาน
-    $nestedData[] = "<a href='report/rep-buy-item.php?hire_id=".$row['buy_id']."' class='btn btn-sm btn-warning' target='_blank'>พิมพ์</a>"; // 6. พิมพ์
+    $nestedData[] = "<a href='report/rep-buy-item.php?buy_id=".$row['buy_id']."' class='btn btn-sm btn-warning' target='_blank'>พิมพ์</a>"; // 6. พิมพ์
 	$nestedData[] = $edit_button ; // 7. แก้ไข
     $data[] = $nestedData;
 }
