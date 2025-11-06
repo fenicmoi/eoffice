@@ -2,10 +2,7 @@
 <?php
 include 'header.php';
 $u_id = $_SESSION['ses_u_id'];
-?>
-
-
-  
+?>  
 </script>
     <div class="row">
         <div class="col-md-2" >
@@ -391,13 +388,12 @@ if (isset($_POST['update'])) {
     echo "<meta http-equiv='refresh' content='1;URL=user.php'>";
 }
 ?>
-
-
-
-
-
-
-
+<script>
+$(document).ready(function() {
+    // เรียกใช้ DataTables บนตารางที่มี id="myTable"
+    $('#myTable').DataTable(); 
+});
+</script>
 <script language=Javascript>   //ส่วนการทำ dropdown
         function Inint_AJAX() {
            try { return new ActiveXObject("Msxml2.XMLHTTP");  } catch(e) {} //IE

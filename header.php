@@ -1,9 +1,7 @@
 <?php 
 
 define('IS_SYSTEM_RUNNING', true);
-
- include 'library/config.php';
- include 'library/database.php';
+require_once 'library/database.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
