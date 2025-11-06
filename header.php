@@ -1,6 +1,6 @@
 <?php 
 
-define('IS_SYSTEM_RUNNING', true);
+//define('IS_SYSTEM_RUNNING', true);
 require_once 'library/database.php';
 ?>
 <!DOCTYPE html>

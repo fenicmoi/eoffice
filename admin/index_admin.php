@@ -9,6 +9,7 @@ if(!isset($_SESSION['ses_u_id'])){
 
 
 include 'header.php';
+
 if (isset($_SESSION['login_success']) && $_SESSION['login_success'] === true) {
     
     // **ต้องมั่นใจว่าไฟล์ SweetAlert JS/CSS ถูกรวมไว้ในหน้านี้แล้ว** // หรือรวมอยู่ใน header.php ที่เรียกใช้ในหน้านี้
