@@ -1,654 +1,535 @@
+<script>
+    $(document).ready(function() {
+        $('#tbOutside   ').DataTable();
+    });
+</script>
 <?php
-ob_start(); 
-
-/**
- * outside_all.php - หน้าบันทึกหนังสือราชการภายนอก (V21: Final Syntax Correction)
- * - แก้ไข Parse Error ด้วยการใช้ Alternative Syntax (:, endif;, endwhile;) เพื่อความเสถียรสูงสุด
- */
-
 date_default_timezone_set('Asia/Bangkok');
-$title = "ระบบสารบรรณอิเล็กทรอนิกส์ (ส่งหนังสือภายนอก)";
-include "header.php"; 
+include "header.php";
 
-global $dbConn; 
-
-// ====================================================
-// 1. Initial Setup and Data Loading
-// ====================================================
+// checkuser login
 if (!isset($_SESSION['ses_u_id'])) {
     header("Location: ../index.php");
     exit();
-}
-
-// ตรวจสอบและกำหนดค่าตัวแปร Session
-$u_id = (int)($_SESSION['ses_u_id'] ?? 0);
-$sec_id = (int)($_SESSION['ses_sec_id'] ?? 0);
-$dep_id = (int)($_SESSION['ses_dep_id'] ?? 0);
-$level_id = (int)($_SESSION['ses_level_id'] ?? 0);
-
-// Default Form State
-$title_post = '';
-$book_no = '';
-$detail = '';
-$errors = []; 
-$success_save = false; 
-
-// ดึงค่าจาก POST สำหรับ Sticky Form (ใช้ค่าว่างถ้าไม่มี)
-$send_mode = htmlspecialchars($_POST['send_mode'] ?? 'all', ENT_QUOTES, 'UTF-8'); 
-$toSomeOneUser = htmlspecialchars($_POST['toSomeOneUser'] ?? '', ENT_QUOTES, 'UTF-8'); 
-
-// Recipient data derived from toSomeOneUser
-$selected_types = []; 
-$selected_dep_ids = []; 
-$recipients_dep_ids = [];
-
-
-// Constants and Data Fetching
-define('UPLOAD_DIR', 'paper/'); 
-define('MAX_FILE_SIZE', 10 * 1024 * 1024); // 10MB
-$allowed_extensions = ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'jpg', 'jpeg', 'png', 'zip', 'rar'];
-
-
-// Function: โหลดข้อมูลประเภทหน่วยงาน
-function fetch_depart_types() {
-    return dbQuery("SELECT t.type_id, t.type_name, 
-                            (SELECT COUNT(d.dep_id) FROM depart d WHERE d.type_id = t.type_id AND d.status = 1) as count 
-                            FROM office_type t ORDER BY t.type_name ASC");
-}
-
-// Function: โหลดข้อมูลหน่วยงานทั้งหมด
-function fetch_all_departs() {
-    return dbQuery("SELECT d.dep_id, d.dep_name, t.type_name 
-                        FROM depart d 
-                        INNER JOIN office_type t ON t.type_id = d.type_id 
-                        WHERE d.status = 1 
-                        ORDER BY d.dep_name ASC");
-}
-
-$depart_types = fetch_depart_types();
-$all_departs = fetch_all_departs();
-
-
-// ====================================================
-// 2. Form Submission Handler (เมื่อมีการ POST ข้อมูล)
-// ====================================================
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+} else {
+    // ป้องกัน XSS ในค่า $u_id ที่มาจาก session
+    $u_id = htmlspecialchars($_SESSION['ses_u_id'], ENT_QUOTES, 'UTF-8'); 
     
-    // 2.1 Sanitize and Extract Input
-    $title_post = trim(htmlspecialchars($_POST['title'] ?? '', ENT_QUOTES, 'UTF-8'));
-    $book_no = trim(htmlspecialchars($_POST['book_no'] ?? '', ENT_QUOTES, 'UTF-8'));
-    $detail = trim(htmlspecialchars($_POST['detail'] ?? '', ENT_QUOTES, 'UTF-8'));
-    
-    // Parse the single recipient input (V17/V18 FIX)
-    if ($send_mode === 'type' && !empty($toSomeOneUser)) {
-        $selected_types = array_filter(array_map('intval', explode('|', trim($toSomeOneUser, '|'))));
-    } elseif ($send_mode === 'manual' && !empty($toSomeOneUser)) {
-        $selected_dep_ids = array_filter(array_map('intval', explode('|', trim($toSomeOneUser, '|'))));
-    }
+    // ใช้ FILTER_VALIDATE_INT เพื่อตรวจสอบและทำความสะอาดค่าที่รับมา
+    @$cid = filter_input(INPUT_GET, 'cid', FILTER_VALIDATE_INT);
+    @$doctype = filter_input(INPUT_GET, 'doctype', FILTER_SANITIZE_STRING);
 
-    // 2.2 Validation Logic - Centralized error collection
-    
-    // Check main inputs
-    if (empty($title_post)) $errors[] = "กรุณาระบุ 'เรื่อง'";
-    if (empty($book_no)) $errors[] = "กรุณาระบุ 'เลขที่หนังสือ'";
-    if (empty($detail)) $errors[] = "กรุณาระบุ 'รายละเอียด'";
-    
-    
-    // Determine Recipients based on send_mode and validate selection
-    if (empty($send_mode)) {
-        $errors[] = "กรุณาเลือก 'วิธีการส่ง'";
-        
-    } elseif ($send_mode === 'all') {
-        // Mode: All
-        $res_all = dbQuery("SELECT dep_id FROM depart WHERE status = 1");
-        if ($res_all) {
-            while ($row = dbFetchArray($res_all)) {
-                $recipients_dep_ids[] = (int)$row['dep_id'];
-            }
-        }
-    } elseif ($send_mode === 'type') {
-        // Mode: By Type
-        if (empty($selected_types)) {
-             $errors[] = "กรุณาเลือกอย่างน้อยหนึ่งประเภทหน่วยงาน";
-        } else {
-            // Prepared Statement to get recipients from selected types
-            $placeholders = implode(',', array_fill(0, count($selected_types), '?'));
-            $types_type = str_repeat('i', count($selected_types)); 
-            $sql_type = "SELECT dep_id FROM depart WHERE type_id IN ($placeholders) AND status = 1";
-            $res_type = dbQuery($sql_type, $types_type, $selected_types); 
-            
-            if ($res_type) {
-                while ($row = dbFetchArray($res_type)) {
-                    $recipients_dep_ids[] = (int)$row['dep_id'];
-                }
-            }
-        }
-    } elseif ($send_mode === 'manual') {
-        // Mode: Manual
-        $recipients_dep_ids = $selected_dep_ids; 
-        
-        if (empty($selected_dep_ids)) {
-             $errors[] = "กรุณาเลือกอย่างน้อยหนึ่งหน่วยงาน";
-        }
-    }
-
-    // Final check: Must have recipients if no other errors occurred
-    if (empty($recipients_dep_ids) && empty($errors)) {
-        $errors[] = "ไม่พบหน่วยงานผู้รับตามตัวเลือกที่กำหนด";
-    }
-
-
-    // 2.3 File Upload Handling
-    $file_name = '';
-    $file_path = '';
-    $upload_error = $_FILES['file_upload']['error'] ?? UPLOAD_ERR_NO_FILE;
-
-    if ($upload_error === UPLOAD_ERR_OK) {
-        $file = $_FILES['file_upload'];
-        $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-
-        // Validation: Size and Extension
-        if ($file['size'] > MAX_FILE_SIZE) {
-            $errors[] = "ขนาดไฟล์ต้องไม่เกิน " . (MAX_FILE_SIZE / 1024 / 1024) . " MB";
-        }
-        if (!in_array($ext, $allowed_extensions)) {
-            $errors[] = "ประเภทไฟล์ไม่ถูกต้อง อนุญาตเฉพาะ: " . implode(', ', $allowed_extensions);
-        }
-
-        if (empty($errors)) {
-            // Generate unique file name
-            $file_name = time() . '-' . uniqid() . '.' . $ext;
-            $file_path = UPLOAD_DIR . $file_name; 
-
-            // Move file
-            if (!move_uploaded_file($file['tmp_name'], $file_path)) {
-                $errors[] = "เกิดข้อผิดพลาดในการอัปโหลดไฟล์ (ตรวจสอบสิทธิ์การเขียนของโฟลเดอร์: " . UPLOAD_DIR . ")";
-            }
-        }
-    } else if ($upload_error !== UPLOAD_ERR_NO_FILE) {
-         $errors[] = "เกิดข้อผิดพลาดในการอัปโหลดไฟล์ (Code: " . $upload_error . ") - **โปรดตรวจสอบขนาดไฟล์แนบ**";
-    } else {
-         if(empty($errors)) $errors[] = "กรุณาเลือกไฟล์เอกสาร";
-    }
-
-
-    // 2.4 Database Transaction and Save
-    if (empty($errors)) {
-        
-        // Start Transaction for Atomicity
-        if ($dbConn instanceof mysqli) {
-            $dbConn->begin_transaction();
-        } 
-        
-        $postdate = date("Y-m-d H:i:s");
-        $edit_date = date("Y-m-d");
-
-        // Insert into paper (Table: paper)
-        $sql_paper = "INSERT INTO paper (title, detail, file, postdate, u_id, insite, outsite, sec_id, dep_id, book_no, edit) 
-                      VALUES (?, ?, ?, ?, ?, 0, 1, ?, ?, ?, ?)";
-        
-        $params_paper = [$title_post, $detail, $file_path, $postdate, $u_id, $sec_id, $dep_id, $book_no, $edit_date];
-        $types_paper = 'ssssiiiss'; 
-        
-        $insert_paper_ok = dbQuery($sql_paper, $types_paper, $params_paper);
-        $pid = $insert_paper_ok ? dbInsertId() : false; 
-
-        if ($pid !== false) {
-            $all_ok = true;
-            $confirmdate = '0000-00-00 00:00:00'; 
-            
-            // Insert into paperuser for all recipients (Table: paperuser)
-            $sql_paperuser = "INSERT INTO paperuser (pid, u_id, sec_id, dep_id, confirm, confirmdate) 
-                              VALUES (?, 0, 0, ?, 0, ?)";
-            $types_user = 'iis'; 
-
-            foreach ($recipients_dep_ids as $dep_id_rec) {
-                $params_user = [$pid, (int)$dep_id_rec, $confirmdate];
-                
-                if (!dbQuery($sql_paperuser, $types_user, $params_user)) {
-                    $all_ok = false;
-                    break; 
-                }
-            }
-
-            if ($all_ok) {
-                // Success: Commit and Flag
-                $dbConn->commit();
-                $success_save = true; 
-            } else {
-                // Error on Recipient Insert: Rollback and cleanup file
-                $dbConn->rollback();
-                if (file_exists($file_path)) { unlink($file_path); }
-                $errors[] = "การบันทึกข้อมูลผู้รับไม่สำเร็จ โปรดลองใหม่อีกครั้ง";
-            }
-            
-        } else {
-            // Error on Paper Insert: Rollback and cleanup file
-            $dbConn->rollback();
-            if (file_exists($file_path)) { unlink($file_path); }
-            $errors[] = "เกิดข้อผิดพลาดในการบันทึกข้อมูลหลัก (paper)";
-        }
+    // ตรวจสอบความถูกต้องของ $cid 
+    if ($cid === false) {
+        $cid = null;
     }
 }
 
-
-// ====================================================
-// 3. Presentation Logic / Sticky Form Display
-// ====================================================
-$displayDepartSelection = 'ยังไม่ได้เลือกหน่วยงาน'; 
-
-if ($send_mode === 'all') {
-    $displayDepartSelection = 'เลือกทุกส่วนราชการ';
-} elseif ($send_mode === 'type' && !empty($selected_types)) {
-    // Re-calculate the display text for sticky form/errors
-    $types_count_map = [];
-    if ($depart_types) { 
-        // ต้อง dbdataSeek(..., 0) เนื่องจากใช้ $depart_types ซ้ำ
-        dbdataSeek($depart_types, 0); 
-        while ($row = dbFetchArray($depart_types)) {
-            $types_count_map[$row['type_id']] = (int)$row['count'];
-        }
-    }
-    
-    $totalCount = 0;
-    foreach ($selected_types as $type_id) {
-        $totalCount += $types_count_map[$type_id] ?? 0;
-    }
-    $count_type = count($selected_types);
-    $displayDepartSelection = "เลือก {$count_type} ประเภท ({$totalCount} หน่วยงาน)";
-    
-} elseif ($send_mode === 'manual' && !empty($selected_dep_ids)) {
-    $count = count($selected_dep_ids);
-    $displayDepartSelection = "เลือกแล้ว {$count} หน่วยงาน";
+if ($doctype == "flow-circle") {
+    $tb = "flowcircle";
+} elseif ($doctype == "flow-normal") {
+    $tb = "flownormal";
+} else {
+    // กำหนดค่าเริ่มต้นหรือจัดการกรณีที่ไม่ถูกต้อง
+    $tb = null; 
 }
 
+// ส่วนที่ 1: การใช้ Prepared Statements ในส่วนดึงข้อมูล
+if ($cid && $tb) {
+    // ใช้ Prepared Statement เพื่อป้องกัน SQL Injection
+    $sql = "SELECT title,file_upload FROM $tb  WHERE cid=?"; 
+    $result = dbQuery($sql, 'i', [$cid]); // 'i' คือ integer สำหรับ $cid
 
-// ====================================================
-// 4. HTML/JS Output (ใช้ Alternative Syntax)
-// ====================================================
+    if ($result) {
+        $row = dbFetchAssoc($result);
+        if ($row) {
+            // ป้องกัน XSS เมื่อแสดงผล
+            $title = htmlspecialchars($row['title'], ENT_QUOTES, 'UTF-8');
+            $link_file = htmlspecialchars($row['file_upload'], ENT_QUOTES, 'UTF-8');
+        }
+        dbFreeResult($result);
+    }
+}
 ?>
+<div class="col-md-2">
+    <?php
+    $level_id = isset($_SESSION['ses_level_id']) ? $_SESSION['ses_level_id'] : 0; // ควรดึง level_id จาก session
+    $menu =  checkMenu($level_id);           //check permision menu
+    include $menu;                          //include menu
+    ?>
+</div>
+<div class="col-md-10">
+    <div class="panel panel-primary">
+        <div class="panel-heading"><i class="fas fa-share-square fa-2x"></i> <strong>ส่งหนังสือระหว่างส่วนราชการ</strong></div>
+        <div class="panel-body">
+            <ul class="nav nav-tabs">
+                <li><a class="btn-danger fas fa-envelope" href="paper.php"> หนังสือเข้า</a></li>
+                <li><a class="btn-danger fas fa-envelope-open" href="folder.php">สถานะ(รับ/คืน)</a></li>
+                <li><a class="btn-danger fas fa-history" href="history.php"> ส่งแล้ว</a></li>
+                <li class="active"><a class="btn-danger fas fa-globe" href="outside_all.php"> ส่งหนังสือ</a></li>
+            </ul>
+            <br>
+            <form id="fileout" name="fileout" method="post" enctype="multipart/form-data" action="outside_all.php?<?php echo isset($_SERVER['QUERY_STRING']) ? htmlspecialchars($_SERVER['QUERY_STRING']) : ''; ?>">
+                <div class="form-group form-inline">
+                    <label for="title">เรื่อง:</label>
+                    <input class="form-control" type="text" name="title" size="100%" placeholder="ใส่ชื่อเรื่อง" required="" 
+                        value="<?php echo isset($title) ? $title : ''; ?>">
+                </div>
+                <div class="form-group form-inline">
+                    <label for="book_no">เลขหนังสือ:</label>
+                    <input class="form-control" type="text" name="book_no" size="100%" placeholder="โปรดระบุ" required=""
+                        value="<?php echo isset($_POST['book_no']) ? htmlspecialchars($_POST['book_no'], ENT_QUOTES, 'UTF-8') : ''; ?>">
+                </div>
+                <div class="form-group form-inline">
+                    <label>ส่งถึง:</label>
+                    <input type="radio" name="toAll" id="toAll" value="1"
+                        onclick="setEnabledTo2(this);
+                                        document.getElementById('ckToType').style.display = 'none';
+                                        document.getElementById('ckToSome').style.display = 'none';
+                            "> ทุกส่วนราชการ
+                    <input type="radio" name="toSome" id="toSome" value="2"
+                        onclick="setEnabledTo2(this);
+                                        document.getElementById('ckToType').style.display = 'block';
+                                        document.getElementById('ckToSome').style.display = 'none';
+                            "> แยกตามประเภท
+                    <input type="text" name="toSomeUser" class="mytextboxLonger" style="width:373px;" readonly disabled
+                        value="<?php echo isset($_POST['toSomeUser']) ? htmlspecialchars($_POST['toSomeUser'], ENT_QUOTES, 'UTF-8') : ''; ?>">
+                    <input type="radio" name="toSomeOne" id="toSomeOne" value="3"
+                        onclick="setEnabledTo2(this);
+                                        document.getElementById('ckToType').style.display = 'none';
+                                        document.getElementById('ckToSome').style.display = 'block';
+                            "> เลือกเอง
+                    <input type="text" name="toSomeOneUser" class="mytextboxLonger" style="width:373px;" readonly disabled
+                        value="<?php echo isset($_POST['toSomeOneUser']) ? htmlspecialchars($_POST['toSomeOneUser'], ENT_QUOTES, 'UTF-8') : ''; ?>">
+                    <div id="ckToType" style="display:none">
+                        <table border="1" width="599px" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td class="alere alert-info">
+                                    <center>เลือกผู้รับ</center>
+                                </td>
+                            </tr>
+                        </table>
+                        <div id="div1" style="width:599px; height:250px; overflow:auto">
+                            <table border="1" width="599px">
+                                <?php
+                                // ปลอดภัย: ไม่ได้รับค่าจากผู้ใช้
+                                $sql = "SELECT type_id,type_name FROM office_type ORDER BY type_id"; 
+                                $result = dbQuery($sql);
+                                $numrowOut = dbNumRows($result);
+                                if (empty($numrowOut)) {
+                                ?>
+                                    <thead>
+                                        <tr>
+                                            <td></td>
+                                            <td>ไม่มีข้อมูลประเภทส่วนราชการ</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                    } else {
+                                        $i = 0;
+                                        while ($rowOut = dbFetchAssoc($result)) {
+                                            $i++;
+                                            $a = $i % 2;
+                                            if ($a == 0) { ?>
+                                                <tr bgcolor="#A9F5D0">
+                                                <?php } else { ?>
+                                                <tr bgcolor="#F5F6CE">
+                                                <?php } ?>
+                                                <td class="select_multiple_checkbox"><input type="checkbox" onclick="listType(this,'<?php echo htmlspecialchars($rowOut['type_id'], ENT_QUOTES, 'UTF-8'); ?>')"></td>
+                                                <td class="select_multiple_name"><?php print htmlspecialchars($rowOut['type_name'], ENT_QUOTES, 'UTF-8'); ?></td>
+                                                </tr>
+                                        <?php
+                                        }
+                                        dbFreeResult($result); // คืนค่าหน่วยความจำ
+                                    }
+                                        ?>
+                                    </tbody>
+                            </table>
+                        </div> <table>
+                            <tr>
+                                <td><input class="btn-success" style="width:77px;" type="button" value="ตกลง" onclick="document.getElementById('ckToType').style.display = 'none';"></td>
+                                <td><input class="btn-danger" style="width:77px;" type="button" value="ยกเลิก" onclick="document.getElementById('ckToType').style.display = 'none';"></td>
+                            </tr>
+                        </table>
+                    </div> <div id="ckToSome" style="display:none">
+                        <table border="1" width="100%" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td class="bg-primary">
+                                    <center>เลือกผู้รับ</center>
+                                </td>
+                            </tr>
+                        </table>
+                        <div id="div1">
+                            <table id="tbOutside" class="display" style="width:100%">
+                                <thead>
+                                    <th>No.</th>
+                                    <th>ชื่อส่วนราชการ</th>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    // ปลอดภัย: ไม่ได้รับค่าจากผู้ใช้
+                                    $sql = "SELECT dep_id,dep_name,type_id FROM depart ORDER BY type_id";
+                                    $result = dbQuery($sql);
+                                    $numrowOut = dbNumRows($result);
+                                    if (empty($numrowOut)) { ?>
+                                        <tr>
+                                            <td></td>
+                                            <td>ไม่มีข้อมูลประเภทส่วนราชการ</td>
+                                        </tr>
+                                        <?php
+                                    } else {
+                                        $i = 0;
+                                        while ($rowOut = dbFetchAssoc($result)) { ?>
+                                            <tr>
+                                                <td class="select_multiple_checkbox"><input type="checkbox" onclick="listSome(this,'<?php echo htmlspecialchars($rowOut['dep_id'], ENT_QUOTES, 'UTF-8'); ?>')"></td>
+                                                <td class="select_multiple_name"><?php print htmlspecialchars($rowOut['dep_name'], ENT_QUOTES, 'UTF-8'); ?></td>
+                                            </tr>
+                                    <?php
+                                        } //while
+                                        dbFreeResult($result); // คืนค่าหน่วยความจำ
+                                    } //if
+                                    ?>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td>No.</td>
+                                        <td>ส่วนราชการ</td>
+                                    </tr>
+                                    </thead>
+                            </table>
+                        </div> <table>
+                            <tr>
+                                <td><input class="btn-success" style="width:77px;" type="button" value="ตกลง" onclick="document.getElementById('ckToSome').style.display = 'none';"></td>
+                                <td><input class="btn-danger" style="width:77px;" type="button" value="ยกเลิก" onclick="document.getElementById('ckToSome').style.display = 'none';"></td>
+                            </tr>
+                        </table>
+                    </div> </div>
+                <?php
+                if ($cid && isset($link_file) && $link_file <> null) { ?>
+                    <div class="form-group form-inline">
+                        <label for="fileupload">ไฟล์แนบ</label><a class="btn btn-warning" href="<?php print htmlspecialchars($link_file, ENT_QUOTES, 'UTF-8'); ?>" target="_blank"><i class="fa fa-file fa-2x"></i></a>
+                    </div>
+                <?php } else { ?>
+                    <div class="form-group form-inline">
+                        <label for="fileupload">แนบไฟล์</label>
+                        <input type="file" name="fileupload" required>
+                    </div>
+                <?php } ?>
+                <div class="form-group form-inline">
+                    <label for="detail">รายละเอียด</label>
+                    <textarea name="detail" rows="3" cols="60"><?php echo isset($_POST['detail']) ? htmlspecialchars($_POST['detail'], ENT_QUOTES, 'UTF-8') : '-'; ?></textarea>
+                </div>
+                <center>
+                    <div class="form-group">
+                        <input type="hidden" name="file" value="<?php echo isset($fileupload) ? htmlspecialchars($fileupload, ENT_QUOTES, 'UTF-8') : ''; ?>" />
+                        <input type="hidden" name="dep_id" value="<?php echo isset($dep_id) ? htmlspecialchars($dep_id, ENT_QUOTES, 'UTF-8') : ''; ?>" />
+                        <input type="hidden" name="sec_id" value="<?php echo isset($sec_id) ? htmlspecialchars($sec_id, ENT_QUOTES, 'UTF-8') : ''; ?>" />
+                        <input type="hidden" name="user_id" id="user_id" value="<?php echo htmlspecialchars($u_id, ENT_QUOTES, 'UTF-8'); ?>" />
+                        <input type="submit" name="sendOut" class="btn btn-primary btn-lg" value="ส่งเอกสาร" />
+                    </div>
+                </center>
+            </form>
+        </div>
+        <div class="panel-footer"></div>
+    </div>
+</div>
 
-<link rel="stylesheet" type="text/css" href="../bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
-<style>
-.modal-body-scroll {
-    max-height: 70vh;
-    overflow-y: auto;
+<?php
+/*++++++++++++++++++++++++++++ส่งภายนอก+++++++++++++++++++++++++++*/
+
+if (isset($_POST['sendOut'])) {           //ตรวจสอบปุ่ม sendOut
+    
+    // **ส่วนที่ 2: ทำความสะอาดค่าที่รับจาก POST ก่อนใช้งาน**
+    $title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_STRING); // ชื่ออเอกสาร
+    $detail = filter_input(INPUT_POST, 'detail', FILTER_SANITIZE_STRING); // รายละเอียด
+    $date = date('YmdHis');               // วันเวลาปัจจุบันที่จะเอาไปใส่ในระบบว่าส่งมาเมื่อไหร่
+    $sec_id = filter_input(INPUT_POST, 'sec_id', FILTER_VALIDATE_INT); // รหัสแผนกที่ส่ง (ต้องเป็นตัวเลข)
+    $outsite = 1;                         // กำหนดค่าเอกสาร insite=ภายใน outsite = ภายนอก
+    $user_id = filter_input(INPUT_POST, 'user_id', FILTER_VALIDATE_INT); // ไอดีผู้ใช้ (ต้องเป็นตัวเลข)
+    $dep_id = filter_input(INPUT_POST, 'dep_id', FILTER_VALIDATE_INT); // ไอดีหน่วยงาน (ต้องเป็นตัวเลข)
+    $book_no = filter_input(INPUT_POST, 'book_no', FILTER_SANITIZE_STRING); // เลขหนังสือ
+
+    @$toAll = filter_input(INPUT_POST, 'toAll', FILTER_VALIDATE_INT);            // ส่งถึงทุกส่วน
+    @$toSome = filter_input(INPUT_POST, 'toSome', FILTER_VALIDATE_INT);          // ส่งตามประเภท
+    @$toSomeOne = filter_input(INPUT_POST, 'toSomeOne', FILTER_VALIDATE_INT);    // ส่งแบบเจาะจง
+
+    // สตริงที่เก็บรายการ ID
+    @$toSomeUser = filter_input(INPUT_POST, 'toSomeUser', FILTER_SANITIZE_STRING);          // INPUT ส่งแยกประเภทตามหน่วยงาน
+    @$toSomeOneUser = filter_input(INPUT_POST, 'toSomeOneUser', FILTER_SANITIZE_STRING);    // INPUT รับรหัสแบบเลือกเอง
+
+    @$fileupload = filter_input(INPUT_POST, 'file', FILTER_SANITIZE_STRING);                // ไฟล์เอกสาร (ชื่อไฟล์เดิม)
+    $dateSend = date('Y-m-d');                    // วันที่ส่งเอกสาร
+
+    $link_file = ''; // กำหนดค่าเริ่มต้น
+    // **ส่วนที่ 3: ปรับปรุงการจัดการไฟล์อัปโหลด**
+    if (isset($_FILES['fileupload']) && $_FILES['fileupload']['error'] === UPLOAD_ERR_OK) {
+        $upload = $_FILES['fileupload'];
+        $upload_dir = "paper/";
+
+        $filename = $upload['name'];
+        // --- ดึงนามสกุล (ตัวพิมพ์เล็ก) ---
+        $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+        // --- รายการนามสกุลที่อนุญาต (เพิ่มการตรวจสอบให้เข้มงวดขึ้น) ---
+        $allowed_extensions = array('pdf', 'png', 'jpg', 'jpeg', 'zip', '7z', 'rar'); // ตัด doc/xls ออกถ้าไม่จำเป็นต้องอนุญาต
+        // อนุญาตประเภทเอกสาร: doc, docx, xls, xlsx, ppt, pptx, zip, 7z, rar, pdf, jpg, jpeg, png
+        $allowed_extensions = array('pdf', 'png', 'jpg', 'jpeg', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'zip', '7z', 'rar', 'zipx');
+
+
+        // --- ตรวจสอบว่าไฟล์อยู่ในรายการอนุญาตไหม ---
+        if (!in_array($ext, $allowed_extensions)) {
+            echo "<script>alert('ไม่อนุญาตให้อัปโหลดไฟล์ .$ext'); window.history.back();</script>";
+            exit;
+        }
+
+        // ตั้งชื่อไฟล์ใหม่ไม่ให้ซ้ำ (มีความปลอดภัยสูง)
+        $date_prefix = date("YmdHis"); // รูปแบบปีเดือนวันชั่วโมงนาทีวินาที
+        $random_num = mt_rand(100000, 999999); // สุ่มตัวเลข 6 หลัก
+        $new_filename = $date_prefix . "_" . $random_num . "." . $ext;
+
+        // พาธเต็มรูปแบบสำหรับบันทึกไฟล์
+        $link_file = $upload_dir . $new_filename;
+
+        // ย้ายไฟล์ไปยังพาธปลายทาง
+        if (!move_uploaded_file($upload['tmp_name'], $link_file)) {
+            echo "<script>alert('เกิดข้อผิดพลาดในการบันทึกไฟล์'); window.history.back();</script>";
+            exit;
+        }
+    }
+
+
+    // **ส่วนที่ 4: การใช้ Prepared Statements ในการ INSERT**
+
+    // กรณีส่งให้ทุกส่วนราชการ
+    if ($toAll == 1) { // ใช้การเปรียบเทียบที่รัดกุมกว่า
+        // เตรียม SQL Query
+        $sql_insert = "INSERT INTO paper(title, detail, file, postdate, u_id, sec_id, outsite, dep_id, book_no)
+                       VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        
+        // กำหนดชนิดของตัวแปร: s: string, i: integer
+        $types = "sssiiiiis";
+        // กำหนดค่าตัวแปร
+        $params = [$title, $detail, $link_file, $date, $user_id, $sec_id, $outsite, $dep_id, $book_no];
+
+        $result = dbQuery($sql_insert, $types, $params);
+
+        if ($result === true) { // ตรวจสอบว่า query สำเร็จ
+            $lastid = dbInsertId();    // เลข ID จากตาราง paper ล่าสุด
+
+            // เลือก User ทั้งหมด (ไม่จำเป็นต้องใช้ Prepared Statements เพราะไม่มีการรับค่าจากผู้ใช้มาใส่ใน WHERE)
+            $sql_users = "SELECT  u.u_id, u.firstname, s.sec_id, d.dep_id
+                          FROM user u 
+                          INNER JOIN section s ON s.sec_id=u.sec_id
+                          INNER JOIN depart d  ON d.dep_id=u.dep_id
+                          WHERE u.Level_id = 3 AND d.dep_id <> ? AND d.status <> 0"; // ใช้ placeholder ใน WHERE
+
+            $result_users =  dbQuery($sql_users, 'i', [$dep_id]); // 'i' คือ integer สำหรับ $dep_id
+
+            if ($result_users) {
+                while ($rowUser = dbFetchArray($result_users)) {
+                    // **ใช้ Prepared Statements ในการ INSERT ลง paperuser**
+                    $u_id_to = $rowUser['u_id'];
+                    $sec_id_to = $rowUser['sec_id'];
+                    $dep_id_to = $rowUser['dep_id'];
+                    $tb = "paperuser";
+                    $sql_insert_user = "INSERT INTO $tb (pid, u_id, sec_id, dep_id) VALUES (?, ?, ?, ?)";
+                    dbQuery($sql_insert_user, 'iiii', [$lastid, $u_id_to, $sec_id_to, $dep_id_to]);
+                }
+                dbFreeResult($result_users);
+            }
+        }
+        
+        echo "<script>
+        swal({
+            title:'ส่งเอกสารเรียบร้อยแล้ว',
+            type:'success',
+            showConfirmButton:true
+            },
+            function(isConfirm){
+                if(isConfirm){
+                    window.location.href='history.php';
+                }
+            }); 
+        </script>";
+    }
+
+
+    // ***เลือกเองตามประเภท 
+    if ($toSome == 2) { // ใช้การเปรียบเทียบที่รัดกุมกว่า
+        // **ใช้ Prepared Statements ในการ INSERT ลง paper**
+        $sql_insert = "INSERT INTO paper(title, detail, file, postdate, u_id, outsite, sec_id, dep_id, book_no)
+                       VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $types = "sssiiiiis";
+        $params = [$title, $detail, $link_file, $date, $user_id, $outsite, $sec_id, $dep_id, $book_no];
+        $result = dbQuery($sql_insert, $types, $params);
+        
+        if ($result === true) {
+            $lastid =  dbInsertId(); // ค้นหาเลขระเบียนล่าสุด
+            $sendto_safe = $toSomeUser; // ค่าจาก textbox ที่ถูกทำความสะอาดแล้ว
+            
+            // ประมวลผลและทำความสะอาดค่าที่มาจาก textbox
+            $sendto_safe = ltrim($sendto_safe, '|'); // ลบ | ตัวแรก
+            $c = explode("|", $sendto_safe);
+
+            foreach ($c as $type_id) { // ใช้ foreach แทน for
+                $type_id = (int)$type_id; // ตรวจสอบให้แน่ใจว่าเป็นตัวเลข
+
+                if ($type_id > 0) { // ตรวจสอบว่าเป็น ID ที่ถูกต้อง
+                    // **ใช้ Prepared Statements ในการ SELECT**
+                    $sql_users = "SELECT u.u_id,u.firstname,s.sec_id,d.dep_id,d.type_id
+                                  FROM user u 
+                                  INNER JOIN section s ON s.sec_id=u.sec_id
+                                  INNER JOIN depart d  ON d.dep_id=u.dep_id
+                                  INNER JOIN office_type t ON t.type_id=d.type_id
+                                  WHERE d.type_id=? AND d.dep_id<>? AND u.level_id = 3";
+
+                    $result_users = dbQuery($sql_users, 'ii', [$type_id, $dep_id]);
+
+                    if ($result_users) {
+                        while ($row = dbFetchArray($result_users)) {
+                            // **ใช้ Prepared Statements ในการ INSERT ลง paperuser**
+                            $u_id_to = $row['u_id'];
+                            $sec_id_to = $row['sec_id'];
+                            $dep_id_to = $row['dep_id'];
+                            $tb = "paperuser";
+                            $sql_insert_user = "INSERT INTO $tb (pid, u_id, sec_id, dep_id) VALUES (?, ?, ?, ?)";
+                            dbQuery($sql_insert_user, 'iiii', [$lastid, $u_id_to, $sec_id_to, $dep_id_to]);
+                        }
+                        dbFreeResult($result_users);
+                    }
+                }
+            }
+        }
+
+        echo "<script>
+                swal({
+                    title:'เรียบร้อย',
+                    type:'success',
+                    showConfirmButton:true
+                    },
+                    function(isConfirm){
+                        if(isConfirm){
+                            window.location.href='history.php';
+                        }
+                    }); 
+                </script>";
+    }
+
+    // ***** เลือกเองทีละหน่วยงาน*********	
+    if ($toSomeOne == 3) { // ใช้การเปรียบเทียบที่รัดกุมกว่า
+        // **ใช้ Prepared Statements ในการ INSERT ลง paper**
+        $sql_insert = "INSERT INTO paper(title, detail, file, postdate, u_id, outsite, sec_id, dep_id, book_no)
+                       VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $types = "sssiiiiis";
+        $params = [$title, $detail, $link_file, $date, $user_id, $outsite, $sec_id, $dep_id, $book_no];
+        $result = dbQuery($sql_insert, $types, $params);
+        
+        if ($result === true) {
+            $lastid =  dbInsertId();
+            $sendto_safe = $toSomeOneUser;
+            
+            // ประมวลผลและทำความสะอาดค่าที่มาจาก textbox
+            $sendto_safe = ltrim($sendto_safe, '|');
+            $c = explode("|", $sendto_safe);
+
+            foreach ($c as $dep_id_select) {
+                $dep_id_select = (int)$dep_id_select; // ตรวจสอบให้แน่ใจว่าเป็นตัวเลข
+
+                if ($dep_id_select > 0) {
+                    // **ใช้ Prepared Statements ในการ SELECT**
+                    $sql_users = "SELECT u.u_id,u.firstname,s.sec_id,d.dep_id,d.dep_name  
+                                  FROM user u 
+                                  INNER JOIN section s ON s.sec_id=u.sec_id
+                                  INNER JOIN depart d  ON d.dep_id=u.dep_id
+                                  WHERE u.dep_id=? AND u.level_id = 3"; // ค้นหาสารบรรณประจำหน่วยงานเท่านั้น
+
+                    $result_users = dbQuery($sql_users, 'i', [$dep_id_select]);
+
+                    if ($result_users) {
+                        while ($row = dbFetchArray($result_users)) {
+                            // **ใช้ Prepared Statements ในการ INSERT ลง paperuser**
+                            $u_id_to = $row['u_id'];
+                            $sec_id_to = $row['sec_id'];
+                            $dep_id_to = $row['dep_id'];
+                            $sql_insert_user = "INSERT INTO paperuser (pid, u_id, sec_id, dep_id) VALUES (?, ?, ?, ?)";
+                            dbQuery($sql_insert_user, 'iiii', [$lastid, $u_id_to, $sec_id_to, $dep_id_to]);
+                        }
+                        dbFreeResult($result_users);
+                    }
+                }
+            }
+        }
+
+        echo "<script>
+                swal({
+                    title:'เรียบร้อย',
+                    type:'success',
+                    showConfirmButton:true
+                    },
+                    function(isConfirm){
+                        if(isConfirm){
+                            window.location.href='history.php';
+                        }
+                    }); 
+                </script>";
+    }
 }
-</style>
 
-<div class="row">
-    
-    <div class="col-md-2">
-        <?php
-        $menu = checkMenu($level_id);
-        include $menu;
-        ?>
-    </div>
-    
-    <div class="col-md-10">
-        <div class="panel panel-primary">
-            <div class="panel-heading"><i class="fas fa-share-square fa-2x"></i> <strong>ส่งหนังสือระหว่างส่วนราชการ</strong></div>
-            <div class="panel-body">
-                <ul class="nav nav-tabs">
-                    <li><a class="btn-danger fas fa-envelope" href="paper.php"> หนังสือเข้า</a></li>
-                    <li><a class="btn-danger fas fa-envelope-open" href="folder.php">สถานะ(รับ/คืน)</a></li>
-                    <li><a class="btn-danger fas fa-history" href="history.php"> ส่งแล้ว</a></li>
-                    <li class="active"><a class="btn-danger fas fa-globe" href="outside_all.php"> ส่งหนังสือ</a></li>
-                </ul>
-                <br> 
 
-                <div class="box box-primary" style="border-top: none;">
-                    <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-envelope-o"></i> ส่งหนังสือราชการภายนอก</h3>
-                    </div>
-                    <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
-                        <div class="box-body">
-                            
-                            <?php if (!empty($errors)): // ใช้ Alternative Syntax ?>
-                                <div class="alert alert-danger alert-dismissible">
-                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                                    <h4><i class="icon fa fa-ban"></i> ข้อผิดพลาด!</h4>
-                                    <ul>
-                                        <?php foreach ($errors as $error): ?>
-                                            <li><?= $error ?></li>
-                                        <?php endforeach; ?>
-                                    </ul>
-                                </div>
-                            <?php endif; // สิ้นสุด Alternative Syntax ?>
-
-                            <div class="form-group">
-                                <label for="book_no" class="col-sm-2 control-label">เลขที่หนังสือ <span class="text-danger">*</span></label>
-                                <div class="col-sm-4">
-                                    <input type="text" name="book_no" id="book_no" class="form-control" value="<?= htmlspecialchars($book_no, ENT_QUOTES, 'UTF-8') ?>" required>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="title" class="col-sm-2 control-label">เรื่อง <span class="text-danger">*</span></label>
-                                <div class="col-sm-10">
-                                    <input type="text" name="title" id="title" class="form-control" value="<?= htmlspecialchars($title_post, ENT_QUOTES, 'UTF-8') ?>" required>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="detail" class="col-sm-2 control-label">รายละเอียด <span class="text-danger">*</span></label>
-                                <div class="col-sm-10">
-                                    <textarea name="detail" id="detail" class="form-control" rows="3" required><?= htmlspecialchars($detail, ENT_QUOTES, 'UTF-8') ?></textarea>
-                                </div>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="file_upload" class="col-sm-2 control-label">ไฟล์เอกสาร <span class="text-danger">*</span></label>
-                                <div class="col-sm-6">
-                                    <input type="file" name="file_upload" id="file_upload" required>
-                                    <p class="help-block">อนุญาต: <?= implode(', ', $allowed_extensions) ?> (ไม่เกิน <?= MAX_FILE_SIZE / 1024 / 1024 ?> MB)</p>
-                                </div>
-                            </div>
-
-                            <hr>
-
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">วิธีการส่ง <span class="text-danger">*</span></label>
-                                <div class="col-sm-10">
-                                    <label class="radio-inline">
-                                        <input type="radio" name="send_mode" id="send_mode_all" value="all" <?= $send_mode == 'all' ? 'checked' : '' ?>> 
-                                        **ทุกส่วนราชการ**
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio" name="send_mode" id="send_mode_type" value="type" <?= $send_mode == 'type' ? 'checked' : '' ?>> 
-                                        แยกตามประเภท
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio" name="send_mode" id="send_mode_manual" value="manual" <?= $send_mode == 'manual' ? 'checked' : '' ?>> 
-                                        เลือกเอง
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div class="form-group" id="recipient_buttons_group">
-                                <label class="col-sm-2 control-label"></label>
-                                <div class="col-sm-10">
-                                    <button type="button" class="btn btn-info btn-flat" id="btnSelectType" data-toggle="modal" data-target="#modalSelectType">
-                                        <i class="fa fa-th-large"></i> เลือกประเภทหน่วยงาน
-                                    </button>
-                                    <button type="button" class="btn btn-info btn-flat" id="btnSelectDepart" data-toggle="modal" data-target="#modalSelectDepart">
-                                        <i class="fa fa-bank"></i> เลือกหน่วยงาน
-                                    </button>
-                                    <input type="text" class="form-control" id="displayDepartSelection" value="<?= htmlspecialchars($displayDepartSelection, ENT_QUOTES, 'UTF-8') ?>" readonly>
-                                    <input type="hidden" name="toSomeOneUser" id="toSomeOneUser" value="<?= htmlspecialchars($toSomeOneUser, ENT_QUOTES, 'UTF-8') ?>">
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="box-footer">
-                            <div class="col-sm-offset-2 col-sm-10">
-                                <button type="submit" class="btn btn-primary btn-flat"><i class="fa fa-send"></i> บันทึกและส่งหนังสือ</button>
-                                <a href="index.php" class="btn btn-default btn-flat">ยกเลิก</a>
-                            </div>
-                        </div>
-                    </form>
-                    </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="modalSelectType" tabindex="-1" role="dialog" aria-labelledby="modalSelectTypeLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="modalSelectTypeLabel"><i class="fa fa-th-large"></i> เลือกประเภทหน่วยงาน</h4>
-            </div>
-            <div class="modal-body modal-body-scroll">
-                <p>เลือกประเภทหน่วยงานที่ต้องการส่งหนังสือ</p>
-                <div class="checkbox">
-                    <label><input type="checkbox" id="selectAllType"> **เลือกทุกประเภท**</label>
-                </div>
-                <hr>
-                <div class="row">
-                    <?php if ($depart_types): // ใช้ Alternative Syntax ?>
-                        <?php 
-                        // ใช้ dbdataSeek() เพื่อนำ Cursor กลับไปเริ่มต้นใหม่
-                        dbdataSeek($depart_types, 0); 
-                        $pre_selected_types = $send_mode == 'type' ? $selected_types : [];
-                        ?>
-
-                        <?php while ($row = dbFetchArray($depart_types)): // ใช้ Alternative Syntax ?>
-                            <?php
-                            $type_id = $row['type_id'];
-                            $type_name = htmlspecialchars($row['type_name'], ENT_QUOTES, 'UTF-8');
-                            $count = number_format($row['count']);
-                            $is_checked = in_array($type_id, $pre_selected_types) ? 'checked' : '';
-                            ?>
-                            <div class="col-sm-6">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" class="type-checkbox" value="<?= $type_id ?>" data-count="<?= $row['count'] ?>" <?= $is_checked ?>> 
-                                        <?= $type_name ?> 
-                                        <span class="badge" title="จำนวนหน่วยงานในประเภท"><?= $count ?></span>
-                                    </label>
-                                </div>
-                            </div>
-                        <?php endwhile; // สิ้นสุด Alternative Syntax ?>
-                        
-                        <?php if (dbNumRows($depart_types) == 0): // ใช้ Alternative Syntax ?>
-                            <div class="col-xs-12"><p class="text-danger">ไม่พบข้อมูลประเภทหน่วยงานในฐานข้อมูล</p></div>
-                        <?php endif; // สิ้นสุด Alternative Syntax ?>
-                        
-                    <?php else: // ใช้ Alternative Syntax ?>
-                        <div class="col-xs-12"><p class="text-danger">เกิดข้อผิดพลาดในการโหลดข้อมูลประเภทหน่วยงาน (SQL Query Failed)</p></div>
-                    <?php endif; // สิ้นสุด Alternative Syntax ?>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default btn-flat" data-dismiss="modal"><i class="fa fa-times"></i> ยกเลิก</button>
-                <button type="button" class="btn btn-success btn-flat" onclick="confirmTypeSelection()"><i class="fa fa-check"></i> ยืนยันการเลือก</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="modalSelectDepart" tabindex="-1" role="dialog" aria-labelledby="modalSelectDepartLabel">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="modalSelectDepartLabel"><i class="fa fa-bank"></i> เลือกหน่วยงานที่ต้องการส่ง</h4>
-            </div>
-            <div class="modal-body modal-body-scroll">
-                <p>เลือกหน่วยงานจากรายการด้านล่าง (สามารถค้นหาได้)</p>
-                <div class="checkbox">
-                    <label><input type="checkbox" id="selectAllDepart"> **เลือกทุกหน่วยงานที่แสดง**</label>
-                </div>
-                <hr>
-                <table id="departTable" class="table table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <th style="width: 5%;"><i class="fa fa-check-square-o"></i></th>
-                            <th style="width: 25%;">ประเภทหน่วยงาน</th>
-                            <th style="width: 70%;">ชื่อหน่วยงาน</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php 
-                        $pre_selected_dep_ids = $send_mode == 'manual' ? $selected_dep_ids : [];
-
-                        if ($all_departs): // ใช้ Alternative Syntax
-                            dbdataSeek($all_departs, 0);
-                            
-                            while ($row = dbFetchArray($all_departs)): // ใช้ Alternative Syntax
-                                $is_checked = in_array($row['dep_id'], $pre_selected_dep_ids) ? 'checked' : '';
-                            ?>
-                                <tr>
-                                    <td>
-                                        <input type="checkbox" class="depart-checkbox" value="<?= $row['dep_id'] ?>" data-name="<?= htmlspecialchars($row['dep_name'], ENT_QUOTES, 'UTF-8') ?>" <?= $is_checked ?>>
-                                    </td>
-                                    <td><?= htmlspecialchars($row['type_name'], ENT_QUOTES, 'UTF-8') ?></td>
-                                    <td><?= htmlspecialchars($row['dep_name'], ENT_QUOTES, 'UTF-8') ?></td>
-                                </tr>
-                            <?php endwhile; // สิ้นสุด Alternative Syntax ?>
-                            
-                            <?php if (dbNumRows($all_departs) == 0): // ใช้ Alternative Syntax ?>
-                                <tr><td colspan="3" class="text-danger">ไม่พบข้อมูลหน่วยงานในฐานข้อมูล</td></tr>
-                            <?php endif; // สิ้นสุด Alternative Syntax ?>
-                            
-                        <?php else: // ใช้ Alternative Syntax ?>
-                            <tr><td colspan="3" class="text-danger">เกิดข้อผิดพลาดในการโหลดข้อมูลหน่วยงานทั้งหมด (SQL Query Failed)</td></tr>
-                        <?php endif; // สิ้นสุด Alternative Syntax ?>
-                    </tbody>
-                </table>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default btn-flat" data-dismiss="modal"><i class="fa fa-times"></i> ยกเลิก</button>
-                <button type="button" class="btn btn-success btn-flat" onclick="confirmDepartSelection()"><i class="fa fa-check"></i> ยืนยันการเลือก</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<?php if (isset($success_save) && $success_save === true): ?>
-<script>
-$(document).ready(function() {
-    swal({
-        title: "ส่งหนังสือสำเร็จ!",
-        text: "หนังสือถูกบันทึกและส่งไปยังหน่วยงานผู้รับเรียบร้อยแล้ว",
-        type: "success",
-        showCancelButton: false,
-        confirmButtonColor: "#5cb85c",
-        confirmButtonText: "ตกลง (ไปที่ประวัติ)",
-        closeOnConfirm: true
-    },
-    function(){
-        window.location.href = 'history.php';
-    });
-});
+?>
+<script type='text/javascript'>
+    $('#tbOutside').DataTable({
+        "order": [
+            [0, "desc"]
+        ]
+    })
 </script>
-<?php endif; ?>
 
-<script src="../bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
-<script src="../bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<script language="JavaScript">
+    </script>
 
-<script>
-let departTableInstance = null;
+<script type="text/javascript">
+    function listOne(a, b, c) {
+        m = document.fileIn.toSomeUser.value;
 
-$(document).ready(function() {
-    
-    var initialMode = $('input[name="send_mode"]:checked').val() || 'all';
-    toggleRecipientControls(initialMode);
-    
-    // 1. การเปลี่ยนโหมด
-    $('input[name="send_mode"]').on('change', function() {
-        var mode = $(this).val();
-        toggleRecipientControls(mode);
-    });
-    
-    function toggleRecipientControls(mode) {
-        $('#btnSelectType').hide();
-        $('#btnSelectDepart').hide();
-        
-        var currentValue = $('#toSomeOneUser').val();
+        if (a.checked) {
+            if (m.indexOf(b) < 0) m += '|' + b;
 
-        if (mode === 'all') {
-            // Nothing to show/hide
-        } else if (mode === 'type') {
-            $('#btnSelectType').show();
-            if (currentValue === 'all' || currentValue === '') { 
-                 $('#displayDepartSelection').val('ยังไม่ได้เลือกประเภทหน่วยงาน');
-            }
-        } else if (mode === 'manual') {
-            $('#btnSelectDepart').show();
-            if (currentValue === 'all' || currentValue === '') {
-                $('#displayDepartSelection').val('ยังไม่ได้เลือกหน่วยงาน');
-            }
-        }
-    }
-    
-    // 2. Modal 1: เลือกทุกประเภท
-    $('#selectAllType').on('change', function() {
-        $('.type-checkbox').prop('checked', this.checked);
-    });
-
-    // 3. Modal 2: การจัดการ DataTable 
-    
-    $('#modalSelectDepart').on('shown.bs.modal', function () {
-        if (!$.fn.DataTable.isDataTable('#departTable')) {
-            departTableInstance = $('#departTable').DataTable({
-                "language": {
-                    "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Thai.json"
-                },
-                "pageLength": 10,
-                "columnDefs": [
-                    { "orderable": false, "targets": 0 }
-                ]
-            });
-        }
-        
-        if (departTableInstance) {
-            departTableInstance.columns.adjust().draw();
-        }
-    });
-
-    // 3.2: เลือกทุกหน่วยงานใน DataTable ที่แสดงอยู่
-    $('#selectAllDepart').on('change', function() {
-        if (departTableInstance) {
-            departTableInstance.rows({ filter: 'applied', page: 'current' }).nodes().to$().find('.depart-checkbox').prop('checked', this.checked);
         } else {
-             $('.depart-checkbox').prop('checked', this.checked);
+            m = document.fileIn.toSomeUser.value.replace('|' + b, '');
         }
-    });
-});
-
-// ฟังก์ชันยืนยันการเลือกประเภท (Modal 1)
-function confirmTypeSelection() {
-    let selected = [];
-    let totalCount = 0;
-    
-    $('.type-checkbox:checked').each(function() {
-        selected.push(this.value);
-        totalCount += parseInt($(this).data('count'));
-    });
-    
-    document.getElementById('toSomeOneUser').value = '|' + selected.join('|');
-    
-    let displayText = '';
-    if (selected.length > 0) {
-        displayText = `เลือก ${selected.length} ประเภท (${totalCount} หน่วยงาน)`;
-    } else {
-        displayText = 'กรุณาเลือกประเภทหน่วยงาน';
-        document.getElementById('toSomeOneUser').value = ''; 
+        z = "|";
+        if (m.substring(2) == c) m = m.substring(2);
+        document.fileIn.toSomeUser.value = m;
     }
-    document.getElementById('displayDepartSelection').value = displayText;
-    
-    $('#modalSelectType').modal('hide');
-}
+</script>
+<script type="text/javascript">
+    function listType(a, b, c) { //ฟังค์ชั่นกรณีเลือกเป็นประเภท
+        m = document.fileout.toSomeUser.value;
 
-// ฟังก์ชันยืนยันการเลือกหน่วยงาน (Modal 2)
-function confirmDepartSelection() {
-    let selected = [];
-    let names = [];
-    
-    document.querySelectorAll('#modalSelectDepart .depart-checkbox:checked').forEach(function(cb) {
-        selected.push(cb.value);
-        names.push(cb.dataset.name);
-    });
-    
-    document.getElementById('toSomeOneUser').value = '|' + selected.join('|');
-    
-    let displayText = '';
-    if (selected.length > 0) {
-        displayText = `เลือกแล้ว ${selected.length} หน่วยงาน`;
-        if (names.length <= 3) {
-            displayText += ': ' + names.join(', ');
+        if (a.checked) {
+            if (m.indexOf(b) < 0) m += '|' + b;
+
         } else {
-            displayText += ': ' + names.slice(0, 3).join(', ') + ` และอีก ${names.length - 3} หน่วยงาน`;
+            m = document.fileout.toSomeUser.value.replace('|' + b, '');
         }
-    } else {
-        displayText = 'กรุณาเลือกหน่วยงาน';
-        document.getElementById('toSomeOneUser').value = ''; 
+        z = "|";
+        if (m.substring(2) == c) m = m.substring(2);
+        document.fileout.toSomeUser.value = m;
     }
-    document.getElementById('displayDepartSelection').value = displayText;
-    
-    $('#modalSelectDepart').modal('hide');
-}
+</script>
+<script type="text/javascript">
+    function listSome(a, b, c) { //ฟังค์ชั่นกรณีเลือกส่วนราชการเอง
+        m = document.fileout.toSomeOneUser.value;
+
+        if (a.checked) {
+            if (m.indexOf(b) < 0) m += '|' + b;
+
+        } else {
+            m = document.fileout.toSomeOneUser.value.replace('|' + b, '');
+        }
+        z = "|";
+        if (m.substring(2) == c) m = m.substring(2);
+        document.fileout.toSomeOneUser.value = m;
+    }
 </script>
