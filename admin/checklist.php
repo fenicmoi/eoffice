@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checklist</title>
 
-    <!-- Bootstrap -->
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link href="../css/sticky-footer-navbar.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/loader.css">
@@ -19,24 +18,15 @@
     <link rel="stylesheet" href="../css/sweetalert.css">
     <script src="../js/sweetalert.min.js"></script>
     <script src="app.js"></script>
-     <!-- DateTimePicket -->
      <script src="../js/jquery-ui-1.11.4.custom.js"></script>
      <link rel="stylesheet" href="../css/jquery-ui-1.11.4.custom.css" />
      <link rel="stylesheet" href="../css/SpecialDateSheet.css" />
 
-    <!-- หน้าต่างแจ้งเตือน -->
-    <script  src="../js/jquery_notification_v.1.js"> </script>  <!-- Notification -->
-    <link href="../css/jquery_notification.css" type="text/css" rel="stylesheet"/>
+    <script  src="../js/jquery_notification_v.1.js"> </script>  <link href="../css/jquery_notification.css" type="text/css" rel="stylesheet"/>
     
     <link href="../css/dataTables.css" rel="stylesheet">
     <script src="../js/dataTables.js"></script>
     <link rel="stylesheet" type="text/css" href="../select/selection.css">
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
     <script type='text/javascript'>
         $(document).ready(function(){
     $('#myTable').DataTable(
@@ -102,16 +92,23 @@ if(!$rowCheck){
 
 $check=$rowCheck['sec_id'];
 if($check==0){       // ถ้าค่าเป็น 0 หมายถึงเป็นเอกสารส่งภายนอก
-    $sql="SELECT p.pid,p.sec_id,p.dep_id,p.confirm,p.confirmdate,d.dep_name,d.phone
+    // Query สำหรับเอกสารส่งภายนอก (sec_id = 0)
+    // *** แก้ไข: เพิ่ม LEFT JOIN user เพื่อดึงชื่อผู้ที่ลงรับ (p.u_id) ***
+    $sql="SELECT p.pid,p.sec_id,p.dep_id,p.confirm,p.confirmdate,p.msg_reject,d.dep_name,d.phone, 
+                 u.firstname, u.lastname,
+                 NULL AS sec_name
           FROM paperuser p
           INNER JOIN depart d ON p.dep_id=d.dep_id
+          LEFT JOIN user u ON u.u_id=p.u_id  /* *** โค้ดที่เพิ่ม *** */
           WHERE p.sec_id=0 AND pid=$pid";  
 }else{
-    $sql="SELECT p.pid,p.u_id,p.sec_id,p.confirm,p.confirmdate,p.dep_id,p.msg_reject,d.dep_name,d.phone,s.sec_name,u.firstname
+    // Query สำหรับเอกสารส่งภายใน (sec_id != 0)
+    // *** แก้ไข: เปลี่ยน INNER JOIN user เป็น LEFT JOIN user เพื่อไม่ให้ Missing rows เมื่อ p.u_id=0 ***
+    $sql="SELECT p.pid,p.u_id,p.sec_id,p.confirm,p.confirmdate,p.dep_id,p.msg_reject,d.dep_name,d.phone,s.sec_name,u.firstname, u.lastname
           FROM  paperuser p
                 INNER JOIN depart d   ON  p.dep_id=d.dep_id
                 INNER JOIN section s ON s.sec_id=p.sec_id
-                INNER JOIN user u ON u.u_id=p.u_id
+                LEFT JOIN user u ON u.u_id=p.u_id  /* *** เปลี่ยนเป็น LEFT JOIN *** */
           WHERE pid=$pid  
         ";
         
@@ -159,13 +156,13 @@ if($check==0){       // ถ้าค่าเป็น 0 หมายถึง�
                             while ($row=dbFetchArray($result)){?>
                                 <tr>
                                     <td><?=$count?></td>
-                                    <td><?php echo $row['dep_name']?></td>
+                                    <td><?php echo $row['dep_name'] ?? '-';?></td>
                                     <td>
                                         <?php   // ถ้า sec_id=0 แสดงว่าเป็นหนังสือส่งภายนอก  ไม่ต้องแสดงแผนก
-                                        if($row['sec_id']==0){
+                                        if(($row['sec_id'] ?? 0)==0){
                                               echo "-";
                                         }else{
-                                              echo $row['sec_name'];
+                                              echo $row['sec_name'] ?? '-';
                                         } ?>
                                     </td>
                                     <?php 
@@ -181,12 +178,17 @@ if($check==0){       // ถ้าค่าเป็น 0 หมายถึง�
                                      ?>
                                    
                                      <td>
-                                        <?php echo @thaiDate($row['confirmdate'])?>
+                                        <?php echo @thaiDate($row['confirmdate'] ?? '')?>
                                     </td>
-                                    <td><?php echo substr($row['confirmdate'],10);?></td>
-                                     <td><?php echo $row['firstname'];?></td>
-                                     <td><?php echo $row['phone']?></td>
-                                     <td><?php echo $row['msg_reject'];?></td>
+                                    <td><?php echo substr($row['confirmdate'] ?? '',10);?></td>
+                                     <td>
+                                         <?php 
+                                         $fullname = ($row['firstname'] ?? '') . ' ' . ($row['lastname'] ?? '');
+                                         echo trim($fullname) ? trim($fullname) : '-';
+                                         ?>
+                                     </td>
+                                     <td><?php echo $row['phone'] ?? '-' ?></td>
+                                     <td><?php echo $row['msg_reject'] ?? '-';?></td>
                                 </tr>   
                         <?php $count++; } ?>
                     </tbody>
@@ -196,5 +198,3 @@ if($check==0){       // ถ้าค่าเป็น 0 หมายถึง�
     </div>  
     </body>
 </html>
-    
-    

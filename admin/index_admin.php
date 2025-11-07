@@ -17,7 +17,7 @@ if (isset($_SESSION['login_success']) && $_SESSION['login_success'] === true) {
     echo "<script>
         // SweetAlert ที่แสดงเครื่องหมายถูก
         swal({
-            title: 'Have a good Day!',
+            title: 'WELCOME',
             text: 'ยินดีต้อนรับเข้าสู่ระบบ E-Office ',
             type: 'success', // **ใช้ 'success' เพื่อแสดงเครื่องหมายถูก**
             timer: 2000, // แสดง 2 วินาทีแล้วปิดเอง

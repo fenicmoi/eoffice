@@ -1,11 +1,7 @@
 <?php
 require_once 'config.php';
 
-/*$dbConn = mysql_connect ($dbHost, $dbUser, $dbPass) or die ('MySQL connect failed. ' . mysql_error());
-mysql_query('SET NAMES utf8');
-date_default_timezone_set('Asia/Bangkok');
-mysql_select_db($dbName) or die('Cannot select database. ' . mysql_error());*/
-
+// **การเชื่อมต่อฐานข้อมูลแบบ Object Oriented (mysqli)**
 $dbConn=new mysqli($dbHost, $dbUser, $dbPass);
 if ($dbConn->connect_error) {
     die("Connection failed: " . $dbConn->connect_error);
@@ -14,30 +10,30 @@ $dbConn->query("set names utf8");
 $dbConn->select_db($dbName);
 
 /**
- * ฟังก์ชันสำหรับ Query ฐานข้อมูลโดยใช้ Prepared Statements
+ * ฟังก์ชันสำหรับ Query ฐานข้อมูลโดยใช้ Prepared Statements (แบบที่นิยม/ปลอดภัย)
  * @param string $sql คำสั่ง SQL ที่มี placeholder (?)
  * @param string $types string ที่ระบุชนิดของตัวแปร (เช่น "ssi" สำหรับ string, string, integer)
  * @param array $params อาร์เรย์ของตัวแปรที่ต้องการ Bind
  * @return mixed ถ้าเป็น SELECT จะคืนค่า mysqli_result ถ้าเป็น INSERT/UPDATE/DELETE จะคืนค่า true/false
  */
 function dbQuery($sql, $types = null, $params = null)
-{   
+{ 
     global $dbConn;
     
-    // ถ้าไม่มี $params หรือ $types ให้ใช้ query แบบเดิม (ควรใช้ในกรณีที่ไม่รับค่าจากผู้ใช้)
+    // **รูปแบบการเรียกใช้ทั่วไป (ไม่รับค่าจากผู้ใช้)**
     if (empty($params) || empty($types)) {
         $result = $dbConn->query($sql);
         return $result;
     }
 
+    // **รูปแบบ Prepared Statements (แบบที่นิยม/ปลอดภัย)**
     $stmt = $dbConn->prepare($sql);
     if ($stmt === false) {
-        // จัดการข้อผิดพลาดในการเตรียมคำสั่ง
         error_log("MySQL Prepare Error: " . $dbConn->error . "\nSQL: " . $sql);
         return false;
     }
 
-    // bind_param ต้องรับอาร์เรย์เป็น reference
+    // Bind parameters
     $bind_names[] = $types;
     for ($i=0; $i<count($params);$i++) {
         $bind_name = 'bind' . $i;
@@ -60,74 +56,78 @@ function dbQuery($sql, $types = null, $params = null)
         return $result;
     }
 
-    // ถ้าเป็น INSERT, UPDATE, DELETE ให้คืนค่า true/false และ close statement
+    // ถ้าเป็น INSERT, UPDATE, DELETE 
     $stmt->close();
-    return true;
+    return true; // สำเร็จ
 }
 
-// ... ฟังก์ชันอื่นๆ (dbAffectedRows, dbFetchArray, ฯลฯ) ไม่ต้องเปลี่ยน
-
+// **ฟังก์ชันมาตรฐานสำหรับการจัดการผลลัพธ์**
 function dbAffectedRows()
 {
-	global $dbConn;
-        return mysqli_affected_rows($dbConn);
+    global $dbConn;
+    return mysqli_affected_rows($dbConn);
 }
 
 function dbFetchArray($result) {
-          global $dbConn;
-          return mysqli_fetch_array($result);
+    global $dbConn;
+    return mysqli_fetch_array($result);
 }
 
 function dbFetchAssoc($result)
 {
     global $dbConn;
-          return mysqli_fetch_assoc($result);
+    return mysqli_fetch_assoc($result);
 }
 
 function dbFetchRow($result) 
 {
     global $dbConn;
-         return mysqli_fetch_row($result);
+    return mysqli_fetch_row($result);
 }
 
 function dbFreeResult($result)
 {
     global $dbConn;
-          return mysqli_free_result($result);
+    return mysqli_free_result($result);
 }
 
 function dbNumRows($result)
 {
-    global $dbConn;
-        return mysqli_num_rows($result);
+    // ตรวจสอบว่าเป็น Object ของ mysqli_result ก่อน
+    if ($result instanceof mysqli_result) {
+        return $result->num_rows;
+    }
+    return 0; // คืนค่า 0 หากไม่ใช่ผลลัพธ์ที่ถูกต้อง
 }
 
-function dbSelect($dbName)
-{
-	return mysqli_select_db($dbName);
+/**
+ * ฟังก์ชันสำหรับตั้งค่าตัวชี้ผลลัพธ์กลับไปที่แถวเริ่มต้น (จำเป็นสำหรับวนลูปซ้ำ)
+ */
+function dbdataSeek($result, $row_number) {
+    global $dbConn;
+    if ($result instanceof mysqli_result) {
+        return $result->data_seek($row_number);
+    }
+    return false;
 }
 
 function dbInsertId()
 {
-        global $dbConn;
-	return mysqli_insert_id($dbConn);
-       
+    global $dbConn;
+    return mysqli_insert_id($dbConn);
 }
 
 function dbEscapeString($text)
 {
     global $dbConn;
-    // ใช้ mysqli_real_escape_string เนื่องจากมีการสร้าง $dbConn เป็นวัตถุ mysqli
     return mysqli_real_escape_string($dbConn, $text); 
 }
 
 function always_run(){
-        global $dbConn;
-        if ($dbConn) {
-            mysqli_close($dbConn);
-        }
-        //echo 'end of request. the connection is close automatically';
+    global $dbConn;
+    if ($dbConn instanceof mysqli && !$dbConn->connect_error) {
+        $dbConn->close();
+    }
 }
 register_shutdown_function('always_run');
-
 ?>

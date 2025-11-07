@@ -1,10 +1,5 @@
 
-<?php 
-if (!defined('IS_SYSTEM_RUNNING')) {
-    // หากค่าคงที่ไม่ได้ถูกกำหนด แปลว่าเป็นการเข้าถึงโดยตรง
-    die('การเข้าถึงโดยตรงไม่ได้รับอนุญาต!');
-}
-?>
+
 <!-- <link rel="stylesheet" href="css/note.css"> -->
 <div class="row">
     <div class="col-md-12">
