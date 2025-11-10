@@ -3,17 +3,13 @@
 date_default_timezone_set('Asia/Bangkok');
 include "header.php";
 
-
-//check login
 if (!isset($_SESSION['ses_u_id'])) {
     header("Location: ../index.php");
     exit();
 }else{
 	$u_id=$_SESSION['ses_u_id'];
 	$dep_id = $_SESSION['ses_dep_id'];
-	print $dep_id;
 }
-
 ?>
 
 <div class="col-md-2" >
@@ -32,12 +28,61 @@ $sql="SELECT p.pid,u.puid, u.pid,p.postdate,p.title,p.file,p.book_no,d.dep_name,
       WHERE u.u_id=$u_id AND u.confirm=0 ORDER BY u.puid DESC" ;
 //print $sql;
 //$result = page_query( $dbConn, $sql, 10 );
-$result = dbQuery($sql);
-$numrow=dbNumRows($result);
+// $result = dbQuery($sql);
+// $numrow=dbNumRows($result);
 ?>
+
+<script type="text/javascript" language="javascript" >
+			$(document).ready(function() {
+				var dataTable = $('#myTable').DataTable( {
+          order: [[ 0, 'desc' ], [ 0, 'asc' ]],
+					"processing": true,
+					"serverSide": true,
+          "resonsive": true,
+          "columnDefs": [
+                {
+                    "targets": [ 0 ], // ตำแหน่งคอลัมน์ที่ 0 (hire_id)
+                    "visible": false, // ซ่อนคอลัมน์
+                    "searchable": false // ไม่ให้ค้นหาในคอลัมน์นี้ด้วย
+                }
+            ],
+        
+          "language": {
+                "sLengthMenu": "แสดง _MENU_ เร็คคอร์ด ต่อหน้า",
+                "sZeroRecords": "ไม่พบข้อมูลที่ค้นหา",
+                "sInfo": "แสดง _START_ ถึง _END_ ของ _TOTAL_ เร็คคอร์ด",
+                "sInfoEmpty": "แสดง 0 ถึง 0 ของ 0 เร็คคอร์ด",
+                "sInfoFiltered": "(จากเร็คคอร์ดทั้งหมด _MAX_ เร็คคอร์ด)",
+                "sSearch": "ค้นหา: ",
+                "oPaginate": {
+                    "sFirst":    "หน้าแรก",
+                    "sPrevious": "ก่อนหน้า",
+                    "sNext":     "ถัดไป",
+                    "sLast":     "หน้าสุดท้าย"
+                }
+            },
+					"ajax":{
+						url :"paper-serverside.php", // json datasource
+						type: "post",  // method  , by default get
+                        data:{
+                            level_id: '<?php echo $level_id; ?>',
+                            dep_id: '<?php echo $dep_id; ?>'
+                        },
+						error: function(){  // error handling
+							$(".myTable-error").html("");
+							$("#myTable").append('<tbody class="myTable-error"><tr><th colspan="3">ไม่มีข้อมูล</th></tr></tbody>');
+							$("#myTable").css("display","none");
+							
+						}
+					}
+				} );
+			} );
+</script>
+
+
  <div class="col-md-10">
 	            <div class="panel panel-primary">
-                <div class="panel-heading"><i class="fas fa-share-square fa-2x"></i>  <strong>ส่งไฟล์เอกสาร</strong></div>
+                <div class="panel-heading"><i class="fas fa-share-square fa-2x"></i>  <strong>ระบบส่งเอกสาร</strong></div>
 				<div class="panel-body">                  
                             <ul class="nav nav-tabs">
                                 <li class="active"  ><a class="btn-danger fas fa-envelope"  href="paper.php">หนังสือเข้า</a></li>
@@ -90,7 +135,6 @@ $numrow=dbNumRows($result);
 														<td>
 															<a class="btn btn-warning"
 															 href="recive.php?pid=<?php echo $rowNew['pid'];?>&sec_id=<?php echo $sec_id; ?>&dep_id=<?php echo $dep_id; ?>&confirm=1">
-																  
 															 <i class="fas fa-check"></i> ลงรับ
 															</a>
 														</td>
@@ -104,10 +148,8 @@ $numrow=dbNumRows($result);
 																	data-toggle="modal" data-target=".bs-example-modal-table">
 																ส่งคืน
 															</a>
-														
 														</td>
 											 <?php } ?>
-
 										</tr>
 						<?php  }?>                              
 				</tbody>
@@ -149,7 +191,7 @@ $numrow=dbNumRows($result);
 		$sql =  " UPDATE paperuser 
 				  SET confirm = 2, confirmdate = '$dateRecive', msg_reject = '$msg_reject'
 				  WHERE pid= $pid and dep_id = $dep_id";
-		echo $sql;
+		//echo $sql;
 	
 		$result = dbQuery($sql);
 		if($result){
