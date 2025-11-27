@@ -21,24 +21,7 @@ $u_id=$_SESSION['ses_u_id'];
                 </div> 
                 <br>
 
-                    <table id="myTable" cellpadding="0" cellspacing="0"  class="display" width="100%">
-                        <thead class="bg-info">
-                            <tr>
-                                <th>เลขที่คำสั่ง</th>
-                                <th>เรื่อง</th>
-                                <th>ลงวันที่</th>
-                                <th>ไฟล์แนบ</th>
-                                <th >เจ้าของเรื่อง</th>
-                            </tr>
-                        </thead>
-                        <tfoot>
-                                <th>เลขที่คำสั่ง</th>
-                                <th>เรื่อง</th>
-                                <th>ลงวันที่</th>
-                                <th>ไฟล์แนบ</th>
-                                <th>เจ้าของเรื่อง</th>
-                        </tfoot>
-                    </table>
+              
 
                     
                 <table class="table table-bordered table-hover" id="tbHire">

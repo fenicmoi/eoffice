@@ -1,7 +1,7 @@
 <?php
 include 'admin/function.php';
 include 'library/database.php';
-include 'library/config.php';
+//include 'library/config.php';
 // storing  request (ie, get/post) global array to a variable  
 $requestData= $_REQUEST;
 
