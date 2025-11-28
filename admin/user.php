@@ -13,7 +13,7 @@ $u_id = $_SESSION['ses_u_id'];
             ?>
         </div>
         <div class="col-md-10">
-            <div class="panel panel-primary" style="margin: 20">
+            <div class="panel panel-danger">
                 <div class="panel-heading"><i class="fa fa-user-secret fa-2x" aria-hidden="true"></i>  <strong>จัดการผู้ใช้งาน</strong>
                     <a href="#" class="btn btn-default pull-right" data-toggle="modal" data-target="#modalAdd">
                              <i class="fa fa-plus" aria-hidden="true"></i>เพิ่มผู้ใช้งาน
@@ -24,7 +24,7 @@ $u_id = $_SESSION['ses_u_id'];
                 
                 <hr/>
                 <table class="table table-bordered table-hover" id="myTable">
-                    <thead class="alert alert-info">
+                    <thead class="bg-primary">
                      <tr>
                          <th>ที่</th>
                          <th>ชื่อ</th>
