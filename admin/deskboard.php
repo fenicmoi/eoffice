@@ -23,13 +23,11 @@ ini_set('display_errors', 1);
                 ?>
             <div class="row" >
                 <div class="col-md-3">
-                    <div class="bg-danger">
-                        <center>
+                    <div class="bg-danger text-center">
                          <a href="paper.php" data-toggle="tooltip1" title="เอกสารจากส่วนราชการต่าง ๆ!">
                             <i class="fas fa-envelope fa-4x"></i>
                             <h5>เอกสารเข้าใหม่ <span class="badge"><?php echo $row['pcount']; ?></span></h5>
                          </a>
-                        </center>
                         </div>
                     </div>
                     <?php
@@ -41,33 +39,27 @@ ini_set('display_errors', 1);
                 $result = dbQuery($sql);
                 $num = dbNumRows($result); ?>    
                 <div class="col-md-3">
-                    <div class="bg-danger">
-                        <center>
+                    <div class="bg-danger text-center">
                             <a href="FlowResiveProvince.php">
                                 <i class="fas fa-book fa-4x"  ></i>
                                 <h5>หนังสือเข้าใหม่ <span class="badge"><?php echo $num; ?></span></h5>
                             </a>
-                        </center>   
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <div class="bg-danger">
-                        <center>
+                    <div class="bg-danger text-center">
                             <a href="#">
                                 <i class="fas fa-eye fa-4x"></i>
                                 <h5>หนังสือเวียน</h5>
                             </a>
-                        </center>   
                     </div>
                 </div>    
                 <div class="col-md-3">
-                    <div class="bg-danger">
-                        <center>
+                    <div class="bg-danger text-center">
                             <a href="paper.php">
-                            <i class="fas fa-bell fa-4x"></i<i class="fas fa-book fa-4x"  ></i>
+                            <i class="fas fa-bell fa-4x"></i>
                             <h5>ประชาสัมพันธ์ <span class="badge">0</span></h5>
                              </a>
-                        </center>
                     </div>
                 </div>
                </div>    
@@ -83,8 +75,8 @@ ini_set('display_errors', 1);
                                                 <div class="panel-group">
                                                     <div class="panel panel-default">
                                                     <div class="panel-heading">
-                                                        <h4 class="panel-title">
-                                                            <a data-toggle="collapse" href="#menu1"><center><i class="fa fa-briefcase fa-2x text-center"></i><br> ทะเบียนหนังสือจังหวัด</center></a>
+                                                        <h4 class="panel-title text-center">
+                                                            <a data-toggle="collapse" href="#menu1"><i class="fa fa-briefcase fa-2x"></i><br> ทะเบียนหนังสือจังหวัด</a>
                                                         </h4>
                                                     </div>
                                                     <div id="menu1" class="panel-collapse collapse">
@@ -112,8 +104,8 @@ ini_set('display_errors', 1);
                                                 <div class="panel-group">
                                                     <div class="panel panel-default">
                                                     <div class="panel-heading">
-                                                        <h4 class="panel-title">
-                                                            <a data-toggle="collapse" href="#menu2"><center><i class="fas fa-credit-card fa-2x"></i><br> ทะเบียนสัญญา</center></a>
+                                                        <h4 class="panel-title text-center">
+                                                            <a data-toggle="collapse" href="#menu2"><i class="fas fa-credit-card fa-2x"></i><br> ทะเบียนสัญญา</a>
                                                         </h4>
                                                     </div>
                                                     <div id="menu2" class="panel-collapse collapse">
@@ -134,8 +126,8 @@ ini_set('display_errors', 1);
                                                  <div class="panel-group">
                                                     <div class="panel panel-default">
                                                     <div class="panel-heading">
-                                                        <h4 class="panel-title">
-                                                            <a data-toggle="collapse" href="#menu4"><center><i class="fas fa-gopuram fa-2x"></i><br> จองห้องประชุม</center></a>
+                                                        <h4 class="panel-title text-center">
+                                                            <a data-toggle="collapse" href="#menu4"><i class="fas fa-gopuram fa-2x"></i><br> จองห้องประชุม</a>
                                                         </h4>
                                                     </div>
                                                     <div id="menu4" class="panel-collapse collapse">
@@ -157,8 +149,8 @@ ini_set('display_errors', 1);
                                                  <div class="panel-group">
                                                     <div class="panel panel-default">
                                                     <div class="panel-heading">
-                                                        <h4 class="panel-title">
-                                                            <a data-toggle="collapse" href="#menu5"><center><i class="fas fa-address-book fa-2x"></i><br> สมุดโทรศัพท์จังหวัด</center></a>
+                                                        <h4 class="panel-title text-center">
+                                                            <a data-toggle="collapse" href="#menu5"><i class="fas fa-address-book fa-2x"></i><br> สมุดโทรศัพท์จังหวัด</a>
                                                         </h4>
                                                     </div>
                                                     <div id="menu5" class="panel-collapse collapse">
