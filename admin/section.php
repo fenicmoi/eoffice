@@ -17,9 +17,9 @@ $u_id=$_SESSION['ses_u_id'];
             ?>
         </div>
         <div class="col-md-10">
-            <div class="panel panel-default" style="margin: 20">
+
+            <div class="panel panel-danger">
                 <div class="panel-heading"><i class="fas fa-sitemap fa-2x" aria-hidden="true"></i>  <strong>จัดการกลุ่ม/ฝ่าย</strong></div>
-                <p></p>
                 <div class="panel-body text-center">
                     <a  class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modalAdd">
                      <i class="fa fa-plus" aria-hidden="true"></i>เพิ่มกลุ่ม/ฝ่าย
@@ -27,7 +27,7 @@ $u_id=$_SESSION['ses_u_id'];
                  </div>
                 <hr/>
                 <table class="table table-bordered table-hover" id="myTable">
-                 <thead class="bg-info">
+                 <thead class="bg-primary">
                      <tr>
                          <th>ที่</th>
                          <th>ชื่อกลุ่ม/ฝ่าย</th>
@@ -89,7 +89,7 @@ $u_id=$_SESSION['ses_u_id'];
               
                 <!-- Modal content-->
                 <div class="modal-content">
-                  <div class="modal-header alert-info">
+                  <div class="modal-header bg-primary">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title">เพิ่มกลุ่มงาน/สาขา</h4>
                   </div>
