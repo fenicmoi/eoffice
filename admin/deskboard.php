@@ -179,9 +179,7 @@ ini_set('display_errors', 1);
                if ($level_id == 1) {
                    //ตรวจสอบปีเอกสาร
                    list($yid, $yname, $ystatus) = chkYear();
-                   $yid = $yid;
-                   $yname = $yname;
-                   $ystatus = $ystatus;
+
 
                    $sql = 'SELECT 
                         COUNT(IF(level_id=1,1,null)) AS c1,

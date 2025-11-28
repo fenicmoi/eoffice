@@ -172,3 +172,14 @@ a:hover {
     font-size: 0.9em;
     padding: 0.4em 0.6em;
 }
+
+/* Footer Override */
+.footer.bg-dark {
+    background-color: var(--dark-color);
+    color: white;
+}
+
+.footer .text-muted {
+    color: rgba(255,255,255,0.7);
+}
+

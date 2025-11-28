@@ -213,7 +213,7 @@ if ($u_id) {
         <li>
           <div class="chip">
             <img src="../images/img_avatar.png" alt="Person" width="50" height="50">
-            <span class="badge" data-toggle="modal" title="Click" data-target="#myModal"> ข้อมูลผู้ใช้ </span>
+            <a href="#" data-toggle="modal" title="Click" data-target="#myModal"> ข้อมูลผู้ใช้ </a>
           </div>
         </li>
         <li>

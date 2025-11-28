@@ -2,7 +2,7 @@
   <div class="container">
     <p class="text-muted">
       <kbd>E-Office จังหวัดพัทลุง</kbd>
-      พัฒนาโดย:กลุ่มงานยุทธศาสตร์และข้อมูลเพื่อการพัฒนาจังหวัด <i class="fas fa-user"></i> <i class="fas fa-fax"></i>
+      พัฒนาโดย:สำนักงานจังหวัดพัทลุง <i class="fas fa-user"></i> <i class="fas fa-fax"></i>
       074-613409
       <span data-toggle="modal" data-target="#card"><kbd>[ติดต่อผู้พัฒนาระบบ]</kbd></span>
     </p>
