@@ -1,9 +1,7 @@
-
-
 <!-- <link rel="stylesheet" href="css/note.css"> -->
 <div class="row">
     <div class="col-md-12">
-         <div id="myCarousel" class="carousel slide" data-ride="carousel">
+        <div id="myCarousel" class="carousel slide" data-ride="carousel">
             <!-- Indicators -->
             <ol class="carousel-indicators">
                 <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
@@ -12,7 +10,7 @@
             <!-- Wrapper for slides -->
             <div class="carousel-inner">
                 <div class="item active">
-                <img height="400" src="images/newbanner2.png" alt="Los Angeles">
+                    <img height="400" src="images/newbanner2.png" alt="Los Angeles">
                 </div>
                 <!-- <div class="item">
                 <img src="images/office3.jpg" alt="Chicago">
@@ -31,174 +29,188 @@
     </div>
 </div>
 
-<div class="row bg-info">
+<div class="row mt-4">
     <div class="col-md-2">
-       <center>
-       <a href="#" data-toggle="modal" data-target="#modelRule"><i class="far fa-handshake fa-10x"></i>
-            <h4>ข้อตกลงการใช้งานเบื้องต้น</h4>
-       </a>
-       </center>
-   </div>
-   <div class="col-md-2">
-       <center>
-       <a href="list_user.php"><i class="fab fa-earlybirds fa-10x"></i>
-            <h4>รายชื่อหน่วยงาน/admin</h4>
-       </a>
-       </center>
-   </div>
+        <div class="bg-primary text-center rounded p-3 shadow">
+            <a href="#" data-toggle="modal" data-target="#modelRule" class="text-white">
+                <i class="far fa-handshake fa-4x mb-2"></i>
+                <h5>ข้อตกลงการใช้งาน</h5>
+            </a>
+        </div>
+    </div>
     <div class="col-md-2">
-       <center>
-       <a  data-toggle="modal" data-target="#modalAdd"><i class="fab fa-fort-awesome fa-10x"></i>
-            <h4>ลงทะเบียนหน่วยงาน</h4>
-       </a>
-       </center>
-   </div>
-   <div class="col-md-2">
-       <center>
-       <a   data-toggle="modal" data-target="#modalRegister_disabled"><i class="fas fa-user fa-10x"></i>
-            <h4>ลงทะเบียนผู้ใช้งาน</h4>
-       </a>
-       </center>
-   </div>
-   <div class="col-md-2">
-       <center>
-       <a class="btn-link"  href="manual.pdf" target="_blank"><i class="fas fa-map-signs fa-10x"></i>
-            <h4>คู่มือผู้ใช้</h4>
-       </a>
-       </center>
-   </div>
-   <div class="col-md-2">
-       <center>
-       <a href="#" target="_blank"><i class="fas fa-chart-pie fa-10x"></i>
-            <h4>สถิติข้อมูล</h4>
-       </a>
-       </center>
-   </div>
+        <div class="bg-success text-center rounded p-3 shadow">
+            <a href="list_user.php" class="text-white">
+                <i class="fab fa-earlybirds fa-4x mb-2"></i>
+                <h5>รายชื่อหน่วยงาน</h5>
+            </a>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="bg-warning text-center rounded p-3 shadow">
+            <a data-toggle="modal" data-target="#modalAdd" class="text-white">
+                <i class="fab fa-fort-awesome fa-4x mb-2"></i>
+                <h5>ลงทะเบียนหน่วยงาน</h5>
+            </a>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="bg-danger text-center rounded p-3 shadow">
+            <a data-toggle="modal" data-target="#modalRegister_disabled" class="text-white">
+                <i class="fas fa-user fa-4x mb-2"></i>
+                <h5>ลงทะเบียนผู้ใช้งาน</h5>
+            </a>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="bg-info text-center rounded p-3 shadow">
+            <a href="manual.pdf" target="_blank" class="text-white">
+                <i class="fas fa-map-signs fa-4x mb-2"></i>
+                <h5>คู่มือผู้ใช้</h5>
+            </a>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="bg-dark text-center rounded p-3 shadow">
+            <a href="#" target="_blank" class="text-white">
+                <i class="fas fa-chart-pie fa-4x mb-2"></i>
+                <h5>สถิติข้อมูล</h5>
+            </a>
+        </div>
+    </div>
 </div>
 
-                
- <!-- Model  -->
-            <?php   
-                //Display office type
-                $sql = "SELECT * FROM office_type";
-                $query = dbQuery($sql);
-            ?>
 
-            <div id="modalRegister" class="modal fade" role="dialog" >
-              <div class="modal-dialog">
-                <!-- Modal content-->
-                <div class="modal-content">
-                  <div class="modal-header bg-primary">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title "><i class="fa fa-user fa-2x"></i> ลงทะเบียนผู้ใช้งานทั่วไป</h4>
-                  </div>
-                  <div class="modal-body">
-                      <div class="alert alert-warning">
-                          <i class="fas fa-bomb fa-2x"></i><h4>หลังจากลงทะเบียนแล้ว  ให้ติดต่อ Admin ประจำหน่วยงานของท่าน</h4>
-                      </div>
-                      <form name="form" method="post">
-                            <div class="form-group form-inline"> 
-                                    <label for="offict_type">ประเภทหน่วยงาน : </label>
-                                    <select  name="office_type" id="office_type">
-                                        <option value="">เลือก</option>
-                                        <?php while($result =  dbFetchAssoc($query)): ?>
-                                            <option value="<?php echo $result['type_id']?>"><?php echo $result['type_name']?></option>
-                                        <?php endwhile; ?>
-                                    </select>
-                            </div>
+<!-- Model  -->
+<?php
+//Display office type
+$sql = "SELECT * FROM office_type";
+$query = dbQuery($sql);
+?>
 
-                            <div class="form-group col-md-4">
-                                <label for="depart">ชื่อหน่วยงาน</label>
-                                <select name="depart" id="depart" class="form-control">
-                                    <option value="">เลือกหน่วยงาน</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group col-md-4">
-                                <label for="section">เลือกกลุ่มงาน</label>
-                                <select name="section" id="section" class="form-control">
-                                    <option value="">เลือกกลุ่มงาน</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group col-sm-6">
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fas fa-star"></i></span>
-                                    <input class="form-control" type="text" name="firstname" id="firstname" placeholder="ชื่อ (ไม่ต้องมีคำนำหน้า)"  required="">
-                                </div>
-                            </div>
-                            <div class="form-group col-sm-6">
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fas fa-star"></i></span>
-                                   <input class="form-control" type="text" name="lastname" id="lastname" placeholder="นามสกุล"  required>
-                               </div>
-                          </div>
-                          <div class="form-group">
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fab fa-black-tie"></i></span>
-                                    <input class="form-control" type="text" name="position" id="position" placeholder="ตำแหน่ง"  required >
-                              </div>
-                          </div>
-                           <div class="form-group col-sm-6">
-                                <div class="input-group">
-                                  <span class="input-group-addon"><i class="fas fa-user-secret"></i></span>
-                                  <input class="form-control" type="text"  name="u_name" id="u_name"  required placeholder="ระบุชื่อผู้ใช้ (อังกฤษ+ตัวเลข">
-                              </div>
-                           </div>
-                           <div class="form-group col-sm-6">
-                                <div class="input-group">
-                                  <span class="input-group-addon"><i class="fas fa-key"></i></span>
-                                  <input class="form-control" type="text" name="u_pass" id="u_pass"  required placeholder="ระบุรหัสผ่าน (อังกฤษ+ตัวเลข)">
-                              </div>
-                          </div> 
-                          <div class="form-group col-sm-6">
-                                <div class="input-group">
-                                  <span class="input-group-addon"><i class="fas fa-envelope-square"></i></span>
-                                  <input class="form-control" type="email" name="email" id="email" placeholder="อีเมลล์ที่เป็นทางการของหน่วยงาน" required>
-                              </div>
-                          </div>
-                          <div class="form-group col-sm-6">
-                                <div class="input-group">
-                                  <span class="input-group-addon"><i class="far fa-calendar-alt"></i></span>
-                                  <input class="form-control" type="text" name="date_user" id="date_user" value="<?php echo date('Y-m-d');?>">
-                              </div>
-                          </div>
-                           <center>
-                           <button class="btn btn-success btn-lg" type="submit" name="save">
-                                <i class="fa fa-database fa-2x"></i> บันทึก
-                            </button>
-                            </center>
-                     </form>
-                  </div>
-                  <div class="modal-footer bg-primary">
-                      <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i></button>
-                  </div>
-                </div>
-              </div>
+<div id="modalRegister" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title "><i class="fa fa-user fa-2x"></i> ลงทะเบียนผู้ใช้งานทั่วไป</h4>
             </div>
-            <!-- End Model --> 
-<?php 
-if(isset($_POST['save'])){
-	
-	$type_id = dbEscapeString($_POST['province']); // ประเภทหน่วยงาน
-	$dep_id = dbEscapeString($_POST['amphur']);   // รหัสหน่วยงาน
-	$sec_id = dbEscapeString($_POST['district']);  // รหัสกลุ่มงาน
-	$level_id = 5;
-	$u_name = dbEscapeString($_POST['u_name']);   // ชื่อผู้ใช้
-	$u_pass = dbEscapeString($_POST['u_pass']);   // รหัสผ่าน
-	$firstname = dbEscapeString($_POST['firstname']); // ชื่อ
-	$lastname = dbEscapeString($_POST['lastname']);   // นามสกุล
-	$position =  dbEscapeString($_POST['position']);      // ตำแหน่ง
-	$date_create = dbEscapeString($_POST['date_user']);   // วันที่สร้าง
-	$email = dbEscapeString($_POST['email']);         // อีเมลล์
-	
-	// ตรวจสอบชื่อผู้ใช้ซ้ำ
-	$sql="SELECT u_name FROM user WHERE u_name='".dbEscapeString($u_name)."'";
+            <div class="modal-body">
+                <div class="alert alert-warning">
+                    <i class="fas fa-bomb fa-2x"></i>
+                    <h4>หลังจากลงทะเบียนแล้ว ให้ติดต่อ Admin ประจำหน่วยงานของท่าน</h4>
+                </div>
+                <form name="form" method="post">
+                    <div class="form-group form-inline">
+                        <label for="offict_type">ประเภทหน่วยงาน : </label>
+                        <select name="office_type" id="office_type">
+                            <option value="">เลือก</option>
+                            <?php while ($result = dbFetchAssoc($query)): ?>
+                                <option value="<?php echo $result['type_id'] ?>"><?php echo $result['type_name'] ?></option>
+                            <?php endwhile; ?>
+                        </select>
+                    </div>
 
-	$result= dbQuery($sql);
-	$numrow= dbNumRows($result);
-	if($numrow>=1){
-		echo "<script>
+                    <div class="form-group col-md-4">
+                        <label for="depart">ชื่อหน่วยงาน</label>
+                        <select name="depart" id="depart" class="form-control">
+                            <option value="">เลือกหน่วยงาน</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        <label for="section">เลือกกลุ่มงาน</label>
+                        <select name="section" id="section" class="form-control">
+                            <option value="">เลือกกลุ่มงาน</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-sm-6">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fas fa-star"></i></span>
+                            <input class="form-control" type="text" name="firstname" id="firstname"
+                                placeholder="ชื่อ (ไม่ต้องมีคำนำหน้า)" required="">
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fas fa-star"></i></span>
+                            <input class="form-control" type="text" name="lastname" id="lastname" placeholder="นามสกุล"
+                                required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fab fa-black-tie"></i></span>
+                            <input class="form-control" type="text" name="position" id="position" placeholder="ตำแหน่ง"
+                                required>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fas fa-user-secret"></i></span>
+                            <input class="form-control" type="text" name="u_name" id="u_name" required
+                                placeholder="ระบุชื่อผู้ใช้ (อังกฤษ+ตัวเลข">
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fas fa-key"></i></span>
+                            <input class="form-control" type="text" name="u_pass" id="u_pass" required
+                                placeholder="ระบุรหัสผ่าน (อังกฤษ+ตัวเลข)">
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fas fa-envelope-square"></i></span>
+                            <input class="form-control" type="email" name="email" id="email"
+                                placeholder="อีเมลล์ที่เป็นทางการของหน่วยงาน" required>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="far fa-calendar-alt"></i></span>
+                            <input class="form-control" type="text" name="date_user" id="date_user"
+                                value="<?php echo date('Y-m-d'); ?>">
+                        </div>
+                    </div>
+                    <center>
+                        <button class="btn btn-success btn-lg" type="submit" name="save">
+                            <i class="fa fa-database fa-2x"></i> บันทึก
+                        </button>
+                    </center>
+                </form>
+            </div>
+            <div class="modal-footer bg-primary">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Model -->
+<?php
+if (isset($_POST['save'])) {
+
+    $type_id = dbEscapeString($_POST['province']); // ประเภทหน่วยงาน
+    $dep_id = dbEscapeString($_POST['amphur']);   // รหัสหน่วยงาน
+    $sec_id = dbEscapeString($_POST['district']);  // รหัสกลุ่มงาน
+    $level_id = 5;
+    $u_name = dbEscapeString($_POST['u_name']);   // ชื่อผู้ใช้
+    $u_pass = dbEscapeString($_POST['u_pass']);   // รหัสผ่าน
+    $firstname = dbEscapeString($_POST['firstname']); // ชื่อ
+    $lastname = dbEscapeString($_POST['lastname']);   // นามสกุล
+    $position = dbEscapeString($_POST['position']);      // ตำแหน่ง
+    $date_create = dbEscapeString($_POST['date_user']);   // วันที่สร้าง
+    $email = dbEscapeString($_POST['email']);         // อีเมลล์
+
+    // ตรวจสอบชื่อผู้ใช้ซ้ำ
+    $sql = "SELECT u_name FROM user WHERE u_name='" . dbEscapeString($u_name) . "'";
+
+    $result = dbQuery($sql);
+    $numrow = dbNumRows($result);
+    if ($numrow >= 1) {
+        echo "<script>
                swal({
                 title:'ไม่สามารถใช้ชื่อนี้ได้!..กรุณาเปลี่ยนใหม่นะครับ',
                 type:'error',
@@ -210,14 +222,13 @@ if(isset($_POST['save'])){
                     }
                 }); 
               </script>";
-	}
-	elseif($numrow<1){
-		$sql="INSERT INTO user(sec_id,dep_id,level_id,u_name,u_pass,firstname,lastname,position,date_create,status,email)
+    } elseif ($numrow < 1) {
+        $sql = "INSERT INTO user(sec_id,dep_id,level_id,u_name,u_pass,firstname,lastname,position,date_create,status,email)
                    VALUES ($sec_id,$dep_id,$level_id,'$u_name','$u_pass','$firstname','$lastname','$position','$date_create',0,'$email')";
-		//echo $sql;
-		$result=  dbQuery($sql);
-		if(!$result){
-			echo "<script>
+        //echo $sql;
+        $result = dbQuery($sql);
+        if (!$result) {
+            echo "<script>
             swal({
              title:'มีบางอย่างผิดพลาด',
              text: 'กรุณาตรวจสอบข้อมูลก่อนส่งอีกครั้ง!',
@@ -230,9 +241,8 @@ if(isset($_POST['save'])){
                  }
              }); 
            </script>";
-		}
-		else{
-			echo "<script>
+        } else {
+            echo "<script>
             swal({
              title:'ลงทะเบียนเรียบร้อยแล้ว',
               text: 'กรุณาติดต่อเจ้าหน้าที่สารบรรณประจำหน่วยงานเพื่อเปิดการใช้งาน',
@@ -245,18 +255,16 @@ if(isset($_POST['save'])){
                  }
              }); 
            </script>";
-		}
-	}
-	// 	user duplicate
+        }
+    }
+    // 	user duplicate
 }
 //send
 ?>
 
 <script type='text/javascript'>
-       $('#tableCheck').DataTable( {
-	"order": [[ 0, "desc" ]]
-}
-)
-</script> 
-
-
+    $('#tableCheck').DataTable({
+        "order": [[0, "desc"]]
+    }
+    )
+</script>
