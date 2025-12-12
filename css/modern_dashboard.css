@@ -183,3 +183,12 @@ a:hover {
     color: rgba(255,255,255,0.7);
 }
 
+
+/* Highlight Search Term */
+.highlight {
+    background-color: #FFFF00;
+    color: #000;
+    font-weight: bold;
+    padding: 0 4px;
+    border-radius: 2px;
+}

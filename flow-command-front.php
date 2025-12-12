@@ -46,6 +46,13 @@ if (!defined('IS_SYSTEM_RUNNING')) {
           $("#myTable").css("display", "none");
 
         }
+      },
+      "drawCallback": function (settings) {
+        var search = this.api().search();
+        $('#myTable tbody').removeHighlight();
+        if (search) {
+          $('#myTable tbody').highlight(search);
+        }
       }
     });
   });
