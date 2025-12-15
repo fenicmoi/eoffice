@@ -71,10 +71,10 @@
         </div>
     </div>
     <div class="col-md-2">
-        <div class="bg-dark text-center rounded p-3 shadow">
-            <a href="#" target="_blank" class="text-white">
-                <i class="fas fa-chart-pie fa-4x mb-2"></i>
-                <h5>สถิติข้อมูล</h5>
+        <div class="bg-info text-center rounded p-3 shadow">
+            <a href="manual.pdf" target="_blank" class="text-white">
+                <i class="fas fa-map-signs fa-4x mb-2"></i>
+                <h5></h5>
             </a>
         </div>
     </div>
