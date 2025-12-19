@@ -31,6 +31,47 @@ $username = isset($_SESSION['username']) ? $_SESSION['username'] : '';
 	});
 </script>
 
+<style>
+/* Custom soft styling for the registration modal */
+.modal-body-soft {
+    background-color: #f0f4f8 !important; /* Soft steel blue/gray */
+    padding: 30px !important;
+}
+
+.modal-header.bg-primary {
+    background-color: #4e73df !important;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.modal-footer.bg-primary {
+    background-color: #4e73df !important;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+/* Fix for selectpicker clipping in modal */
+.bootstrap-select .dropdown-menu {
+    z-index: 1060 !important;
+}
+
+.input-group-addon {
+    background-color: #eaecf4;
+    border: 1px solid #d1d3e2;
+    color: #4e73df;
+    font-weight: 600;
+}
+
+.form-control {
+    border: 1px solid #d1d3e2;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: #4e73df;
+}
+</style>
+
 <?php
 //ตรวจสอบปีเอกสาร
 list($yid, $yname, $ystatus) = chkYear();
@@ -301,7 +342,7 @@ $ystatus = $ystatus;
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
 					<h4 class="modal-title"><i class="fa fa-plus-circle"></i> ลงทะเบียนรับ</h4>
 				</div>
-				<div class="modal-body bg-success">
+				<div class="modal-body modal-body-soft">
 					<form name="form" method="post" enctype="multipart/form-data">
 
 
@@ -483,7 +524,7 @@ $ystatus = $ystatus;
 									<div class="form-group">
 										<div class="input-group col-xs-8">
 											<span class="input-group-addon"><i class="fab fa-wpforms"></i> หน่วยปฏิบัติ</span>
-											<select name="dep_id" id="dep__id" class="selectpicker" data-live-search="true" title="โปรดระบุ" required>
+											<select name="dep_id" id="dep__id" class="selectpicker" data-live-search="true" data-size="10" data-width="100%" data-dropup-auto="false" title="โปรดระบุ" required>
 												<?php
 												$sql_dep = "SELECT dep_id,dep_name FROM depart";
 												$result_dep = dbQuery($sql_dep);
