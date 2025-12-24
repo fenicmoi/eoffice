@@ -90,6 +90,7 @@ $u_id = $_SESSION['ses_u_id'];
                     </div>
                     <div class="modal-body">
                         <form method="post">
+                            <?php echo csrf_field(); ?>
                             <div class="form-group">
                                 <div class="input-group">
                                     <label for="status"><i class="fa fa-cog"></i>สถานะการใช้งาน:</label>
@@ -197,6 +198,9 @@ $u_id = $_SESSION['ses_u_id'];
 <?php
 // ส่วนการจัดการข้อมูล
 if (isset($_POST['save'])) {
+    if (!verify_csrf_token($_POST['csrf_token'] ?? '')) {
+        die("CSRF token validation failed.");
+    }
     $officeType = $_POST['officeType'];
     $dep_name = $_POST['dep_name'];
     $address = $_POST['address'];

@@ -1,12 +1,13 @@
 <?php
-include '../chksession.php';
 if (session_status() === PHP_SESSION_NONE) {
   session_start();
 }
 
 date_default_timezone_set('Asia/Bangkok');
-include 'function.php';
+include '../chksession.php';
 include '../library/database.php';
+include '../library/security.php';
+include 'function.php';
 include '../library/config.php';
 include '../library/pagination.php';
 
@@ -248,7 +249,8 @@ if ($u_id) {
           </div>
           <div class="modal-body">
             <p><i class="fa fa-tag"></i> ชื่อ <?php echo htmlspecialchars($firstname) ?>
-              <?php echo htmlspecialchars($lastname) ?></p>
+              <?php echo htmlspecialchars($lastname) ?>
+            </p>
             <p><i class="fa fa-tag"></i><?php echo htmlspecialchars($secname) ?></p>
             <p><i class="fa fa-tag"></i><?php echo htmlspecialchars($depart) ?></p>
             <p><i class="fa fa-tag"></i>สถานะผู้ใช้งาน <?php echo htmlspecialchars($level) ?></p>

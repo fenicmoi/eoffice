@@ -19,7 +19,8 @@ $u_id = $_SESSION['ses_u_id'];
 
         <div class="panel panel-danger">
             <div class="panel-heading"><i class="fas fa-sitemap fa-2x" aria-hidden="true"></i>
-                <strong>จัดการกลุ่ม/ฝ่าย</strong></div>
+                <strong>จัดการกลุ่ม/ฝ่าย</strong>
+            </div>
             <div class="panel-body text-center">
                 <a class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modalAdd">
                     <i class="fa fa-plus" aria-hidden="true"></i>เพิ่มกลุ่ม/ฝ่าย
@@ -99,6 +100,7 @@ $u_id = $_SESSION['ses_u_id'];
                     </div>
                     <div class="modal-body">
                         <form method="post">
+                            <?php echo csrf_field(); ?>
                             <div class="input-group">
                                 <label for="status"><i class="fa fa-cog"></i>สถานะการใช้งาน:</label>
                                 <input type="radio" id="status" name="status" value="1" checked> ใช้งาน
@@ -194,6 +196,9 @@ $u_id = $_SESSION['ses_u_id'];
 <?php  // ส่วนจัดการข้อมูล
 /* code for data insert */
 if (isset($_POST['save'])) {
+    if (!verify_csrf_token($_POST['csrf_token'] ?? '')) {
+        die("CSRF token validation failed.");
+    }
     if ($level_id <= 2) {  //กรณีเป็นผู้ดูแลระบบ เอาค่า จากส่วนนี้  
         $type_id = $_POST['province'];  //ประเภทส่วนราชการ
         $dep_id = $_POST['amphur'];     //รหัสหน่วยงาน

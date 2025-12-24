@@ -18,6 +18,7 @@ $u_id = $_GET['edit'];
             <p></p>
             <div class="panel-body">
                 <form class="alert-info" method="post" style="width:600px;margin: auto;">
+                    <?php echo csrf_field(); ?>
                     <div class="input-group">
                         <label for="status"><i class="fa fa-cog"></i>สถานะการใช้งาน</label>
                         <?php
@@ -221,7 +222,10 @@ $u_id = $_GET['edit'];
 </div>
 
 <?php  //ส่วน update ข้อมูล
-if (isset($_POST['save'])) {
+if (isset($_POST['update'])) {
+    if (!verify_csrf_token($_POST['csrf_token'] ?? '')) {
+        die("CSRF token validation failed.");
+    }
     if ($level_id <= 2) {  //กรณีเป็นผู้ดูแลระบบ  id จะเป็น 1  เพราะต้องจัดการได้ทั้งจังหวัด
         @$type_id = $_POST['province'];
         @$dep_id = $_POST['amphur'];

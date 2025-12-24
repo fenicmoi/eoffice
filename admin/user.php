@@ -134,6 +134,7 @@ $u_id = $_SESSION['ses_u_id'];
                     </div>
                     <div class="modal-body">
                         <form name="form" method="post">
+                            <?php echo csrf_field(); ?>
                             <?php if ($level_id <= 2) {
                                 ?> <!-- กรณีที่เป็น Admin หรือ สารบรรณจังหวัด -->
                                 <div class="form-group form-inline">
@@ -277,6 +278,9 @@ $u_id = $_SESSION['ses_u_id'];
 
 <?php
 if (isset($_POST['save'])) {
+    if (!verify_csrf_token($_POST['csrf_token'] ?? '')) {
+        die("CSRF token validation failed.");
+    }
     if ($level_id <= 2) {  //กรณีเป็นผู้ดูแลระบบ เอาค่า จากส่วนนี้
         $type_id = $_POST['province'];  //ประเภทส่วนราชการ
         $dep_id = $_POST['amphur'];     //รหัสหน่วยงาน

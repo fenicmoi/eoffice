@@ -25,12 +25,13 @@ if (isset($_GET['edit'])) {
     <div class="col-md-10">
         <div class="panel panel-default" style="margin: 20">
             <div class="panel-heading"><i class="fa fa-university fa-2x" aria-hidden="true"></i>
-                <strong>จัดการประเภทหน่วยงาน</strong></div>
+                <strong>จัดการประเภทหน่วยงาน</strong>
+            </div>
             <p></p>
             <form method="post" class="form-group">
+                <?php echo csrf_field(); ?>
                 <input class="form-control" type="text" name="officeType" required
-                    placeholder="ใส่ประเภทหน่วยงานที่ต้องการเพิ่ม"
-                    value="<?php if (isset($_GET['edit']))
+                    placeholder="ใส่ประเภทหน่วยงานที่ต้องการเพิ่ม" value="<?php if (isset($_GET['edit']))
                         echo htmlspecialchars($getROW['type_name']); ?>" />
 
                 <p></p>
@@ -80,6 +81,9 @@ include_once 'function.php';
 
 /* code for data insert */
 if (isset($_POST['save'])) {
+    if (!verify_csrf_token($_POST['csrf_token'] ?? '')) {
+        die("CSRF token validation failed.");
+    }
 
     $type_name = $_POST['officeType'];
     $sql = "SELECT type_id FROM office_type WHERE type_name = ?";
@@ -170,6 +174,9 @@ if (isset($_GET['del'])) {
 
 
 if (isset($_POST['update'])) {
+    if (!verify_csrf_token($_POST['csrf_token'] ?? '')) {
+        die("CSRF token validation failed.");
+    }
     $sql = "UPDATE office_type SET type_name = ? WHERE type_id = ?";
     $result = dbQuery($sql, "si", [$_POST['officeType'], (int) $_GET['edit']]);
     if (!$result) {
