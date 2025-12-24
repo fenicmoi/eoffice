@@ -13,7 +13,8 @@ $u_id = $_GET['edit'];
     <div class="col-md-10">
         <div class="panel panel-primary" style="margin: 20">
             <div class="panel-heading"><i class="fa fa-user-secret fa-2x" aria-hidden="true"></i>
-                <strong>แก้ไขผู้ใช้งาน</strong></div>
+                <strong>แก้ไขผู้ใช้งาน</strong>
+            </div>
             <p></p>
             <div class="panel-body">
                 <form class="alert-info" method="post" style="width:600px;margin: auto;">
@@ -26,7 +27,7 @@ $u_id = $_GET['edit'];
                                         INNER JOIN section s ON s.sec_id = u.sec_id
                                         INNER JOIN office_type o ON o.type_id = d.type_id
                                         WHERE u.u_id = ?";
-                        $result = dbQuery($sql, "i", [(int)$u_id]);
+                        $result = dbQuery($sql, "i", [(int) $u_id]);
                         $getROW = dbFetchAssoc($result);
 
                         $dep_id = $getROW['dep_id'];
@@ -133,7 +134,7 @@ $u_id = $_GET['edit'];
                         } ?>
                         <?php
                         $sql = "SELECT sec_id, sec_name, dep_id FROM section WHERE dep_id = ?";
-                        $result = dbQuery($sql, "i", [(int)$dep_id]);
+                        $result = dbQuery($sql, "i", [(int) $dep_id]);
                         ?>
                         <div class="form-group form-inline">
                             <label for="district">หน่วยงานย่อย : </label>
@@ -156,27 +157,27 @@ $u_id = $_GET['edit'];
                         <div class="form-group form-inline">
                             <label for="firstname">ชื่อ :</label>
                             <div class="input-group">
-                                <input class="form-control" type="text" name="firstname" id="firstname" size="25"
-                                    value="<?php echo $getROW['firstname']; ?>">
+                                <input class="form-control" type="text" name="firstname" id="firstname" size="20"
+                                    value="<?php echo htmlspecialchars($getROW['firstname']); ?>">
                             </div>
                             <label for="lastname">นามสกุล</label>
                             <div class="input-group">
                                 <input class="form-control" type="text" name="lastname" id="lastname" size="20"
-                                    value="<?php echo $getROW['lastname']; ?>">
+                                    value="<?php echo htmlspecialchars($getROW['lastname']); ?>">
                             </div>
                         </div>
                         <div class="form-group form-inline">
                             <label for="position">ตำแหน่ง :</label>
                             <div class="input-group">
                                 <input class="form-control" type="text" name="position" id="position" size="40"
-                                    value="<?php echo $getROW['position']; ?>">
+                                    value="<?php echo htmlspecialchars($getROW['position']); ?>">
                             </div>
                         </div>
                         <div class="form-group form-inline">
                             <label for="u_name">ชื่อผู้ใช้ :</label>
                             <div class="input-group">
                                 <input class="form-control" type="text" name="u_name" id="u_name"
-                                    value="<?php echo $getROW['u_name']; ?>">
+                                    value="<?php echo htmlspecialchars($getROW['u_name']); ?>">
                             </div>
                             <label for="u_pass">รหัสผ่าน :</label>
                             <div class="input-group">
@@ -188,14 +189,14 @@ $u_id = $_GET['edit'];
                             <label for="email">E-mail</label>
                             <div class="input-group">
                                 <input class="form-control" type="email" name="email" id="email"
-                                    value="<?php echo $getROW['email']; ?>">
+                                    value="<?php echo htmlspecialchars($getROW['email']); ?>">
                             </div>
                         </div>
                         <div class="form-group form-inline">
                             <label for="telphone">เบอร์โทร/มือถือ</label>
                             <div class="input-group">
                                 <input class="form-control" type="text" name="telphone" id="telphone"
-                                    value="<?php echo $getROW['telphone']; ?>">
+                                    value="<?php echo htmlspecialchars($getROW['telphone']); ?>">
                             </div>
                         </div>
                         <div class="form-group form-inline">
@@ -256,7 +257,7 @@ if (isset($_POST['save'])) {
     }
     // ดึงข้อมูลเดิมมาตรวจสอบรหัสผ่าน
     $sqlCheck = "SELECT u_pass FROM user WHERE u_id = ?";
-    $resCheck = dbQuery($sqlCheck, "i", [(int)$u_id]);
+    $resCheck = dbQuery($sqlCheck, "i", [(int) $u_id]);
     $rowCheck = dbFetchAssoc($resCheck);
     $current_hash = $rowCheck['u_pass'];
 
@@ -284,9 +285,9 @@ if (isset($_POST['save'])) {
                       WHERE u_id = ?";
 
     $result = dbQuery($sql, "iiissssssisssi", [
-        (int)$sec_id,
-        (int)$dep_id,
-        (int)$level_id,
+        (int) $sec_id,
+        (int) $dep_id,
+        (int) $level_id,
         $u_name,
         $u_pass,
         $firstname,
@@ -297,7 +298,7 @@ if (isset($_POST['save'])) {
         $email,
         $telphone,
         $keyman,
-        (int)$u_id
+        (int) $u_id
     ]);
     if (!$result) {
         echo "<script>

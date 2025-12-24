@@ -182,8 +182,8 @@ if ($u_id) {
       </a>
       <ul class="nav navbar-nav">
         <li><a href="#"><i class="fas fa-users"></i>
-            <?php echo $level;
-            echo "[" . $firstname . "]";
+            <?php echo htmlspecialchars($level);
+            echo "[" . htmlspecialchars($firstname) . "]";
             ?>
           </a></li>
       </ul>
@@ -247,10 +247,11 @@ if ($u_id) {
             <h4 class="modal-title"><i class="fa fa-address-card" aria-hidden="true"></i>User Profile</h4>
           </div>
           <div class="modal-body">
-            <p><i class="fa fa-tag"></i> ชื่อ <?php print $firstname ?> <?php print $lastname ?></p>
-            <p><i class="fa fa-tag"></i><?php print $secname ?></p>
-            <p><i class="fa fa-tag"></i><?php print $depart ?></p>
-            <p><i class="fa fa-tag"></i>สถานะผู้ใช้งาน <?php print $level ?></p>
+            <p><i class="fa fa-tag"></i> ชื่อ <?php echo htmlspecialchars($firstname) ?>
+              <?php echo htmlspecialchars($lastname) ?></p>
+            <p><i class="fa fa-tag"></i><?php echo htmlspecialchars($secname) ?></p>
+            <p><i class="fa fa-tag"></i><?php echo htmlspecialchars($depart) ?></p>
+            <p><i class="fa fa-tag"></i>สถานะผู้ใช้งาน <?php echo htmlspecialchars($level) ?></p>
           </div>
           <div class="modal-footer bg-primary">
             <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i></button>

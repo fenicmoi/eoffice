@@ -85,12 +85,12 @@ $u_id = $_SESSION['ses_u_id'];
                             ?>
                             <tr>
                                 <td><?php echo $count; ?></td>
-                                <td><?php echo $row['firstname']; ?></td>
-                                <td><?php echo $row['lastname']; ?></td>
-                                <td><?php echo $row['u_name']; ?></td>
-                                <td><?php echo $row['level_name']; ?></td>
-                                <td><?php echo $row['sec_name']; ?></td>
-                                <td><?php echo $row['dep_name']; ?></td>
+                                <td><?php echo htmlspecialchars($row['firstname']); ?></td>
+                                <td><?php echo htmlspecialchars($row['lastname']); ?></td>
+                                <td><?php echo htmlspecialchars($row['u_name']); ?></td>
+                                <td><?php echo htmlspecialchars($row['level_name']); ?></td>
+                                <td><?php echo htmlspecialchars($row['sec_name']); ?></td>
+                                <td><?php echo htmlspecialchars($row['dep_name']); ?></td>
 
                                 <td><?php
                                 $status = $row['status'];

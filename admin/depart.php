@@ -1,4 +1,3 @@
-
 <?php
 /*if(!isset($_SESSION['ses_u_id'])){
     header("location:../index.php");
@@ -8,188 +7,193 @@ include 'header.php';
 
 $u_id = $_SESSION['ses_u_id'];
 ?>
-    <div class="row">
-        <div class="col-md-2" >
-             <?php
-                 $menu = checkMenu($level_id);
-                include $menu;
-            ?>
-        </div>
-        <div class="col-md-10">
-            <div class="panel panel-default" style="margin: 20">
-                <div class="panel-heading"><i class="fa fa-university fa-2x" aria-hidden="true"></i>  <strong>จัดการชื่อส่วนราชการ</strong>
+<div class="row">
+    <div class="col-md-2">
+        <?php
+        $menu = checkMenu($level_id);
+        include $menu;
+        ?>
+    </div>
+    <div class="col-md-10">
+        <div class="panel panel-default" style="margin: 20">
+            <div class="panel-heading"><i class="fa fa-university fa-2x" aria-hidden="true"></i>
+                <strong>จัดการชื่อส่วนราชการ</strong>
                 <a href="" class="btn btn-primary  pull-right" data-toggle="modal" data-target="#modalAddDepart">
-                     <i class="fa fa-plus" aria-hidden="true"></i> เพิ่มส่วนราชการ
-                    </a>
-                </div> 
-                <table class="table table-bordered table-hover" id="myTable">
-                 <thead class="bg-info">
-                     <tr>
-                         <th>ที่</th>
-                         <th>ชื่อส่วนราชการ</th>
-                         <th>โทรศัพท์</th>
-                         <th>แฟกซ์</th>
-                         <th>ประเภทหน่วยงาน</th>
-                         <th>กระทรวง</th>
-                         <th>สถานะ</th>
-                         <th>แก้ไข</th>
-                         <th>ลบ</th>
-                     </tr>
-                 </thead>
-                 <tbody>
-                     <?php
-                        $count = 1;
-                        $sql = 'SELECT d.*,o.type_name,m_name
+                    <i class="fa fa-plus" aria-hidden="true"></i> เพิ่มส่วนราชการ
+                </a>
+            </div>
+            <table class="table table-bordered table-hover" id="myTable">
+                <thead class="bg-info">
+                    <tr>
+                        <th>ที่</th>
+                        <th>ชื่อส่วนราชการ</th>
+                        <th>โทรศัพท์</th>
+                        <th>แฟกซ์</th>
+                        <th>ประเภทหน่วยงาน</th>
+                        <th>กระทรวง</th>
+                        <th>สถานะ</th>
+                        <th>แก้ไข</th>
+                        <th>ลบ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $count = 1;
+                    $sql = 'SELECT d.*,o.type_name,m_name
                                 FROM depart d
                                 INNER JOIN office_type o ON d.type_id= o.type_id
                                 INNER JOIN ministry m ON d.m_id = m.m_id
                                 ORDER BY d.dep_id DESC
                               ';
-                        $result = dbQuery($sql);
-                        while ($row = dbFetchArray($result)) {
-                            ?>
-                            <tr>
+                    $result = dbQuery($sql);
+                    while ($row = dbFetchArray($result)) {
+                        ?>
+                        <tr>
                             <td><?php echo $count; ?></td>
-                            <td><?php echo $row['dep_name']; ?></td>
-                            <td><?php echo $row['phone']; ?></td>
-                            <td><?php echo $row['fax']; ?></td>
-                            <td><?php echo $row['type_name']; ?></td>
-                            <td><?php echo $row['m_name']; ?> </td>
+                            <td><?php echo htmlspecialchars($row['dep_name']); ?></td>
+                            <td><?php echo htmlspecialchars($row['phone']); ?></td>
+                            <td><?php echo htmlspecialchars($row['fax']); ?></td>
+                            <td><?php echo htmlspecialchars($row['type_name']); ?></td>
+                            <td><?php echo htmlspecialchars($row['m_name']); ?> </td>
                             <td>
                                 <?php
-                                    $local_num = $row['local_num'];
-                            if ($local_num == 1) {
-                                echo '<center><i class="fa fa-check-square"></i></center>';
-                            } else {
-                                echo '<center><i class="fa fa-close"></p></center>';
-                            } ?>
+                                $local_num = $row['local_num'];
+                                if ($local_num == 1) {
+                                    echo '<center><i class="fa fa-check-square"></i></center>';
+                                } else {
+                                    echo '<center><i class="fa fa-close"></p></center>';
+                                } ?>
                             </td>
-                
-                            <td><a class="btn btn-success" href="depart_edit.php?edit=<?php echo $row['dep_id']; ?>" onclick="return confirm('กำลังจะแก้ไขข้อมูล !'); " >
-                                <i class="fas fa-edit" aria-hidden="true"></i>  แก้ไข</a></td>
-                                <td><a class="btn btn-danger" href="depart.php?del=<?php echo $row['dep_id']; ?>" onclick="return confirm('ระบบกำลังจะลบข้อมูล !'); " >
-                                    <i class="fas fa-trash" aria-hidden="true"></i>   ลบ</a></td>
-                            </tr>
-                            <?php ++$count;
-                        }?>
-                 </tbody>
-                </table>
-                
-            </div>
-            <!-- Model -->
-            <!-- -ข้อมูลผู้ใช้ -->
-            <div id="modalAddDepart" class="modal fade" role="dialog">
-              <div class="modal-dialog">
+
+                            <td><a class="btn btn-success" href="depart_edit.php?edit=<?php echo $row['dep_id']; ?>"
+                                    onclick="return confirm('กำลังจะแก้ไขข้อมูล !'); ">
+                                    <i class="fas fa-edit" aria-hidden="true"></i> แก้ไข</a></td>
+                            <td><a class="btn btn-danger" href="depart.php?del=<?php echo $row['dep_id']; ?>"
+                                    onclick="return confirm('ระบบกำลังจะลบข้อมูล !'); ">
+                                    <i class="fas fa-trash" aria-hidden="true"></i> ลบ</a></td>
+                        </tr>
+                        <?php ++$count;
+                    } ?>
+                </tbody>
+            </table>
+
+        </div>
+        <!-- Model -->
+        <!-- -ข้อมูลผู้ใช้ -->
+        <div id="modalAddDepart" class="modal fade" role="dialog">
+            <div class="modal-dialog">
                 <!-- Modal content-->
                 <div class="modal-content">
-                  <div class="modal-header bg-primary">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">เพิ่มส่วนราชการ</h4>
-                  </div>
-                  <div class="modal-body">
-                      <form method="post">
-                        <div class="form-group">
-                            <div class="input-group">
-                                <label for="status"><i class="fa fa-cog"></i>สถานะการใช้งาน:</label>
-                                    <input type="radio" id="status" name="status" value="1" checked> ใช้งาน 
+                    <div class="modal-header bg-primary">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">เพิ่มส่วนราชการ</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <label for="status"><i class="fa fa-cog"></i>สถานะการใช้งาน:</label>
+                                    <input type="radio" id="status" name="status" value="1" checked> ใช้งาน
                                     <input type="radio" id="status" name="status" value="0"> ระงับการใช้งาน <br>
-                                <label for="local_num"><i class="fa fa-cog"></i>อนุญาตออกเลขหนังสือภายใน:</label>
-                                    <input type="radio" id="local_num" name="local_num" value="1" checked> อนุญาต 
+                                    <label for="local_num"><i class="fa fa-cog"></i>อนุญาตออกเลขหนังสือภายใน:</label>
+                                    <input type="radio" id="local_num" name="local_num" value="1" checked> อนุญาต
                                     <input type="radio" id="local_num" name="local_num" value="0"> ไม่อนุญาต
-                            </div>
-                            <div class="input-group">
-                                <span class="input-group-addon">ประเภทส่วนราชการ</span>
-                                <select class="form-control" id="officeType" name="officeType" required="">
-                                    <option value="" disabled selected>จำเป็นต้องระบุ</option>
-                                    <?php
+                                </div>
+                                <div class="input-group">
+                                    <span class="input-group-addon">ประเภทส่วนราชการ</span>
+                                    <select class="form-control" id="officeType" name="officeType" required="">
+                                        <option value="" disabled selected>จำเป็นต้องระบุ</option>
+                                        <?php
                                         $sql = 'SELECT * FROM office_type ORDER BY type_id';
                                         $result = dbQuery($sql);
-                                        while ($row = mysqli_fetch_assoc($result)) {
-                                            echo '<option value='.$row['type_id'].'>'.$row['type_name'].'</option>';
+                                        while ($row = dbFetchAssoc($result)) {
+                                            echo '<option value="' . htmlspecialchars($row['type_id']) . '">' . htmlspecialchars($row['type_name']) . '</option>';
                                         }
-                                    ?>
-                                </select>
+                                        ?>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="input-group">
-                                <span class="input-group-addon">กระทรวง</span>
-                                 <select class="form-control" id="ministry" name="ministry" required="">
-                                    <option value="" disabled selected>จำเป็นต้องระบุ</option>
-                                    <?php
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon">กระทรวง</span>
+                                    <select class="form-control" id="ministry" name="ministry" required="">
+                                        <option value="" disabled selected>จำเป็นต้องระบุ</option>
+                                        <?php
                                         $sql = 'SELECT * FROM ministry ORDER BY m_impo';
                                         $result = dbQuery($sql);
-                                        while ($row = mysqli_fetch_assoc($result)) {
-                                            echo '<option value='.$row['m_id'].'>'.$row['m_name'].'</option>';
+                                        while ($row = dbFetchAssoc($result)) {
+                                            echo '<option value="' . htmlspecialchars($row['m_id']) . '">' . htmlspecialchars($row['m_name']) . '</option>';
                                         }
-                                    ?>
-                                </select>
+                                        ?>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                          <div class="input-group">
-                              <span class="input-group-addon">ชื่อส่วนราชการ</span>
-                              <input type="text"" class="form-control" id="dep_name" name="dep_name" required="">
-                          </div>
-                        </div>
-                        <div class="form-group">
-                          <div class="input-group">
-                              <span class="input-group-addon">เลขหนังสือหน่วยงาน</span>         
-                              <input type="text" class="form-control" id="prefex" name="prefex" required="">
-                             
-                          </div>
-                        </div>
-                        <div class="form-group">
-                          <label for="address">ที่อยู่สำนักงาน:</label>
-                          <textarea class="form-control" name="address" rows="3" cols="60" required="">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon">ชื่อส่วนราชการ</span>
+                                    <input type="text"" class=" form-control" id="dep_name" name="dep_name" required="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon">เลขหนังสือหน่วยงาน</span>
+                                    <input type="text" class="form-control" id="prefex" name="prefex" required="">
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="address">ที่อยู่สำนักงาน:</label>
+                                <textarea class="form-control" name="address" rows="3" cols="60" required="">
                           </textarea>
-                        </div>
-                        <div class="form-group">
-                            <div class="input-group">
-                                 <span class="input-group-addon">เบอร์โทรศัพท์</span>
-                                <input type="text" class="form-control" id="phone" name="phone" onkeyup="autoTabTel(this,2)" required="" > 
-                                                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="input-group">
-                                <span class="input-group-addon">เบอร์โทรสาร</span>
-                                <input type="text" class="form-control" id="fax" name="fax" onkeyup="autoTabTel(this,2)" >
                             </div>
-                        </div>
-                        <div class="form-group">
-                          <div class="input-group">
-                             <span class="input-group-addon">เว็บไซต์</span>
-                             <input type="facebook" class="form-control" id="facebook" name="facebook">
-                          </div>
-                        </div>
-                          <?php
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon">เบอร์โทรศัพท์</span>
+                                    <input type="text" class="form-control" id="phone" name="phone"
+                                        onkeyup="autoTabTel(this,2)" required="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon">เบอร์โทรสาร</span>
+                                    <input type="text" class="form-control" id="fax" name="fax"
+                                        onkeyup="autoTabTel(this,2)">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon">เว็บไซต์</span>
+                                    <input type="facebook" class="form-control" id="facebook" name="facebook">
+                                </div>
+                            </div>
+                            <?php
                             if (isset($_GET['edit'])) {
                                 ?>
-                                    <button type="submit" name="update">update</button>
-                                    <?php
+                                <button type="submit" name="update">update</button>
+                                <?php
                             } else {
                                 ?>
-                                    <center>
-                                        <button class="btn btn-primary btn-lg" type="submit" name="save">
+                                <center>
+                                    <button class="btn btn-primary btn-lg" type="submit" name="save">
                                         <i class="fa fa-database fa-2x"></i> บันทึก
-                                        </button>
-                                    </center>
-                                    <?php
+                                    </button>
+                                </center>
+                                <?php
                             }
                             ?>
-                                                     
-                      </form>
-                  </div>
-                  <div class="modal-footer bg-primary">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                  </div>
+
+                        </form>
+                    </div>
+                    <div class="modal-footer bg-primary">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
                 </div>
 
-              </div>
             </div>
-            <!-- End Model -->   
         </div>
-    </div>  
+        <!-- End Model -->
+    </div>
+</div>
 <?php
 // ส่วนการจัดการข้อมูล
 if (isset($_POST['save'])) {
@@ -204,10 +208,9 @@ if (isset($_POST['save'])) {
     $prefex = $_POST['prefex'];
     $m_id = $_POST['ministry'];
 
-    $sql = "SELECT * FROM depart WHERE dep_name='$dep_name'";
-    //echo $sql;
-    $result = dbQuery($sql);
-    $row = dbFetchRow($result);
+    $sql = "SELECT dep_id FROM depart WHERE dep_name = ?";
+    $result = dbQuery($sql, "s", [$dep_name]);
+    $row = dbNumRows($result);
     if ($row > 0) {
         echo "<script>
        swal({
@@ -222,10 +225,9 @@ if (isset($_POST['save'])) {
         }); 
       </script>";
     } else {
-        $sql = "INSERT INTO depart(type_id,dep_name,address,phone,fax,social,status,local_num,prefex,m_id)
-        VALUES ('$officeType','$dep_name','$address','$phone','$fax','$social',$status,$local_num,'$prefex',$m_id)";
-
-        $result = dbQuery($sql);
+        $sql = "INSERT INTO depart(type_id, dep_name, address, phone, fax, social, status, local_num, prefex, m_id)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $result = dbQuery($sql, "isssssiisi", [$officeType, $dep_name, $address, $phone, $fax, $social, (int) $status, (int) $local_num, $prefex, (int) $m_id]);
         if (!$result) {
             echo "<script>
            swal({
@@ -257,8 +259,8 @@ if (isset($_POST['save'])) {
 }
 
 if (isset($_GET['del'])) {
-    $sql = 'DELETE FROM depart WHERE dep_id='.$_GET['del'];
-    $result = dbQuery($sql);
+    $sql = 'DELETE FROM depart WHERE dep_id = ?';
+    $result = dbQuery($sql, "i", [(int) $_GET['del']]);
     if (!$result) {
         echo "<script>
         swal({
@@ -288,6 +290,4 @@ if (isset($_GET['del'])) {
     }
 }
 ?>
-<?php //include "footer.php";?>
-
-
+<?php //include "footer.php"; ?>
