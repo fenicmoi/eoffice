@@ -40,7 +40,6 @@ $u_id = $_SESSION['ses_u_id'];
                 </thead>
                 <tbody>
                     <?php
-                    <?php
                     $count = 1;
                     $result = null;
                     switch ($level_id) {  //ตรวจสอบสิทธิ์การใช้งาน
@@ -83,31 +82,31 @@ $u_id = $_SESSION['ses_u_id'];
 
                     if ($result) {
                         while ($row = dbFetchArray($result)) {
-                        ?>
-                        <tr>
-                            <td><?php echo $count; ?></td>
-                            <td><?php echo $row['firstname']; ?></td>
-                            <td><?php echo $row['lastname']; ?></td>
-                            <td><?php echo $row['u_name']; ?></td>
-                            <td><?php echo $row['level_name']; ?></td>
-                            <td><?php echo $row['sec_name']; ?></td>
-                            <td><?php echo $row['dep_name']; ?></td>
+                            ?>
+                            <tr>
+                                <td><?php echo $count; ?></td>
+                                <td><?php echo $row['firstname']; ?></td>
+                                <td><?php echo $row['lastname']; ?></td>
+                                <td><?php echo $row['u_name']; ?></td>
+                                <td><?php echo $row['level_name']; ?></td>
+                                <td><?php echo $row['sec_name']; ?></td>
+                                <td><?php echo $row['dep_name']; ?></td>
 
-                            <td><?php
-                            $status = $row['status'];
-                            if ($status == 1) {
-                                echo '<center><i class="fa fa-check"</i></p></center>';
-                            } else {
-                                echo '<center><i class="fa fa-close"></i></p></center>';
-                            } ?></td>
+                                <td><?php
+                                $status = $row['status'];
+                                if ($status == 1) {
+                                    echo '<center><i class="fa fa-check"</i></p></center>';
+                                } else {
+                                    echo '<center><i class="fa fa-close"></i></p></center>';
+                                } ?></td>
 
-                            <td>
-                                <a class="btn btn-warning" href="user_edit.php?edit=<?php echo $row['u_id']; ?>"
-                                    onclick="return confirm('กำลังจะแก้ไขข้อมูล !'); ">
-                                    <i class="fas fa-edit" aria-hidden="true"></i> แก้ไข</a>
-                            </td>
-                        </tr>
-                        <?php ++$count;
+                                <td>
+                                    <a class="btn btn-warning" href="user_edit.php?edit=<?php echo $row['u_id']; ?>"
+                                        onclick="return confirm('กำลังจะแก้ไขข้อมูล !'); ">
+                                        <i class="fas fa-edit" aria-hidden="true"></i> แก้ไข</a>
+                                </td>
+                            </tr>
+                            <?php ++$count;
                         }
                     } ?>
                 </tbody>
