@@ -2,10 +2,10 @@
 session_start();
 date_default_timezone_set('Asia/Bangkok');
 
- include 'library/database.php';
+include 'library/database.php';
 
-$u_name = isset($_POST['username']) ? mysqli_real_escape_string($dbConn, $_POST['username']) : '';
-$u_pass = isset($_POST['password']) ? mysqli_real_escape_string($dbConn, $_POST['password']) : '';
+$u_name = $_POST['username'] ?? '';
+$u_pass = $_POST['password'] ?? '';
 
 $error_message = '';
 $success = false;
@@ -16,9 +16,9 @@ if (empty($u_name)) {
 } elseif (empty($u_pass)) {
     $error_message = 'โปรดระบุรหัสผ่าน';
 } else {
-    // 4. Query ฐานข้อมูล
-    $sql = "SELECT u_id, sec_id, dep_id, level_id, u_name, u_pass, status FROM user WHERE u_name = '$u_name' AND u_pass = '$u_pass' AND status <> 0";
-    $result = dbQuery($sql);
+    // 4. Query ฐานข้อมูล (ใช้ Prepared Statements)
+    $sql = "SELECT u_id, sec_id, dep_id, level_id, u_name, u_pass, status FROM user WHERE u_name = ? AND u_pass = ? AND status <> 0";
+    $result = dbQuery($sql, "ss", [$u_name, $u_pass]);
     $num = dbNumRows($result);
 
     if ($num > 0) {
@@ -26,9 +26,10 @@ if (empty($u_name)) {
         $success = true;
         $row = dbFetchAssoc($result);
 
-        // อัพเดต Last Login Time
-        $sqlu = "UPDATE user SET user_last_login = '" . date("Y-m-d H:i:s") . "' WHERE u_id = " . $row['u_id'];
-        dbQuery($sqlu);
+        // อัพเดต Last Login Time (ใช้ Prepared Statements)
+        $now = date("Y-m-d H:i:s");
+        $sqlu = "UPDATE user SET user_last_login = ? WHERE u_id = ?";
+        dbQuery($sqlu, "si", [$now, $row['u_id']]);
 
         // ตั้งค่า Session
         $_SESSION['ses_u_id'] = $row['u_id'];
@@ -49,7 +50,7 @@ if (empty($u_name)) {
 // 6. การจัดการข้อผิดพลาด (โค้ดนี้จะทำงานเฉพาะเมื่อ Login ไม่สำเร็จเท่านั้น)
 if (!$success) {
     // ต้อง include header.php เพื่อสร้างโครงสร้าง HTML ก่อนแสดง SweetAlert
-    include 'header.php'; 
+    include 'header.php';
 
     // ต้องรวมไฟล์ SweetAlert JS/CSS ที่จำเป็น (เพราะถูกลบออกจากด้านบนสุดของไฟล์ไปแล้ว)
     // หากไฟล์เหล่านี้ถูกรวมอยู่ใน header.php อยู่แล้ว ให้ลบ 2 บรรทัดนี้
@@ -68,7 +69,7 @@ if (!$success) {
             }
         });
     </script>";
-    
+
     // ต้อง include footer.php เพื่อปิดโครงสร้าง HTML
     include 'footer.php';
 }
