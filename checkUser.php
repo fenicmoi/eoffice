@@ -17,33 +17,48 @@ if (empty($u_name)) {
     $error_message = 'โปรดระบุรหัสผ่าน';
 } else {
     // 4. Query ฐานข้อมูล (ใช้ Prepared Statements)
-    $sql = "SELECT u_id, sec_id, dep_id, level_id, u_name, u_pass, status FROM user WHERE u_name = ? AND u_pass = ? AND status <> 0";
-    $result = dbQuery($sql, "ss", [$u_name, $u_pass]);
+    $sql = "SELECT u_id, sec_id, dep_id, level_id, u_name, u_pass, status FROM user WHERE u_name = ? AND status <> 0";
+    $result = dbQuery($sql, "s", [$u_name]);
     $num = dbNumRows($result);
 
     if ($num > 0) {
-        // --- ส่วนที่ Login สำเร็จ ---
-        $success = true;
         $row = dbFetchAssoc($result);
 
-        // อัพเดต Last Login Time (ใช้ Prepared Statements)
-        $now = date("Y-m-d H:i:s");
-        $sqlu = "UPDATE user SET user_last_login = ? WHERE u_id = ?";
-        dbQuery($sqlu, "si", [$now, $row['u_id']]);
+        // ตรวจสอบรหัสผ่านด้วย password_verify()
+        if (password_verify($u_pass, $row['u_pass'])) {
+            $success = true;
+        }
+        // --- ส่วนเสริม: Auto-Migration (สำหรับย้ายจาก Plaintext เป็น Hash) ---
+        elseif ($u_pass === $row['u_pass']) {
+            // ถ้ารหัสผ่านตรงกับ Plaintext ในฐานข้อมูล ให้ทำการ Hash และ Update ทันที
+            $new_hash = password_hash($u_pass, PASSWORD_BCRYPT);
+            $sql_update = "UPDATE user SET u_pass = ? WHERE u_id = ?";
+            dbQuery($sql_update, "si", [$new_hash, $row['u_id']]);
 
-        // ตั้งค่า Session
-        $_SESSION['ses_u_id'] = $row['u_id'];
-        $_SESSION['ses_level_id'] = $row['level_id'];
-        $_SESSION['ses_dep_id'] = $row['dep_id'];
-        $_SESSION['ses_sec_id'] = $row['sec_id'];
-        $_SESSION['login_success'] = true;
+            $success = true;
+        }
 
-        // 5. เปลี่ยนหน้าทันทีด้วย header() (โค้ดที่มีประสิทธิภาพที่สุด)
+        if ($success) {
+            // --- ส่วนที่ Login สำเร็จ ---
+            // อัพเดต Last Login Time (ใช้ Prepared Statements)
+            $now = date("Y-m-d H:i:s");
+            $sqlu = "UPDATE user SET user_last_login = ? WHERE u_id = ?";
+            dbQuery($sqlu, "si", [$now, $row['u_id']]);
 
-        header("Location: admin/index_admin.php");
-        exit; // ต้องเรียก exit เพื่อหยุดการทำงานของสคริปต์ทันที
+            // ตั้งค่า Session
+            $_SESSION['ses_u_id'] = $row['u_id'];
+            $_SESSION['ses_level_id'] = $row['level_id'];
+            $_SESSION['ses_dep_id'] = $row['dep_id'];
+            $_SESSION['ses_sec_id'] = $row['sec_id'];
+            $_SESSION['login_success'] = true;
+
+            header("Location: admin/index_admin.php");
+            exit;
+        } else {
+            $error_message = 'ขออภัย ! รหัสผ่านไม่ถูกต้อง';
+        }
     } else {
-        $error_message = 'ขออภัย !  เราไม่พบผู้ใช้งาน กรุณาตรวจสอบ ชื่อและรหัสผ่านใหม่';
+        $error_message = 'ขออภัย ! เราไม่พบผู้ใช้งานในระบบ';
     }
 }
 

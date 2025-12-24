@@ -192,22 +192,25 @@ $query = dbQuery($sql);
 <?php
 if (isset($_POST['save'])) {
 
-    $type_id = dbEscapeString($_POST['province']); // ประเภทหน่วยงาน
-    $dep_id = dbEscapeString($_POST['amphur']);   // รหัสหน่วยงาน
-    $sec_id = dbEscapeString($_POST['district']);  // รหัสกลุ่มงาน
+    // ใช้ชื่อฟิลด์จากฟอร์มจริง (office_type, depart, section)
+    $type_id = $_POST['office_type'] ?? '';
+    $dep_id = $_POST['depart'] ?? '';
+    $sec_id = $_POST['section'] ?? '';
     $level_id = 5;
-    $u_name = dbEscapeString($_POST['u_name']);   // ชื่อผู้ใช้
-    $u_pass = dbEscapeString($_POST['u_pass']);   // รหัสผ่าน
-    $firstname = dbEscapeString($_POST['firstname']); // ชื่อ
-    $lastname = dbEscapeString($_POST['lastname']);   // นามสกุล
-    $position = dbEscapeString($_POST['position']);      // ตำแหน่ง
-    $date_create = dbEscapeString($_POST['date_user']);   // วันที่สร้าง
-    $email = dbEscapeString($_POST['email']);         // อีเมลล์
+    $u_name = $_POST['u_name'] ?? '';
+    $u_pass_plain = $_POST['u_pass'] ?? '';
+    // เข้ารหัสผ่าน
+    $u_pass_hashed = password_hash($u_pass_plain, PASSWORD_BCRYPT);
 
-    // ตรวจสอบชื่อผู้ใช้ซ้ำ
-    $sql = "SELECT u_name FROM user WHERE u_name='" . dbEscapeString($u_name) . "'";
+    $firstname = $_POST['firstname'] ?? '';
+    $lastname = $_POST['lastname'] ?? '';
+    $position = $_POST['position'] ?? '';
+    $date_create = $_POST['date_user'] ?? date('Y-m-d');
+    $email = $_POST['email'] ?? '';
 
-    $result = dbQuery($sql);
+    // ตรวจสอบชื่อผู้ใช้ซ้ำ (ใช้ Prepared Statements)
+    $sql = "SELECT u_name FROM user WHERE u_name = ?";
+    $result = dbQuery($sql, "s", [$u_name]);
     $numrow = dbNumRows($result);
     if ($numrow >= 1) {
         echo "<script>
@@ -223,10 +226,21 @@ if (isset($_POST['save'])) {
                 }); 
               </script>";
     } elseif ($numrow < 1) {
-        $sql = "INSERT INTO user(sec_id,dep_id,level_id,u_name,u_pass,firstname,lastname,position,date_create,status,email)
-                   VALUES ($sec_id,$dep_id,$level_id,'$u_name','$u_pass','$firstname','$lastname','$position','$date_create',0,'$email')";
-        //echo $sql;
-        $result = dbQuery($sql);
+        $sql = "INSERT INTO user(sec_id, dep_id, level_id, u_name, u_pass, firstname, lastname, position, date_create, status, email)
+                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?)";
+
+        $result = dbQuery($sql, "iiisssssss", [
+            (int) $sec_id,
+            (int) $dep_id,
+            (int) $level_id,
+            $u_name,
+            $u_pass_hashed,
+            $firstname,
+            $lastname,
+            $position,
+            $date_create,
+            $email
+        ]);
         if (!$result) {
             echo "<script>
             swal({

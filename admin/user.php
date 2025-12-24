@@ -285,7 +285,9 @@ if (isset($_POST['save'])) {
 
     $level_id = $_POST['level'];
     $u_name = $_POST['u_name'];
-    $u_pass = $_POST['u_pass'];
+    $u_pass_plain = $_POST['u_pass'];
+    // เข้ารหัสผ่านด้วย password_hash() โดยใช้ BCRYPT
+    $u_pass_hashed = password_hash($u_pass_plain, PASSWORD_BCRYPT);
     $firstname = $_POST['firstname'];
     $lastname = $_POST['lastname'];
     $position = $_POST['position'];
@@ -320,7 +322,7 @@ if (isset($_POST['save'])) {
             (int) $dep_id,
             (int) $level_id,
             $u_name,
-            $u_pass,
+            $u_pass_hashed,
             $firstname,
             $lastname,
             $position,

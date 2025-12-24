@@ -1,4 +1,5 @@
 <?php
+include '../chksession.php';
 if (session_status() === PHP_SESSION_NONE) {
   session_start();
 }
@@ -16,13 +17,13 @@ $dep_id = (isset($_SESSION['ses_dep_id'])) ? $_SESSION['ses_dep_id'] : '';
 
 
 if ($u_id) {
-  $sql = "SELECT u.u_id,u.u_name,u.u_pass,u.firstname,u.lastname,u.level_id,u.sec_id,s.sec_name,d.dep_id,d.dep_name,l.level_id,l.level_name 
+  $sql = "SELECT u.u_id, u.u_name, u.u_pass, u.firstname, u.lastname, u.level_id, u.sec_id, s.sec_name, d.dep_id, d.dep_name, l.level_name 
                  FROM user u 
-                 INNER JOIN section s ON s.sec_id=u.sec_id 
-                 INNER JOIN depart d ON d.dep_id=s.dep_id
-                 INNER JOIN user_level l ON l.level_id=u.level_id
-                 WHERE u.u_id=$u_id";
-  $result = dbQuery($sql);
+                 INNER JOIN section s ON s.sec_id = u.sec_id 
+                 INNER JOIN depart d ON d.dep_id = s.dep_id
+                 INNER JOIN user_level l ON l.level_id = u.level_id
+                 WHERE u.u_id = ?";
+  $result = dbQuery($sql, "i", [(int) $u_id]);
   $num = dbNumRows($result);
   if ($num > 0) {
     $row = dbFetchAssoc($result);

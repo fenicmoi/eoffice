@@ -20,13 +20,13 @@ $u_id = $_GET['edit'];
                     <div class="input-group">
                         <label for="status"><i class="fa fa-cog"></i>สถานะการใช้งาน</label>
                         <?php
-                        $sql = "SELECT u.* , d.dep_name,s.sec_name,o.type_id
+                        $sql = "SELECT u.*, d.dep_name, s.sec_name, o.type_id
                                         FROM user u 
-                                        INNER JOIN depart d ON  d.dep_id=u.dep_id
-                                        INNER JOIN section s ON s.sec_id=u.sec_id
+                                        INNER JOIN depart d ON d.dep_id = u.dep_id
+                                        INNER JOIN section s ON s.sec_id = u.sec_id
                                         INNER JOIN office_type o ON o.type_id = d.type_id
-                                        WHERE u.u_id=$u_id";
-                        $result = dbQuery($sql);
+                                        WHERE u.u_id = ?";
+                        $result = dbQuery($sql, "i", [(int)$u_id]);
                         $getROW = dbFetchAssoc($result);
 
                         $dep_id = $getROW['dep_id'];
@@ -132,8 +132,8 @@ $u_id = $_GET['edit'];
                             <?php
                         } ?>
                         <?php
-                        $sql = "SELECT  sec_id,sec_name,dep_id FROM section WHERE dep_id=$dep_id";
-                        $result = dbQuery($sql);
+                        $sql = "SELECT sec_id, sec_name, dep_id FROM section WHERE dep_id = ?";
+                        $result = dbQuery($sql, "i", [(int)$dep_id]);
                         ?>
                         <div class="form-group form-inline">
                             <label for="district">หน่วยงานย่อย : </label>
@@ -180,8 +180,8 @@ $u_id = $_GET['edit'];
                             </div>
                             <label for="u_pass">รหัสผ่าน :</label>
                             <div class="input-group">
-                                <input class="form-control" type="text" name="u_pass" id="u_pass"
-                                    value="<?php echo $getROW['u_pass']; ?>">
+                                <input class="form-control" type="password" name="u_pass" id="u_pass"
+                                    placeholder="เว้นว่างไว้หากไม่ต้องการเปลี่ยน">
                             </div>
                         </div>
                         <div class="form-group form-inline">
@@ -254,25 +254,51 @@ if (isset($_POST['save'])) {
         $keyman = $_POST['keyman'];
         echo 'sec2';
     }
+    // ดึงข้อมูลเดิมมาตรวจสอบรหัสผ่าน
+    $sqlCheck = "SELECT u_pass FROM user WHERE u_id = ?";
+    $resCheck = dbQuery($sqlCheck, "i", [(int)$u_id]);
+    $rowCheck = dbFetchAssoc($resCheck);
+    $current_hash = $rowCheck['u_pass'];
+
+    // ถ้ามีการกรอกรหัสผ่านใหม่มา ให้เข้ารหัส
+    if (!empty($_POST['u_pass'])) {
+        $u_pass = password_hash($_POST['u_pass'], PASSWORD_BCRYPT);
+    } else {
+        $u_pass = $current_hash; // ใช้รหัสเดิม
+    }
+
     $sql = "UPDATE user 
-                      SET sec_id=$sec_id,
-                        dep_id=$dep_id,
-                        level_id=$level_id,
-                        u_name='$u_name',
-                        u_pass='$u_pass',
-                        firstname='$firstname',
-                        lastname='$lastname',
-                        position='$position',
-                        date_create='$date_create',
-                        status='$status',
-                        email='$email',
-                        telphone = '$telphone',
-                        keyman='$keyman'
-                        
-                      WHERE u_id = $u_id
-                      ";
-    // echo $sql;
-    $result = dbQuery($sql);
+                      SET sec_id = ?,
+                        dep_id = ?,
+                        level_id = ?,
+                        u_name = ?,
+                        u_pass = ?,
+                        firstname = ?,
+                        lastname = ?,
+                        position = ?,
+                        date_create = ?,
+                        status = ?,
+                        email = ?,
+                        telphone = ?,
+                        keyman = ?
+                      WHERE u_id = ?";
+
+    $result = dbQuery($sql, "iiissssssisssi", [
+        (int)$sec_id,
+        (int)$dep_id,
+        (int)$level_id,
+        $u_name,
+        $u_pass,
+        $firstname,
+        $lastname,
+        $position,
+        $date_create,
+        $status,
+        $email,
+        $telphone,
+        $keyman,
+        (int)$u_id
+    ]);
     if (!$result) {
         echo "<script>
                     swal({

@@ -37,6 +37,7 @@ $u_id = $_SESSION['ses_u_id'];
                 <tbody>
                     <?php
                     $count = 1;
+                    $result = null;
                     switch ($level_id) {  //ตรวจสอบสิทธิ์การใช้งาน
                         case 1:
                             $sql = 'SELECT u.u_id,u.dep_id,u.firstname,u.lastname,u.position,d.dep_name,u.u_name,u.u_pass,l.level_name,s.sec_name,d.dep_name,u.status
@@ -46,6 +47,7 @@ $u_id = $_SESSION['ses_u_id'];
                               INNER JOIN  depart d ON  u.dep_id=d.dep_id
                               ORDER BY u.u_id DESC
                               ';
+                            $result = dbQuery($sql);
                             break;
                         case 2:
                             $sql = "SELECT u.u_id,u.dep_id,u.firstname,u.lastname,u.position,d.dep_name,u.u_name,u.u_pass,l.level_name,s.sec_name,d.dep_name,u.status
@@ -53,9 +55,10 @@ $u_id = $_SESSION['ses_u_id'];
                               INNER JOIN  user_level l ON  u.level_id = l.level_id
                               INNER JOIN  section s ON u.sec_id=s.sec_id
                               INNER JOIN  depart d ON  u.dep_id=d.dep_id
-                              WHERE u.dep_id=$dep_id AND u.level_id=2
+                              WHERE u.dep_id = ? AND u.level_id = 2
                               ORDER BY u.u_id DESC
                               ";
+                            $result = dbQuery($sql, "i", [(int) $dep_id]);
                             break;
                         case 3:
                             $sql = "SELECT u.u_id,u.dep_id,u.firstname,u.lastname,u.position,d.dep_name,u.u_name,u.u_pass,l.level_name,s.sec_name,d.dep_name,u.status
@@ -63,47 +66,49 @@ $u_id = $_SESSION['ses_u_id'];
                               INNER JOIN  user_level l ON  u.level_id = l.level_id
                               INNER JOIN  section s ON u.sec_id=s.sec_id
                               INNER JOIN  depart d ON  u.dep_id=d.dep_id
-                              WHERE u.dep_id=$dep_id
+                              WHERE u.dep_id = ?
                               ORDER BY u.u_id DESC
                               ";
+                            $result = dbQuery($sql, "i", [(int) $dep_id]);
                             break;
                         case 4:
                             echo 'ไม่มีสิทธิ์ใช้งานเมนูนี้';
                             break;
                     }
 
-                    $result = dbQuery($sql);
-                    while ($row = dbFetchArray($result)) {
-                        ?>
-                        <tr>
-                            <td><?php echo $count; ?></td>
-                            <td><?php echo $row['firstname']; ?></td>
-                            <td><?php echo $row['lastname']; ?></td>
-                            <td><?php echo $row['u_name']; ?></td>
-                            <td><?php echo $row['level_name']; ?></td>
-                            <td><?php echo $row['sec_name']; ?></td>
-                            <td><?php echo $row['dep_name']; ?></td>
+                    if ($result) {
+                        while ($row = dbFetchArray($result)) {
+                            ?>
+                            <tr>
+                                <td><?php echo $count; ?></td>
+                                <td><?php echo $row['firstname']; ?></td>
+                                <td><?php echo $row['lastname']; ?></td>
+                                <td><?php echo $row['u_name']; ?></td>
+                                <td><?php echo $row['level_name']; ?></td>
+                                <td><?php echo $row['sec_name']; ?></td>
+                                <td><?php echo $row['dep_name']; ?></td>
 
-                            <td><?php
-                            $status = $row['status'];
-                            if ($status == 1) {
-                                echo '<center><i class="fa fa-check"</i></p></center>';
-                            } else {
-                                echo '<center><i class="fa fa-close"></i></p></center>';
-                            } ?></td>
+                                <td><?php
+                                $status = $row['status'];
+                                if ($status == 1) {
+                                    echo '<center><i class="fa fa-check"</i></p></center>';
+                                } else {
+                                    echo '<center><i class="fa fa-close"></i></p></center>';
+                                } ?></td>
 
-                            <td>
-                                <a class="btn btn-info" href="user_edit.php?edit=<?php echo $row['u_id']; ?>"
-                                    onclick="return confirm('กำลังจะแก้ไขข้อมูล !'); ">
-                                    <i class="fas fa-edit" aria-hidden="true"></i> แก้ไข</a>
-                            </td>
-                            <td>
-                                <a class="btn btn-danger" href="user.php?del=<?php echo $row['u_id']; ?>"
-                                    onclick="return confirm('ระบบกำลังจะลบข้อมูล !'); ">
-                                    <i class="fas fa-trash" aria-hidden="true"></i> ลบ</a>
-                            </td>
-                        </tr>
-                        <?php ++$count;
+                                <td>
+                                    <a class="btn btn-info" href="user_edit.php?edit=<?php echo $row['u_id']; ?>"
+                                        onclick="return confirm('กำลังจะแก้ไขข้อมูล !'); ">
+                                        <i class="fas fa-edit" aria-hidden="true"></i> แก้ไข</a>
+                                </td>
+                                <td>
+                                    <a class="btn btn-danger" href="user.php?del=<?php echo $row['u_id']; ?>"
+                                        onclick="return confirm('ระบบกำลังจะลบข้อมูล !'); ">
+                                        <i class="fas fa-trash" aria-hidden="true"></i> ลบ</a>
+                                </td>
+                            </tr>
+                            <?php ++$count;
+                        }
                     } ?>
                 </tbody>
             </table>
@@ -158,12 +163,13 @@ $u_id = $_SESSION['ses_u_id'];
                                         <option value=''>- เลือกกลุ่มงาน -</option>
                                         <?php
                                         //if($level_id > 2){      //กรณีที่เป็นผู้ใช้งานทั่วไป
-                                        $sql = "SELECT * FROM section WHERE dep_id=$dep_id";
-                                        $result = dbQuery($sql);
+                                        $sql = "SELECT * FROM section WHERE dep_id = ?";
+                                        $result = dbQuery($sql, "i", [(int) $dep_id]);
                                         while ($rowSec = dbFetchArray($result)) {
                                             ?>
                                             <option value='<?php echo $rowSec['sec_id']; ?>'>
-                                                <?php echo $rowSec['sec_name']; ?></option>
+                                                <?php echo $rowSec['sec_name']; ?>
+                                            </option>
                                             <?php
                                         } ?>
                                         <?php //} ?>
@@ -272,7 +278,10 @@ if (isset($_POST['save'])) {
 
     $level_id = $_POST['level'];
     $u_name = $_POST['u_name'];
-    $u_pass = $_POST['u_pass'];
+    $u_pass_plain = $_POST['u_pass'];
+    // เข้ารหัสผ่าน
+    $u_pass_hashed = password_hash($u_pass_plain, PASSWORD_BCRYPT);
+
     $firstname = $_POST['firstname'];
     $lastname = $_POST['lastname'];
     $position = $_POST['position'];
@@ -280,9 +289,9 @@ if (isset($_POST['save'])) {
     $status = $_POST['status'];
     $email = $_POST['email'];
 
-    // print $sql;
-    $sql = "SELECT * FROM user WHERE u_name='" . $u_name . '';
-    $result = dbQuery($sql);
+    // เช็คชื่อผู้ใช้ซ้ำ (ใช้ Prepared Statements)
+    $sql = "SELECT u_id FROM user WHERE u_name = ?";
+    $result = dbQuery($sql, "s", [$u_name]);
     $numrow = dbNumRows($result);
     if ($numrow >= 1) {
         echo "<script>
@@ -298,10 +307,21 @@ if (isset($_POST['save'])) {
                 }); 
               </script>";
     } elseif ($numrow < 1) {
-        $sql = "INSERT INTO user(sec_id,dep_id,level_id,u_name,u_pass,firstname,lastname,position,date_create,status,email)
-                   VALUES ($sec_id,$dep_id,$level_id,'$u_name','$u_pass','$firstname','$lastname','$position','$date_create',$status,'$email')";
-        //echo $sql;
-        $result = dbQuery($sql);
+        $sql = "INSERT INTO user(sec_id, dep_id, level_id, u_name, u_pass, firstname, lastname, position, date_create, status, email)
+                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $result = dbQuery($sql, "iiissssssis", [
+            (int) $sec_id,
+            (int) $dep_id,
+            (int) $level_id,
+            $u_name,
+            $u_pass_hashed,
+            $firstname,
+            $lastname,
+            $position,
+            $date_create,
+            (int) $status,
+            $email
+        ]);
         $level_id = $_SESSION['level'];
         if (!$result) {
             echo "<script>
@@ -334,8 +354,8 @@ if (isset($_POST['save'])) {
 } //send
 
 if (isset($_GET['del'])) {
-    $sql = 'DELETE FROM user WHERE u_id=' . $_GET['del'];
-    $result = dbQuery($sql);
+    $sql = 'DELETE FROM user WHERE u_id = ?';
+    $result = dbQuery($sql, "i", [(int) $_GET['del']]);
     if (!$result) {
         echo "<script>
             swal({
