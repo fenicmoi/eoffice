@@ -40,7 +40,9 @@ $u_id = $_SESSION['ses_u_id'];
                 </thead>
                 <tbody>
                     <?php
+                    <?php
                     $count = 1;
+                    $result = null;
                     switch ($level_id) {  //ตรวจสอบสิทธิ์การใช้งาน
                         case 1:
                             $sql = 'SELECT u.u_id,u.dep_id,u.firstname,u.lastname,u.position,d.dep_name,u.u_name,u.u_pass,l.level_name,s.sec_name,d.dep_name,u.status
@@ -50,6 +52,7 @@ $u_id = $_SESSION['ses_u_id'];
                               INNER JOIN  depart d ON  u.dep_id=d.dep_id
                               ORDER BY u.u_id DESC
                               ';
+                            $result = dbQuery($sql);
                             break;
                         case 2:
                             $sql = "SELECT u.u_id,u.dep_id,u.firstname,u.lastname,u.position,d.dep_name,u.u_name,u.u_pass,l.level_name,s.sec_name,d.dep_name,u.status
@@ -57,9 +60,10 @@ $u_id = $_SESSION['ses_u_id'];
                               INNER JOIN  user_level l ON  u.level_id = l.level_id
                               INNER JOIN  section s ON u.sec_id=s.sec_id
                               INNER JOIN  depart d ON  u.dep_id=d.dep_id
-                              WHERE u.dep_id=$dep_id AND u.level_id=2
+                              WHERE u.dep_id = ? AND u.level_id = 2
                               ORDER BY u.u_id DESC
                               ";
+                            $result = dbQuery($sql, "i", [(int) $dep_id]);
                             break;
                         case 3:
                             $sql = "SELECT u.u_id,u.dep_id,u.firstname,u.lastname,u.position,d.dep_name,u.u_name,u.u_pass,l.level_name,s.sec_name,d.dep_name,u.status
@@ -67,17 +71,18 @@ $u_id = $_SESSION['ses_u_id'];
                               INNER JOIN  user_level l ON  u.level_id = l.level_id
                               INNER JOIN  section s ON u.sec_id=s.sec_id
                               INNER JOIN  depart d ON  u.dep_id=d.dep_id
-                              WHERE u.dep_id=$dep_id
+                              WHERE u.dep_id = ?
                               ORDER BY u.u_id DESC
                               ";
+                            $result = dbQuery($sql, "i", [(int) $dep_id]);
                             break;
                         case 4:
                             echo 'ไม่มีสิทธิ์ใช้งานเมนูนี้';
                             break;
                     }
 
-                    $result = dbQuery($sql);
-                    while ($row = dbFetchArray($result)) {
+                    if ($result) {
+                        while ($row = dbFetchArray($result)) {
                         ?>
                         <tr>
                             <td><?php echo $count; ?></td>
@@ -103,6 +108,7 @@ $u_id = $_SESSION['ses_u_id'];
                             </td>
                         </tr>
                         <?php ++$count;
+                        }
                     } ?>
                 </tbody>
             </table>
@@ -395,22 +401,31 @@ if (isset($_GET['edit'])) {
 }
 
 if (isset($_POST['update'])) {
-    $sql = 'UPDATE depart
-                         SET type_id=' . $_POST['officeType'] . ",
-                             dep_name='" . $_POST['dep_name'] . "',
-                             address='" . $_POST['address'] . "',
-                             phone='" . $_POST['tel'] . "',
-                             fax='" . $_POST['fax'] . "',
-                             social='" . $_POST['website'] . "',
-                             status=" . $_POST['status'] . ',
-                             local_num=' . $_POST['local_num'] . '
-                        WHERE dep_id=' . $_GET['edit'] . '
-                            ';
-    echo $sql;
-    $SQL = $conn->query($sql);
-    echo '<script>swal("Good job!", "แก้ไขข้อมูลแล้ว!", "success")</script>';
-
-    echo "<meta http-equiv='refresh' content='1;URL=user.php'>";
+    $sql = "UPDATE depart 
+            SET type_id = ?, 
+                dep_name = ?, 
+                address = ?, 
+                phone = ?, 
+                fax = ?, 
+                social = ?, 
+                status = ?, 
+                local_num = ? 
+            WHERE dep_id = ?";
+    $result = dbQuery($sql, "isssssiii", [
+        (int) $_POST['officeType'],
+        $_POST['dep_name'],
+        $_POST['address'],
+        $_POST['tel'],
+        $_POST['fax'],
+        $_POST['website'],
+        (int) $_POST['status'],
+        (int) $_POST['local_num'],
+        (int) $_GET['edit']
+    ]);
+    if ($result) {
+        echo '<script>swal("Good job!", "แก้ไขข้อมูลแล้ว!", "success")</script>';
+        echo "<meta http-equiv='refresh' content='1;URL=user.php'>";
+    }
 }
 ?>
 <script>
