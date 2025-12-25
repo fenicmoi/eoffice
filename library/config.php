@@ -1,6 +1,6 @@
 <?php
-$title="E-Office จังหวัดพัทลุง";
-$dayEdit=8;  //จำนวนวันที่อนุญาตให้แก้ไขเอกสาร
+$title = "E-Office จังหวัดพัทลุง";
+$dayEdit = 8;  //จำนวนวันที่อนุญาตให้แก้ไขเอกสาร
 
 // database connection config
 
