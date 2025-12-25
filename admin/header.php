@@ -192,7 +192,7 @@ if ($u_id) {
 
       ?>
       <ul class="nav navbar-nav navbar-right">
-        <form class="navbar-form navbar-left" name="login" method="post" action="checkUser.php">
+        <form class="navbar-form navbar-left" name="login" method="post" action="../checkUser.php">
           <label for="username">เข้าสู่ระบบ</label>
           <div class="form-group">
             <input type="text" name="username" class="form-control" placeholder="username" required="">
