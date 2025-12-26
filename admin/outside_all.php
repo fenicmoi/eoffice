@@ -61,7 +61,8 @@ if ($cid && $tb) {
 <div class="col-md-10">
     <div class="panel panel-primary">
         <div class="panel-heading"><i class="fas fa-share-square fa-2x"></i>
-            <strong>ส่งหนังสือระหว่างส่วนราชการ</strong></div>
+            <strong>ส่งหนังสือระหว่างส่วนราชการ</strong>
+        </div>
         <div class="panel-body">
             <ul class="nav nav-tabs">
                 <li><a class="btn-danger fas fa-envelope" href="paper.php"> หนังสือเข้า</a></li>
@@ -75,7 +76,7 @@ if ($cid && $tb) {
                 <div class="form-group form-inline">
                     <label for="title">เรื่อง:</label>
                     <input class="form-control" type="text" name="title" size="100%" placeholder="ใส่ชื่อเรื่อง"
-                        required="" value="<?php echo isset($title) ? $title : ''; ?>">
+                        required="">
                 </div>
                 <div class="form-group form-inline">
                     <label for="book_no">เลขหนังสือ:</label>
@@ -287,36 +288,51 @@ if (isset($_POST['sendOut'])) {           //ตรวจสอบปุ่ม se
 
     $link_file = ''; // กำหนดค่าเริ่มต้น
     // **ส่วนที่ 3: ปรับปรุงการจัดการไฟล์อัปโหลด**
-    if (isset($_FILES['fileupload']) && $_FILES['fileupload']['error'] === UPLOAD_ERR_OK) {
-        $upload = $_FILES['fileupload'];
-        $upload_dir = "paper/";
+    if (isset($_FILES['fileupload'])) {
+        $err = $_FILES['fileupload']['error'];
 
-        $filename = $upload['name'];
-        // --- ดึงนามสกุล (ตัวพิมพ์เล็ก) ---
-        $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
-        // --- รายการนามสกุลที่อนุญาต (เพิ่มการตรวจสอบให้เข้มงวดขึ้น) ---
-        $allowed_extensions = array('pdf', 'png', 'jpg', 'jpeg', 'zip', '7z', 'rar'); // ตัด doc/xls ออกถ้าไม่จำเป็นต้องอนุญาต
-        // อนุญาตประเภทเอกสาร: doc, docx, xls, xlsx, ppt, pptx, zip, 7z, rar, pdf, jpg, jpeg, png
-        $allowed_extensions = array('pdf', 'png', 'jpg', 'jpeg', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'zip', '7z', 'rar', 'zipx');
+        if ($err === UPLOAD_ERR_OK) {
+            $upload = $_FILES['fileupload'];
+            $upload_dir = "paper/";
+
+            $filename = $upload['name'];
+            // --- ดึงนามสกุล (ตัวพิมพ์เล็ก) ---
+            $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+            // --- รายการนามสกุลที่อนุญาต (เพิ่มการตรวจสอบให้เข้มงวดขึ้น) ---
+            //$allowed_extensions = array('pdf', 'png', 'jpg', 'jpeg', 'zip', '7z', 'rar'); 
+            // อนุญาตประเภทเอกสาร: doc, docx, xls, xlsx, ppt, pptx, zip, 7z, rar, pdf, jpg, jpeg, png
+            $allowed_extensions = array('pdf', 'png', 'jpg', 'jpeg', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'zip', '7z', 'rar', 'zipx');
 
 
-        // --- ตรวจสอบว่าไฟล์อยู่ในรายการอนุญาตไหม ---
-        if (!in_array($ext, $allowed_extensions)) {
-            echo "<script>alert('ไม่อนุญาตให้อัปโหลดไฟล์ .$ext'); window.history.back();</script>";
+            // --- ตรวจสอบว่าไฟล์อยู่ในรายการอนุญาตไหม ---
+            if (!in_array($ext, $allowed_extensions)) {
+                echo "<script>alert('ไม่อนุญาตให้อัปโหลดไฟล์ .$ext'); window.history.back();</script>";
+                exit;
+            }
+
+            // ตั้งชื่อไฟล์ใหม่ไม่ให้ซ้ำ (มีความปลอดภัยสูง)
+            $date_prefix = date("YmdHis"); // รูปแบบปีเดือนวันชั่วโมงนาทีวินาที
+            $random_num = mt_rand(100000, 999999); // สุ่มตัวเลข 6 หลัก
+            $new_filename = $date_prefix . "_" . $random_num . "." . $ext;
+
+            // พาธเต็มรูปแบบสำหรับบันทึกไฟล์
+            $link_file = $upload_dir . $new_filename;
+
+            // ย้ายไฟล์ไปยังพาธปลายทาง
+            if (!move_uploaded_file($upload['tmp_name'], $link_file)) {
+                echo "<script>alert('เกิดข้อผิดพลาดในการบันทึกไฟล์'); window.history.back();</script>";
+                exit;
+            }
+        } elseif ($err === UPLOAD_ERR_NO_FILE) {
+            // กรณีไม่มีการอัพโหลดใหม่ ให้ตรวจสอบว่ามีไฟล์เดิมหรือไม่
+            if (!empty($fileupload)) {
+                $link_file = $fileupload; // ใช้ไฟล์เดิม
+            }
+        } elseif ($err === UPLOAD_ERR_INI_SIZE || $err === UPLOAD_ERR_FORM_SIZE) {
+            echo "<script>alert('ไฟล์มีขนาดใหญ่เกินกว่าที่ระบบกำหนด (Upload Max Size)'); window.history.back();</script>";
             exit;
-        }
-
-        // ตั้งชื่อไฟล์ใหม่ไม่ให้ซ้ำ (มีความปลอดภัยสูง)
-        $date_prefix = date("YmdHis"); // รูปแบบปีเดือนวันชั่วโมงนาทีวินาที
-        $random_num = mt_rand(100000, 999999); // สุ่มตัวเลข 6 หลัก
-        $new_filename = $date_prefix . "_" . $random_num . "." . $ext;
-
-        // พาธเต็มรูปแบบสำหรับบันทึกไฟล์
-        $link_file = $upload_dir . $new_filename;
-
-        // ย้ายไฟล์ไปยังพาธปลายทาง
-        if (!move_uploaded_file($upload['tmp_name'], $link_file)) {
-            echo "<script>alert('เกิดข้อผิดพลาดในการบันทึกไฟล์'); window.history.back();</script>";
+        } else {
+            echo "<script>alert('เกิดข้อผิดพลาดในการอัปโหลดไฟล์ (Error Code: $err)'); window.history.back();</script>";
             exit;
         }
     }
