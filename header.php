@@ -299,9 +299,25 @@ require_once 'library/database.php';
         $fax = dbEscapeString($_POST['fax']);
 
         $status = 0;
-        $sql = "INSERT INTO register_staf(depart,book_no,address,office_tel,office_fax,website,fname,lname,position,tel,fax,email,status) VALUES('$depart','$book_no','$address','$office_tel','$office_fax','$website','$fname','$lname','$position','$tel','$fax','$email',$status)";
-        // 	print $sql;
-      
+        $sql = "INSERT INTO register_staf (depart, book_no, address, office_tel, office_fax, website, fname, lname, position, tel, fax, email, status) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        $result = dbQuery($sql, "ssssssssssssi", [
+          $depart,
+          $book_no,
+          $address,
+          $office_tel,
+          $office_fax,
+          $website,
+          $fname,
+          $lname,
+          $position,
+          $tel,
+          $fax,
+          $email,
+          (int) $status
+        ]);
+
         //echo $sql;
       
 

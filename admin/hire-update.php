@@ -6,7 +6,13 @@ include "header.php";
 //include '../library/database.php';
 
 
-if(isset($_POST['update_hire'])){
+if (isset($_POST['update_hire'])) {
+    if (!verify_csrf_token($_POST['csrf_token'] ?? '')) {
+        die("CSRF token validation failed.");
+    }
+    if ($level_id >= 3) {
+        $sqlBase .= " AND h.dep_id = " . (int) $dep_id . " ";
+    }
     $hire_id = $_POST['hire_id'];
     $title = $_POST['title'];
     $money = $_POST['money'];
@@ -16,20 +22,30 @@ if(isset($_POST['update_hire'])){
     $signer = $_POST['signer'];
     $guarantee = $_POST['guarantee'];
 
-    $sql="UPDATE hire SET 
-          title ='".dbEscapeString($title)."',
-          money =".dbEscapeString($money).",
-          employee ='".dbEscapeString($employee)."',
-          date_hire ='".dbEscapeString($datehire)."',
-          date_submit ='".dbEscapeString($date_submit)."',
-          signer ='".dbEscapeString($signer)."',
-          guarantee =".dbEscapeString($guarantee)."
-          WHERE hire_id =".dbEscapeString($hire_id);
+    $sql = "UPDATE hire SET 
+          title = ?,
+          money = ?,
+          employee = ?,
+          date_hire = ?,
+          date_submit = ?,
+          signer = ?,
+          guarantee = ?
+          WHERE hire_id = ?";
+
+    $result = dbQuery($sql, "ssssssii", [$title, $money, $employee, $datehire, $date_submit, $signer, $guarantee, (int) $hire_id]);
     //print $sql;
-    $result=dbQuery($sql);
-    
-    if($result){
+    $result = dbQuery($sql);
+
+    if ($result) {
         dbQuery("COMMIT");
+        // ส่วนที่ 3: การดึงข้อมูลพร้อมการจัดเรียงและการจำกัดจำนวน (Ordering and Limiting)
+        $orderColumn = $columns[$requestData['order'][0]['column']];
+        $orderDir = strtoupper($requestData['order'][0]['dir']) === 'ASC' ? 'ASC' : 'DESC';
+        $start = (int) $requestData['start'];
+        $length = (int) $requestData['length'];
+
+        $sql .= " ORDER BY $orderColumn $orderDir LIMIT $start, $length";
+        $query = dbQuery($sql) or die("section 3");
         echo "<script>
         swal({
             title:'แก้ไขข้อมูลเรียบร้อย',
@@ -42,7 +58,7 @@ if(isset($_POST['update_hire'])){
                 }
             }); 
         </script>";
-    }else{
+    } else {
         dbQuery("ROLLBACK");
         echo "<script>
         swal({
@@ -56,6 +72,6 @@ if(isset($_POST['update_hire'])){
                 }
             }); 
         </script>";
-    }     
+    }
 }
 ?>

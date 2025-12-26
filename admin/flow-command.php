@@ -11,7 +11,7 @@ $ystatus = $ystatus;
 ?>
 <div class="col-md-2">
     <?php
-    $menu =  checkMenu($level_id);
+    $menu = checkMenu($level_id);
     include $menu;
     ?>
 </div>
@@ -45,22 +45,26 @@ $ystatus = $ystatus;
                     switch ($level_id) {
                         case 1:      //programmer
                             $sql = $sql;
+                            $result = page_query($dbConn, $sql, 10);
                             break;
                         case 2:      //admin
                             $sql = $sql;
+                            $result = page_query($dbConn, $sql, 10);
                             break;
                         case 3:     //sub_admin
-                            $sql .= " WHERE c.dep_id=$dep_id";
+                            $sql .= " WHERE c.dep_id = ?";
+                            $result = page_query($dbConn, $sql, 10, "i", [(int) $dep_id]);
                             break;
                         case 4:     //group_admin
-                            $sql .= " WHERE c.sec_id=$sec_id";
+                            $sql .= " WHERE c.sec_id = ?";
+                            $result = page_query($dbConn, $sql, 10, "i", [(int) $sec_id]);
                             break;
                         case 5:     //user
-                            $sql .= " WHERE c.sec_id=$sec_id";
+                            $sql .= " WHERE c.sec_id = ?";
+                            $result = page_query($dbConn, $sql, 10, "i", [(int) $sec_id]);
                             break;
                     }
                     $sql .= " ORDER BY c.cid DESC";
-                    $result = page_query($dbConn, $sql, 10);
 
 
 
@@ -71,7 +75,7 @@ $ystatus = $ystatus;
                         $numday = getNumDay($d1, $d2);
 
                         $file_upload = $row['file_upload'];
-                    ?>
+                        ?>
                         <tr>
                             <td>
                                 <?php
@@ -79,11 +83,14 @@ $ystatus = $ystatus;
                                     echo "<i class='fas fa-ticket-alt'></i>ขาด file แนบ";
                                 } else {
                                     echo $row['rec_id']; ?>/<?php echo $row['yname'];
-                                                            }
-                                                                ?>
+                                }
+                                ?>
                             </td>
                             <td>
-                                <a class="text-success" href="#" onclick="load_leave_data('<?php print $u_id; ?>','<?php print $cid; ?>','<?php print $edit = 0; ?>');" data-toggle="modal" data-target=".bs-example-modal-table"> <?php echo $row['title']; ?> </a>
+                                <a class="text-success" href="#"
+                                    onclick="load_leave_data('<?php echo htmlspecialchars($u_id); ?>','<?php echo (int) $cid; ?>','<?php echo $edit = 0; ?>');"
+                                    data-toggle="modal" data-target=".bs-example-modal-table">
+                                    <?php echo htmlspecialchars($row['title']); ?> </a>
                             </td>
                             <td><?php echo thaiDate($row['dateout']); ?></td>
                             <?php
@@ -91,21 +98,23 @@ $ystatus = $ystatus;
                             if ($file_upload == '') { ?>
                                 <td><i class="fas fa-sad-tear"></i> No file</td>
                             <?php } else { ?>
-                                <td><a class="btn btn-success btn-sm" href="<?php print $row['file_upload']; ?>" target='_blank'><i class='fas fa-file-pdf'></i> ไฟล์คำสั่ง</a></td>
+                                <td><a class="btn btn-success btn-sm" href="<?php print $row['file_upload']; ?>"
+                                        target='_blank'><i class='fas fa-file-pdf'></i> ไฟล์คำสั่ง</a></td>
                             <?php } ?>
                             <td>
                                 <form name="frmDel" action="#" method="post">
                                     <div class="btn-group" role="group" aria-label="Basic example">
                                         <?php
                                         if ($numday > $dayEdit) { ?>
-                                            <a class="btn btn-default btn-sm disabled" href="#" onclick="load_leave_data('<?php print $u_id; ?>','<?php print $cid; ?>','<?php print $edit = 0; ?>');" data-toggle="modal" data-target=".bs-example-modal-table"><i class="fas fa-edit"></i> แก้ไข</a>
+                                            <a class="btn btn-default btn-sm disabled" href="#"
+                                                onclick="load_leave_data('<?php print $u_id; ?>','<?php print $cid; ?>','<?php print $edit = 0; ?>');"
+                                                data-toggle="modal" data-target=".bs-example-modal-table"><i
+                                                    class="fas fa-edit"></i> แก้ไข</a>
                                             <!-- <input type="submit" class="btn btn-danger btn-sm disabled" name="btnDel" id="btnDel" onclick="return confirm('คุณกำลังจะลบข้อมูล!');" value="ลบ"> -->
                                         <?php } else { ?>
-                                            <a class="btn btn-warning btn-sm"
-                                                href="#"
+                                            <a class="btn btn-warning btn-sm" href="#"
                                                 onclick="load_edit('<?php print $u_id; ?>','<?php print $cid; ?>','<?php print $edit = 0; ?>');"
-                                                data-toggle="modal"
-                                                data-target=".bs-example-modal-table">
+                                                data-toggle="modal" data-target=".bs-example-modal-table">
                                                 <i class="fas fa-edit"></i> แก้ไข
                                             </a>
                                             <input type="hidden" id="cid" name="cid" value="<?php echo $cid; ?>">
@@ -153,7 +162,8 @@ $ystatus = $ystatus;
                 <h4 class="modal-title"><i class="fa fa-info"></i> รายละเอียดคำสั่งจังหวัด</h4>
             </div>
             <div class="modal-body no-padding">
-                <div id="divDataview"></div> <!-- สวนสำหรับแสดงผลรายละเอียด   อ้างอิงกับไฟล์  show_command_detail.php -->
+                <div id="divDataview"></div>
+                <!-- สวนสำหรับแสดงผลรายละเอียด   อ้างอิงกับไฟล์  show_command_detail.php -->
             </div> <!-- modal-body -->
             <div class="modal-footer bg-primary">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">ปิด X</button>
@@ -178,7 +188,8 @@ $ystatus = $ystatus;
                     <div class="form-group">
                         <div class="input-group">
                             <span class="input-group-addon">ปีคำสั่ง:</span>
-                            <input type="text" class="form-control" name="yearDoc" value="<?php print $yname; ?>" disabled>
+                            <input type="text" class="form-control" name="yearDoc" value="<?php print $yname; ?>"
+                                disabled>
                         </div>
                     </div>
                     <div class="form-group">
@@ -202,7 +213,8 @@ $ystatus = $ystatus;
                     <div class="form-group">
                         <div class="input-group">
                             <span class="input-group-addon">วันที่ลงนาม:</span>
-                            <input class="form-control" type="date" name="datepicker" id="datepicker" onKeyDown="return false" required>
+                            <input class="form-control" type="date" name="datepicker" id="datepicker"
+                                onKeyDown="return false" required>
                         </div>
                     </div>
                     <div class="form-group">
@@ -218,11 +230,14 @@ $ystatus = $ystatus;
          </div> -->
                     <div class="form-group">
                         <div class="input-group">
-                            <label class="radio-inline"><input type="radio" name="doc_status" value="1" checked>เปิดเผย (แสดงหน้าเว็บไซต์)</label>
-                            <label class="radio-inline"><input type="radio" name="doc_status" value="2">ไม่เปิดเผย</label>
+                            <label class="radio-inline"><input type="radio" name="doc_status" value="1" checked>เปิดเผย
+                                (แสดงหน้าเว็บไซต์)</label>
+                            <label class="radio-inline"><input type="radio" name="doc_status"
+                                    value="2">ไม่เปิดเผย</label>
                         </div>
                     </div>
-                    <center> <button class="btn btn-success" type="submit" name="save" id="save"><i class="fas fa-save fa-2x"></i> บันทึก</button></center>
+                    <center> <button class="btn btn-success" type="submit" name="save" id="save"><i
+                                class="fas fa-save fa-2x"></i> บันทึก</button></center>
                 </form>
             </div>
             <div class="modal-footer bg-primary">
@@ -234,6 +249,9 @@ $ystatus = $ystatus;
 
 <?php    //precess add
 if (isset($_POST['save'])) {
+    if (!verify_csrf_token($_POST['csrf_token'] ?? '')) {
+        die("CSRF token validation failed.");
+    }
     @$yearDoc = $_POST['yearDoc'];
     $currentDate = $_POST['currentDate'];
     $boss = $_POST['boss'];
@@ -242,15 +260,27 @@ if (isset($_POST['save'])) {
     $dateout = date('Y-m-d');
     $doc_status = $_POST['doc_status'];
 
-    $sqlRun = "SELECT cid,rec_id FROM flowcommand WHERE  yid=$yid  ORDER  BY cid DESC";
-    $resRun =  dbQuery($sqlRun);
+    $sqlRun = "SELECT MAX(rec_id) AS rec_id FROM flowcommand WHERE yid = ? ORDER BY cid DESC";
+    $resRun = dbQuery($sqlRun, "i", [(int) $yid]);
     $rowRun = dbFetchArray($resRun);
     $rec_id = $rowRun['rec_id'];
     $rec_id++;
 
-    $sql = "INSERT INTO flowcommand
-                         (rec_id,yid,title,boss,dateline,dateout,u_id,sec_id,dep_id,doc_status)    
-                    VALUE($rec_id,$yid,'$title','$boss','$dateline','$dateout',$u_id,$sec_id,$dep_id,$doc_status)";
+    $sql = "INSERT INTO flowcommand (rec_id, yid, title, boss, dateline, dateout, u_id, sec_id, dep_id, doc_status)    
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+    $result = dbQuery($sql, "iisssisiii", [
+        (int) $rec_id,
+        (int) $yid,
+        $title,
+        $boss,
+        $dateline,
+        $dateout,
+        (int) $u_id,
+        (int) $sec_id,
+        (int) $dep_id,
+        (int) $doc_status
+    ]);
 
     $result = dbQuery($sql);
     if (!$result) {
@@ -268,8 +298,8 @@ if (isset($_POST['save'])) {
             </script>";
     } else {
         //หาหมายเลขหนังสือล่าสุด 
-        $sql = "SELECT  *  FROM  flowcommand WHERE u_id = $u_id  ORDER BY cid DESC LIMIT 1";
-        $result = dbQuery($sql);
+        $sql = "SELECT rec_id FROM flowcommand WHERE u_id = ? ORDER BY cid DESC LIMIT 1";
+        $result = dbQuery($sql, "i", [(int) $u_id]);
         $row = dbFetchArray($result);
         $rec_id = $row['rec_id'];
         echo "<script>
@@ -307,7 +337,8 @@ if (isset($_POST['save'])) {
                             <input type="number" class="form-control" name="num" max=10 placeholder="ไม่เกิน 10 ฉบับ">
                         </div>
                     </div>
-                    <center> <button class="btn btn-success" type="submit" name="btnReserv" id="btnReserv"><i class="fas fa-save fa-2x"></i> บันทึก</button></center>
+                    <center> <button class="btn btn-success" type="submit" name="btnReserv" id="btnReserv"><i
+                                class="fas fa-save fa-2x"></i> บันทึก</button></center>
                 </form>
             </div>
             <div class="modal-footer bg-primary">
@@ -320,6 +351,9 @@ if (isset($_POST['save'])) {
 <!--  process  Reserv -->
 <?php
 if (isset($_POST['btnReserv'])) {
+    if (!verify_csrf_token($_POST['csrf_token'] ?? '')) {
+        die("CSRF token validation failed.");
+    }
 
     $title = "จองเลขคำสั่ง...";
     $boss = "ผู้ว่าราชการจังหวัด";
@@ -329,16 +363,25 @@ if (isset($_POST['btnReserv'])) {
     $a = 0;
 
     while ($a < $num) {
-        $sql = "SELECT max(rec_id) as rec_id FROM flowcommand where yid=$yid";
-        $result = dbQuery($sql);
+        $sql = "SELECT MAX(rec_id) AS rec_id FROM flowcommand WHERE yid = ?";
+        $result = dbQuery($sql, "i", [(int) $yid]);
         $row = dbFetchArray($result);
         $rec_id = $row['rec_id'];
         $rec_id = $rec_id + 1;
 
-        $sql = "INSERT INTO flowcommand
-                         (rec_id,yid,title,boss,dateline,dateout,u_id,sec_id,dep_id)    
-                    VALUE($rec_id,$yid,'$title','$boss','$dateline','$dateout',$u_id,$sec_id,$dep_id)";
-        $result = dbQuery($sql);
+        $sql = "INSERT INTO flowcommand (rec_id, yid, title, boss, dateline, dateout, u_id, sec_id, dep_id)    
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $result = dbQuery($sql, "iisssisii", [
+            (int) $rec_id,
+            (int) $yid,
+            $title,
+            $boss,
+            $dateline,
+            $dateout,
+            (int) $u_id,
+            (int) $sec_id,
+            (int) $dep_id
+        ]);
         $a++;
     }
 
@@ -411,10 +454,12 @@ if (isset($_POST['btnReserv'])) {
                     </div>
                     <div class="form-group">
                         <div class="input-group">
-                            <input class="form-control" type="file" name="fileupload" id="fileupload" disabled><label><i class="fas fa-exclamation-circle"></i>ออกเลขให้เสร็จก่อนดำเนินการแนบไฟล์</label>
+                            <input class="form-control" type="file" name="fileupload" id="fileupload" disabled><label><i
+                                    class="fas fa-exclamation-circle"></i>ออกเลขให้เสร็จก่อนดำเนินการแนบไฟล์</label>
                         </div>
                     </div>
-                    <center> <button class="btn btn-primary" type="submit" name="save" id="save"><i class="fas fa-save fa-2x"></i> บันทึก</button></center>
+                    <center> <button class="btn btn-primary" type="submit" name="save" id="save"><i
+                                class="fas fa-save fa-2x"></i> บันทึก</button></center>
                 </form>
             </div>
             <div class="modal-footer bg-primary">
@@ -426,7 +471,9 @@ if (isset($_POST['btnReserv'])) {
 
 <?php
 if (isset($_POST['update'])) {
-
+    if (!verify_csrf_token($_POST['csrf_token'] ?? '')) {
+        die("CSRF token validation failed.");
+    }
     $cid = $_POST['cid'];
     $title = $_POST['title'];
     $boss = $_POST['boss'];
@@ -436,7 +483,7 @@ if (isset($_POST['update'])) {
     $part = "command/";
 
     if ($_FILES['fileupload']['size'] <> 0) {
-        $type =  strrchr($_FILES['fileupload']['name'], ".");
+        $type = strrchr($_FILES['fileupload']['name'], ".");
         $newname = $date . $numrand . $type;
         $part_copy = $part . $newname;
 
@@ -452,8 +499,8 @@ if (isset($_POST['update'])) {
         }
 
         move_uploaded_file($_FILES['fileupload']['tmp_name'], $part_copy);
-        $sql = "UPDATE flowcommand SET title='$title', boss='$boss', dateline='$dateline', file_upload='$part_copy' WHERE cid=$cid";
-        $result =  dbQuery($sql);
+        $sql = "UPDATE flowcommand SET title = ?, boss = ?, dateline = ?, file_upload = ? WHERE cid = ?";
+        $result = dbQuery($sql, "ssssi", [$title, $boss, $dateline, $part_copy, (int) $cid]);
 
         if ($result) {
             echo "<script>
@@ -485,8 +532,8 @@ if (isset($_POST['update'])) {
                 </script>";
         }
     } else {  //case nofile
-        $sql = "UPDATE flowcommand SET title='$title', boss='$boss', dateline='$dateline' WHERE cid=$cid";
-        $result = dbQuery($sql);
+        $sql = "UPDATE flowcommand SET title = ?, boss = ?, dateline = ? WHERE cid = ?";
+        $result = dbQuery($sql, "sssi", [$title, $boss, $dateline, (int) $cid]);
         if ($result) {
             echo "<script>
                 swal({
@@ -520,9 +567,12 @@ if (isset($_POST['update'])) {
 
 
 if (isset($_POST['btnDel'])) {
+    if (!verify_csrf_token($_POST['csrf_token'] ?? '')) {
+        die("CSRF token validation failed.");
+    }
     $cid = $_POST["cid"];
-    $sql = "DELETE  FROM flowcommand WHERE cid = $cid";
-    $result = dbQuery($sql);
+    $sql = "DELETE FROM flowcommand WHERE cid = ?";
+    $result = dbQuery($sql, "i", [(int) $cid]);
     if ($result) {
         echo "<script>
         swal({

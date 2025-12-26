@@ -1,5 +1,5 @@
 <?php
-
+include '../chksession.php';
 include_once 'function.php';
 error_reporting(error_reporting() & ~E_NOTICE); //ปิดการแจ้งเตือน
 date_default_timezone_set('Asia/Bangkok'); //วันที่
@@ -8,17 +8,18 @@ date_default_timezone_set('Asia/Bangkok'); //วันที่
 
 
 if (isset($_POST['update'])) {
+    $cid = $_POST['cid'] ?? 0;
     $fileupload = $_REQUEST['fileupload'];  //การจัดการ fileupload
     $date = date('Y-m-d');
     $numrand = (mt_rand()); //สุ่มตัวเลข
     $upload = $_FILES['fileupload']; //เพิ่มไฟล์
     if ($upload <> '') {
         $part = "flow-circle/";   //โฟลเดอร์เก็บเอกสาร
-        $type =  strrchr($_FILES['fileupload']['name'], ".");   //เอาชื่อเก่าออกให้เหลือแต่นามสกุล
+        $type = strrchr($_FILES['fileupload']['name'], ".");   //เอาชื่อเก่าออกให้เหลือแต่นามสกุล
         $newname = $date . $numrand . $type;   //ตั้งชื่อไฟล์ใหม่โดยใช้เวลา
         $part_copy = $part . $newname;
         $part_link = "flow-circle/" . $newname;
-        
+
         $filename = $_FILES['fileupload']['name'];
         // --- ดึงนามสกุล (ตัวพิมพ์เล็ก) ---
         $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
@@ -32,9 +33,8 @@ if (isset($_POST['update'])) {
 
         move_uploaded_file($_FILES['fileupload']['tmp_name'], $part_copy);  //คัดลอกไฟล์ไป Server
 
-        $sqlUpdate = "UPDATE flowcircle SET file_upload='$part_copy' WHERE cid=$cid";
-        //print $sqlUpdate;
-        $resUpdate =  dbQuery($sqlUpdate);
+        $sqlUpdate = "UPDATE flowcircle SET file_upload = ? WHERE cid = ?";
+        $resUpdate = dbQuery($sqlUpdate, "si", [$part_copy, (int) $cid]);
         if ($resUpdate) {
             echo "<script>
                 swal({

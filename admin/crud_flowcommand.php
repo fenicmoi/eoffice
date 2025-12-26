@@ -1,5 +1,5 @@
 <?php
-
+include '../chksession.php';
 //include_once 'function.php';
 include '../library/database.php';
 error_reporting(error_reporting() & ~E_NOTICE); //ปิดการแจ้งเตือน
@@ -18,19 +18,19 @@ if (isset($_POST['save'])) {               //กดปุ่มบันทึ�
 
     //check year ว่าเป็นปีปัจจุบันหรือไม่
     $sql = "select * from sys_year where status=1";
-    $result =  dbQuery($sql);
+    $result = dbQuery($sql);
     $numrow = dbNumRows($result);
     if (!$numrow) {
         echo "<script> alert('Admin ยังไม่ได้กำหนดสถานะปีปฏิทิน  ติดต่อผู้ดูแลระบบ')</script> ";
         echo "<meta http-equiv='refresh' content='1;URL=flow-command.php'>";
     }
-    $rowData =  dbFetchArray($result);
+    $rowData = dbFetchArray($result);
     $yid = $rowData['yid'];
     //$yname=$rowdata['yname'];
     //กำหนดเลขรันอัตโนมัติ
 
     $sql = "SELECT cid,rec_id FROM flowcommand  WHERE yid=$yid  ORDER  BY cid DESC";
-    $result =  dbQuery($sql);
+    $result = dbQuery($sql);
     $rowRun = dbNumRows($result);
     if ($rowRun = 0) {
         $rowRun = 1;
@@ -38,19 +38,26 @@ if (isset($_POST['save'])) {               //กดปุ่มบันทึ�
         $rowRun++;
     }
 
-    $sql = "INSERT INTO flowcommand
-                         (rec_id,yid,title,boss,dateline,dateout,u_id,sec_id,dep_id)    
-                    VALUE($rec_id,$yid,'$title','$boss','$dateline','$dateout',$u_id,$sec_id,$dep_id)";
+    $sql = "INSERT INTO flowcommand (rec_id, yid, title, boss, dateline, dateout, u_id, sec_id, dep_id) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $result = dbQuery($sql, "iissssiii", [
+        (int) $rec_id,
+        (int) $yid,
+        $title,
+        $boss,
+        $dateline,
+        $dateout,
+        (int) $u_id,
+        (int) $sec_id,
+        (int) $dep_id
+    ]);
 
-    $result($sql);
     if (!$result) {
         echo "<script> alert('มีบางอย่างผิดพลาด  ติดต่อผู้ดูแลระบบ')</script> ";
         echo "<meta http-equiv='refresh' content='1;URL=error.php'>";
     } else {
         echo "<script> alert('บันทึกข้อมูลเรียบร้อยแล้ว'); </script>";
         echo "<meta http-equiv='refresh' content='1;URL=flow-command.php'>";
-        /* echo "<script>swal(\"Good job!\", \"บันทึกข้อมูลเรียบร้อยแล้ว\", \"success\")</script>"; */
-        //$conn->close();*/
     }
 }
 
@@ -64,7 +71,7 @@ if (isset($_POST['update'])) {
     $upload = $_FILES['fileupload']; //เพิ่มไฟล์
     if ($upload <> '') {
         $part = "doc/";   //โฟลเดอร์เก็บเอกสาร
-        $type =  strrchr($_FILES['fileupload']['name'], ".");   //เอาชื่อเก่าออกให้เหลือแต่นามสกุล
+        $type = strrchr($_FILES['fileupload']['name'], ".");   //เอาชื่อเก่าออกให้เหลือแต่นามสกุล
         $newname = $date . $numrand . $type;   //ตั้งชื่อไฟล์ใหม่โดยใช้เวลา
         $part_copy = $part . $newname;
         $part_link = "doc/" . $newname;
@@ -82,9 +89,8 @@ if (isset($_POST['update'])) {
 
         move_uploaded_file($_FILES['fileupload']['tmp_name'], $part_copy);  //คัดลอกไฟล์ไป Server
 
-        $sqlUpdate = "UPDATE flowcommand SET file_upload='$part_copy' WHERE cid=$cid";
-        // print $sqlUpdate;
-        $resUpdate =  mysqli_query($conn, $sqlUpdate);
+        $sqlUpdate = "UPDATE flowcommand SET file_upload = ? WHERE cid = ?";
+        $resUpdate = dbQuery($sqlUpdate, "si", [$part_copy, (int) $cid]);
         if (!$resUpdate) {
             echo "ระบบมีปัญหา";
             exit;

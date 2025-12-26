@@ -4,8 +4,10 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 date_default_timezone_set('Asia/Bangkok');
-include 'function.php';
+include '../chksession.php';
 include '../library/database.php';
+include '../library/security.php';
+include 'function.php';
 include '../library/config.php';
 include '../library/pagination.php';
 
@@ -16,13 +18,13 @@ $dep_id = (isset($_SESSION['ses_dep_id'])) ? $_SESSION['ses_dep_id'] : '';
 
 
 if ($u_id) {
-  $sql = "SELECT u.u_id,u.u_name,u.u_pass,u.firstname,u.lastname,u.level_id,u.sec_id,s.sec_name,d.dep_id,d.dep_name,l.level_id,l.level_name 
+  $sql = "SELECT u.u_id, u.u_name, u.u_pass, u.firstname, u.lastname, u.level_id, u.sec_id, s.sec_name, d.dep_id, d.dep_name, l.level_name 
                  FROM user u 
-                 INNER JOIN section s ON s.sec_id=u.sec_id 
-                 INNER JOIN depart d ON d.dep_id=s.dep_id
-                 INNER JOIN user_level l ON l.level_id=u.level_id
-                 WHERE u.u_id=$u_id";
-  $result = dbQuery($sql);
+                 INNER JOIN section s ON s.sec_id = u.sec_id 
+                 INNER JOIN depart d ON d.dep_id = s.dep_id
+                 INNER JOIN user_level l ON l.level_id = u.level_id
+                 WHERE u.u_id = ?";
+  $result = dbQuery($sql, "i", [(int) $u_id]);
   $num = dbNumRows($result);
   if ($num > 0) {
     $row = dbFetchAssoc($result);
@@ -181,8 +183,8 @@ if ($u_id) {
       </a>
       <ul class="nav navbar-nav">
         <li><a href="#"><i class="fas fa-users"></i>
-            <?php echo $level;
-            echo "[" . $firstname . "]";
+            <?php echo htmlspecialchars($level);
+            echo "[" . htmlspecialchars($firstname) . "]";
             ?>
           </a></li>
       </ul>
@@ -246,10 +248,12 @@ if ($u_id) {
             <h4 class="modal-title"><i class="fa fa-address-card" aria-hidden="true"></i>User Profile</h4>
           </div>
           <div class="modal-body">
-            <p><i class="fa fa-tag"></i> ชื่อ <?php print $firstname ?> <?php print $lastname ?></p>
-            <p><i class="fa fa-tag"></i><?php print $secname ?></p>
-            <p><i class="fa fa-tag"></i><?php print $depart ?></p>
-            <p><i class="fa fa-tag"></i>สถานะผู้ใช้งาน <?php print $level ?></p>
+            <p><i class="fa fa-tag"></i> ชื่อ <?php echo htmlspecialchars($firstname) ?>
+              <?php echo htmlspecialchars($lastname) ?>
+            </p>
+            <p><i class="fa fa-tag"></i><?php echo htmlspecialchars($secname) ?></p>
+            <p><i class="fa fa-tag"></i><?php echo htmlspecialchars($depart) ?></p>
+            <p><i class="fa fa-tag"></i>สถานะผู้ใช้งาน <?php echo htmlspecialchars($level) ?></p>
           </div>
           <div class="modal-footer bg-primary">
             <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i></button>

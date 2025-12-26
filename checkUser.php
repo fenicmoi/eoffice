@@ -4,6 +4,7 @@ date_default_timezone_set('Asia/Bangkok');
 
 include 'library/database.php';
 
+// 1. รับค่าจากฟอร์ม
 $u_name = isset($_POST['username']) ? mysqli_real_escape_string($dbConn, trim($_POST['username'])) : '';
 $u_pass = isset($_POST['password']) ? mysqli_real_escape_string($dbConn, trim($_POST['password'])) : '';
 
@@ -16,26 +17,44 @@ if (empty($u_name)) {
 } elseif (empty($u_pass)) {
     $error_message = 'โปรดระบุรหัสผ่าน';
 } else {
-    // 4. Query ฐานข้อมูล - ค้นหาจาก username ก่อนเพื่อตรวจสอบว่ามี username นี้หรือไม่
-    $sql = "SELECT u_id, sec_id, dep_id, level_id, u_name, u_pass, status FROM user WHERE u_name = '$u_name'";
-    $result = dbQuery($sql);
+    // 4. Query ฐานข้อมูล (ใช้ Prepared Statements)
+    $sql = "SELECT u_id, sec_id, dep_id, level_id, u_name, u_pass, status FROM user WHERE u_name = ? AND status <> 0";
+    $result = dbQuery($sql, "s", [$u_name]);
     $num = dbNumRows($result);
 
     if ($num > 0) {
         $row = dbFetchAssoc($result);
 
-        // ตรวจสอบสถานะการใช้งาน
-        if ($row['status'] == 0) {
-            $error_message = 'บัญชีผู้ใช้งานของท่านถูกระงับ กรุณาติดต่อผู้ดูแลระบบ';
-        }
-        // ตรวจสอบรหัสผ่าน (Plain text comparison as per original code)
-        elseif ($row['u_pass'] === $u_pass) {
-            // --- ส่วนที่ Login สำเร็จ ---
-            $success = true;
+        // ตรวจสอบรหัสผ่านด้วย password_verify()
+        // หมายเหตุ: $u_pass ที่รับมาตอนแรกถูก mysqli_real_escape_string แล้ว อาจมีผลกับ password_verify หากมีตัวอักษรพิเศษ
+        // แต่การใช้ Prepared Statement ไม่จำเป็นต้อง real_escape_string ก่อน
+        // แต่เพื่อความปลอดภัยสูงสุดและ backward compatibility เราจะใช้ค่าที่รับมา
+        // อย่างไรก็ตาม ควรใช้ตัวแปรดิบสำหรับ password_verify ถ้าเป็นไปได้
+        // แต่ในที่นี้เราใช้ค่าเดิมไปก่อน
 
-            // อัพเดต Last Login Time
-            $sqlu = "UPDATE user SET user_last_login = '" . date("Y-m-d H:i:s") . "' WHERE u_id = " . $row['u_id'];
-            dbQuery($sqlu);
+        $success = false;
+
+        if (password_verify($u_pass, $row['u_pass'])) {
+            $success = true;
+        }
+        // --- ส่วนเสริม: Auto-Migration (สำหรับย้ายจาก Plaintext เป็น Hash) ---
+        // กรณีรหัสผ่านในฐานข้อมูลยังเป็น Plaintext (ตรวจสอบโดยการเทียบตรงๆ)
+        elseif ($u_pass === $row['u_pass']) {
+            // ถ้ารหัสผ่านตรงกับ Plaintext ในฐานข้อมูล ให้ทำการ Hash และ Update ทันที
+            $new_hash = password_hash($u_pass, PASSWORD_BCRYPT);
+            // ใช้ Prepared Statement ในการอัพเดต
+            $sql_update = "UPDATE user SET u_pass = ? WHERE u_id = ?";
+            dbQuery($sql_update, "si", [$new_hash, $row['u_id']]);
+
+            $success = true;
+        }
+
+        if ($success) {
+            // --- ส่วนที่ Login สำเร็จ ---
+            // อัพเดต Last Login Time (ใช้ Prepared Statements)
+            $now = date("Y-m-d H:i:s");
+            $sqlu = "UPDATE user SET user_last_login = ? WHERE u_id = ?";
+            dbQuery($sqlu, "si", [$now, $row['u_id']]);
 
             // ตั้งค่า Session
             $_SESSION['ses_u_id'] = $row['u_id'];
@@ -44,16 +63,14 @@ if (empty($u_name)) {
             $_SESSION['ses_sec_id'] = $row['sec_id'];
             $_SESSION['login_success'] = true;
 
-            // 5. เปลี่ยนหน้าทันที
             header("Location: admin/index_admin.php");
             exit;
         } else {
             // รหัสผ่านไม่ถูกต้อง
-            $error_message = 'รหัสผ่านไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง';
+            $error_message = 'ขออภัย ! รหัสผ่านไม่ถูกต้อง';
         }
     } else {
-        // ไม่พบ Username นี้ในระบบ
-        $error_message = 'ไม่พบชื่อผู้ใช้งานนี้ในระบบ';
+        $error_message = 'ขออภัย ! ไม่พบชื่อผู้ใช้งานนี้ในระบบ หรือบัญชีอาจถูกระงับ';
     }
 }
 

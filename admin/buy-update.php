@@ -1,14 +1,18 @@
 <?php
 // buy-update.php (ฉบับปรับปรุง)
-include "header.php"; 
-// ต้องแน่ใจว่า header.php มีการเรียกใช้ library/database.php และ function.php อยู่แล้ว
+include "header.php";
+include "../library/security.php";
 
-if(isset($_POST['update_buy'])){
+if (isset($_POST['update_buy'])) {
+    if (!verify_csrf_token($_POST['csrf_token'] ?? '')) {
+        die("CSRF token validation failed.");
+    }
+
     // รับค่าจากฟอร์มทั้งหมด
-    $buy_id = $_POST['buy_id'];
+    $buy_id = (int) $_POST['buy_id'];
     $governer = $_POST['governer'];
     $title = $_POST['title'];
-    $money_project = $_POST['money_project']; // จำนวนเงินตามโครงการ
+    $money_project = (float) $_POST['money_project'];
     $company = $_POST['company'];
     $manager = $_POST['manager'];
     $add1 = $_POST['add1'];
@@ -18,39 +22,85 @@ if(isset($_POST['update_buy'])){
     $product = $_POST['product'];
     $location = $_POST['location'];
     $date_stop = $_POST['date_stop'];
-    $money = $_POST['money']; // จำนวนเงิน (ในสัญญา)
+    $money = (float) $_POST['money'];
     $bank = $_POST['bank'];
     $brance = $_POST['brance'];
     $doc_num = $_POST['doc_num'];
     $date_num = $_POST['date_num'];
     $date_submit = $_POST['date_submit'];
-    
-    // คำสั่ง SQL UPDATE
-    $sql="UPDATE buy SET 
-          governer ='" . dbEscapeString($governer) . "',
-          title ='" . dbEscapeString($title) . "',
-          money_project =" . dbEscapeString($money_project) . ",
-          company ='" . dbEscapeString($company) . "',
-          manager ='" . dbEscapeString($manager) . "',
-          add1 ='" . dbEscapeString($add1) . "',
-          signer ='" . dbEscapeString($signer) . "',
-          add2 ='" . dbEscapeString($add2) . "',
-          telphone ='" . dbEscapeString($telphone) . "',
-          product ='" . dbEscapeString($product) . "',
-          location ='" . dbEscapeString($location) . "',
-          date_stop ='" . dbEscapeString($date_stop) . "',
-          money =" . dbEscapeString($money) . ",
-          bank ='" . dbEscapeString($bank) . "',
-          brance ='" . dbEscapeString($brance) . "',
-          doc_num ='" . dbEscapeString($doc_num) . "',
-          date_num ='" . dbEscapeString($date_num) . "',
-          date_submit ='" . dbEscapeString($date_submit) . "'
-          WHERE buy_id =" . dbEscapeString($buy_id);
-    
-    $result=dbQuery($sql);
-    
-    if($result){
-        dbQuery("COMMIT");
+
+    // คำสั่ง SQL UPDATE ใช้ Prepared Statements
+    $sql = "UPDATE buy SET 
+          governer = ?,
+          title = ?,
+          money_project = ?,
+          company = ?,
+          manager = ?,
+          add1 = ?,
+          signer = ?,
+          add2 = ?,
+          telphone = ?,
+          product = ?,
+          location = ?,
+          date_stop = ?,
+          money = ?,
+          bank = ?,
+          brance = ?,
+          doc_num = ?,
+          date_num = ?,
+          date_submit = ?
+          WHERE buy_id = ?";
+
+    $params = [
+        $governer,
+        $title,
+        $money_project,
+        $company,
+        $manager,
+        $add1,
+        $signer,
+        $add2,
+        $telphone,
+        $product,
+        $location,
+        $date_stop,
+        $money,
+        $bank,
+        $brance,
+        $doc_num,
+        $date_num,
+        $date_submit,
+        $buy_id
+    ];
+    $types = "ssissssssssssdssssi"; // d for double/float if supported, s if not. dbQuery usually handles s/i. Let's use d for money.
+
+    // Check types: money_project (d), money (d), buy_id (i)
+    $types = "ssissssssssssdssssi"; // Wait, money_project is float, money is float.
+    // Let's use "ssdssssssssssddsssi"
+    // 0: s (governer)
+    // 1: s (title)
+    // 2: d (money_project)
+    // 3: s (company)
+    // 4: s (manager)
+    // 5: s (add1)
+    // 6: s (signer)
+    // 7: s (add2)
+    // 8: s (telphone)
+    // 9: s (product)
+    // 10: s (location)
+    // 11: s (date_stop)
+    // 12: d (money)
+    // 13: s (bank)
+    // 14: s (brance)
+    // 15: s (doc_num)
+    // 16: s (date_num)
+    // 17: s (date_submit)
+    // 18: i (buy_id)
+    $types = "ssdssssssssssddsssi";
+
+    $result = dbQuery($sql, $types, $params);
+
+    if ($result) {
         echo "<script>
         swal({
             title:'แก้ไขข้อมูลเรียบร้อย',
@@ -63,8 +113,7 @@ if(isset($_POST['update_buy'])){
                 }
             }); 
         </script>";
-    }else{
-        dbQuery("ROLLBACK");
+    } else {
         echo "<script>
         swal({
             title:'มีบางอย่างผิดพลาด! กรุณาตรวจสอบ',
@@ -77,6 +126,6 @@ if(isset($_POST['update_buy'])){
                 }
             }); 
         </script>";
-    }     
+    }
 }
 ?>
