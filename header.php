@@ -71,12 +71,12 @@ require_once 'library/database.php';
           <a class="btn-link" class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fas fa-users"></i>
             ลงทะเบียน
             <span class="caret"></span></a>
-          <ul class="dropdown-menu">
+          <!-- <ul class="dropdown-menu">
             <li><a href="index.php?menu=3"><i class="fas fa-check-circle"></i> ตรวจสอบส่วนราชการ/หน่วยงานที่ลงทะเบียน
               </a></li>
             <li><a data-toggle="modal" data-target="#modalAdd"><i class="fas fa-key"></i> ลงทะเบียนหน่วยงาน/เจ้าหน้าที่
               </a></li>
-          </ul>
+          </ul> -->
         </li>
         <li><a class="btn-link" href="#" data-toggle="modal" data-target="#modelRule">ข้อตกลงการใช้งาน</a></li>
         <li><a class="btn-link" data-toggle="modal" data-target="#myModal"><i class="fas fa-key"></i> เข้าสู่ระบบ </a>
