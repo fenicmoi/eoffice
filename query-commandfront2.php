@@ -58,7 +58,7 @@ while ($row = dbFetchArray($query)) {  // preparing an array
 	if ($row['file_upload'] == '' || is_null($row['file_upload'])) {
 		$nestedData[] = "<span class='text-danger'>No File</span>";
 	} else {
-		$nestedData[] = "<a href='admin/$row[file_upload]' target='_blank' class='btn btn-xs btn-primary'><i class='fas fa-download'></i> Download</a>";
+		$nestedData[] = "<a href='download.php?cid=$row[cid]' target='_blank' class='btn btn-xs btn-primary'><i class='fas fa-download'></i> Download</a>";
 	}
 	$nestedData[] = $row["dep_name"];
 	$data[] = $nestedData;
