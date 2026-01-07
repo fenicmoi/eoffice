@@ -41,30 +41,28 @@ $ystatus = $ystatus;
                 <tbody>
                     <?php
                     $sql = "SELECT c.*,y.yname FROM  flowcommand as c INNER JOIN sys_year as y ON y.yid=c.yid";
+                    $params = [];
+                    $types = "";
+
                     //กำหนดให้ดูได้เฉพาะที่เกี่ยวข้องกับตนเอง
                     switch ($level_id) {
                         case 1:      //programmer
-                            $sql = $sql;
-                            $result = page_query($dbConn, $sql, 10);
-                            break;
                         case 2:      //admin
-                            $sql = $sql;
-                            $result = page_query($dbConn, $sql, 10);
                             break;
                         case 3:     //sub_admin
                             $sql .= " WHERE c.dep_id = ?";
-                            $result = page_query($dbConn, $sql, 10, "i", [(int) $dep_id]);
+                            $params = [(int) $dep_id];
+                            $types = "i";
                             break;
                         case 4:     //group_admin
-                            $sql .= " WHERE c.sec_id = ?";
-                            $result = page_query($dbConn, $sql, 10, "i", [(int) $sec_id]);
-                            break;
                         case 5:     //user
                             $sql .= " WHERE c.sec_id = ?";
-                            $result = page_query($dbConn, $sql, 10, "i", [(int) $sec_id]);
+                            $params = [(int) $sec_id];
+                            $types = "i";
                             break;
                     }
                     $sql .= " ORDER BY c.cid DESC";
+                    $result = page_query($dbConn, $sql, 10, $types, $params);
 
 
 
@@ -103,6 +101,7 @@ $ystatus = $ystatus;
                             <?php } ?>
                             <td>
                                 <form name="frmDel" action="#" method="post">
+                                    <?php echo csrf_field(); ?>
                                     <div class="btn-group" role="group" aria-label="Basic example">
                                         <?php
                                         if ($numday > $dayEdit) { ?>
@@ -185,6 +184,7 @@ $ystatus = $ystatus;
             </div>
             <div class="modal-body">
                 <form name="form" method="post" enctype="multipart/form-data">
+                    <?php echo csrf_field(); ?>
                     <div class="form-group">
                         <div class="input-group">
                             <span class="input-group-addon">ปีคำสั่ง:</span>
@@ -269,7 +269,7 @@ if (isset($_POST['save'])) {
     $sql = "INSERT INTO flowcommand (rec_id, yid, title, boss, dateline, dateout, u_id, sec_id, dep_id, doc_status)    
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-    $result = dbQuery($sql, "iisssisiii", [
+    $result = dbQuery($sql, "iissssiiii", [
         (int) $rec_id,
         (int) $yid,
         $title,
@@ -281,8 +281,6 @@ if (isset($_POST['save'])) {
         (int) $dep_id,
         (int) $doc_status
     ]);
-
-    $result = dbQuery($sql);
     if (!$result) {
         echo "<script>
             swal({
@@ -331,6 +329,7 @@ if (isset($_POST['save'])) {
             <div class="modal-body">
                 <div class="alert alert-danger"><i class="fas fa-comments" fa-2x></i>ระบุจำนวนเอกสารที่ต้องการจอง</div>
                 <form name="form" method="post" enctype="multipart/form-data">
+                    <?php echo csrf_field(); ?>
                     <div class="form-group col-sm-6">
                         <div class="input-group">
                             <span class="input-group-addon">จำนวน:</span>
@@ -371,7 +370,7 @@ if (isset($_POST['btnReserv'])) {
 
         $sql = "INSERT INTO flowcommand (rec_id, yid, title, boss, dateline, dateout, u_id, sec_id, dep_id)    
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        $result = dbQuery($sql, "iisssisii", [
+        $result = dbQuery($sql, "iissssiii", [
             (int) $rec_id,
             (int) $yid,
             $title,
@@ -416,6 +415,7 @@ if (isset($_POST['btnReserv'])) {
             </div>
             <div class="modal-body">
                 <form name="form" method="post" enctype="multipart/form-data">
+                    <?php echo csrf_field(); ?>
                     <div class="form-group">
                         <div class="input-group">
                             <span class="input-group-addon">ปีคำสั่ง:</span>

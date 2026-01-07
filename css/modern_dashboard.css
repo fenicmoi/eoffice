@@ -192,3 +192,71 @@ a:hover {
     padding: 0 4px;
     border-radius: 2px;
 }
+
+/* Modal Modernization */
+.modal-content {
+    border: none;
+    border-radius: 1rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), 0 1px 8px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    transition: all 0.3s ease-in-out;
+}
+
+.modal-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    color: white;
+    border-bottom: none;
+    padding: 1.5rem;
+}
+
+.modal-header .close {
+    color: white;
+    opacity: 0.8;
+    text-shadow: none;
+    transition: all 0.2s;
+}
+
+.modal-header .close:hover {
+    opacity: 1;
+    transform: rotate(90deg);
+}
+
+.modal-title {
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.modal-body {
+    padding: 2rem;
+    font-size: 1.05rem;
+    line-height: 1.6;
+}
+
+.modal-footer {
+    border-top: 1px solid rgba(0,0,0,0.05);
+    padding: 1.25rem;
+    background-color: var(--light-color);
+}
+
+/* Custom Animation for Modals */
+.modal.fade .modal-dialog {
+    transform: translateY(20px);
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+}
+
+.modal.in .modal-dialog {
+    transform: translateY(0);
+}
+
+/* Enhance existing background classes for modal headers if used */
+.modal-header.bg-primary {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)) !important;
+}
+
+.modal-header.bg-danger {
+    background: linear-gradient(135deg, var(--danger-color), #b91d1d) !important;
+}
+
+.modal-header.bg-success {
+    background: linear-gradient(135deg, var(--success-color), #047857) !important;
+}

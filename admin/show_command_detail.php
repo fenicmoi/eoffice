@@ -2,7 +2,7 @@
 <?php
 include 'function.php';
 include '../library/database.php';
-session_start();
+include '../library/security.php';
 $level_id = $_SESSION['ses_level_id'];
 $u_id = $_POST['u_id'];
 $cid = $_POST['cid'];
