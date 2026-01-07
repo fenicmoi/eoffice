@@ -3,21 +3,21 @@ include 'admin/function.php';
 include 'library/database.php';
 include 'library/config.php';
 // storing  request (ie, get/post) global array to a variable  
-$requestData= $_REQUEST;
+$requestData = $_REQUEST;
 
 //ฟิลด์ที่จะเอามาแสดงและค้นหา
-$columns = array( 
+$columns = array(
 	0 => 'cid',
-	1 => 'rec_id', 
-    2 => 'yname',
+	1 => 'rec_id',
+	2 => 'yname',
 	3 => 'title',
-    4 => 'dateline',
+	4 => 'dateline',
 	5 => 'file_upload',
-    6 => 'dep_name'
+	6 => 'dep_name'
 );
 
 // getting total number records without any search
-$sql="SELECT cid FROM flowcommand";
+$sql = "SELECT cid FROM flowcommand";
 //print $sql;
 $query = dbQuery($sql);
 
@@ -28,49 +28,53 @@ $totalFiltered = $totalData;  // when there is no search parameter then total nu
 
 
 
-$sql="SELECT c.*,y.yname,d.dep_name,u.firstname
+$sql = "SELECT c.*,y.yname,d.dep_name,u.firstname
 	  FROM  flowcommand as c
 	  INNER JOIN sys_year as y ON y.yid=c.yid
 	  INNER JOIN user as u ON  u.u_id = c.u_id
 	  INNER JOIN depart as d ON d.dep_id =c.dep_id
 		";
 
-if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
+if (!empty($requestData['search']['value'])) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 
-	$searchValue = dbEscapeString($requestData['search']['value']); 
+	$searchValue = dbEscapeString($requestData['search']['value']);
 	$searchTerm = "%" . $searchValue . "%";
-	$sql.=" AND ( rec_id LIKE '$searchTerm' ";    
-	$sql.=" OR title  LIKE '$searchTerm' ";
-	$sql.=" OR dep_name LIKE '$searchTerm' )";
+	$sql .= " AND ( rec_id LIKE '$searchTerm' ";
+	$sql .= " OR title  LIKE '$searchTerm' ";
+	$sql .= " OR dep_name LIKE '$searchTerm' )";
 }
 
 
 $query = dbQuery($sql) or die("query-commandfront.php: get view commandfront query2");
 $totalFiltered = dbNumRows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
 
-$sql.=" ORDER BY ". $columns[$requestData['order'][0]['column']]."   ".$requestData['order'][0]['dir']."  
-		LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
+$sql .= " ORDER BY " . $columns[$requestData['order'][0]['column']] . "   " . $requestData['order'][0]['dir'] . "  
+		LIMIT " . $requestData['start'] . " ," . $requestData['length'] . "   ";
 
-		//print $sql;
+//print $sql;
 $query = dbQuery($sql) or die("query-commandfront.php: get use queryr3");
 
 $data = array();
-while( $row= dbFetchArray($query) ) {  // preparing an array
-	$nestedData=array(); 
-	$nestedData[] = $row["rec_id"].'/'.$row['yname'];
-	$nestedData[] =  $row["title"];
-    $nestedData[] = thaiDate($row["dateline"]);
-	$nestedData[] = "<a href='admin/$row[file_upload]' target='_blank'>Download</a>";
+while ($row = dbFetchArray($query)) {  // preparing an array
+	$nestedData = array();
+	$nestedData[] = $row["rec_id"] . '/' . $row['yname'];
+	$nestedData[] = $row["title"];
+	$nestedData[] = thaiDate($row["dateline"]);
+	if ($row['file_upload'] == '' || is_null($row['file_upload'])) {
+		$nestedData[] = "<span class='text-danger'>No File</span>";
+	} else {
+		$nestedData[] = "<a href='admin/$row[file_upload]' target='_blank' class='btn btn-xs btn-primary'><i class='fas fa-download'></i> Download</a>";
+	}
 	$nestedData[] = $row["dep_name"];
 	$data[] = $nestedData;
 }
 
 $json_data = array(
-			"draw"            => intval( $requestData['draw'] ),   // for every request/draw by clientside , they send a number as a parameter, when they recieve a response/data they first check the draw number, so we are sending same number in draw. 
-			"recordsTotal"    => intval( $totalData ),  // total number of records
-			"recordsFiltered" => intval( $totalFiltered ), // total number of records after searching, if there is no searching then totalFiltered = totalData
-			"data"            => $data   // total data array
-			);
+	"draw" => intval($requestData['draw']),   // for every request/draw by clientside , they send a number as a parameter, when they recieve a response/data they first check the draw number, so we are sending same number in draw. 
+	"recordsTotal" => intval($totalData),  // total number of records
+	"recordsFiltered" => intval($totalFiltered), // total number of records after searching, if there is no searching then totalFiltered = totalData
+	"data" => $data   // total data array
+);
 
 echo json_encode($json_data);  // send data as json format
 ?>
