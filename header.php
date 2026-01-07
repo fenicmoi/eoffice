@@ -346,7 +346,7 @@ require_once 'library/database.php';
                     },
                     function(isConfirm){
                         if(isConfirm){
-                            window.location.href='list_user.php';
+                            window.location.href='index.php?menu=3';
                         }
                     }); 
                 </script>";

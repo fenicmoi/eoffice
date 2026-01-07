@@ -40,7 +40,7 @@
     </div>
     <div class="col-md-2">
         <div class="bg-success text-center rounded p-3 shadow">
-            <a href="list_user.php" class="text-white">
+            <a href="index.php?menu=3" class="text-white">
                 <i class="fab fa-earlybirds fa-4x mb-2"></i>
                 <h5>รายชื่อหน่วยงาน</h5>
             </a>
@@ -48,7 +48,7 @@
     </div>
     <div class="col-md-2">
         <div class="bg-warning text-center rounded p-3 shadow">
-            <a data-toggle="modal" data-target="#modalAdd" class="text-white">
+            <a data-toggle="modal" data-target="" class="text-white" disabled>
                 <i class="fab fa-fort-awesome fa-4x mb-2"></i>
                 <h5>ลงทะเบียนหน่วยงาน</h5>
             </a>
