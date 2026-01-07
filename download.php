@@ -14,13 +14,18 @@ if (isset($_GET['cid'])) {
         $filepath = 'admin/' . $filename;
 
         if ($filename && file_exists($filepath)) {
-            // Clean the filename for the download header (remove path info)
+            // Get MIME type
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $mimeType = finfo_file($finfo, $filepath);
+            finfo_close($finfo);
+
+            // Clean the filename for the header
             $basename = basename($filename);
 
-            // Set headers for download
+            // Set headers for viewing in browser (inline)
             header('Content-Description: File Transfer');
-            header('Content-Type: application/octet-stream');
-            header('Content-Disposition: attachment; filename="' . $basename . '"');
+            header('Content-Type: ' . $mimeType);
+            header('Content-Disposition: inline; filename="' . $basename . '"');
             header('Expires: 0');
             header('Cache-Control: must-revalidate');
             header('Pragma: public');

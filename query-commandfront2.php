@@ -53,7 +53,11 @@ $data = array();
 while ($row = dbFetchArray($query)) {  // preparing an array
 	$nestedData = array();
 	$nestedData[] = $row["rec_id"] . '/' . $row['yname'];
-	$nestedData[] = $row["title"];
+	if ($row['file_upload'] != '') {
+		$nestedData[] = "<a href='download.php?cid=$row[cid]' target='_blank'>" . $row["title"] . "</a>";
+	} else {
+		$nestedData[] = $row["title"];
+	}
 	$nestedData[] = $row["dateline"];
 	if ($row['file_upload'] == '' || is_null($row['file_upload'])) {
 		$nestedData[] = "<span class='text-danger'>No File</span>";
