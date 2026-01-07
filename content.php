@@ -55,10 +55,10 @@
         </div>
     </div>
     <div class="col-md-2">
-        <div class="bg-danger text-center rounded p-3 shadow">
-            <a data-toggle="modal" data-target="#modalRegister_disabled" class="text-white">
-                <i class="fas fa-user fa-4x mb-2"></i>
-                <h5>ลงทะเบียนผู้ใช้งาน</h5>
+        <div class="bg-info text-center rounded p-3 shadow">
+            <a href="https://www.phone.phatthalung.go.th/" target="_blank" class="text-white">
+                <i class="fas fa-map-signs fa-4x mb-2"></i>
+                <h5>สมุดโทรศัพท์จังหวัด</h5>
             </a>
         </div>
     </div>
@@ -74,7 +74,7 @@
         <div class="bg-info text-center rounded p-3 shadow">
             <a href="manual.pdf" target="_blank" class="text-white">
                 <i class="fas fa-map-signs fa-4x mb-2"></i>
-                <h5></h5>
+                <h5>จองห้องประชุม</h5>
             </a>
         </div>
     </div>

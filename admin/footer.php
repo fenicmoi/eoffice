@@ -35,5 +35,16 @@
   </div>
 </div>
 </body>
-
+<script>
+setInterval(function() {
+    fetch('../check_session.php')
+        .then(response => response.json())
+        .then(data => {
+            if (!data.valid) {
+                window.location.href = '../index.php';
+            }
+        })
+        .catch(error => console.error('Error checking session:', error));
+}, 300000); // Check every 5 minutes
+</script>
 </html>
