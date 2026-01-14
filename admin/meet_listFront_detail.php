@@ -1,4 +1,3 @@
-
 <?php
 include 'function.php';
 include "../library/database.php";

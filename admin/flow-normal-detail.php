@@ -1,4 +1,3 @@
-
 <?php
 /*if(!isset($_SESSION['ses_u_id'])){
     header("location:../index.php");

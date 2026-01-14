@@ -1,4 +1,3 @@
-
 <?php
 //ฟอร์มจองห้อง
 session_start();

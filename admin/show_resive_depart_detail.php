@@ -1,5 +1,3 @@
-
-
 <?php
 date_default_timezone_set('Asia/Bangkok');
 // $u_id=$_SESSION['ses_u_id'];

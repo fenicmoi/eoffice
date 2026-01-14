@@ -1,4 +1,3 @@
-
 <?php   
 include "header.php";
 $u_id=$_SESSION['ses_u_id'];

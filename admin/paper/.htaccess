@@ -1,0 +1,14 @@
+# 1. ป้องกันการดูรายชื่อไฟล์ในโฟลเดอร์
+Options -Indexes
+
+# 2. บล็อกเฉพาะไฟล์ PHP และสคริปต์อันตราย (ไม่ให้รัน)
+<FilesMatch "(?i)\.(php|phtml|php\d|phps|pht)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# 3. อนุญาตไฟล์ PDF, รูปภาพ และเอกสารให้เปิดได้ปกติ
+<FilesMatch "(?i)\.(pdf|jpg|jpeg|png|gif|doc|docx|xls|xlsx)$">
+    Order Deny,Allow
+    Allow from all
+</FilesMatch>

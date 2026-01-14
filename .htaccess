@@ -1,1 +1,37 @@
+# 1. ปิดการแสดงรายชื่อไฟล์ในโฟลเดอร์
 Options -Indexes
+
+# 2. บล็อก IP คนร้ายที่ตรวจพบจาก Log (13-14 Jan 2026)
+<Limit GET POST>
+    Order Allow,Deny
+    Allow from all
+    # IP ที่พยายามเข้ามาสั่ง confirm=1
+    Deny from 171.7.248.254
+    # IP ที่พยายามสแกนหาช่องโหว่ PHPUnit และ Web Shell
+    Deny from 103.59.160.104
+    Deny from 157.230.43.225
+    Deny from 134.209.148.63
+    # บล็อก IP อื่นๆ ที่ส่ง Parameter การพนัน (ถ้าคุณมีลิสต์เพิ่ม)
+    Deny from 182.232.200.188
+</Limit>
+
+# 3. บล็อกการเข้าถึงไฟล์ Backdoor หรือไฟล์สำคัญโดยตรง
+<FilesMatch "^(event\.php|wp-config\.php|\.htaccess|php\.ini)">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# 4. ป้องกัน SQL Injection และคำสั่งลบข้อมูลผ่าน URL (Query String)
+RewriteEngine On
+# บล็อกคำสั่งลบ/แก้ไขฐานข้อมูล
+RewriteCond %{QUERY_STRING} (delete|drop|truncate|update|insert|union|select) [NC,OR]
+# บล็อกคำสั่งรันสคริปต์อันตราย
+RewriteCond %{QUERY_STRING} (base64|eval|system|shell_exec|passthru) [NC]
+RewriteRule ^(.*)$ - [F,L]
+
+# 5. ป้องกันการแอบรันไฟล์ PHP ในโฟลเดอร์ที่ไม่ได้รับอนุญาต
+# (หากคุณนำไฟล์นี้ไปวางในโฟลเดอร์เก็บไฟล์ ให้แก้บรรทัดล่างเป็น Deny from all)
+<Files *.php>
+    # ในโฟลเดอร์ Admin ควรอนุญาตเฉพาะไฟล์หลักของคุณ
+    # หากต้องการบล็อกทุกคนยกเว้น IP คุณ ให้ใช้โค้ดในข้อความถัดไปครับ
+</Files>
