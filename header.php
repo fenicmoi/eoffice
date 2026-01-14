@@ -2,6 +2,7 @@
 
 define('IS_SYSTEM_RUNNING', true);
 require_once 'library/database.php';
+require_once 'library/security.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -28,7 +29,9 @@ require_once 'library/database.php';
   <script src="js/text-hilight.js"></script>
 
   <link rel="stylesheet" href="css/fontawesome5.0.8/web-fonts-with-css/css/fontawesome-all.min.css">
-  <link href="https://fonts.googleapis.com/css?family=Taviraj" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&family=Taviraj:wght@300;400;600;700&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="css/sweetalert.css">
   <script src="js/sweetalert.min.js"></script>
   <script src="js/script_dropdown.js"></script>
@@ -104,8 +107,8 @@ require_once 'library/database.php';
                 2 เวลา 14:00 น </li>
           </ol>
         </div>
-        <div class="modal-footer bg-primary">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary shadow-sm" data-dismiss="modal">ปิดหน้าต่าง</button>
         </div>
       </div>
     </div>
@@ -115,30 +118,37 @@ require_once 'library/database.php';
 
     <!-- Modal Login -->
     <div id="myModal" class="modal fade" role="dialog">
-      <div class="modal-dialog">
+      <div class="modal-dialog modal-sm">
         <!-- Modal content-->
         <div class="modal-content">
-          <div class="modal-header bg-primary">
+          <div class="modal-header bg-primary text-center">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title"><i class="fas fa-user-secret"></i>เข้าสู่ระบบ</h4>
+            <h4 class="modal-title"><i class="fas fa-lock mr-2"></i> เข้าสู่ระบบ</h4>
           </div>
           <div class="modal-body">
+            <div class="text-center mb-4">
+              <i class="fas fa-user-circle fa-5x text-primary shadow-sm rounded-circle"></i>
+            </div>
             <form method="post" action="checkUser.php">
-              <div class="input-group">
-                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                <input class="form-control" type="text" name="username" placeholder="username">
+              <div class="form-group">
+                <div class="input-group shadow-sm">
+                  <span class="input-group-addon bg-light"><i class="fas fa-user text-primary"></i></span>
+                  <input class="form-control" type="text" name="username" placeholder="ชื่อผู้ใช้งาน" required>
+                </div>
               </div>
-              <br>
-              <div class="input-group">
-                <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                <input class="form-control" type="password" name="password" placeholder="password">
+              <div class="form-group">
+                <div class="input-group shadow-sm">
+                  <span class="input-group-addon bg-light"><i class="fas fa-key text-primary"></i></span>
+                  <input class="form-control" type="password" name="password" placeholder="รหัสผ่าน" required>
+                </div>
               </div>
-              <br>
-              <center><input type="submit" class="btn btn-success btn-lg" value="Login" /></center>
+              <button type="submit" class="btn btn-primary btn-block btn-lg mt-4 shadow">
+                 <i class="fas fa-sign-in-alt mr-2"></i> เข้าสู่ระบบ
+              </button>
             </form>
           </div>
-          <div class="modal-footer bg-primary">
-            <button type="button" class="btn btn-danger" data-dismiss="modal">X</button>
+          <div class="modal-footer text-center">
+            <small class="text-muted">ระบบสารบรรณพัทลุง Version 2024</small>
           </div>
         </div>
       </div>
@@ -150,9 +160,9 @@ require_once 'library/database.php';
         <div class="modal-dialog">
           <!-- Modal content-->
           <div class="modal-content">
-            <div class="modal-header bg-primary">
+            <div class="modal-header bg-success">
               <button type="button" class="close" data-dismiss="modal">&times;</button>
-              <h4 class="modal-title"><i class="fas fa-smile text-waning"></i> แบบลงทะเบียนหน่วยงาน/เจ้าหน้าที่สารบรรณ
+              <h4 class="modal-title font-weight-bold"><i class="fas fa-id-card mr-2"></i> ลงทะเบียนหน่วยงาน / เจ้าหน้าที่
               </h4>
             </div>
             <div class="modal-body">
@@ -277,8 +287,8 @@ require_once 'library/database.php';
                 <center><input type="submit" name="add" class="btn btn-success btn-lg" value="ตกลง" /></center>
               </form>
             </div>
-            <div class="modal-footer bg-primary">
-              <button type="button" class="btn btn-danger" data-dismiss="modal">X</button>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary shadow-sm" data-dismiss="modal">ยกเลิก</button>
             </div>
           </div>
         </div>

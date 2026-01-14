@@ -6,17 +6,17 @@ $username = isset($_SESSION['username']) ? $_SESSION['username'] : '';
 ?>
 
 <script>
-	$(document).ready(function() {
+	$(document).ready(function () {
 		$("#dateSearch").hide();
 		$("tr").first().hide();
 
 
-		$("#hideSearch").click(function() {
+		$("#hideSearch").click(function () {
 			$("tr").first().show(1000);
 		});
 
 
-		$('#typeSearch').change(function() {
+		$('#typeSearch').change(function () {
 			var typeSearch = $('#typeSearch').val();
 			if (typeSearch == 4) {
 				$("#dateSearch").show(500);
@@ -32,44 +32,45 @@ $username = isset($_SESSION['username']) ? $_SESSION['username'] : '';
 </script>
 
 <style>
-/* Custom soft styling for the registration modal */
-.modal-body-soft {
-    background-color: #f0f4f8 !important; /* Soft steel blue/gray */
-    padding: 30px !important;
-}
+	/* Custom soft styling for the registration modal */
+	.modal-body-soft {
+		background-color: #f0f4f8 !important;
+		/* Soft steel blue/gray */
+		padding: 30px !important;
+	}
 
-.modal-header.bg-primary {
-    background-color: #4e73df !important;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-}
+	.modal-header.bg-primary {
+		background-color: #4e73df !important;
+		border-top-left-radius: 5px;
+		border-top-right-radius: 5px;
+	}
 
-.modal-footer.bg-primary {
-    background-color: #4e73df !important;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-}
+	.modal-footer.bg-primary {
+		background-color: #4e73df !important;
+		border-bottom-left-radius: 5px;
+		border-bottom-right-radius: 5px;
+	}
 
-/* Fix for selectpicker clipping in modal */
-.bootstrap-select .dropdown-menu {
-    z-index: 1060 !important;
-}
+	/* Fix for selectpicker clipping in modal */
+	.bootstrap-select .dropdown-menu {
+		z-index: 1060 !important;
+	}
 
-.input-group-addon {
-    background-color: #eaecf4;
-    border: 1px solid #d1d3e2;
-    color: #4e73df;
-    font-weight: 600;
-}
+	.input-group-addon {
+		background-color: #eaecf4;
+		border: 1px solid #d1d3e2;
+		color: #4e73df;
+		font-weight: 600;
+	}
 
-.form-control {
-    border: 1px solid #d1d3e2;
-}
+	.form-control {
+		border: 1px solid #d1d3e2;
+	}
 
-.form-group label {
-    font-weight: 600;
-    color: #4e73df;
-}
+	.form-group label {
+		font-weight: 600;
+		color: #4e73df;
+	}
 </style>
 
 <?php
@@ -91,14 +92,18 @@ $ystatus = $ystatus;
 			<i class="fas fa-university fa-2x" aria-hidden="true"></i> <strong>ทะเบียนหนังสือรับ [ถึงจังหวัด]</strong>
 			:::สำหรับหนังสือราชการที่ส่งถึง ผวจ
 			<div class="btn-group pull-right">
-				<a href="" class="btn btn-warning" data-toggle="modal" data-target="#modalAdd"><i class="fa fa-plus "></i> ลงทะเบียนรับ</a>
+				<a href="" class="btn btn-warning" data-toggle="modal" data-target="#modalAdd"><i
+						class="fa fa-plus "></i> ลงทะเบียนรับ</a>
 				<div class="btn-group">
-					<button class="btn btn-warning  dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-print"></i> รายงาน
+					<button class="btn btn-warning  dropdown-toggle" type="button" data-toggle="dropdown"><i
+							class="fa fa-print"></i> รายงาน
 						<span class="caret"></span></button>
 					<ul class="dropdown-menu">
-						<li><a href="#" data-toggle="modal" data-target="#myReport"><i class="fas fa-calendar"></i> ประจำวัน</a>
+						<li><a href="#" data-toggle="modal" data-target="#myReport"><i class="fas fa-calendar"></i>
+								ประจำวัน</a>
 						</li>
-						<li><a href="#" data-toggle="modal" data-target="#myReport1"><i class="fas fa-calendar-alt"></i> ตามช่วงเวลา</a>
+						<li><a href="#" data-toggle="modal" data-target="#myReport1"><i class="fas fa-calendar-alt"></i>
+								ตามช่วงเวลา</a>
 						</li>
 					</ul>
 				</div>
@@ -120,15 +125,19 @@ $ystatus = $ystatus;
 									</select>
 
 									<div class="input-group">
-										<input class="form-control" id="search" name="search" type="text" size="80" placeholder="Keyword สั้นๆ">
+										<input class="form-control" id="search" name="search" type="text" size="80"
+											placeholder="Keyword สั้นๆ">
 										<div class="input-group" id="dateSearch">
-											<span class="input-group-addon"><i class="fas fa-calendar-alt"></i>วันที่เริ่มต้น</span>
+											<span class="input-group-addon"><i
+													class="fas fa-calendar-alt"></i>วันที่เริ่มต้น</span>
 											<input class="form-control" id="dateStart" name="dateStart" type="date">
-											<span class="input-group-addon"><i class="fas fa-calendar-alt"></i>วันที่สิ้นสุด</span>
+											<span class="input-group-addon"><i
+													class="fas fa-calendar-alt"></i>วันที่สิ้นสุด</span>
 											<input class="form-control" id="dateEnd" name="dateEnd" type="date">
 										</div>
 										<div class="input-group-btn">
-											<button class="btn btn-primary" type="submit" name="btnSearch" id="btnSearch">
+											<button class="btn btn-primary" type="submit" name="btnSearch"
+												id="btnSearch">
 												<i class="fas fa-search "></i>
 											</button>
 										</div>
@@ -160,7 +169,7 @@ $ystatus = $ystatus;
                   INNER JOIN section s ON s.sec_id = m.sec_id 
                   INNER JOIN sys_year y ON y.yid = m.yid ";
 					// echo $sql;
-
+					
 					//ตรวจสอบการกดปุ่มค้นหา
 					if (isset($_POST['btnSearch'])) { //ถ้ามีการกดปุ่มค้นหา
 						@$typeSearch = $_POST['typeSearch']; //ประเภทการค้นหา
@@ -235,7 +244,7 @@ $ystatus = $ystatus;
 					}
 
 					while ($row = dbFetchArray($result)) {
-					?>
+						?>
 						<?php $rec_id = $row['rec_id']; ?><!-- กำหนดตัวแปรเพื่อส่งไปกับลิงค์ -->
 						<?php $book_id = $row['book_id']; ?><!-- กำหนดตัวแปรเพื่อส่งไปกับลิงค์ -->
 						<?php
@@ -255,7 +264,9 @@ $ystatus = $ystatus;
 								<?php echo $row['book_no']; ?>
 							</td>
 							<td>
-								<a href="#" onclick="load_leave_data('<?php print $u_id; ?>','<?php print $rec_id; ?>','<?php print $book_id; ?>');" data-toggle="modal" data-target=".bs-example-modal-table">
+								<a href="#"
+									onclick="load_leave_data('<?php print $u_id; ?>','<?php print $rec_id; ?>','<?php print $book_id; ?>');"
+									data-toggle="modal" data-target=".bs-example-modal-table">
 									<?php echo $row['title']; ?>
 								</a>
 
@@ -305,7 +316,8 @@ $ystatus = $ystatus;
 					<tr>
 						<td colspan="8">
 							<center>
-								<a href="flow-resive-province.php" class="btn btn-primary"><i class="fas fa-home"></i></a>
+								<a href="flow-resive-province.php" class="btn btn-primary"><i
+										class="fas fa-home"></i></a>
 								<?php
 								page_link_border("solid", "1px", "gray");
 								page_link_bg_color("lightblue", "pink");
@@ -344,6 +356,7 @@ $ystatus = $ystatus;
 				</div>
 				<div class="modal-body modal-body-soft">
 					<form name="form" method="post" enctype="multipart/form-data">
+						<?php echo csrf_field(); ?>
 
 
 						<table width="100%">
@@ -351,8 +364,10 @@ $ystatus = $ystatus;
 								<td>
 									<div class="form-group">
 										<div class="input-group">
-											<span class="input-group-addon"><i class="far fa-calendar-alt"></i> ปีเอกสาร</span>
-											<input class="form-control" name="yearDoc" type="text" value="<?php print $yname; ?>" disabled="">
+											<span class="input-group-addon"><i class="far fa-calendar-alt"></i>
+												ปีเอกสาร</span>
+											<input class="form-control" name="yearDoc" type="text"
+												value="<?php print $yname; ?>" disabled="">
 										</div>
 									</div>
 								</td>
@@ -361,8 +376,10 @@ $ystatus = $ystatus;
 								<td>
 									<div class="form-group">
 										<div class="input-group">
-											<span class="input-group-addon"><i class="far fa-calendar-alt"></i> วันที่ลงรับ</span>
-											<input class="form-control" type="text" name="date_in" id="date_in" value="<?php print DateThai(); ?>">
+											<span class="input-group-addon"><i class="far fa-calendar-alt"></i>
+												วันที่ลงรับ</span>
+											<input class="form-control" type="text" name="date_in" id="date_in"
+												value="<?php print DateThai(); ?>">
 										</div>
 									</div>
 								</td>
@@ -374,7 +391,8 @@ $ystatus = $ystatus;
 								<td colspan="2">
 									<div class="form-group">
 										<div class="input-group">
-											<span class="input-group-addon"><i class="fas fa-folder"></i> ประเภทหนังสือ</span>
+											<span class="input-group-addon"><i class="fas fa-folder"></i>
+												ประเภทหนังสือ</span>
 											<input name="typeDoc" type="radio" value="1" checked=""> ปกติ
 											<input name="typeDoc" type="radio" value="2"> เวียน
 										</div>
@@ -386,7 +404,8 @@ $ystatus = $ystatus;
 									<div class="form-group">
 										<div class="input-group col-xs-8 ">
 											<span class="input-group-addon">เลขที่หนังสือ</span>
-											<input class="form-control" type="text" name="book_no" id="book_no" required>
+											<input class="form-control" type="text" name="book_no" id="book_no"
+												required>
 										</div>
 									</div>
 								</td>
@@ -399,7 +418,8 @@ $ystatus = $ystatus;
 							<td>
 								<div class="form-group">
 									<div class="input-group col-xs-4 ">
-										<span class="input-group-addon"><i class="fas fa-space-shuttle"></i> ชั้นความเร็ว</span>
+										<span class="input-group-addon"><i class="fas fa-space-shuttle"></i>
+											ชั้นความเร็ว</span>
 										<select name="speed_id" id="speed_id">
 											<?php
 											while ($rowSpeed = dbFetchArray($result)) {
@@ -417,7 +437,8 @@ $ystatus = $ystatus;
 							<td>
 								<div class="form-group">
 									<div class="input-group col-xs-4 ">
-										<span class="input-group-addon"><i class="fas fa-user-secret"></i> ชั้นความลับ</span>
+										<span class="input-group-addon"><i class="fas fa-user-secret"></i>
+											ชั้นความลับ</span>
 										<select name="pri_id" id="pri_id">
 											<?php
 											while ($rowSecret = dbFetchArray($result)) {
@@ -433,10 +454,11 @@ $ystatus = $ystatus;
 								//วัตถุประสงค์
 								$sql = "SELECT * FROM object ORDER BY obj_id";
 								$result = dbQuery($sql)
-								?>
+									?>
 								<div class="form-group">
 									<div class="input-group col-xs-4 ">
-										<span class="input-group-addon"><i class="fas fa-crosshairs"></i> วัตถุประสงค์</span>
+										<span class="input-group-addon"><i class="fas fa-crosshairs"></i>
+											วัตถุประสงค์</span>
 										<select name="obj_id" required>
 											<?php
 											while ($row = dbFetchArray($result)) {
@@ -451,7 +473,8 @@ $ystatus = $ystatus;
 									<div class="form-group">
 										<div class="input-group col-xs-8 ">
 											<span class="input-group-addon"><i class="fas fa-user"></i> ผู้ส่ง</span>
-											<input class="form-control" type="text" name="sendfrom" id="sendfrom" size="50" require placeholder="ระบุผู้ส่ง" required>
+											<input class="form-control" type="text" name="sendfrom" id="sendfrom"
+												size="50" require placeholder="ระบุผู้ส่ง" required>
 										</div>
 									</div>
 								</td>
@@ -461,7 +484,9 @@ $ystatus = $ystatus;
 									<div class="form-group">
 										<div class="input-group col-xs-8 ">
 											<span class="input-group-addon"><i class="far fa-user"></i> ผู้รับ</span>
-											<input class="form-control" type="text" name="sendto" id="sendto" placeholder="ระบุผู้รับหนังสือ" value="ผู้ว่าราชการจังหวัดพัทลุง" required>
+											<input class="form-control" type="text" name="sendto" id="sendto"
+												placeholder="ระบุผู้รับหนังสือ" value="ผู้ว่าราชการจังหวัดพัทลุง"
+												required>
 										</div>
 									</div>
 								</td>
@@ -471,7 +496,8 @@ $ystatus = $ystatus;
 									<div class="form-group">
 										<div class="input-group col-xs-12 ">
 											<span class="input-group-addon"><i class="far fa-user"></i> เรื่อง</span>
-											<input class="form-control" type="text" name="title" id="title" size="80" placeholder="เรื่องหนังสือ" required>
+											<input class="form-control" type="text" name="title" id="title" size="80"
+												placeholder="เรื่องหนังสือ" required>
 										</div>
 									</div>
 								</td>
@@ -481,8 +507,10 @@ $ystatus = $ystatus;
 								<td colspan="3">
 									<div class="form-group">
 										<div class="input-group col-xs-12 ">
-											<span class="input-group-addon"><i class="fas fa-university"></i> หน่วยส่งหนังสือ</span>
-											<input class="form-control" type="text" name="owner" id="owner" size="80" placeholder="หน่วยงานผู้ออกหนังสือ" required>
+											<span class="input-group-addon"><i class="fas fa-university"></i>
+												หน่วยส่งหนังสือ</span>
+											<input class="form-control" type="text" name="owner" id="owner" size="80"
+												placeholder="หน่วยงานผู้ออกหนังสือ" required>
 										</div>
 									</div>
 								</td>
@@ -492,9 +520,12 @@ $ystatus = $ystatus;
 								<td colspan="3">
 									<div class="form-group">
 										<div class="input-group col-xs-6 ">
-											<span class="input-group-addon"><i class="far fa-calendar"></i> ลงวันที่</span>
-											<input class="form-control bg-danger" type="date" name="date_book" id="date_book" onKeyDown="return false" required>
-											<span class="input-group-addon"><i class="fas fa-exclamation-triangle"></i>กดเลือกปฏิทิน</span>
+											<span class="input-group-addon"><i class="far fa-calendar"></i>
+												ลงวันที่</span>
+											<input class="form-control bg-danger" type="date" name="date_book"
+												id="date_book" onKeyDown="return false" required>
+											<span class="input-group-addon"><i
+													class="fas fa-exclamation-triangle"></i>กดเลือกปฏิทิน</span>
 										</div>
 									</div>
 								</td>
@@ -503,7 +534,8 @@ $ystatus = $ystatus;
 								<td colspan="3">
 									<div class="form-group">
 										<div class="input-group col-xs-12 ">
-											<span class="input-group-addon"><i class="fas fa-share-alt"></i> อ้างถึง</span>
+											<span class="input-group-addon"><i class="fas fa-share-alt"></i>
+												อ้างถึง</span>
 											<input class="form-control" type="text" name="refer" id="refer" value="-">
 										</div>
 									</div>
@@ -513,7 +545,8 @@ $ystatus = $ystatus;
 								<td colspan="3">
 									<div class="form-group">
 										<div class="input-group col-xs-12 ">
-											<span class="input-group-addon"><i class="fab fa-wpforms"></i> สิ่งที่ส่งมาด้วย</span>
+											<span class="input-group-addon"><i class="fab fa-wpforms"></i>
+												สิ่งที่ส่งมาด้วย</span>
 											<input class="form-control" type="text" name="attachment" value="-">
 										</div>
 									</div>
@@ -523,8 +556,11 @@ $ystatus = $ystatus;
 								<td colspan="3">
 									<div class="form-group">
 										<div class="input-group col-xs-8">
-											<span class="input-group-addon"><i class="fab fa-wpforms"></i> หน่วยปฏิบัติ</span>
-											<select name="dep_id" id="dep__id" class="selectpicker" data-live-search="true" data-size="10" data-width="100%" data-dropup-auto="false" title="โปรดระบุ" required>
+											<span class="input-group-addon"><i class="fab fa-wpforms"></i>
+												หน่วยปฏิบัติ</span>
+											<select name="dep_id" id="dep__id" class="selectpicker"
+												data-live-search="true" data-size="10" data-width="100%"
+												data-dropup-auto="false" title="โปรดระบุ" required>
 												<?php
 												$sql_dep = "SELECT dep_id,dep_name FROM depart";
 												$result_dep = dbQuery($sql_dep);
@@ -541,8 +577,10 @@ $ystatus = $ystatus;
 							<tr>
 								<td colspan="3">
 									<label>อื่นๆ :</label>
-									<input type="checkbox" name="follow" id="follow" value="1" checked> ติดตามผลการดำเนินงาน
-									<input type="checkbox" name="open" id="open" value="1" checked> เปิดเผยแก่บุคคลทั่วไป
+									<input type="checkbox" name="follow" id="follow" value="1" checked>
+									ติดตามผลการดำเนินงาน
+									<input type="checkbox" name="open" id="open" value="1" checked>
+									เปิดเผยแก่บุคคลทั่วไป
 								</td>
 							</tr>
 						</table><br>
@@ -578,7 +616,8 @@ $ystatus = $ystatus;
 				<h4 class="modal-title"><i class="fa fa-print"></i> รายงานทะเบียนหนังสือรับ</h4>
 			</div>
 			<div class="modal-body">
-				<form class="form-inline" role="form" id="form_other" name="form_other" method="POST" action="report/rep-resive-province.php" target="_blank">
+				<form class="form-inline" role="form" id="form_other" name="form_other" method="POST"
+					action="report/rep-resive-province.php" target="_blank">
 					<span>เลือกวันที่</span>
 					<input class="form-control" id="dateprint" name="dateprint" type="date">
 					<button type="submit" class="btn btn-lg btn-success">
@@ -615,7 +654,8 @@ $ystatus = $ystatus;
 				<h4 class="modal-title"><i class="fa fa-print"></i> รายงานทะเบียนหนังสือรับ [ตามช่วงเวลา]</h4>
 			</div>
 			<div class="modal-body">
-				<form class="form-inline" role="form" id="form_other" name="form_other" method="POST" action="report/rep-resive-province-mount.php" target="_blank">
+				<form class="form-inline" role="form" id="form_other" name="form_other" method="POST"
+					action="report/rep-resive-province-mount.php" target="_blank">
 					<center>
 						<div class="form-group">
 							<div class="input-group">
@@ -680,6 +720,9 @@ $ystatus = $ystatus;
 <!-- ส่วนเพิ่มข้อมูล  -->
 <?php
 if (isset($_POST['save'])) { //กดปุ่มบันทึกจากฟอร์มบันทึก
+	if (!verify_csrf_token($_POST['csrf_token'] ?? '')) {
+		die("CSRF token validation failed.");
+	}
 
 	//#######  ข้อมูลสำหรับตาราง book_master ########################################
 	$type_id = 1; //ชนิดของหนังสือ  1  หนังสือรับ-ถึงจังหวัด
@@ -693,11 +736,11 @@ if (isset($_POST['save'])) { //กดปุ่มบันทึกจากฟ�
 	$speed_id = $_POST['speed_id'];
 
 	//(1) เลือกข้อมูลเพื่อรันเลขรับ  โดยมีเงื่อนไขให้ตรงกับหน่วยงานของผู้ใช้ ###########################
-	$sql = "SELECT rec_id FROM book_master WHERE   yid=$yid  ORDER BY book_id DESC LIMIT 1";
+	$sql = "SELECT rec_id FROM book_master WHERE yid=? ORDER BY book_id DESC LIMIT 1";
 	//print $sql;
-	$result = dbQuery($sql);
+	$result = dbQuery($sql, "i", [$yid]);
 	$rowRun = dbFetchArray($result);
-	$rec_id = $rowRun['rec_id'];
+	$rec_id = $rowRun['rec_id'] ?? 0;
 	if ($rec_id == 0) {
 		$rec_id = 1;
 	} else {
@@ -711,7 +754,7 @@ if (isset($_POST['save'])) { //กดปุ่มบันทึกจากฟ�
 	$sql = "SHOW TABLE STATUS LIKE 'book_master'"; //ส่วนหา ID ล่าสุด
 	$result = dbQuery($sql);
 	$row = dbFetchAssoc($result);
-	$book_id = (int)$row['Auto_increment'];
+	$book_id = (int) $row['Auto_increment'];
 
 	//#######  ข้อมูลสำหรับตาราง book_detail  #########################################
 	// $book_id=dbInsertId($dbConn);  //เลือก ID ล่าสุดจากตาราง book_master
@@ -770,14 +813,30 @@ if (isset($_POST['save'])) { //กดปุ่มบันทึกจากฟ�
 	dbQuery('BEGIN');
 
 	$sql = "INSERT INTO book_master (rec_id,type_id,dep_id,sec_id,u_id,obj_id,pri_id,yid,typeDoc,speed_id) 
-            VALUES ($rec_id,$type_id,$dep_id,$sec_id,$u_id,$obj_id,$pri_id,$yid,$typeDoc,$speed_id)";
-	$result1 = dbQuery($sql);
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	$result1 = dbQuery($sql, "iiiiiiiiii", [$rec_id, $type_id, $dep_id, $sec_id, $u_id, $obj_id, $pri_id, $yid, $typeDoc, $speed_id]);
 
 	$date_line = date('Y-m-d H:i:s');
 	$sql = "INSERT INTO book_detail (book_id,book_no,title,owner,sendfrom,sendto,reference,attachment,date_book,date_in,practice,follow,publice_book,status,date_line,file_upload)
-            VALUES($book_id,'$book_no','$title','$owner','$sendfrom','$sendto','$refer','$attachment','$date_book','$date_in','$practice','$follow','$publice_book',0,'$date_line','$part_copy')";
+            VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?)";
 	// echo $sql;
-	$result2 = dbQuery($sql);
+	$result2 = dbQuery($sql, "isssssssssssiss", [
+		$book_id,
+		$book_no,
+		$title,
+		$owner,
+		$sendfrom,
+		$sendto,
+		$refer,
+		$attachment,
+		$date_book,
+		$date_in,
+		$practice,
+		$follow,
+		$publice_book,
+		$date_line,
+		$part_copy
+	]);
 
 	if ($result1 && $result2) {
 		dbQuery("COMMIT");

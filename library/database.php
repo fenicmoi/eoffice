@@ -1,8 +1,9 @@
 <?php
 require_once 'config.php';
+require_once 'security.php';
 
 // **การเชื่อมต่อฐานข้อมูลแบบ Object Oriented (mysqli)**
-$dbConn=new mysqli($dbHost, $dbUser, $dbPass);
+$dbConn = new mysqli($dbHost, $dbUser, $dbPass);
 if ($dbConn->connect_error) {
     die("Connection failed: " . $dbConn->connect_error);
 }
@@ -17,9 +18,9 @@ $dbConn->select_db($dbName);
  * @return mixed ถ้าเป็น SELECT จะคืนค่า mysqli_result ถ้าเป็น INSERT/UPDATE/DELETE จะคืนค่า true/false
  */
 function dbQuery($sql, $types = null, $params = null)
-{ 
+{
     global $dbConn;
-    
+
     // **รูปแบบการเรียกใช้ทั่วไป (ไม่รับค่าจากผู้ใช้)**
     if (empty($params) || empty($types)) {
         $result = $dbConn->query($sql);
@@ -35,7 +36,7 @@ function dbQuery($sql, $types = null, $params = null)
 
     // Bind parameters
     $bind_names[] = $types;
-    for ($i=0; $i<count($params);$i++) {
+    for ($i = 0; $i < count($params); $i++) {
         $bind_name = 'bind' . $i;
         $$bind_name = $params[$i];
         $bind_names[] = &$$bind_name;
@@ -48,7 +49,7 @@ function dbQuery($sql, $types = null, $params = null)
         $stmt->close();
         return false;
     }
-    
+
     // ถ้าเป็น SELECT ให้คืนค่าผลลัพธ์
     if ($stmt->field_count > 0) {
         $result = $stmt->get_result();
@@ -68,7 +69,8 @@ function dbAffectedRows()
     return mysqli_affected_rows($dbConn);
 }
 
-function dbFetchArray($result) {
+function dbFetchArray($result)
+{
     global $dbConn;
     return mysqli_fetch_array($result);
 }
@@ -79,7 +81,7 @@ function dbFetchAssoc($result)
     return mysqli_fetch_assoc($result);
 }
 
-function dbFetchRow($result) 
+function dbFetchRow($result)
 {
     global $dbConn;
     return mysqli_fetch_row($result);
@@ -103,7 +105,8 @@ function dbNumRows($result)
 /**
  * ฟังก์ชันสำหรับตั้งค่าตัวชี้ผลลัพธ์กลับไปที่แถวเริ่มต้น (จำเป็นสำหรับวนลูปซ้ำ)
  */
-function dbdataSeek($result, $row_number) {
+function dbdataSeek($result, $row_number)
+{
     global $dbConn;
     if ($result instanceof mysqli_result) {
         return $result->data_seek($row_number);
@@ -120,10 +123,11 @@ function dbInsertId()
 function dbEscapeString($text)
 {
     global $dbConn;
-    return mysqli_real_escape_string($dbConn, $text); 
+    return mysqli_real_escape_string($dbConn, $text);
 }
 
-function always_run(){
+function always_run()
+{
     global $dbConn;
     if ($dbConn instanceof mysqli && !$dbConn->connect_error) {
         $dbConn->close();

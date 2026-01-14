@@ -131,6 +131,7 @@ $u_id=$_SESSION['ses_u_id'];
                   </div>
                   <div class="modal-body bg-success">
                         <form name="form" method="post" enctype="multipart/form-data">
+                            <?php echo csrf_field(); ?>
                             <table width="100%" >
                                 <tr>
                                     <td> <label for="yearDoc">ปีเอกสาร : </label> <input   name="yearDoc" type="text" value="<?php print $yname; ?>" disabled=""></td>
@@ -308,8 +309,8 @@ $u_id=$_SESSION['ses_u_id'];
                                     <button class="btn btn-success" type="submit" name="save">
                                     <i class="fa fa-database"></i> ตกลง
                                     <input id="u_id" name="u_id" type="hidden" value="<?php echo $u_id; ?>"> 
-                                    <input id="sec_id" name="u_id" type="hidden" value="<?php echo $sec_id; ?>"> 
-                                    <input id="dep_id" name="u_id" type="hidden" value="<?php echo $dep_id; ?>"> 
+                                    <input id="sec_id" name="sec_id" type="hidden" value="<?php echo $sec_id; ?>"> 
+                                    <input id="dep_id" name="dep_id" type="hidden" value="<?php echo $dep_id; ?>"> 
                                     <input id="yid" name="yid" type="hidden" value="<?php echo $yid; ?>"> 
                                     </button>
                             </center>   
@@ -383,6 +384,9 @@ $u_id=$_SESSION['ses_u_id'];
   <!-- ส่วนเพิ่มข้อมูล  -->
  <?php
     if(isset($_POST['save'])){   //กดปุ่มบันทึกจากฟอร์มบันทึก
+        if (!verify_csrf_token($_POST['csrf_token'] ?? '')) {
+            die("CSRF token validation failed.");
+        }
 
         //#######  ข้อมูลสำหรับตาราง book_master ########################################
         $type_id=1;                    //ชนิดของหนังสือ  1  หนังสือรับ-ถึงจังหวัด
@@ -460,14 +464,16 @@ $u_id=$_SESSION['ses_u_id'];
         dbQuery('BEGIN');
 
         $sql="INSERT INTO book_master (rec_id,type_id,dep_id,sec_id,u_id,obj_id,pri_id,yid,typeDoc,speed_id) 
-                      VALUES ($rec_id,$type_id,$dep_id,$sec_id,$u_id,$obj_id,$pri_id,$yid,$typeDoc,$speed_id)";
-        $result1=dbQuery($sql);
+                      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $result1=dbQuery($sql, "iiiiiiiiii", [$rec_id, $type_id, $dep_id, $sec_id, $uid, $obj_id, $pri_id, $yid, $typeDoc, $speed_id]);
 
         $date_line=date('Y-m-d');
         $sql="INSERT INTO book_detail (book_id,book_no,title,sendfrom,sendto,reference,attachment,date_book,date_in,practice,follow,publice_book,status,date_line,file_upload)
-        VALUES($book_id,'$book_no','$title','$sendfrom','$sendto','$refer','$attachment','$date_book','$date_in','$practice[0]','$follow','$publice_book',0,'$date_line','$part_copy')";
+        VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?)";
         // echo $sql;
-        $result2=dbQuery($sql);
+        $result2=dbQuery($sql, "isssssssssssiss", [
+            $book_id, $book_no, $title, $sendfrom, $sendto, $refer, $attachment, $date_book, $date_in, $practice[0], $follow, $publice_book, $date_line, $part_copy
+        ]);
 
         if($result1 && $result2){
             dbQuery("COMMIT");
@@ -502,6 +508,9 @@ $u_id=$_SESSION['ses_u_id'];
 
 //กรณีเพิ่มเอกสารแนบ
  if(isset($_POST['update'])){
+     if (!verify_csrf_token($_POST['csrf_token'] ?? '')) {
+         die("CSRF token validation failed.");
+     }
      @$fileupload = $_POST['fileupload'];
      $book_detail_id = $_POST['book_detail_id'];
      @$resive = $_POST['resive'];

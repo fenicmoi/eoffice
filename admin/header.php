@@ -6,11 +6,11 @@ if (session_status() === PHP_SESSION_NONE) {
 
 date_default_timezone_set('Asia/Bangkok');
 include '../chksession.php';
-include '../library/database.php';
-include '../library/security.php';
-include 'function.php';
-include '../library/config.php';
-include '../library/pagination.php';
+require_once '../library/database.php';
+require_once '../library/security.php';
+require_once 'function.php';
+require_once '../library/config.php';
+require_once '../library/pagination.php';
 
 
 $u_id = (isset($_SESSION['ses_u_id'])) ? $_SESSION['ses_u_id'] : '';
@@ -89,7 +89,9 @@ if ($u_id) {
   <script src="../js/dataTables.js"></script>
 
   <link rel="stylesheet" type="text/css" href="../select/selection.css">
-  <link href="https://fonts.googleapis.com/css?family=Taviraj" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&family=Taviraj:wght@300;400;600;700&display=swap"
+    rel="stylesheet">
 
   <!-- bootstrap select  autocomplete -->
   <link rel="stylesheet" href="css/bootstrap-select.css">
@@ -135,7 +137,10 @@ if ($u_id) {
 
   <style type="text/css">
     body {
-      font-family: 'Taviraj', serif;
+      font-family: 'Sarabun', 'Taviraj', sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
     }
 
     .content {
