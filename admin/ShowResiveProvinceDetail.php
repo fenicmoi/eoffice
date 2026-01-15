@@ -1,7 +1,8 @@
-<?php
+if (session_status() === PHP_SESSION_NONE) {
 session_start();
+}
 if (!isset($_SESSION['ses_u_id'])) {
-    header("location:../index.php");
+header("location:../index.php");
 }
 $level_id = $_SESSION['ses_level_id'];
 date_default_timezone_set('Asia/Bangkok');
