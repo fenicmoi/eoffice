@@ -31,52 +31,40 @@
 
 <div class="row mt-4">
     <div class="col-md-2">
-        <div class="bg-primary text-center rounded p-3 shadow">
-            <a href="#" data-toggle="modal" data-target="#modelRule" class="text-white">
-                <i class="far fa-handshake fa-4x mb-2"></i>
-                <h5>ข้อตกลงการใช้งาน</h5>
-            </a>
+        <a href="#" data-toggle="modal" data-target="#modelRule" class="block-unified">
+            <i class="far fa-handshake"></i>
+            <h5>ข้อตกลงการใช้งาน</h5>
+        </a>
+    </div>
+    <div class="col-md-2">
+        <a href="index.php?menu=3" class="block-unified">
+            <i class="fab fa-earlybirds"></i>
+            <h5>รายชื่อหน่วยงาน</h5>
+        </a>
+    </div>
+    <div class="col-md-2">
+        <div class="block-unified">
+            <i class="fab fa-fort-awesome"></i>
+            <h5>ลงทะเบียนหน่วยงาน</h5>
         </div>
     </div>
     <div class="col-md-2">
-        <div class="bg-success text-center rounded p-3 shadow">
-            <a href="index.php?menu=3" class="text-white">
-                <i class="fab fa-earlybirds fa-4x mb-2"></i>
-                <h5>รายชื่อหน่วยงาน</h5>
-            </a>
-        </div>
+        <a href="https://www.phone.phatthalung.go.th/" target="_blank" class="block-unified">
+            <i class="fas fa-map-signs"></i>
+            <h5>สมุดโทรศัพท์จังหวัด</h5>
+        </a>
     </div>
     <div class="col-md-2">
-        <div class="bg-warning text-center rounded p-3 shadow">
-            <a data-toggle="modal" data-target="" class="text-white" disabled>
-                <i class="fab fa-fort-awesome fa-4x mb-2"></i>
-                <h5>ลงทะเบียนหน่วยงาน</h5>
-            </a>
-        </div>
+        <a href="manual.pdf" target="_blank" class="block-unified">
+            <i class="fas fa-file-pdf"></i>
+            <h5>คู่มือผู้ใช้</h5>
+        </a>
     </div>
     <div class="col-md-2">
-        <div class="bg-info text-center rounded p-3 shadow">
-            <a href="https://www.phone.phatthalung.go.th/" target="_blank" class="text-white">
-                <i class="fas fa-map-signs fa-4x mb-2"></i>
-                <h5>สมุดโทรศัพท์จังหวัด</h5>
-            </a>
-        </div>
-    </div>
-    <div class="col-md-2">
-        <div class="bg-info text-center rounded p-3 shadow">
-            <a href="manual.pdf" target="_blank" class="text-white">
-                <i class="fas fa-map-signs fa-4x mb-2"></i>
-                <h5>คู่มือผู้ใช้</h5>
-            </a>
-        </div>
-    </div>
-    <div class="col-md-2">
-        <div class="bg-info text-center rounded p-3 shadow">
-            <a href="manual.pdf" target="_blank" class="text-white">
-                <i class="fas fa-map-signs fa-4x mb-2"></i>
-                <h5>จองห้องประชุม</h5>
-            </a>
-        </div>
+        <a href="manual.pdf" target="_blank" class="block-unified">
+            <i class="fas fa-calendar-alt"></i>
+            <h5>จองห้องประชุม</h5>
+        </a>
     </div>
 </div>
 

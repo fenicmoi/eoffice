@@ -46,7 +46,7 @@ require_once 'library/security.php';
 
   <!-- /Chatra {/literal} -->
   <!-- /Chatra {/literal} -->
-  <link href="css/modern_dashboard.css" rel="stylesheet">
+  <link href="css/modern_dashboard.css?v=<?php echo time(); ?>" rel="stylesheet">
 
   <link href="css/dataTables.css" rel="stylesheet">
   <script src="js/dataTables.js"></script>
@@ -143,7 +143,7 @@ require_once 'library/security.php';
                 </div>
               </div>
               <button type="submit" class="btn btn-primary btn-block btn-lg mt-4 shadow">
-                 <i class="fas fa-sign-in-alt mr-2"></i> เข้าสู่ระบบ
+                <i class="fas fa-sign-in-alt mr-2"></i> เข้าสู่ระบบ
               </button>
             </form>
           </div>
@@ -162,7 +162,8 @@ require_once 'library/security.php';
           <div class="modal-content">
             <div class="modal-header bg-success">
               <button type="button" class="close" data-dismiss="modal">&times;</button>
-              <h4 class="modal-title font-weight-bold"><i class="fas fa-id-card mr-2"></i> ลงทะเบียนหน่วยงาน / เจ้าหน้าที่
+              <h4 class="modal-title font-weight-bold"><i class="fas fa-id-card mr-2"></i> ลงทะเบียนหน่วยงาน /
+                เจ้าหน้าที่
               </h4>
             </div>
             <div class="modal-body">
