@@ -346,3 +346,61 @@ a:hover {
     cursor: not-allowed;
     box-shadow: none;
 }
+
+/* Detail Modal Typography & Layout */
+.detail-modal-container {
+    padding: 1.5rem;
+    font-size: 1.6rem;
+    color: #2d3748;
+}
+
+.detail-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 0.8rem;
+}
+
+.detail-table td {
+    vertical-align: middle;
+    padding: 0.6rem;
+}
+
+.detail-label {
+    font-weight: 700;
+    color: #4a5568;
+    text-align: right;
+    padding-right: 1.5rem !important;
+    white-space: nowrap;
+}
+
+.detail-value {
+    color: #1a202c;
+    font-weight: 600;
+    font-size: 1.7rem;
+}
+
+/* Fix for disabled inputs in modals to be sharp */
+.detail-table input:disabled,
+.detail-table textarea:disabled {
+    background-color: #f8fafc !important;
+    color: #1a202c !important;
+    border: 1px solid #cbd5e0 !important;
+    opacity: 1 !important;
+    cursor: text;
+    font-weight: 600;
+    font-size: 1.7rem;
+    padding: 1rem;
+    width: 100%;
+    border-radius: 6px;
+    -webkit-text-fill-color: #1a202c !important;
+    /* Safari/iOS fix */
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.detail-table label#under {
+    text-decoration: none;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 2px;
+    font-weight: 600;
+    color: var(--primary-color);
+}

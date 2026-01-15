@@ -42,98 +42,118 @@ $book_detail_id = $row['book_detail_id'];
 
 $file_upload = $row['file_upload'];
 ?>
-<!-- <div class="well"> -->
-
-<center>
-    <form name="edit" action="flow-resive-province.php" method="post" enctype="multipart/form-data">
-        <table width="auto" border="0">
-            <tr>
-                <td width="150"><label for="book_no">เลขหนังสือ</label></td>
-                <td><label name="prefex"><?php print $row['book_no'] ?></label></td>
-                <td width="150"><label for="book_no">เลขทะเบียนกลาง <?php print $row['book_id'] ?></label></td>
-                <td><label name="prefex"></label></td>
-            </tr>
-            <tr>
-                <td><label for="date_book">เอกสารลงวันที่</td>
-                </td>
-                <td><input disabled="" type="text" class="form-group-sm" name="date_book"
-                        value="<?php print $row['date_book']; ?>"></td>
-                <td><label for="date_in">วันที่บันทึก:</label><input disabled="" type="text" class="form-group-sm"
-                        name="date_in" value="<?php print $row['date_in']; ?>"></td>
-            </tr>
-            <tr>
-                <td><label for="sendfrom">ผู้ส่ง</label></td>
-                <td colspan="3"><input disabled="" type="text" class="form-group-sm" name="sendfrom" size="80"
-                        value="<?php print $row['sendfrom']; ?>"></td>
-
-            </tr>
-            <tr>
-
-                <td><label for="sendto">ผู้รับ</label></td>
-                <td colspan="3"><input disabled="" type="text" class="form-group-sm" name="sendto" size="80"
-                        value="<?php print $row['sendto']; ?>"></td>
-            </tr>
-            <tr>
-                <td><label for="title">เรื่อง</label></td>
-                <td colspan="3"><input type="text" name="title" size="80" value="<?php print $row['title']; ?>" disabled>
-                </td>
-            </tr>
-            <tr>
-
-                <td><label for="pri_name">ชั้นความลับ</label></td>
-                <td><input disabled="" type="text" name="pri_name" value="<?php print $row['pri_name']; ?>"></td>
-                <td><label for="speed_name">ชั้นความเร็ว</label><input disabled="" type="text" name="speed_name"
-                        value="<?php print $row['speed_name']; ?>"></td>
-            </tr>
-            <tr>
-                <td><label>วัตถุประสงค์</label></td>
-                <td><input disabled="" type="text" name="obj_name" value="<?php print $row['obj_name']; ?>"></td>
-                <?php
-                $status = $row['status'];
-                switch ($status) {
-                    case 0:
-                        $txtStatus = "รอลงรับ";
-                        break;
-                    case 1:
-                        $txtStatus = "ลงรับ";
-                        break;
-                }
-                ?>
-                <td><label for="status">สถานะ</label><input disabled="" type="text" name="under"
-                        value="<?= $txtStatus ?>"></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td><label for="reference">อ้างถึง</label></td>
-                <td colspan="3"><textarea disabled="" name="reference"
-                        cols="80"> <?php print $row['reference']; ?></textarea></td>
-
-            </tr>
-            <tr>
-                <td><label for="attachment">สิ่งที่ส่งมาด้วย</label></td>
-                <td colspan="3"><textarea disabled="" name="attachment"
-                        cols="80"><?php print $row['attachment']; ?></textarea></td>
-            </tr>
-            <tr>
-                <?php
-                $practice = $row['practice'];
-                $sql = "SELECT dep_name FROM depart WHERE dep_id=$practice";
-                // print $sql;
-                $result = dbQuery($sql);
-                $practice = dbFetchArray($result);
-                ?>
-                <td><label for="practice">หน่วยดำเนินการ</label></td>
-                <td><label id="under"><?php print $practice['dep_name']; ?></label></td>
-                <td colspan="2"><label id="under"><?php // print $row['dep_name']; ?></label></td>
-            </tr>
-            <tr>
-                <td><label>ผู้บันทึก</label></td>
-                <td><label id="under"><?php print $row['firstname']; ?></label></td>
-                <td colspan="2"><label id="under"><?php print $row['dep_name']; ?></label></td>
-            </tr>
-        </table>
-    </form>
-</center>
-<!-- </div> -->
+<div class="detail-modal-container">
+    <center>
+        <form name="edit" action="flow-resive-province.php" method="post" enctype="multipart/form-data">
+            <table class="detail-table" border="0">
+                <tr>
+                    <td width="160" class="detail-label"><i class="fas fa-hashtag"></i> เลขหนังสือ</td>
+                    <td>
+                        <div class="detail-value"><?php print $row['book_no'] ?></div>
+                    </td>
+                    <td width="160" class="detail-label"><i class="fas fa-barcode"></i> ทะเบียนกลาง</td>
+                    <td>
+                        <div class="detail-value"><?php print $row['book_id'] ?></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="detail-label"><i class="far fa-calendar-alt"></i> ลงวันที่เอกสาร</td>
+                    <td>
+                        <div class="detail-value"><?php print thaiDate($row['date_book']); ?></div>
+                    </td>
+                    <td class="detail-label"><i class="far fa-clock"></i> วันที่บันทึก</td>
+                    <td>
+                        <div class="detail-value"><?php print thaiDate($row['date_in']); ?></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="detail-label"><i class="fas fa-paper-plane"></i> ผู้ส่ง</td>
+                    <td colspan="3"><input disabled type="text" value="<?php print $row['sendfrom']; ?>"></td>
+                </tr>
+                <tr>
+                    <td class="detail-label"><i class="fas fa-user-tag"></i> ผู้รับ</td>
+                    <td colspan="3"><input disabled type="text" value="<?php print $row['sendto']; ?>"></td>
+                </tr>
+                <tr>
+                    <td class="detail-label"><i class="fas fa-align-left"></i> เรื่อง</td>
+                    <td colspan="3"><input disabled type="text" value="<?php print $row['title']; ?>"></td>
+                </tr>
+                <tr>
+                    <td class="detail-label"><i class="fas fa-shield-alt"></i> ชั้นความลับ</td>
+                    <td><input disabled type="text" value="<?php print $row['pri_name']; ?>"></td>
+                    <td class="detail-label"><i class="fas fa-bolt"></i> ชั้นความเร็ว</td>
+                    <td><input disabled type="text" value="<?php print $row['speed_name']; ?>"></td>
+                </tr>
+                <tr>
+                    <td class="detail-label"><i class="fas fa-bullseye"></i> วัตถุประสงค์</td>
+                    <td><input disabled type="text" value="<?php print $row['obj_name']; ?>"></td>
+                    <?php
+                    $status = $row['status'];
+                    switch ($status) {
+                        case 0:
+                            $txtStatus = "รอลงรับ";
+                            break;
+                        case 1:
+                            $txtStatus = "ลงรับ";
+                            break;
+                        default:
+                            $txtStatus = "แสดงผลรายละเอียด";
+                            break;
+                    }
+                    ?>
+                    <td class="detail-label"><i class="fas fa-info-circle"></i> สถานะ</td>
+                    <td><input disabled type="text" value="<?= $txtStatus ?>"></td>
+                </tr>
+                <tr>
+                    <td class="detail-label"><i class="fas fa-link"></i> อ้างถึง</td>
+                    <td colspan="3"><textarea disabled rows="2"><?php print $row['reference']; ?></textarea></td>
+                </tr>
+                <tr>
+                    <td class="detail-label"><i class="fas fa-paperclip"></i> สิ่งที่ส่งมาด้วย</td>
+                    <td colspan="3"><textarea disabled rows="2"><?php print $row['attachment']; ?></textarea></td>
+                </tr>
+                <tr>
+                    <?php
+                    $practice = $row['practice'];
+                    $practice_row = ['dep_name' => ''];
+                    if ($practice) {
+                        $sql_practice = "SELECT dep_name FROM depart WHERE dep_id=?";
+                        $result_practice = dbQuery($sql_practice, "i", [(int) $practice]);
+                        $practice_row = dbFetchArray($result_practice);
+                    }
+                    ?>
+                    <td class="detail-label"><i class="fas fa-university"></i> หน่วยดำเนินการ</td>
+                    <td colspan="3">
+                        <div class="detail-value-text"><label
+                                id="under"><?php echo htmlspecialchars($practice_row['dep_name'] ?? ''); ?></label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="detail-label"><i class="fas fa-user-edit"></i> ผู้บันทึก</td>
+                    <td colspan="3">
+                        <div class="detail-value-text">
+                            <?php echo htmlspecialchars($row['firstname']); ?>
+                            <span class="text-muted"
+                                style="font-weight: 400; font-size: 1.4rem;">(<?php echo htmlspecialchars($row['dep_name']); ?>)</span>
+                        </div>
+                    </td>
+                </tr>
+                <?php if ($file_upload != '') { ?>
+                    <tr>
+                        <td class="detail-label"><i class="fas fa-file-download"></i> ไฟล์แนบ</td>
+                        <td colspan="3">
+                            <div class="detail-value-text">
+                                <a class="btn btn-primary" href="<?php print $row['file_upload']; ?>" target="_blank">
+                                    <i class="fa fa-file"></i> คลิกเพื่อดาวน์โหลด
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                <?php } ?>
+            </table>
+        </form>
+    </center>
+</div>
 
 <!-- form send  -->
