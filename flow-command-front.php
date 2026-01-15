@@ -22,7 +22,7 @@ if (!defined('IS_SYSTEM_RUNNING')) {
       "processing": true,
       "serverSide": true,
       "resonsive": true,
-      "pageLength": 20,
+      "pageLength": 15,
 
       "language": {
         "sLengthMenu": "แสดง _MENU_ เร็คคอร์ด ต่อหน้า",
