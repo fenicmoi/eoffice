@@ -61,7 +61,7 @@
         </a>
     </div>
     <div class="col-md-2">
-        <a href="manual.pdf" target="_blank" class="block-unified">
+        <a href="https://mbrs.phatthalung.go.th/" target="_blank" class="block-unified">
             <i class="fas fa-calendar-alt"></i>
             <h5>จองห้องประชุม</h5>
         </a>
