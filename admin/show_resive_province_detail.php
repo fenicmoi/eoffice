@@ -54,6 +54,7 @@ if (isset($row['file_location'])) {
 <div class="detail-modal-container">
     <center>
         <form name="edit" action="FlowResiveProvince.php" method="post" enctype="multipart/form-data">
+            <?php echo csrf_field(); ?>
             <table class="detail-table" border="0">
                 <tr>
                     <td width="160" class="detail-label"><i class="fas fa-hashtag"></i> เลขหนังสือ</td>

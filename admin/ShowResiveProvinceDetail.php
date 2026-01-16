@@ -1,8 +1,9 @@
+<?php
 if (session_status() === PHP_SESSION_NONE) {
-session_start();
+    session_start();
 }
 if (!isset($_SESSION['ses_u_id'])) {
-header("location:../index.php");
+    header("location:../index.php");
 }
 $level_id = $_SESSION['ses_level_id'];
 date_default_timezone_set('Asia/Bangkok');
@@ -45,6 +46,7 @@ $file_upload = $row['file_location'];
 <div class="detail-modal-container">
     <center>
         <form name="edit" action="FlowResiveProvince.php" method="post" enctype="multipart/form-data">
+            <?php echo csrf_field(); ?>
             <table class="detail-table" border="0">
                 <tr>
                     <td width="160" class="detail-label"><i class="fas fa-hashtag"></i> เลขหนังสือ</td>

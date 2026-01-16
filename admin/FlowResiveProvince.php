@@ -63,9 +63,9 @@ $ystatus = $ystatus;
                         <td><?php echo $row['book_no']; ?></td>
                         <td>
                             <a href="#" onclick="load_leave_data(
-                                                                    '<? print $u_id; ?>',
-                                                                    '<? print $rec_id; ?>',
-                                                                    '<? print $book_id; ?>
+                                                                    '<?php echo $u_id; ?>',
+                                                                    '<?php echo $rec_id; ?>',
+                                                                    '<?php echo $book_id; ?>'
                                                                     );" data-toggle="modal"
                                 data-target=".bs-example-modal-table">
                                 <?php echo $row['title']; ?>

@@ -59,7 +59,7 @@ $u_id=$_SESSION['ses_u_id'];
                                         <td><?php echo $row['book_no']; ?></td>
                                         <td>
                                             <a href="#" 
-                                                    onclick="load_leave_data('<? print $u_id;?>','<? print $rec_id; ?>','<? print $book_id; ?>');" data-toggle="modal" data-target=".bs-example-modal-table">
+                                                    onclick="load_leave_data('<?php echo $u_id; ?>','<?php echo $rec_id; ?>','<?php echo $book_id; ?>');" data-toggle="modal" data-target=".bs-example-modal-table">
                                                     <?php echo $row['title'];?> 
                                             </a>
                                         </td>
@@ -69,12 +69,12 @@ $u_id=$_SESSION['ses_u_id'];
                                         <?php
                                             if($row['file_location']==''){?>
                                                 ไม่มีไฟล์
-                                            <? }else{ ?>
+                                            <?php }else{ ?>
                                                 <a class="btn btn-success btn-xs btn-block" href="<?php echo $row['file_location'];?>" target="_bank"><i class="fas fa-download"></i></a>
-                                            <? } ?>
+                                            <?php } ?>
                                         </td>
                                     </tr>
-                            <?php $count++; }?>  <!--end while
+                            <?php $count++; }?>  <!--end while -->
                                     
                         </tbody>
                     </table>
@@ -101,13 +101,13 @@ $u_id=$_SESSION['ses_u_id'];
                   <div class="modal-body">
                     	 <form class="form-inline" role="form" id="form_other" name="form_other" method="POST"  action="report/rep-resive-depart.php"> 
                                 <span>เลือกวันที่</span>
-                                <input class="form-control" id="dateprint" name="dateprint" type="date" value="<?=$pDate;?> ">
+                                <input class="form-control" id="dateprint" name="dateprint" type="date" value="<?php echo $pDate; ?> ">
                                 <button type="submit" class="btn btn-lg btn-primary">
                                     <span class="glyphicon glyphicon-floppy-saved"></span>&nbspตกลง
                                 </button>
-                                <input type="hidden" name="yid" value="<?=$yid?>">
-                                <input type="hidden" name="uid" value="<?=$uid?>"></td>
-                                <input type="hidden" name="username" value="<?=$username?>"></td>
+                                <input type="hidden" name="yid" value="<?php echo $yid; ?>">
+                                <input type="hidden" name="uid" value="<?php echo $uid; ?>"></td>
+                                <input type="hidden" name="username" value="<?php echo $username; ?>"></td>
                          </form>
                   </div>
                   <div class="modal-footer">
