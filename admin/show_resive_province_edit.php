@@ -37,6 +37,90 @@ $book_detail_id = $row['book_detail_id'];
 $file_upload = $row['file_upload'];
 ?>
 
+<style>
+    /* Custom soft styling for the edit page */
+    .edit-body-soft {
+        background-color: #f0f4f8 !important; /* Soft steel blue/gray */
+        padding: 30px !important;
+        border-radius: 0 0 10px 10px;
+    }
+
+    .panel-primary-modern {
+        border: none;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        border-radius: 10px;
+    }
+
+    .panel-primary-modern > .panel-heading {
+        background-color: #4e73df !important;
+        border-color: #4e73df !important;
+        color: white;
+        border-radius: 10px 10px 0 0;
+        padding: 15px 20px;
+    }
+
+    .input-group-addon {
+        background-color: #eaecf4;
+        border: 1px solid #d1d3e2;
+        color: #4e73df;
+        font-weight: 600;
+        min-width: 120px;
+        text-align: left;
+    }
+
+    .form-control {
+        border: 1px solid #d1d3e2;
+        border-radius: 4px;
+        transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    }
+
+    .form-control:focus {
+        border-color: #bac8f3;
+        box-shadow: 0 0 0 0.2rem rgba(78,115,223,.25);
+    }
+
+    .form-group label {
+        font-weight: 600;
+        color: #4e73df;
+        margin-bottom: 8px;
+    }
+
+    .well.bg-warning-soft {
+        background-color: #fff9e6;
+        border: 1px border-style: dashed; border-color: #ffeeba;
+        border-radius: 8px;
+    }
+    
+    .btn-lg-modern {
+        padding: 10px 30px;
+        font-weight: 600;
+        border-radius: 30px;
+        transition: all 0.3s;
+    }
+    
+    .btn-warning-modern {
+        background-color: #f6c23e;
+        border-color: #f6c23e;
+        color: #fff;
+    }
+    
+    .btn-warning-modern:hover {
+        background-color: #f4b619;
+        transform: translateY(-2px);
+    }
+
+    .btn-danger-modern {
+        background-color: #e74a3b;
+        border-color: #e74a3b;
+        color: #fff;
+    }
+    
+    .btn-danger-modern:hover {
+        background-color: #be2617;
+        transform: translateY(-2px);
+    }
+</style>
+
 <div class="col-md-2">
     <?php
     $menu = checkMenu($level_id);
@@ -44,213 +128,254 @@ $file_upload = $row['file_upload'];
     ?>
 </div>
 <div class="col-md-10">
-    <div class="panel panel-primary">
+    <div class="panel panel-primary-modern">
         <div class="panel-heading">
             <i class="fa fa-edit fa-2x"></i> <strong>แก้ไขหนังสือรับ [ถึงจังหวัด]</strong>
-            <a href="flow-resive-province.php" class="btn btn-success pull-right"><i class="fas fa-home "></i>
+            <a href="flow-resive-province.php" class="btn btn-info pull-right"><i class="fas fa-arrow-left"></i>
                 กลับหน้าหลัก</a>
         </div>
-        <div class="panel-body bg-success">
+        <div class="panel-body edit-body-soft">
             <form name="edit" action="#" method="post" enctype="multipart/form-data">
                 <?php echo csrf_field(); ?>
-                <div class="form-group form-inline">
-                    <div class="input-group col-xs-3">
-                        <span class="input-group-addon">เลขทะเบียนรับ</span>
-                        <input type="text" class="form-control" value="<?php print $rec_id; ?>/<?php print $yname; ?>"
-                            disabled>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label><i class="fas fa-fingerprint"></i> เลขทะเบียนรับ</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">เลขทะเบียนรับ</span>
+                                <input type="text" class="form-control" value="<?php print $rec_id; ?>/<?php print $yname; ?>" disabled>
+                            </div>
+                        </div>
                     </div>
-                    <div class="input-group col-xs-3">
-                        <span class="input-group-addon"><i class="fas fa-calendar-alt"></i> วันที่ลงรับ</span>
-                        <input name="date_in" type="text" class="form-control" value="<?php print $row['date_in']; ?>">
-                    </div>
-                </div>
-
-                <div class="form-group form-inline">
-                    <div class="input-group col-xs-4">
-                        <span class="input-group-addon">เลขที่เอกสาร</span>
-                        <input name="book_no" type="text" class="form-control" value="<?php print $row['book_no']; ?>">
-                    </div>
-                    <div class="input-group col-xs-3">
-                        <span class="input-group-addon"><i class="fas fa-folder"></i> ประเภทหนังสือ</span>
-                        <input name="typeDoc" type="radio" value="1" <?php if ($row['typeDoc'] == 1) {
-                            echo "checked";
-                        } ?>>
-                        ปกติ
-                        <input name="typeDoc" type="radio" value="2" <?php if ($row['typeDoc'] == 2) {
-                            echo "checked";
-                        } ?>>
-                        เวียน
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label><i class="fas fa-calendar-check"></i> วันที่ลงรับ</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">วันที่ลงรับ</span>
+                                <input name="date_in" type="text" class="form-control" value="<?php print $row['date_in']; ?>">
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="form-group form-inline">
-                    <div class="input-group col-xs-2">
-                        <span class="input-group-addon"><i class="fas fa-low-vision"></i> ชั้นความลับ</span>
-                        <select class="form-control" name="pri_id" id="pri_id">
-                            <?php
-                            $sql = "SELECT * FROM priority ORDER BY pri_id";  //เลือกชั้นความลับ
-                            $r = dbQuery($sql);
-                            $pri_cure = $row['pri_id'];
-                            while ($pri = dbFetchArray($r)) {
-                                $pri_sel = $pri['pri_id']; ?>
-                                <option <?php if ($pri_cure == $pri_sel) {
-                                    echo "selected";
-                                } ?>
-                                    value="<?php print $pri['pri_id']; ?>"><?php print $pri['pri_name']; ?></option>
-                            <?php } ?>
-                        </select>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label><i class="fas fa-hashtag"></i> เลขที่หนังสือ</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">เลขที่หนังสือ</span>
+                                <input name="book_no" type="text" class="form-control" value="<?php print $row['book_no']; ?>">
+                            </div>
+                        </div>
                     </div>
-                    <div class="input-group col-xs-2">
-                        <span class="input-group-addon"><i class="fas fa-space-shuttle"></i> ชั้นความเร็ว</span>
-                        <select class="form-control" name="speed_id" id="speed_id">
-                            <?php
-                            $sql = "SELECT * FROM speed ORDER BY speed_id";  //เลือกชั้นความเร็ว
-                            $r = dbQuery($sql);
-                            $pri_cure = $row['speed_id'];
-                            while ($pri = dbFetchArray($r)) {
-                                $pri_sel = $pri['speed_id']; ?>
-                                <option <?php if ($pri_cure == $pri_sel) {
-                                    echo "selected";
-                                } ?>
-                                    value="<?php print $pri['speed_id']; ?>"><?php print $pri['speed_name']; ?></option>
-                            <?php } ?>
-                        </select>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label><i class="fas fa-folder"></i> ประเภทหนังสือ</label>
+                            <div class="input-group" style="padding: 6px 12px; background: white; border: 1px solid #d1d3e2; border-radius: 4px; width: 100%;">
+                                <label class="radio-inline"><input name="typeDoc" type="radio" value="1" <?php if ($row['typeDoc'] == 1)
+                                    echo "checked"; ?>> ปกติ</label>
+                                <label class="radio-inline"><input name="typeDoc" type="radio" value="2" <?php if ($row['typeDoc'] == 2)
+                                    echo "checked"; ?>> เวียน</label>
+                            </div>
+                        </div>
                     </div>
-                    <div class="input-group col-xs-3">
-                        <span class="input-group-addon"><i class="fas fa-crosshairs"></i> วัตถุประสงค์</span>
-                        <select class="form-control" name="obj_id" id="obj_id">
-                            <?php
-                            $sql = "SELECT * FROM object ORDER BY obj_id";  //เลือกชั้นความเร็ว
-                            $r = dbQuery($sql);
-                            $pri_cure = $row['obj_id'];
-                            echo $row['obj_id'];
-                            while ($pri = dbFetchArray($r)) {
-                                $pri_sel = $pri['obj_id']; ?>
-                                <option <?php if ($pri_cure == $pri_sel) {
-                                    echo "selected";
-                                } ?>
-                                    value="<?php print $pri['obj_id']; ?>"><?php print $pri['obj_name']; ?></option>
-                            <?php } ?>
-                        </select>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label><i class="fas fa-user-secret"></i> ชั้นความลับ</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">ชั้นความลับ</span>
+                                <select class="form-control" name="pri_id" id="pri_id">
+                                    <?php
+                                    $sql = "SELECT * FROM priority ORDER BY pri_id";
+                                    $r = dbQuery($sql);
+                                    $pri_cure = $row['pri_id'];
+                                    while ($pri = dbFetchArray($r)) { ?>
+                                            <option <?php if ($pri_cure == $pri['pri_id'])
+                                                echo "selected"; ?> value="<?php print $pri['pri_id']; ?>"><?php print $pri['pri_name']; ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label><i class="fas fa-running"></i> ชั้นความเร็ว</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">ชั้นความเร็ว</span>
+                                <select class="form-control" name="speed_id" id="speed_id">
+                                    <?php
+                                    $sql = "SELECT * FROM speed ORDER BY speed_id";
+                                    $r = dbQuery($sql);
+                                    $speed_cure = $row['speed_id'];
+                                    while ($speed = dbFetchArray($r)) { ?>
+                                            <option <?php if ($speed_cure == $speed['speed_id'])
+                                                echo "selected"; ?> value="<?php print $speed['speed_id']; ?>"><?php print $speed['speed_name']; ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label><i class="fas fa-bullseye"></i> วัตถุประสงค์</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">วัตถุประสงค์</span>
+                                <select class="form-control" name="obj_id" id="obj_id">
+                                    <?php
+                                    $sql = "SELECT * FROM object ORDER BY obj_id";
+                                    $r = dbQuery($sql);
+                                    $obj_cure = $row['obj_id'];
+                                    while ($obj = dbFetchArray($r)) { ?>
+                                            <option <?php if ($obj_cure == $obj['obj_id'])
+                                                echo "selected"; ?> value="<?php print $obj['obj_id']; ?>"><?php print $obj['obj_name']; ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label><i class="far fa-calendar-alt"></i> ลงวันที่</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">ลงวันที่</span>
+                                <input type="date" class="form-control" name="date_book" value="<?php print $row['date_book']; ?>" onKeyDown="return false">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label><i class="fas fa-user-edit"></i> ผู้ส่ง</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">ผู้ส่ง</span>
+                                <input name="sendfrom" type="text" class="form-control" value="<?php print $row['sendfrom']; ?>">
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <div class="input-group col-xs-8">
-                        <span class="input-group-addon"><i class="fas fa-calendar-alt"></i> เอกสารลงวันที่</span>
-                        <input type="date" class="form-control col-xs-2" name="date_book"
-                            value="<?php print $row['date_book']; ?>" onKeyDown="return false">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="input-group col-xs-5">
-                        <span class="input-group-addon"><i class="fas fa-user"></i> ผู้ส่ง</span>
-                        <input name="sendfrom" type="text" class="form-control"
-                            value="<?php print $row['sendfrom']; ?>">
-                    </div>
-
-                </div>
-
-                <div class="form-group">
-                    <div class="input-group col-xs-5">
-                        <span class="input-group-addon"><i class="fas fa-user"></i> ผู้รับ</span>
+                    <label><i class="fas fa-user-tie"></i> ผู้รับ</label>
+                    <div class="input-group">
+                        <span class="input-group-addon">ผู้รับ</span>
                         <input name="sendto" type="text" class="form-control" value="<?php print $row['sendto']; ?>">
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <div class="input-group col-xs-10">
-                        <span class="input-group-addon"><i class="fas fa-list"></i> เรื่อง</span>
+                    <label><i class="fas fa-bookmark"></i> เรื่อง</label>
+                    <div class="input-group">
+                        <span class="input-group-addon">เรื่อง</span>
                         <input name="title" type="text" class="form-control" value="<?php print $row['title']; ?>">
                     </div>
                 </div>
 
-                <div class="form-group form-inline">
-                    <div class="input-group col-xs-5">
-                        <span class="input-group-addon"><i class="fas fa-share-alt"></i> อ้างถึง</span>
-                        <input name="reference" type="text" class="form-control"
-                            value="<?php print $row['reference']; ?>">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label><i class="fas fa-link"></i> อ้างถึง</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">อ้างถึง</span>
+                                <input name="reference" type="text" class="form-control" value="<?php print $row['reference']; ?>">
+                            </div>
+                        </div>
                     </div>
-                    <div class="input-group col-xs-5">
-                        <span class="input-group-addon"><i class="fab fa-wpforms"></i> สิ่งที่ส่งมาด้วย</span>
-                        <input name="attachment" type="text" class="form-control"
-                            value="<?php print $row['attachment']; ?>">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label><i class="fas fa-paperclip"></i> สิ่งที่ส่งมาด้วย</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">สิ่งที่ส่งมาด้วย</span>
+                                <input name="attachment" type="text" class="form-control" value="<?php print $row['attachment']; ?>">
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <div class="input-group col-xs-10">
-                        <span class="input-group-addon"><i class="fab fa-jenkins"></i>หน่วยปฏิบัติ</span>
-                        <?php
-                        $practice = $row['practice'];
-                        ?>
-                        <select class="form-control selectpicker" data-live-search="true" id="practice" name="practice"
-                            required="">
+                    <label><i class="fas fa-university"></i> หน่วยปฏิบัติ</label>
+                    <div class="input-group">
+                        <span class="input-group-addon">หน่วยปฏิบัติ</span>
+                        <select class="form-control selectpicker" data-live-search="true" id="practice" name="practice" required="">
                             <?php
                             $sql = 'SELECT * FROM depart ORDER BY dep_id';
-                            // echo $sql;
-                            $result = dbQuery($sql);
-                            while ($dep_row = dbFetchAssoc($result)) {
-                                ?>
-                                <option value="<?php echo $dep_row['dep_id']; ?>" <?php if ($dep_row['dep_id'] == $row['practice']) {
-                                       echo 'selected';
-                                   } ?>>
-                                    <?php echo $dep_row['dep_name']; ?>
-                                </option>
-                                <?php
-                            }
-                            ?>
+                            $result_dep = dbQuery($sql);
+                            while ($dep_row = dbFetchAssoc($result_dep)) { ?>
+                                    <option value="<?php echo $dep_row['dep_id']; ?>" <?php if ($dep_row['dep_id'] == $row['practice'])
+                                           echo 'selected'; ?>>
+                                        <?php echo $dep_row['dep_name']; ?>
+                                    </option>
+                            <?php } ?>
                         </select>
-
                     </div>
                 </div>
-                <div class="well bg-warning">
 
-                    <div class="form-group form-inline">
-                        <div class="input-group col-xs-5">
-                            <span class="input-group-addon"><i class="fas fa-upload fa-2x"></i>
-                                เลือกไฟล์เพื่อแนบเอกสาร</span>
-                            <input name="file_location" class="form-control" type="file">
+                <div class="well bg-warning-soft">
+                    <div class="form-group">
+                        <label><i class="fas fa-file-upload"></i> จัดการไฟล์เอกสาร</label>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input name="file_location" class="form-control" type="file">
+                            </div>
+                            <div class="col-md-6">
+                                <?php if ($row['file_location'] != '') { ?>
+                                        <div class="alert alert-info" style="margin-bottom: 0; padding: 10px;">
+                                            <i class="fas fa-check-circle"></i> มีไฟล์เดิมอยู่แล้ว: 
+                                            <a class="btn btn-xs btn-primary" href="<?php echo $row['file_location']; ?>" target="_blank">
+                                                <i class="fas fa-download"></i> ดาวน์โหลดไฟล์
+                                            </a>
+                                        </div>
+                                <?php } else { ?>
+                                        <div class="alert alert-danger" style="margin-bottom: 0; padding: 10px;">
+                                            <i class="fas fa-exclamation-triangle"></i> ยังไม่มีการอัปโหลดไฟล์
+                                        </div>
+                                <?php } ?>
+                            </div>
                         </div>
-                        <?php
-                        if ($row['file_location'] != '') { ?>
-                            มีไฟล์เอกสารอยู่แล้ว= <a class="btn btn-info" href="<?php echo $row['file_location']; ?>"
-                                target="_blank"><i class="fas fa-download"></i>Click Download</a>
-                        <?php } else { ?>
-                            <span class="alert alert-danger"><i class="fas fa-exclamation-circle fa-2x"></i>คลิกที่ช่อง
-                                เพื่อเลือกไฟล์</span>
-                        <?php } ?>
-
-                    </div>
-
-                </div>
-                <div class="form-group form-inline">
-                    <div class="input-group col-xs-5">
-                        <span class="input-group-addon"><i class="fas fa-building"></i> ส่วนราชการผู้บันทึก</span>
-                        <input name="dep_name" type="text" class="form-control" value="<?php print $row['dep_name']; ?>"
-                            disabled>
-                    </div>
-                    <div class="input-group col-xs-5">
-                        <span class="input-group-addon"><i class="fas fa-user"></i> เจ้าหน้าที่</span>
-                        <input name="firstname" type="text" class="form-control"
-                            value="<?php print $row['firstname'];
-                            echo "&nbsp&nbsp";
-                            print $row['lastname']; ?>"
-                            disabled>
                     </div>
                 </div>
-                <!-- ตัวแปรส่งไปเพื่่อตรวจสอบกับฐานข้อมูล -->
-                <input name="book_id" type="hidden" name="book_id" value="<?php echo $row['book_id']; ?>">
-                <input name="book_detail_id" type="hidden" value="<?php echo $row['book_detail_id']; ?>">
-                <!-- <input name="practice" type="hidden" value="<?php echo $row['practice']; ?>"> -->
-                <center>
-                    <input class="btn btn-warning btn-lg" type="submit" name="update" value="ตกลง">&nbsp&nbsp
-                    <a class="btn btn-danger btn-lg" href="flow-resive-province.php">ยกเลิก</a>
-                </center>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label><i class="fas fa-building"></i> ส่วนราชการผู้บันทึก</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">หน่วยงาน</span>
+                                <input name="dep_name" type="text" class="form-control" value="<?php print $row['dep_name']; ?>" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label><i class="fas fa-user-shield"></i> เจ้าหน้าที่ผู้บันทึก</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">เจ้าหน้าที่</span>
+                                <input name="firstname" type="text" class="form-control" value="<?php print $row['firstname'] . " " . $row['lastname']; ?>" disabled>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <input type="hidden" name="book_id" value="<?php echo $row['book_id']; ?>">
+                <input type="hidden" name="book_detail_id" value="<?php echo $row['book_detail_id']; ?>">
+                
+                <hr style="border-top: 2px solid #eaecf4;">
+                <div class="text-center" style="margin-top: 20px;">
+                    <button class="btn btn-warning-modern btn-lg-modern" type="submit" name="update">
+                        <i class="fas fa-save"></i> บันทึกการแก้ไข
+                    </button>
+                    <a class="btn btn-danger-modern btn-lg-modern" href="flow-resive-province.php">
+                        <i class="fas fa-times"></i> ยกเลิก
+                    </a>
+                </div>
             </form>
         </div> <!-- panel-body -->
-        <div class="panel-footer">
+        <div class="panel-footer" style="background-color: transparent; border-top: none;">
         </div>
     </div><!-- panel -->
 </div>
