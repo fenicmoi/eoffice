@@ -588,8 +588,8 @@ $ystatus = $ystatus;
 							<button class="btn btn-success" type="submit" name="save">
 								<i class="fa fa-database"></i> ตกลง
 								<input id="u_id" name="u_id" type="hidden" value="<?php echo $u_id; ?>">
-								<input id="sec_id" name="u_id" type="hidden" value="<?php echo $sec_id; ?>">
-								<input id="dep_id" name="u_id" type="hidden" value="<?php echo $dep_id; ?>">
+								<input id="sec_id" name="sec_id" type="hidden" value="<?php echo $sec_id; ?>">
+								<input id="dep_id" name="dep_id" type="hidden" value="<?php echo $dep_id; ?>">
 								<input id="yid" name="yid" type="hidden" value="<?php echo $yid; ?>">
 							</button>
 						</center>
@@ -726,9 +726,9 @@ if (isset($_POST['save'])) { //กดปุ่มบันทึกจากฟ�
 
 	//#######  ข้อมูลสำหรับตาราง book_master ########################################
 	$type_id = 1; //ชนิดของหนังสือ  1  หนังสือรับ-ถึงจังหวัด
-	/*$dep_id=$_SESSION['dep_id'];     //รหัสหน่วยงาน   รับค่ามาจาก session จาก header แล้ว
-	$sec_id=$_SESSION['sec_id'];       //รหัสกลุ่มงาน  */
-	$uid = $_POST['u_id']; //รหัสผู้ใช้
+	$u_id = $_POST['u_id']; //รหัสผู้ใช้
+	$sec_id = $_POST['sec_id']; //รหัสกลุ่มงาน
+	$dep_id = $_POST['dep_id']; //รหัสหน่วยงาน
 	$obj_id = $_POST['obj_id']; //รหัสวัตถุประสงค์
 	$pri_id = $_POST['pri_id']; //รหัสชั้นความลับ
 	$yid = $_POST['yid']; //รหัสปีปัจจุบัน
@@ -737,7 +737,6 @@ if (isset($_POST['save'])) { //กดปุ่มบันทึกจากฟ�
 
 	//(1) เลือกข้อมูลเพื่อรันเลขรับ  โดยมีเงื่อนไขให้ตรงกับหน่วยงานของผู้ใช้ ###########################
 	$sql = "SELECT rec_id FROM book_master WHERE yid=? ORDER BY book_id DESC LIMIT 1";
-	//print $sql;
 	$result = dbQuery($sql, "i", [$yid]);
 	$rowRun = dbFetchArray($result);
 	$rec_id = $rowRun['rec_id'] ?? 0;
@@ -747,17 +746,7 @@ if (isset($_POST['save'])) { //กดปุ่มบันทึกจากฟ�
 		$rec_id++;
 	}
 
-
-
-	// ##### ตาราง book_master
-
-	$sql = "SHOW TABLE STATUS LIKE 'book_master'"; //ส่วนหา ID ล่าสุด
-	$result = dbQuery($sql);
-	$row = dbFetchAssoc($result);
-	$book_id = (int) $row['Auto_increment'];
-
 	//#######  ข้อมูลสำหรับตาราง book_detail  #########################################
-	// $book_id=dbInsertId($dbConn);  //เลือก ID ล่าสุดจากตาราง book_master
 	$book_no = $_POST['book_no']; // หมายเลขประจำหนังสือ
 	$title = $_POST['title']; // เรื่อง   
 	$owner = $_POST['owner']; // เจ้าของเรื่อง
@@ -767,47 +756,34 @@ if (isset($_POST['save'])) { //กดปุ่มบันทึกจากฟ�
 	$sendto = $_POST['sendto']; // ผู้รับ
 	$refer = $_POST['refer']; // อ้างถึง
 
-	$follow = $_POST['follow']; // ติดตามหนังสือ
-	$publice_book = $_POST['open']; // เปิดเผยหนังสือ
+	$follow = $_POST['follow'] ?? 0; // ติดตามหนังสือ
+	$publice_book = $_POST['open'] ?? 0; // เปิดเผยหนังสือ
 	$attachment = $_POST['attachment']; //เอกสารแนบ
-
-	// $practice=$_POST['toSomeOneUser'];         // ผู้ปฏิบัติ
 	$practice = $_POST['dep_id'];
 
 
-	// $fileupload=$_REQUEST['fileupload'];  //การจัดการ fileupload
+	// การจัดการ fileupload
 	@$fileupload = $_POST['fileupload'];
 	@$upload = $_FILES['fileupload']; //เพิ่มไฟล์
 
-
-	if ($upload != '') {
-
+	$part_copy = '';
+	if (isset($_FILES['fileupload']['name']) && $_FILES['fileupload']['name'] != '') {
 		$date = date('Y-m-d'); //กำหนดรูปแบบวันที่
 		$numrand = (mt_rand()); //สุ่มตัวเลข
 		$part = "recive-to-province/"; //โฟลเดอร์เก็บเอกสาร
 		$type = strrchr($_FILES['fileupload']['name'], "."); //เอาชื่อเก่าออกให้เหลือแต่นามสกุล
 		$newname = $date . $numrand . $type; //ตั้งชื่อไฟล์ใหม่โดยใช้เวลา
 		$part_copy = $part . $newname;
-		$part_link = "recive-to-province/" . $newname;
 
 		$filename = $_FILES['fileupload']['name'];
-		// --- ดึงนามสกุล (ตัวพิมพ์เล็ก) ---
 		$ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
-		// --- รายการนามสกุลที่อนุญาต (รูปภาพ + เอกสาร) ---
 		$allowed = array('jpg', 'jpeg', 'png', 'gif', 'pdf', 'doc', 'docx', 'xls', 'xlsx');
-		// --- ตรวจสอบว่าไฟล์อยู่ในรายการอนุญาตไหม ---
 		if (!in_array($ext, $allowed)) {
 			echo "<script>alert('ไม่อนุญาตให้อัปโหลดไฟล์ .$ext'); window.history.back();</script>";
 			exit;
 		}
-
 		move_uploaded_file($_FILES['fileupload']['tmp_name'], $part_copy); //คัดลอกไฟล์ไป Server
-	} else {
-		$part_copy = '';
 	}
-
-	$datelout = date('Y-m-d H:i:s');
-
 
 	//transection
 	dbQuery('BEGIN');
@@ -816,10 +792,11 @@ if (isset($_POST['save'])) { //กดปุ่มบันทึกจากฟ�
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	$result1 = dbQuery($sql, "iiiiiiiiii", [$rec_id, $type_id, $dep_id, $sec_id, $u_id, $obj_id, $pri_id, $yid, $typeDoc, $speed_id]);
 
+	$book_id = dbInsertId(); //ดึง ID ล่าสุดจากตาราง book_master
+
 	$date_line = date('Y-m-d H:i:s');
 	$sql = "INSERT INTO book_detail (book_id,book_no,title,owner,sendfrom,sendto,reference,attachment,date_book,date_in,practice,follow,publice_book,status,date_line,file_upload)
             VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?)";
-	// echo $sql;
 	$result2 = dbQuery($sql, "isssssssssssiss", [
 		$book_id,
 		$book_no,
