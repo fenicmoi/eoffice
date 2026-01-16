@@ -847,6 +847,107 @@ if (isset($_POST['save'])) { //กดปุ่มบันทึกจากฟ�
 }
 
 
+// Update logic from Detail Modal
+if (isset($_POST['btnUpdate'])) {
+	if (!verify_csrf_token($_POST['csrf_token'] ?? '')) {
+		die("CSRF token validation failed.");
+	}
+
+	$book_id = $_POST['book_id'];
+	$book_detail_id = $_POST['book_detail_id'];
+
+	// Fields from form
+	$book_no = $_POST['book_no'];
+	$date_book = $_POST['date_book'];
+	$date_in = $_POST['date_in'];
+	$sendfrom = $_POST['sendfrom'];
+	$sendto = $_POST['sendto'];
+	$title = $_POST['title'];
+	$pri_id = $_POST['pri_id'];
+	$speed_id = $_POST['speed_id'];
+	$obj_id = $_POST['obj_id'];
+	$reference = $_POST['reference'];
+	$attachment = $_POST['attachment'];
+	$practice = $_POST['practice'];
+
+	// File upload handling
+	$file_location = $_POST['file_location_old']; // Default to old file
+	if (isset($_FILES['file_location']['name']) && $_FILES['file_location']['name'] != '') {
+		$date = date('Y-m-d');
+		$numrand = (mt_rand());
+		$part = "recive-to-province/";
+		$type = strrchr($_FILES['file_location']['name'], ".");
+		$newname = $date . $numrand . $type;
+		$part_copy = $part . $newname;
+
+		// Simple validate
+		$ext = strtolower(pathinfo($_FILES['file_location']['name'], PATHINFO_EXTENSION));
+		$allowed = array('jpg', 'jpeg', 'png', 'gif', 'pdf', 'doc', 'docx', 'xls', 'xlsx');
+		if (in_array($ext, $allowed)) {
+			if (move_uploaded_file($_FILES['file_location']['tmp_name'], $part_copy)) {
+				$file_location = $part_copy;
+			}
+		}
+	}
+
+	// Start Transaction
+	dbQuery("BEGIN");
+
+	// Update book_master
+	$sql_m = "UPDATE book_master SET pri_id=?, speed_id=?, obj_id=? WHERE book_id=?";
+	$res_m = dbQuery($sql_m, "iiii", [$pri_id, $speed_id, $obj_id, $book_id]);
+
+	// Update book_detail
+	$sql_d = "UPDATE book_detail SET 
+              book_no=?, title=?, sendfrom=?, sendto=?, reference=?, attachment=?, 
+              date_book=?, date_in=?, practice=?, file_location=? 
+              WHERE book_detail_id=?";
+
+	$res_d = dbQuery($sql_d, "ssssssssssi", [
+		$book_no,
+		$title,
+		$sendfrom,
+		$sendto,
+		$reference,
+		$attachment,
+		$date_book,
+		$date_in,
+		$practice,
+		$file_location,
+		$book_detail_id
+	]);
+
+	if ($res_m && $res_d) {
+		dbQuery("COMMIT");
+		echo "<script>
+            swal({
+                title:'แก้ไขข้อมูลเรียบร้อยแล้ว',
+                type:'success',
+                showConfirmButton:true
+                },
+                function(isConfirm){
+                    if(isConfirm){
+                        window.location.href='flow-resive-province.php';
+                    }
+                }); 
+            </script>";
+	} else {
+		dbQuery("ROLLBACK");
+		echo "<script>
+            swal({
+                title:'เกิดข้อผิดพลาดในการบันทึก',
+                type:'error',
+                showConfirmButton:true
+                },
+                function(isConfirm){
+                    if(isConfirm){
+                        window.location.href='flow-resive-province.php';
+                    }
+                }); 
+            </script>";
+	}
+}
+
 //กรณีลงรับหนังสือ
 /*if(isset($_POST['resive'])){
    $book_detail_id = $_POST['book_detail_id'];

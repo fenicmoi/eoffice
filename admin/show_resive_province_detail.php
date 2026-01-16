@@ -54,11 +54,16 @@ if (isset($row['file_location'])) {
 <div class="detail-modal-container">
     <form name="edit" action="flow-resive-province.php" method="post" enctype="multipart/form-data">
         <?php echo csrf_field(); ?>
+        <input type="hidden" name="book_id" value="<?php echo $book_id; ?>">
+        <input type="hidden" name="book_detail_id" value="<?php echo $book_detail_id; ?>">
+        <input type="hidden" name="file_location_old" value="<?php echo $row['file_location']; ?>">
+
         <table class="detail-table">
             <tr>
                 <td class="detail-label"><i class="fas fa-hashtag"></i> เลขหนังสือ</td>
                 <td>
-                    <div class="detail-value"><?php echo htmlspecialchars($row['book_no']); ?></div>
+                    <input type="text" class="form-control" name="book_no"
+                        value="<?php echo htmlspecialchars($row['book_no']); ?>">
                 </td>
                 <td class="detail-label"><i class="fas fa-barcode"></i> ทะเบียนกลาง</td>
                 <td>
@@ -68,61 +73,103 @@ if (isset($row['file_location'])) {
             <tr>
                 <td class="detail-label"><i class="far fa-calendar-alt"></i> ลงวันที่เอกสาร</td>
                 <td>
-                    <div class="detail-value"><?php echo thaiDate($row['date_book']); ?></div>
+                    <input type="date" class="form-control" name="date_book" value="<?php echo $row['date_book']; ?>"
+                        onKeyDown="return false">
                 </td>
                 <td class="detail-label"><i class="far fa-clock"></i> วันที่บันทึก</td>
                 <td>
-                    <div class="detail-value"><?php echo thaiDate($row['date_in']); ?></div>
+                    <input type="text" class="form-control" name="date_in" value="<?php echo $row['date_in']; ?>">
                 </td>
             </tr>
             <tr>
                 <td class="detail-label"><i class="fas fa-paper-plane"></i> ผู้ส่ง</td>
-                <td colspan="3"><input disabled type="text" value="<?php echo htmlspecialchars($row['sendfrom']); ?>">
+                <td colspan="3"><input type="text" class="form-control" name="sendfrom"
+                        value="<?php echo htmlspecialchars($row['sendfrom']); ?>">
                 </td>
             </tr>
             <tr>
                 <td class="detail-label"><i class="fas fa-user-tag"></i> ผู้รับ</td>
-                <td colspan="3"><input disabled type="text" value="<?php echo htmlspecialchars($row['sendto']); ?>">
+                <td colspan="3"><input type="text" class="form-control" name="sendto"
+                        value="<?php echo htmlspecialchars($row['sendto']); ?>">
                 </td>
             </tr>
             <tr>
                 <td class="detail-label"><i class="fas fa-align-left"></i> เรื่อง</td>
-                <td colspan="3"><input disabled type="text" value="<?php echo htmlspecialchars($row['title']); ?>"></td>
+                <td colspan="3"><input type="text" class="form-control" name="title"
+                        value="<?php echo htmlspecialchars($row['title']); ?>"></td>
             </tr>
             <tr>
                 <td class="detail-label"><i class="fas fa-shield-alt"></i> ชั้นความลับ</td>
-                <td><input disabled type="text" value="<?php print $row['pri_name']; ?>"></td>
+                <td>
+                    <select class="form-control" name="pri_id">
+                        <?php
+                        $sql_p = "SELECT * FROM priority ORDER BY pri_id";
+                        $res_p = dbQuery($sql_p);
+                        while ($r_p = dbFetchArray($res_p)) {
+                            $selected = ($r_p['pri_id'] == $row['pri_id']) ? "selected" : "";
+                            echo "<option value='" . $r_p['pri_id'] . "' $selected>" . $r_p['pri_name'] . "</option>";
+                        }
+                        ?>
+                    </select>
+                </td>
                 <td class="detail-label"><i class="fas fa-bolt"></i> ชั้นความเร็ว</td>
-                <td><input disabled type="text" value="<?php print $row['speed_name']; ?>"></td>
+                <td>
+                    <select class="form-control" name="speed_id">
+                        <?php
+                        $sql_s = "SELECT * FROM speed ORDER BY speed_id";
+                        $res_s = dbQuery($sql_s);
+                        while ($r_s = dbFetchArray($res_s)) {
+                            $selected = ($r_s['speed_id'] == $row['speed_id']) ? "selected" : "";
+                            echo "<option value='" . $r_s['speed_id'] . "' $selected>" . $r_s['speed_name'] . "</option>";
+                        }
+                        ?>
+                    </select>
+                </td>
             </tr>
             <tr>
                 <td class="detail-label"><i class="fas fa-bullseye"></i> วัตถุประสงค์</td>
-                <td><input disabled type="text" value="<?php print $row['obj_name']; ?>"></td>
+                <td>
+                    <select class="form-control" name="obj_id">
+                        <?php
+                        $sql_o = "SELECT * FROM object ORDER BY obj_id";
+                        $res_o = dbQuery($sql_o);
+                        while ($r_o = dbFetchArray($res_o)) {
+                            $selected = ($r_o['obj_id'] == $row['obj_id']) ? "selected" : "";
+                            echo "<option value='" . $r_o['obj_id'] . "' $selected>" . $r_o['obj_name'] . "</option>";
+                        }
+                        ?>
+                    </select>
+                </td>
                 <td class="detail-label"><i class="fas fa-info-circle"></i> สถานะ</td>
-                <td><input disabled type="text" value="แสดงผลรายละเอียด" style="color: #4e73df !important;"></td>
+                <td>
+                    <div class="detail-value text-primary">กำลังดำเนินการ</div>
+                </td>
             </tr>
             <tr>
                 <td class="detail-label"><i class="fas fa-link"></i> อ้างถึง</td>
-                <td colspan="3"><textarea disabled rows="2"><?php print $row['reference']; ?></textarea></td>
+                <td colspan="3"><textarea class="form-control" name="reference"
+                        rows="2"><?php print $row['reference']; ?></textarea></td>
             </tr>
             <tr>
                 <td class="detail-label"><i class="fas fa-paperclip"></i> สิ่งที่ส่งมาด้วย</td>
-                <td colspan="3"><textarea disabled rows="2"><?php print $row['attachment']; ?></textarea></td>
+                <td colspan="3"><textarea class="form-control" name="attachment"
+                        rows="2"><?php print $row['attachment']; ?></textarea></td>
             </tr>
             <tr>
-                <?php
-                $practice_id = $row['practice'];
-                $practice_row = ['dep_name' => ''];
-                if ($practice_id) {
-                    $sql_practice = "SELECT dep_name FROM depart WHERE dep_id = ?";
-                    $result_practice = dbQuery($sql_practice, "i", [(int) $practice_id]);
-                    $practice_row = dbFetchArray($result_practice);
-                }
-                ?>
                 <td class="detail-label"><i class="fas fa-university"></i> หน่วยดำเนินการ</td>
                 <td colspan="3">
-                    <div class="detail-value-text"><label
-                            id="under"><?php echo htmlspecialchars($practice_row['dep_name'] ?? ''); ?></label></div>
+                    <select class="form-control selectpicker" data-live-search="true" name="practice"
+                        style="width: 100%;">
+                        <option value="">-- เลือกหน่วยปฏิบัติ --</option>
+                        <?php
+                        $sql_d = "SELECT * FROM depart ORDER BY dep_name";
+                        $res_d = dbQuery($sql_d);
+                        while ($r_d = dbFetchArray($res_d)) {
+                            $selected = ($r_d['dep_id'] == $row['practice']) ? "selected" : "";
+                            echo "<option value='" . $r_d['dep_id'] . "' $selected>" . $r_d['dep_name'] . "</option>";
+                        }
+                        ?>
+                    </select>
                 </td>
             </tr>
             <tr>
@@ -138,21 +185,34 @@ if (isset($row['file_location'])) {
             <tr>
                 <td class="detail-label"><i class="fas fa-file-download"></i> ไฟล์แนบ</td>
                 <td colspan="3">
-                    <div class="detail-value-text" style="color: #4e73df;"><?php echo $showFile; ?></div>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <input type="file" name="file_location" class="form-control">
+                        </div>
+                        <div class="col-md-4">
+                            <div class="detail-value-text" style="color: #4e73df; font-size: 0.9rem;">
+                                <?php echo $showFile; ?></div>
+                        </div>
+                    </div>
                 </td>
             </tr>
             <tr>
                 <td colspan="4" style="padding-top: 2rem;">
                     <hr style="border-top: 1px solid #eaecf4; margin-bottom: 2rem;">
-                    <input type="hidden" name="book_detail_id" value="<?php echo (int) $book_detail_id; ?>">
+
                     <div class="text-center">
+                        <button class="btn btn-warning btn-lg" type="submit" name="btnUpdate"
+                            style="min-width: 160px; font-weight: 700; border-radius: 30px; margin-right: 15px;">
+                            <i class="fas fa-save"></i> บันทึกแก้ไข
+                        </button>
+
                         <button class="btn btn-success btn-lg" type="submit" name="resive"
-                            style="min-width: 200px; font-weight: 700;">
+                            style="min-width: 160px; font-weight: 700; border-radius: 30px; margin-right: 5px;">
                             <i class="fas fa-check-circle"></i> ลงรับหนังสือ
                         </button>
-                        &nbsp;&nbsp;
+
                         <button class="btn btn-danger btn-lg" type="submit" name="reply"
-                            style="min-width: 200px; font-weight: 700;">
+                            style="min-width: 160px; font-weight: 700; border-radius: 30px;">
                             <i class="fas fa-undo"></i> ส่งคืนหนังสือ
                         </button>
                     </div>
@@ -161,3 +221,6 @@ if (isset($row['file_location'])) {
         </table>
     </form>
 </div>
+<script>
+    $('.selectpicker').selectpicker(); // Initialize selectpicker
+</script>

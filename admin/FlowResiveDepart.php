@@ -523,6 +523,60 @@ if (isset($_POST['save'])) { //กดปุ่มบันทึกจากฟ�
                 }); 
             </script>";
 	}
+	}
+
+// Update logic from Detail Modal
+if (isset($_POST['btnUpdate'])) {
+	if (!verify_csrf_token($_POST['csrf_token'] ?? '')) {
+		die("CSRF token validation failed.");
+	}
+
+	$cid = $_POST['cid'];
+	$book_no = $_POST['book_no'];
+	$title = $_POST['title'];
+	$sendfrom = $_POST['sendfrom'];
+	$sendto = $_POST['sendto'];
+	$dateout = $_POST['dateout'];
+	$remark = $_POST['remark']; // This is actually sec_id in this table context
+
+	$sql = "UPDATE flow_recive_depart SET 
+            book_no='$book_no', 
+            title='$title', 
+            sendfrom='$sendfrom', 
+            sendto='$sendto', 
+            dateout='$dateout', 
+            remark='$remark' 
+            WHERE cid=$cid";
+
+	$result = dbQuery($sql);
+
+	if ($result) {
+		echo "<script>
+            swal({
+                title:'แก้ไขข้อมูลเรียบร้อยแล้ว',
+                type:'success',
+                showConfirmButton:true
+                },
+                function(isConfirm){
+                    if(isConfirm){
+                        window.location.href='FlowResiveDepart.php';
+                    }
+                }); 
+            </script>";
+	} else {
+		echo "<script>
+            swal({
+                title:'เกิดข้อผิดพลาดในการบันทึก',
+                type:'error',
+                showConfirmButton:true
+                },
+                function(isConfirm){
+                    if(isConfirm){
+                        window.location.href='FlowResiveDepart.php';
+                    }
+                }); 
+            </script>";
+	}
 }
 
 include("footer.php");
