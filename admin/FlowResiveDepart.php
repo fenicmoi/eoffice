@@ -2,10 +2,10 @@
 
 <?php
 include "header.php";
-$u_id = $_SESSION[ 'ses_u_id' ];
+$u_id = $_SESSION['ses_u_id'];
 
 //ตรวจสอบปีเอกสาร
-list( $yid, $yname, $ystatus ) = chkYear();
+list($yid, $yname, $ystatus) = chkYear();
 $yid = $yid;
 $yname = $yname;
 $ystatus = $ystatus;
@@ -13,49 +13,51 @@ $ystatus = $ystatus;
 
 <div class="col-md-2">
 	<?php
-		$menu = checkMenu( $level_id );
-		include $menu;
+	$menu = checkMenu($level_id);
+	include $menu;
 	?>
 </div>
 <script>
-	$( document ).ready( function () {
-		$( "#dateSearch" ).hide();
-		$( "tr" ).first().hide();
+	$(document).ready(function () {
+		$("#dateSearch").hide();
+		$("tr").first().hide();
 
 
-		$( "#hideSearch" ).click( function () {
-			$( "tr" ).first().show( 1000 );
-		} );
+		$("#hideSearch").click(function () {
+			$("tr").first().show(1000);
+		});
 
 
-		$( '#typeSearch' ).change( function () {
-			var typeSearch = $( '#typeSearch' ).val();
-			if ( typeSearch == 4 ) {
-				$( "#dateSearch" ).show( 500 );
-				$( "#search" ).hide( 500 );
+		$('#typeSearch').change(function () {
+			var typeSearch = $('#typeSearch').val();
+			if (typeSearch == 4) {
+				$("#dateSearch").show(500);
+				$("#search").hide(500);
 			} else {
-				$( "#dateSearch" ).hide( 500 );
-				$( "#search" ).show( 500 );
+				$("#dateSearch").hide(500);
+				$("#search").show(500);
 			}
-		} )
-	} );
+		})
+	});
 </script>
-<div class="col-md-10">	
+<div class="col-md-10">
 	<div class="panel panel-primary">
-		<div class="panel-heading"><i class="fas fa-book fa-2x" aria-hidden="true"></i> <strong>หนังสือรับหน่วยงาน</strong> 
-			:::ใช้คุมทะเบียนหนังสือรับสำหรับส่วนราชการต่าง ๆ  ที่ยังไม่มีระบบคุมเอกสาร
+		<div class="panel-heading"><i class="fas fa-book fa-2x" aria-hidden="true"></i>
+			<strong>หนังสือรับหน่วยงาน</strong>
+			:::ใช้คุมทะเบียนหนังสือรับสำหรับส่วนราชการต่าง ๆ ที่ยังไม่มีระบบคุมเอกสาร
 			<div class="btn-group pull-right">
 				<a href="" class="btn btn-default " data-toggle="modal" data-target="#modalAdd">
-							<i class="fa fa-plus" aria-hidden="true"></i> ลงทะเบียนรับ
+					<i class="fa fa-plus" aria-hidden="true"></i> ลงทะเบียนรับ
 				</a>
-			
+
 				<div class="btn-group">
 					<button class="btn btn-default  dropdown-toggle" type="button" data-toggle="dropdown">
 						<i class="fas fa-print"></i> รายงาน<span class="caret"></span>
 					</button>
 					<ul class="dropdown-menu">
-						
-						<li><a href="#" data-toggle="modal" data-target="#myReport1"><i class="fas fa-calendar-alt"></i> รายงานทะเบียนรับ</a>
+
+						<li><a href="#" data-toggle="modal" data-target="#myReport1"><i class="fas fa-calendar-alt"></i>
+								รายงานทะเบียนรับ</a>
 						</li>
 					</ul>
 				</div>
@@ -75,17 +77,20 @@ $ystatus = $ystatus;
 									<option value="4">ตามช่วงเวลา</option>
 								</select>
 								<div class="input-group">
-									<input class="form-control" id="search" name="search" type="text" size="80" placeholder="Keyword สั้นๆ">
+									<input class="form-control" id="search" name="search" type="text" size="80"
+										placeholder="Keyword สั้นๆ">
 									<div class="input-group" id="dateSearch">
-										<span class="input-group-addon"><i class="fas fa-calendar-alt"></i>วันที่เริ่มต้น</span>
+										<span class="input-group-addon"><i
+												class="fas fa-calendar-alt"></i>วันที่เริ่มต้น</span>
 										<input class="form-control" id="dateStart" name="dateStart" type="date">
-										<span class="input-group-addon"><i class="fas fa-calendar-alt"></i>วันที่สิ้นสุด</span>
+										<span class="input-group-addon"><i
+												class="fas fa-calendar-alt"></i>วันที่สิ้นสุด</span>
 										<input class="form-control" id="dateEnd" name="dateEnd" type="date">
 									</div>
 									<div class="input-group-btn">
 										<button class="btn btn-primary" type="submit" name="btnSearch" id="btnSearch">
-                        					<i class="fas fa-search "></i>
-                    					</button>
+											<i class="fas fa-search "></i>
+										</button>
 									</div>
 								</div>
 							</div>
@@ -109,27 +114,27 @@ $ystatus = $ystatus;
 						";
 
 				//กรณีมีการกดปุ่มค้นหา
-				if ( isset( $_POST[ 'btnSearch' ] ) ) { //ถ้ามีการกดปุ่มค้นหา
-					@$typeSearch = $_POST[ 'typeSearch' ]; //ประเภทการค้นหา
-					@$txt_search = $_POST[ 'search' ]; //กล่องรับข้อความ
-					@$dateStart = $_POST[ 'dateStart' ]; //วันที่เริ้มค้นหา
-					@$dateEnd = $_POST[ 'dateEnd' ]; //วันที่สิ้นสุดการค้นหา
-
-					if ( @$typeSearch == 1 ) { //ทะเบียนรับ
+				if (isset($_POST['btnSearch'])) { //ถ้ามีการกดปุ่มค้นหา
+					@$typeSearch = $_POST['typeSearch']; //ประเภทการค้นหา
+					@$txt_search = $_POST['search']; //กล่องรับข้อความ
+					@$dateStart = $_POST['dateStart']; //วันที่เริ้มค้นหา
+					@$dateEnd = $_POST['dateEnd']; //วันที่สิ้นสุดการค้นหา
+				
+					if (@$typeSearch == 1) { //ทะเบียนรับ
 						$sql .= " WHERE fr.rec_no LIKE '%$txt_search%'  AND fr.dep_id=$dep_id";
-					} elseif ( @$typeSearch == 2 ) { //เลขหนังสือ
+					} elseif (@$typeSearch == 2) { //เลขหนังสือ
 						$sql .= " WHERE fr.book_no LIKE '%$txt_search%'   AND fr.dep_id=$dep_id";
-					} elseif ( @$typeSearch == 3 ) { //เรื่อง
+					} elseif (@$typeSearch == 3) { //เรื่อง
 						$sql .= " WHERE fr.title LIKE '%$txt_search%'   AND fr.dep_id=$dep_id";
-					} elseif ( @$typeSearch == 4 ) { //ตามเวลา
+					} elseif (@$typeSearch == 4) { //ตามเวลา
 						$sql .= " WHERE  (fr.datein BETWEEN '$dateStart' AND '$dateEnd') AND fr.dep_id=$dep_id ";
 					}
 
 					$sql .= " ORDER BY fr.cid DESC";
-					$result = page_query($dbConn,$sql,10);
-					$numrow = dbNumRows( $result );
-					if ( $numrow == 0 ) {
-					echo "<script>
+					$result = page_query($dbConn, $sql, 10);
+					$numrow = dbNumRows($result);
+					if ($numrow == 0) {
+						echo "<script>
                    swal({
                         title:'ไม่พบข้อมูล!',
                         type:'warning',
@@ -148,50 +153,58 @@ $ystatus = $ystatus;
 					$sql .= " WHERE fr.dep_id= $dep_id  ORDER BY fr.cid  DESC";
 				}
 
-				$result = page_query( $dbConn, $sql, 10 );
+				$result = page_query($dbConn, $sql, 10);
 				$numrow = dbNumRows($result);
-				if($numrow == 0){?>
-					<tr><td colspan="6"><center><h5>ไม่มีข้อมูล</h5></center></td></tr>
-				<?php }else{
-					while ( $row = dbFetchArray( $result ) ) {?>
+				if ($numrow == 0) { ?>
 					<tr>
-						<td><?php echo $row['rec_no']; ?>/<?php echo $row['yname'];?></td>
-						<td><?php echo $row['book_no']; ?></td>
-						<?php 
-							$cid=$row['cid'];
-							$title=$row['title'];
-						?>
-						<td>
-							<a class="text-primary" href="#" onClick="load_leave_data('<?php print $cid;?>','<?php print $u_id; ?>');" data-toggle="modal" data-target=".bs-example-modal-table">
-								<?php echo $row['title'];?>
-							</a>
-						</td>
-						<td>
-							<?php echo thaiDate($row['dateout']);?>
-						</td>
-						<td>
-							<?php echo $row['sec_name']; ?>
-						</td>
-						<!--  ส่วนตรวจสอบจำนวนวันที่กำหนดให้แก้ไขได้ไม่เกิน 7 วัน  -->
-						<?php
-						$d1 = $row[ 'datein' ];
-						$d2 = date( 'Y-m-d' );
-						$numday = getNumDay( $d1, $d2 );
-						?>
-						<td>
-							<?php 
-						if($level_id>3){
-								echo '<i class="fas fa-ban"></i>ไม่มีสิทธิ์';
-							}else{
-								if($numday >= $dayEdit){
-									echo '<i class="fab fa-expeditedssl fa-2x"></i>';
-								}else{
-									echo '<a href="FlowResiveDepart-edit.php?cid='.$cid.'");"><i class="btn btn-warning fas fa-edit"></i></a>';
-								}
-							}
-						?>
+						<td colspan="6">
+							<center>
+								<h5>ไม่มีข้อมูล</h5>
+							</center>
 						</td>
 					</tr>
+				<?php } else {
+					while ($row = dbFetchArray($result)) { ?>
+						<tr>
+							<td><?php echo $row['rec_no']; ?>/<?php echo $row['yname']; ?></td>
+							<td><?php echo $row['book_no']; ?></td>
+							<?php
+							$cid = $row['cid'];
+							$title = $row['title'];
+							?>
+							<td>
+								<a class="text-primary" href="#"
+									onClick="load_leave_data('<?php print $cid; ?>','<?php print $u_id; ?>');"
+									data-toggle="modal" data-target=".bs-example-modal-table">
+									<?php echo $row['title']; ?>
+								</a>
+							</td>
+							<td>
+								<?php echo thaiDate($row['dateout']); ?>
+							</td>
+							<td>
+								<?php echo $row['sec_name']; ?>
+							</td>
+							<!--  ส่วนตรวจสอบจำนวนวันที่กำหนดให้แก้ไขได้ไม่เกิน 7 วัน  -->
+							<?php
+							$d1 = $row['datein'];
+							$d2 = date('Y-m-d');
+							$numday = getNumDay($d1, $d2);
+							?>
+							<td>
+								<?php
+								if ($level_id > 3) {
+									echo '<i class="fas fa-ban"></i>ไม่มีสิทธิ์';
+								} else {
+									if ($numday >= $dayEdit) {
+										echo '<i class="fab fa-expeditedssl fa-2x"></i>';
+									} else {
+										echo '<a href="FlowResiveDepart-edit.php?cid=' . $cid . '");"><i class="btn btn-warning fas fa-edit"></i></a>';
+									}
+								}
+								?>
+							</td>
+						</tr>
 					<?php } ?>
 				<?php } ?>
 			</tbody>
@@ -199,12 +212,12 @@ $ystatus = $ystatus;
 		<div class="panel-footer">
 			<center>
 				<a href="FlowResiveDepart.php" class="btn btn-primary"><i class="fas fa-home"></i></a>
-				<?php 
-					page_link_border("solid","1px","gray");
-					page_link_bg_color("lightblue","pink");
-					page_link_font("14px");
-					page_link_color("blue","red");
-					page_echo_pagenums(6,true); 
+				<?php
+				page_link_border("solid", "1px", "gray");
+				page_link_bg_color("lightblue", "pink");
+				page_link_font("14px");
+				page_link_color("blue", "red");
+				page_echo_pagenums(6, true);
 				?>
 			</center>
 		</div>
@@ -219,129 +232,129 @@ $ystatus = $ystatus;
 			<div class="modal-content">
 				<div class="modal-header bg-primary">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title"><i class="fa fa-plus-circle"></i> ลงทะเบียนรับ</h4>
+					<h4 class="modal-title"><i class="fa fa-plus-circle"></i> ลงทะเบียนรับหน่วยงาน</h4>
 				</div>
-				<div class="modal-body bg-success">
+				<div class="modal-body modal-body-soft">
 					<form name="form" method="post" enctype="multipart/form-data">
-						<table width="100%">
-							<tr>
-								<td>
-									<div class="form-group">
-										<label for="yearDoc">ปีเอกสาร : </label> <input name="yearDoc" type="text" value="<?php print $yname; ?>" disabled="">
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label><i class="fas fa-calendar-check"></i> ปีเอกสาร / วันที่ลงรับ</label>
+									<div class="input-group">
+										<span class="input-group-addon">ปี/วันที่</span>
+										<input type="text" class="form-control"
+											value="<?php print $yname; ?> / <?php print DateThai(); ?>" disabled>
 									</div>
-								</td>
-								<td></td>
-								<td>
-									<div class="form-group">
-										<label for="date_in">วันที่ลงรับ:</label><input type="text" name="date_in" id="date_in" value="<?php print DateThai();?>" disabled="">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label><i class="fas fa-barcode"></i> เลขทะเบียนรับ</label>
+									<div class="input-group">
+										<span class="input-group-addon">เลขทะเบียน</span>
+										<input type="text" class="form-control" value="ออกโดยระบบ" disabled>
 									</div>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<div class="form-group">
-										<div class="input-group">
-											<span class="input-group-addon"><i class="fas fa-list-ol"></i></span>
-											<input class="form-control" type="text" name="book_no" id="book_no" placeholder="เลขที่หนังสือ" required>
-										</div>
-									</div>
-								</td>
-								<td></td>
-								<td><label>เลขทะเบียนรับ : <kbd>ออกโดยระบบ</kbd></label>
-								</td>
-							</tr>
-							<tr>
-								<td colspan="3">
-									<div class="form-group">
-										<div class="input-group">
-											<span class="input-group-addon"><i class="fas fa-user-secret"></i></span>
-											<input type="text" class="form-control" name="sendfrom" id="sendfrom" placeholder="ระบุผู้ส่ง" required>
-										</div>
-									</div>
-								</td>
-							</tr>
-							<?php
-								$sql = "SELECT dep_name FROM  depart  WHERE dep_id = $dep_id ";
-								$result = dbQuery($sql);
-								$row =  dbFetchAssoc($result);
-							?>
-							<tr>
-								<td colspan="3">
-									<div class="form-group">
-										<div class="input-group">
-											<span class="input-group-addon"><i class="fas fa-user"></i></span>
-											<input type="text" class="form-control" name="sendto" id="sendto" size="50" value="<?php echo $row['dep_name'];?>">
-										</div>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td colspan="3">
-									<div class="form-group">
-										<div class="input-group">
-											<span class="input-group-addon"><i class="fas fa-list"></i></span>
-											<input type="text" class="form-control" name="title" id="title" size="80" placeholder="เรื่องหนังสือ" required>
-										</div>
-									</div>
-								</td>
+								</div>
+							</div>
+						</div>
 
-							</tr>
-							<tr>
-								<td colspan="3">
-									<div class="form-group">
-										<div class="input-group col-xs-4">
-											<span class="input-group-addon"><label>ลงวันที่</label></span>
-											<input class="form-control" type="date" name="datepicker" id="datepicker" onKeyDown="return false" required>
-										</div>
+						<div class="form-group">
+							<label><i class="fas fa-list-ol"></i> เลขที่หนังสือ</label>
+							<div class="input-group">
+								<span class="input-group-addon">เลขที่หนังสือ</span>
+								<input class="form-control" type="text" name="book_no" id="book_no"
+									placeholder="ระบุเลขที่หนังสือ" required>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label><i class="fas fa-user-edit"></i> ผู้ส่ง</label>
+									<div class="input-group">
+										<span class="input-group-addon">จาก</span>
+										<input type="text" class="form-control" name="sendfrom" id="sendfrom"
+											placeholder="ระบุผู้ส่ง" required>
 									</div>
-								</td>
-							</tr>
-							<?php 
-                                $sql="SELECT sec_id,sec_name FROM  section WHERE dep_id=$dep_id ORDER BY dep_id DESC";
-                                $result=dbQuery($sql);
-                            ?>
-							<tr>
-								<td colspan="3">
-									<div class="form-group">
-										<div class="input-group">
-											<span class="input-group-addon"><label>มอบให้กลุ่ม</label></span>
-											<select class="form-control" id="remark" name="remark">
-												<?php
-												while ( $row = dbFetchArray( $result ) ) {?>
-												<option value="<?php echo $row['sec_id']?>">
-													<?php 
-													echo $row['sec_name'];
-													$sec_id = $row['sec_id'];
-													?>
-												</option>
-												<?php } ?>
-											</select>
-										</div>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label><i class="fas fa-user-tag"></i> ผู้รับ</label>
+									<div class="input-group">
+										<span class="input-group-addon">ถึง</span>
+										<?php
+										$sql_dep = "SELECT dep_name FROM depart WHERE dep_id = $dep_id";
+										$res_dep = dbQuery($sql_dep);
+										$row_dep = dbFetchAssoc($res_dep);
+										?>
+										<input type="text" class="form-control" name="sendto" id="sendto"
+											value="<?php echo $row_dep['dep_name']; ?>">
 									</div>
-								</td>
-							</tr>
-							<tr>
-								<td colspan="3">
-									<div class="form-group">
-										<div class="input-group">
-											<span class="input-group-addon"><i class="fas fa-user"></i></span>
-											<input type="text" class="form-control" name="practice" placeholder="หมายเหตุ">
-										</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label><i class="fas fa-bookmark"></i> เรื่อง</label>
+							<div class="input-group">
+								<span class="input-group-addon">หัวข้อเรื่อง</span>
+								<input type="text" class="form-control" name="title" id="title"
+									placeholder="ระบุเรื่องหนังสือ" required>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label><i class="far fa-calendar-alt"></i> ลงวันที่</label>
+									<div class="input-group">
+										<span class="input-group-addon">วันที่เอกสาร</span>
+										<input class="form-control" type="date" name="datepicker" id="datepicker"
+											onKeyDown="return false" required>
 									</div>
-								</td>
-							</tr>
-						</table><br>
-						<center>
-							<button class="btn btn-primary btn-lg" type="submit" name="save">
-                                <i class="fa fa-save fa-2x"></i> บันทึก
-                                <input id="yid" name="yid" type="hidden" value="<?php echo $yid; ?>"> 
-								<input id="sec_id" name = "sec_id" type="hidden" value="<?php echo $sec_id;?>
-                            </button>
-						</center>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label><i class="fas fa-university"></i> มอบให้กลุ่ม</label>
+									<div class="input-group">
+										<span class="input-group-addon">กลุ่มงาน</span>
+										<select class="form-control" id="remark" name="remark">
+											<?php
+											$sql_sec = "SELECT sec_id,sec_name FROM section WHERE dep_id=$dep_id ORDER BY sec_name ASC";
+											$res_sec = dbQuery($sql_sec);
+											while ($row_sec = dbFetchArray($res_sec)) { ?>
+												<option value="<?php echo $row_sec['sec_id'] ?>">
+													<?php echo $row_sec['sec_name']; ?></option>
+											<?php } ?>
+										</select>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label><i class="fas fa-info-circle"></i> หมายเหตุ</label>
+							<div class="input-group">
+								<span class="input-group-addon">หมายเหตุ</span>
+								<input type="text" class="form-control" name="practice" placeholder="เพิ่มเติม (ถ้ามี)">
+							</div>
+						</div>
+
+						<hr style="border-top: 2px solid #eaecf4;">
+						<div class="text-center">
+							<button class="btn btn-primary btn-lg" type="submit" name="save"
+								style="border-radius: 30px; padding: 10px 40px; font-weight: 700;">
+								<i class="fa fa-save"></i> บันทึกข้อมูล
+								<input id="yid" name="yid" type="hidden" value="<?php echo $yid; ?>">
+							</button>
+						</div>
 					</form>
 				</div>
-				<div class="modal-footer bg-primary">
-					<button type="button" class="btn btn-danger" data-dismiss="modal">X</button>
+				<div class="modal-footer" style="background-color: #f8f9fc;">
+					<button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i>
+						ปิดหน้าต่าง</button>
 				</div>
 			</div>
 		</div>
@@ -361,26 +374,30 @@ $ystatus = $ystatus;
 				<h4 class="modal-title"><i class="fa fa-print"></i> รายงานทะเบียนหนังสือรับ</h4>
 			</div>
 			<div class="modal-body">
-			    <center>
-				<form class="form" role="form" id="form_other" name="form_other" method="POST" action="report/rep-flow-recive-depart.php" target="_blank">
-					<div class="form-group">
-						<div class="input-group col-xs-6">
-							<span class="input-group-addon">เลือกวันที่</span>
-							<input class="form-control" id="dateprint" name="dateprint" type="date" onKeyDown="return false">
+				<center>
+					<form class="form" role="form" id="form_other" name="form_other" method="POST"
+						action="report/rep-flow-recive-depart.php" target="_blank">
+						<div class="form-group">
+							<div class="input-group col-xs-6">
+								<span class="input-group-addon">เลือกวันที่</span>
+								<input class="form-control" id="dateprint" name="dateprint" type="date"
+									onKeyDown="return false">
+							</div>
 						</div>
-					</div>
-					<div class="form-group">
-						<div class="input-group">
-							<span><label>เลือกช่วงเวลา [กรณีต้องการสั่งพิมพ์เป็นรอบเช้า/บ่าย]</label></span><br>
-							ช่วงเช้า &nbsp<input class="radio-inline" type="radio" name="rep_time" value="1">08:30-12:00<br>
-							ช่วงบ่าย &nbsp<input class="radio-inline" type="radio" name="rep_time" value="2">13:00-16:30
+						<div class="form-group">
+							<div class="input-group">
+								<span><label>เลือกช่วงเวลา [กรณีต้องการสั่งพิมพ์เป็นรอบเช้า/บ่าย]</label></span><br>
+								ช่วงเช้า &nbsp<input class="radio-inline" type="radio" name="rep_time"
+									value="1">08:30-12:00<br>
+								ช่วงบ่าย &nbsp<input class="radio-inline" type="radio" name="rep_time"
+									value="2">13:00-16:30
+							</div>
 						</div>
-					</div>
-					<button type="submit" class="btn btn-danger"><i class="fas fa-print"></i>ตกลง</button>
-					<input type="hidden" name="yid" value="<?php echo $yid?>">
-					<input type="hidden" name="uid" value="<?php echo $u_id?>">
-					<!-- <input type="hidden" name="username" value="<?php //print $username?>"> -->
-				</form>
+						<button type="submit" class="btn btn-danger"><i class="fas fa-print"></i>ตกลง</button>
+						<input type="hidden" name="yid" value="<?php echo $yid ?>">
+						<input type="hidden" name="uid" value="<?php echo $u_id ?>">
+						<!-- <input type="hidden" name="username" value="<?php //print $username ?>"> -->
+					</form>
 				</center>
 			</div>
 			<div class="modal-footer">
@@ -403,15 +420,16 @@ $ystatus = $ystatus;
 				<h4 class="modal-title"><i class="fa fa-print"></i> รายงานทะเบียนหนังสือรับ [ตามช่วงเวลา]</h4>
 			</div>
 			<div class="modal-body">
-				<form class="form-inline" role="form" id="form_other" name="form_other" method="POST" action="report/rep-flow-recive-depart-month.php" target="_blank">
+				<form class="form-inline" role="form" id="form_other" name="form_other" method="POST"
+					action="report/rep-flow-recive-depart-month.php" target="_blank">
 					<span>วันที่เริ่มต้น</span>
 					<input class="form-control" id="dateStart" name="dateStart" type="date">
 					<span>วันที่สิ้นสุด</span>
 					<input class="form-control" id="dateEnd" name="dateEnd" type="date">
 					<button type="submit" class="btn btn-danger"><i class="fas fa-print"></i> ตกลง</button>
-					<input type="hidden" name="yid" value="<?php echo $yid?>">
-					<input type="hidden" name="uid" value="<?php echo $u_id?>">
-					<!-- <input type="hidden" name="username" value="<?php //print $username?>"> -->
+					<input type="hidden" name="yid" value="<?php echo $yid ?>">
+					<input type="hidden" name="uid" value="<?php echo $u_id ?>">
+					<!-- <input type="hidden" name="username" value="<?php //print $username ?>"> -->
 				</form>
 			</div>
 			<div class="modal-footer">
@@ -448,37 +466,37 @@ $ystatus = $ystatus;
 
 <!-- ส่วนเพิ่มข้อมูล  -->
 <?php
-if ( isset( $_POST[ 'save' ] ) ) { //กดปุ่มบันทึกจากฟอร์มบันทึก
+if (isset($_POST['save'])) { //กดปุ่มบันทึกจากฟอร์มบันทึก
 
 
-	$yid = $_POST[ 'yid' ]; //รหัสปีปัจจุบัน
-	$book_no = $_POST[ 'book_no' ]; // หมายเลขประจำหนังสือ
-	$title = $_POST[ 'title' ]; // เรื่อง   
+	$yid = $_POST['yid']; //รหัสปีปัจจุบัน
+	$book_no = $_POST['book_no']; // หมายเลขประจำหนังสือ
+	$title = $_POST['title']; // เรื่อง   
 
-	$sendfrom = $_POST[ 'sendfrom' ]; // ผู้ส่ง
-	$sendto = $_POST[ 'sendto' ]; // ผู้รับ
-	$practice = $_POST[ 'practice' ]; // ผู้ปฏิบัติ
+	$sendfrom = $_POST['sendfrom']; // ผู้ส่ง
+	$sendto = $_POST['sendto']; // ผู้รับ
+	$practice = $_POST['practice']; // ผู้ปฏิบัติ
 
-	$dateout = $_POST[ 'datepicker' ]; // เอกสารลงวันที่
-	$datein = date( 'Y-m-d' );
-	$remark = $_POST[ 'remark' ];
+	$dateout = $_POST['datepicker']; // เอกสารลงวันที่
+	$datein = date('Y-m-d');
+	$remark = $_POST['remark'];
 	$time_stamp = date("H:i:s");
 
 	//(1) เลือกข้อมูลเพื่อรันเลขรับ  โดยมีเงื่อนไขให้ตรงกับหน่วยงานของผู้ใช้ ###########################
 	$sql = "SELECT rec_no FROM flow_recive_depart WHERE dep_id=$dep_id and yid=$yid  ORDER  BY cid DESC";
 	//echo $sql;
-	$result = dbQuery( $sql );
-	$row = dbFetchArray( $result );
-	$rec_no = $row[ 'rec_no' ];
+	$result = dbQuery($sql);
+	$row = dbFetchArray($result);
+	$rec_no = $row['rec_no'];
 	$rec_no++;
 
 
 	$sql = "INSERT INTO flow_recive_depart(rec_no,book_no,title,sendfrom,sendto,practice,dateout,datein,dep_id,sec_id,u_id,yid,remark,time_stamp) 
-            VALUES ($rec_no,'$book_no','$title','$sendfrom','$sendto','$practice','$dateout','$datein',$dep_id,$sec_id,$u_id,$yid,$remark,'$time_stamp')";                         
-	$result = dbQuery( $sql );
+            VALUES ($rec_no,'$book_no','$title','$sendfrom','$sendto','$practice','$dateout','$datein',$dep_id,$sec_id,$u_id,$yid,$remark,'$time_stamp')";
+	$result = dbQuery($sql);
 
 
-	if ( $result ) {
+	if ($result) {
 		echo "<script>
             swal({
                 title:'เรียบร้อย',
@@ -513,11 +531,11 @@ include("footer.php");
 
 <!-- ส่วนนำข้อมูลไปแสดงผลบน Modal -->
 <script type="text/javascript">
-	function load_leave_data( cid, u_id ) {
+	function load_leave_data(cid, u_id) {
 		var sdata = {
 			cid: cid,
 			u_id: u_id
 		};
-		$( '#divDataview' ).load( 'show_flow_depart_detail.php', sdata );
+		$('#divDataview').load('show_flow_depart_detail.php', sdata);
 	}
 </script>

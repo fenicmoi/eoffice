@@ -281,14 +281,17 @@ a:hover {
     background-color: var(--light-color);
 }
 
-/* Custom Animation for Modals */
+/* Custom Animation for Modals - Soft Opening */
 .modal.fade .modal-dialog {
     transform: translateY(20px);
-    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+    opacity: 0;
+    transition: all 0.25s ease-out;
 }
 
-.modal.in .modal-dialog {
+.modal.in .modal-dialog,
+.modal.show .modal-dialog {
     transform: translateY(0);
+    opacity: 1;
 }
 
 /* Enhance existing background classes for modal headers if used */
