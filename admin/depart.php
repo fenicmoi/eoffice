@@ -294,4 +294,9 @@ if (isset($_GET['del'])) {
     }
 }
 ?>
-<?php //include "footer.php"; ?>
+<?php include "../footer.php"; ?>
+<script>
+    $(document).ready(function() {
+        $('#myTable').DataTable();
+    });
+</script>
