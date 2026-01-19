@@ -101,7 +101,8 @@ $u_id = $_GET['edit'];
                             <div class="form-group form-inline">
                                 <label for="province">ประเภทส่วนราชการ : </label>
                                 <span id="province">
-                                    <select class="form-control" required>
+                                    <select name="province" class="form-control" onchange="dochange('amphur', this.value)"
+                                        required>
                                         <?php
                                         while ($row = dbFetchArray($result)) {
                                             $type_db = $row['type_id']; ?>
@@ -119,7 +120,8 @@ $u_id = $_GET['edit'];
                             <div class="form-group form-inline">
                                 <label for="amphur">ชื่อส่วนราชการ : </label>
                                 <span id="amphur">
-                                    <select id="amphur" name="amphur" class="selectpicker" data-live-search="true" required>
+                                    <select id="amphur_select" name="amphur" class="selectpicker" data-live-search="true"
+                                        onchange="dochange('district', this.value)" required>
                                         <?php
                                         while ($row = dbFetchArray($result)) {
                                             $dep = $row['dep_id']; ?>
@@ -356,7 +358,7 @@ if (isset($_POST['update'])) {
         req.send(null); //ส่งค่า
     }
 
-    window.onLoad = dochange('province', -1);
+
 
     $(document).ready(function () {
         $('#myTable').DataTable();
