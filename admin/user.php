@@ -125,148 +125,142 @@ $u_id = $_SESSION['ses_u_id'];
         <!-- Model -->
         <!-- เพิ่มผู้ใช้ -->
         <div id="modalAdd" class="modal fade" role="dialog">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-lg">
                 <!-- Modal content-->
                 <div class="modal-content">
                     <div class="modal-header bg-primary">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title "><i class="fa fa-user fa-2x"></i> เพิ่มผู้ใช้งาน</h4>
+                        <h4 class="modal-title "><i class="fa fa-user-plus"></i> เพิ่มผู้ใช้งาน</h4>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body modal-body-soft">
                         <form name="form" method="post">
                             <?php echo csrf_field(); ?>
-                            <?php if ($level_id <= 2) {
-                                ?> <!-- กรณีที่เป็น Admin หรือ สารบรรณจังหวัด -->
-                                <div class="form-group form-inline">
-                                    <label for="province">ประเภทส่วนราชการ : </label>
-                                    <span id="province">
-                                        <select class="form-control" required>
-                                            <option value="">- เลือกประเภทส่วนราชการ -</option>
-                                        </select>
-                                    </span>
-                                </div>
-                                <div class="form-group form-inline">
-                                    <label for="amphur">ชื่อส่วนราชการ : </label>
-                                    <span id="amphur">
-                                        <select id="" class="" required>
-                                            <option value=''>- เลือกหน่วยงาน -</option>
-                                        </select>
-                                    </span>
-                                </div>
-                                <?php
-                            } ?>
-                            <div class="form-group form-inline">
-                                <label for="district">หน่วยงานย่อย : </label>
-                                <span id="district">
-                                    <select name="sec_id" class="form-control" required>
-                                        <option value=''>- เลือกกลุ่มงาน -</option>
-                                        <?php
-                                        //if($level_id > 2){      //กรณีที่เป็นผู้ใช้งานทั่วไป
-                                        $sql = "SELECT * FROM section WHERE dep_id = ?";
-                                        $result = dbQuery($sql, "i", [(int) $dep_id]);
-                                        while ($rowSec = dbFetchArray($result)) {
+                            
+                            <h5 class="text-primary"><i class="fa fa-building"></i> ข้อมูลหน่วยงาน</h5>
+                            <hr class="mt-0 mb-3">
+                            <div class="row">
+                                <?php if ($level_id <= 2) { ?>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="province">ประเภทส่วนราชการ</label>
+                                        <select name="province" class="form-control" onchange="dochange('amphur', this.value)" required>
+                                            <option value="">- เลือกประเภท -</option>
+                                            <?php 
+                                            $sql_type = "SELECT * FROM office_type";
+                                            $result_type = dbQuery($sql_type);
+                                            while ($row_type = dbFetchArray($result_type)) {
+                                                echo "<option value='{$row_type['type_id']}'>{$row_type['type_name']}</option>";
+                                            }
                                             ?>
-                                            <option value='<?php echo $rowSec['sec_id']; ?>'>
-                                                <?php echo $rowSec['sec_name']; ?>
-                                            </option>
-                                            <?php
-                                        } ?>
-                                        <?php //} ?>
-                                    </select>
-                                </span>
-                            </div>
-                            <div class="form-group form-inline">
-                                <label for="level_name">สิทธิ์การใช้งาน : </label>
-                                <?php if ($level_id <= 2) {
-                                    ?>
-                                    <input type="radio" name="level" id="level" value="1"> ผู้ดูแลระบบ
-                                    <input type="radio" name="level" id="level" value="2"> สารบรรณกลาง
-                                    <?php
-                                } ?>
-                                <input type="radio" name="level" id="level" value="3"> สารบรรณประจำหน่วยงาน
-                                <input type="radio" name="level" id="level" value="4"> สารบรรณประจำกลุ่ม/กอง
-                                <input type="radio" name="level" id="level" value="5" checked=""> ผู้ใช้ทั่วไป
-                            </div>
-                            <div class="form-group form-inline">
-                                <label for="firstname">ชื่อ :</label>
-                                <div class="input-group">
-                                    <input class="form-control" type="text" name="firstname" id="firstname" size="25"
-                                        required="">
+                                        </select>
+                                    </div>
                                 </div>
-                                <label for="lastname">นามสกุล</label>
-                                <div class="input-group">
-                                    <input class="form-control" type="text" name="lastname" id="lastname" size="20"
-                                        required>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="amphur">ชื่อส่วนราชการ</label>
+                                        <span id="amphur">
+                                            <select class="form-control" disabled><option>- รอการเลือก -</option></select>
+                                        </span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group form-inline">
-                                <label for="position">ตำแหน่ง :</label>
-                                <div class="input-group">
-                                    <input class="form-control" type="text" name="position" id="position" size="40">
-                                </div>
-                            </div>
-                            <div class="form-group form-inline">
-                                <label for="u_name">ชื่อผู้ใช้ :</label>
-                                <div class="input-group">
-                                    <input class="form-control" type="text" name="u_name" id="u_name" required
-                                        placeholder="username">
-                                </div>
-                                <label for="u_pass">รหัสผ่าน :</label>
-                                <div class="input-group">
-                                    <input class="form-control" type="text" name="u_pass" id="u_pass" required
-                                        placeholder="username">
-                                </div>
-                            </div>
-                            <div class="form-group form-inline">
-                                <label for="email">E-mail</label>
-                                <div class="input-group">
-                                    <input class="form-control" type="email" name="email" id="email" required
-                                        placeholder="E-mail ทางการเท่านั้น">
-                                </div>
-                            </div>
-                            <div class="form-group form-inline">
-                                <label for="telphone">เบอร์โทรศัพท์เคลื่อนที่</label>
-                                <div class="input-group">
-                                    <input class="form-control" type="text" name="telphone" id="telphone" required
-                                        placeholder="เบอร์มือถือ">
+                                <?php } ?>
+                                
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="district">หน่วยงานย่อย</label>
+                                        <span id="district">
+                                            <select name="sec_id" class="form-control" required>
+                                                <option value=''>- เลือกกลุ่มงาน -</option>
+                                                <?php
+                                                if ($level_id > 2) {
+                                                    $sql = "SELECT * FROM section WHERE dep_id = ?";
+                                                    $result = dbQuery($sql, "i", [(int) $dep_id]);
+                                                    while ($rowSec = dbFetchArray($result)) {
+                                                        echo "<option value='{$rowSec['sec_id']}'>{$rowSec['sec_name']}</option>";
+                                                    }
+                                                }
+                                                ?>
+                                            </select>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="form-group form-inline">
-                                <label for="status">สถานะการใช้งาน</label>
-                                <input class="form-control" type="radio" name="status" id="status" value="1"
-                                    checked>อนุญาตใช้งาน
-
-                            </div>
-                            <div class="form-group form-inline">
-                                <label for="date_create">วันที่สร้าง</label>
-                                <div class="input-group">
-                                    <input class="form-control" type="text" name="date_user" id="date_user"
-                                        value="<?php echo date('Y-m-d'); ?>">
+                            <div class="row">
+                                <div class="col-md-6">
+                                     <h5 class="text-primary mt-3"><i class="fa fa-id-card"></i> ข้อมูลส่วนตัว</h5>
+                                     <hr class="mt-0 mb-3">
+                                     <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>ชื่อ</label>
+                                                <input class="form-control" type="text" name="firstname" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                             <div class="form-group">
+                                                <label>นามสกุล</label>
+                                                <input class="form-control" type="text" name="lastname" required>
+                                            </div>
+                                        </div>
+                                     </div>
+                                     <div class="form-group">
+                                        <label>ตำแหน่ง</label>
+                                        <input class="form-control" type="text" name="position">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>อีเมล</label>
+                                        <input class="form-control" type="email" name="email" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>เบอร์โทรศัพท์</label>
+                                        <input class="form-control" type="text" name="telphone" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <h5 class="text-primary mt-3"><i class="fa fa-lock"></i> ข้อมูลบัญชี</h5>
+                                     <hr class="mt-0 mb-3">
+                                     <div class="form-group">
+                                        <label>ชื่อผู้ใช้</label>
+                                        <input class="form-control" type="text" name="u_name" required>
+                                    </div>
+                                     <div class="form-group">
+                                        <label>รหัสผ่าน</label>
+                                        <input class="form-control" type="password" name="u_pass" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>สิทธิ์การใช้งาน</label>
+                                        <select name="level" class="form-control"> 
+                                            <?php if ($level_id <= 2) { ?>
+                                            <option value="1">ผู้ดูแลระบบ</option>
+                                            <option value="2">สารบรรณกลาง</option>
+                                            <?php } ?>
+                                            <option value="3">สารบรรณประจำหน่วยงาน</option>
+                                            <option value="4">สารบรรณประจำกลุ่ม/กอง</option>
+                                            <option value="5" selected>ผู้ใช้ทั่วไป</option>
+                                        </select>
+                                    </div>
+                                     <div class="form-group">
+                                        <label>สถานะ</label>
+                                        <div class="radio">
+                                            <label class="radio-inline"><input type="radio" name="status" value="1" checked> อนุญาต</label>
+                                            <label class="radio-inline"><input type="radio" name="status" value="0"> ระงับ</label>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <?php
-                            if (isset($_GET['edit'])) {
-                                ?>
-                                <button type="submit" name="update">update</button>
-                                <?php
-                            } else {
-                                ?>
-                                <center><button class="btn btn-warning btn-lg" type="submit" name="save">
-                                        <i class="fa fa-database fa-2x"></i> บันทึก
-                                        <input id="u_id" name="u_id" type="hidden" value="<?php echo $u_id; ?>">
-                                    </button></center>
-                                <?php
-                            }
-                            ?>
+                            
+                            <input type="hidden" name="date_user" value="<?php echo date('Y-m-d'); ?>">
+
+                            <center>
+                                <button class="btn btn-success btn-lg mt-3" type="submit" name="save">
+                                    <i class="fa fa-save"></i> บันทึกข้อมูล
+                                    <input id="u_id" name="u_id" type="hidden" value="<?php echo $u_id; ?>">
+                                </button>
+                            </center>
                         </form>
                     </div>
-                    <div class="modal-footer bg-primary">
-                        <button type="button" class="btn btn-default" data-dismiss="modal"><i
-                                class="fa fa-times"></i></button>
-                    </div>
                 </div>
-
             </div>
         </div>
         <!-- End Model -->
@@ -454,6 +448,7 @@ if (isset($_POST['update'])) {
             if (req.readyState == 4) {
                 if (req.status == 200) {
                     document.getElementById(src).innerHTML = req.responseText; //รับค่ากลับมา
+                    $('.selectpicker').selectpicker('refresh');
                 }
             }
         };
@@ -462,7 +457,7 @@ if (isset($_POST['update'])) {
         req.send(null); //ส่งค่า
     }
 
-    window.onLoad = dochange('province', -1);
+
 
     // In your Javascript (external .js resource or <script> tag)
 
