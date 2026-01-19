@@ -103,64 +103,55 @@ if ($cid && $tb) {
                     <input type="text" name="toSomeOneUser" class="mytextboxLonger" style="width:373px;" readonly
                         disabled
                         value="<?php echo isset($_POST['toSomeOneUser']) ? htmlspecialchars($_POST['toSomeOneUser'], ENT_QUOTES, 'UTF-8') : ''; ?>">
-                    <div id="ckToType" style="display:none">
-                        <table border="1" width="599px" cellspacing="0" cellpadding="0">
-                            <tr>
-                                <td class="alere alert-info">
-                                    <center>เลือกผู้รับ</center>
-                                </td>
-                            </tr>
-                        </table>
-                        <div id="div1" style="width:599px; height:250px; overflow:auto">
-                            <table border="1" width="599px">
-                                <?php
-                                // ปลอดภัย: ไม่ได้รับค่าจากผู้ใช้
-                                $sql = "SELECT type_id,type_name FROM office_type ORDER BY type_id";
-                                $result = dbQuery($sql);
-                                $numrowOut = dbNumRows($result);
-                                if (empty($numrowOut)) {
-                                    ?>
-                                    <thead>
-                                        <tr>
-                                            <td></td>
-                                            <td>ไม่มีข้อมูลประเภทส่วนราชการ</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php
-                                } else {
-                                    $i = 0;
-                                    while ($rowOut = dbFetchAssoc($result)) {
-                                        $i++;
-                                        $a = $i % 2;
-                                        if ($a == 0) { ?>
-                                                <tr bgcolor="#A9F5D0">
-                                                <?php } else { ?>
-                                                <tr bgcolor="#F5F6CE">
-                                                <?php } ?>
-                                                <td class="select_multiple_checkbox"><input type="checkbox"
-                                                        onclick="listType(this,'<?php echo htmlspecialchars($rowOut['type_id'], ENT_QUOTES, 'UTF-8'); ?>')">
-                                                </td>
-                                                <td class="select_multiple_name">
-                                                    <?php print htmlspecialchars($rowOut['type_name'], ENT_QUOTES, 'UTF-8'); ?>
-                                                </td>
-                                            </tr>
-                                            <?php
-                                    }
-                                    dbFreeResult($result); // คืนค่าหน่วยความจำ
-                                }
+                    <div id="ckToType"
+                        style="display:none; max-height:400px; overflow-y:auto; border:1px solid #ccc; padding:10px;">
+                        <div class="panel-group" id="accordionReceiver">
+                            <?php
+                            $sqlType = "SELECT * FROM office_type ORDER BY type_id";
+                            $resultType = dbQuery($sqlType);
+                            while ($rowType = dbFetchArray($resultType)) {
+                                $tid = $rowType['type_id'];
                                 ?>
-                                </tbody>
-                            </table>
+                                <div class="panel panel-info">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <input type="checkbox"
+                                                onclick="event.stopPropagation(); toggleType(this, <?php echo $tid; ?>)">
+                                            <a data-toggle="collapse" data-parent="#accordionReceiver"
+                                                href="#collapseRec<?php echo $tid; ?>"
+                                                style="text-decoration:none; margin-left:10px;">
+                                                <?php echo htmlspecialchars($rowType['type_name']); ?> <i
+                                                    class="fa fa-chevron-down"></i>
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseRec<?php echo $tid; ?>" class="panel-collapse collapse">
+                                        <div class="panel-body">
+                                            <?php
+                                            $sqlDep = "SELECT * FROM depart WHERE type_id=$tid ORDER BY dep_id";
+                                            $resultDep = dbQuery($sqlDep);
+                                            while ($rowDep = dbFetchArray($resultDep)) {
+                                                ?>
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input type="checkbox" class="type-group-<?php echo $tid; ?>"
+                                                            onclick="listType(this, '<?php echo $rowDep['dep_id']; ?>')"
+                                                            value="<?php echo $rowDep['dep_id']; ?>">
+                                                        <?php echo htmlspecialchars($rowDep['dep_name']); ?>
+                                                    </label>
+                                                </div>
+                                            <?php } ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php } ?>
                         </div>
-                        <table>
-                            <tr>
-                                <td><input class="btn-success" style="width:77px;" type="button" value="ตกลง"
-                                        onclick="document.getElementById('ckToType').style.display = 'none';"></td>
-                                <td><input class="btn-danger" style="width:77px;" type="button" value="ยกเลิก"
-                                        onclick="document.getElementById('ckToType').style.display = 'none';"></td>
-                            </tr>
-                        </table>
+                        <div style="margin-top:10px; text-align:center;">
+                            <input class="btn btn-success" type="button" value="ตกลง"
+                                onclick="document.getElementById('ckToType').style.display = 'none';">
+                            <input class="btn btn-danger" type="button" value="ปิดหน้าต่าง"
+                                onclick="document.getElementById('ckToType').style.display = 'none';">
+                        </div>
                     </div>
                     <div id="ckToSome" style="display:none">
                         <table border="1" width="100%" cellspacing="0" cellpadding="0">
@@ -394,8 +385,8 @@ if (isset($_POST['sendOut'])) {           //ตรวจสอบปุ่ม se
     }
 
 
-    // ***เลือกเองตามประเภท 
-    if ($toSome == 2) { // ใช้การเปรียบเทียบที่รัดกุมกว่า
+    // ***เลือกเองตามประเภท (Updated: Handles list of DepIds from checkboxes)
+    if ($toSome == 2) {
         // **ใช้ Prepared Statements ในการ INSERT ลง paper**
         $sql_insert = "INSERT INTO paper(title, detail, file, postdate, u_id, outsite, sec_id, dep_id, book_no)
                        VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -411,19 +402,18 @@ if (isset($_POST['sendOut'])) {           //ตรวจสอบปุ่ม se
             $sendto_safe = ltrim($sendto_safe, '|'); // ลบ | ตัวแรก
             $c = explode("|", $sendto_safe);
 
-            foreach ($c as $type_id) { // ใช้ foreach แทน for
-                $type_id = (int) $type_id; // ตรวจสอบให้แน่ใจว่าเป็นตัวเลข
+            foreach ($c as $dep_id_select) { // ใช้ foreach แทน for
+                $dep_id_select = (int) $dep_id_select; // ตรวจสอบให้แน่ใจว่าเป็นตัวเลข
 
-                if ($type_id > 0) { // ตรวจสอบว่าเป็น ID ที่ถูกต้อง
-                    // **ใช้ Prepared Statements ในการ SELECT**
-                    $sql_users = "SELECT u.u_id,u.firstname,s.sec_id,d.dep_id,d.type_id
+                if ($dep_id_select > 0) { // ตรวจสอบว่าเป็น ID ที่ถูกต้อง
+                    // **ใช้ Prepared Statements ในการ SELECT User ในหน่วยงานนั้น**
+                    $sql_users = "SELECT u.u_id,u.firstname,s.sec_id,d.dep_id
                                   FROM user u 
                                   INNER JOIN section s ON s.sec_id=u.sec_id
                                   INNER JOIN depart d  ON d.dep_id=u.dep_id
-                                  INNER JOIN office_type t ON t.type_id=d.type_id
-                                  WHERE d.type_id=? AND d.dep_id<>? AND u.level_id = 3";
+                                  WHERE u.dep_id=? AND u.level_id = 3";
 
-                    $result_users = dbQuery($sql_users, 'ii', [$type_id, $dep_id]);
+                    $result_users = dbQuery($sql_users, 'i', [$dep_id_select]);
 
                     if ($result_users) {
                         while ($row = dbFetchArray($result_users)) {
@@ -544,7 +534,18 @@ if (isset($_POST['sendOut'])) {           //ตรวจสอบปุ่ม se
     }
 </script>
 <script type="text/javascript">
-    function listType(a, b, c) { //ฟังค์ชั่นกรณีเลือกเป็นประเภท
+    function toggleType(source, tid) {
+        var checkboxes = document.getElementsByClassName('type-group-' + tid);
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i].checked != source.checked) {
+                checkboxes[i].checked = source.checked;
+                // Trigger update logic
+                listType(checkboxes[i], checkboxes[i].value);
+            }
+        }
+    }
+
+    function listType(a, b) { // Updated to handle Dep IDs
         m = document.fileout.toSomeUser.value;
 
         if (a.checked) {
@@ -553,8 +554,6 @@ if (isset($_POST['sendOut'])) {           //ตรวจสอบปุ่ม se
         } else {
             m = document.fileout.toSomeUser.value.replace('|' + b, '');
         }
-        z = "|";
-        if (m.substring(2) == c) m = m.substring(2);
         document.fileout.toSomeUser.value = m;
     }
 </script>
