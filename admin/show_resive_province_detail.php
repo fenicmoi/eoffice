@@ -191,7 +191,8 @@ if (isset($row['file_location'])) {
                         </div>
                         <div class="col-md-4">
                             <div class="detail-value-text" style="color: #4e73df; font-size: 0.9rem;">
-                                <?php echo $showFile; ?></div>
+                                <?php echo $showFile; ?>
+                            </div>
                         </div>
                     </div>
                 </td>

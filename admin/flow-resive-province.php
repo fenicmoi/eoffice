@@ -230,13 +230,13 @@ $ystatus = $ystatus;
 								$sql .= " WHERE m.type_id=1 ORDER BY m.book_id DESC ";       //type_id = หนังสือถึงจังหวัดเท่านั้น
 								break;
 							case 3: //สารบรรณหน่วยงาน  ดูได้ทั้งหน่วยงาน
-								$sql .= " WHERE m.type_id=1 AND m.dep_id=$dep_id ORDER BY m.book_id DESC  ";     //type_id = หนังสือถึงจังหวัดเท่านั้น และรหัสหน่วยงานตนเองเท่านั้น
+								$sql .= " WHERE m.type_id=1 AND (m.dep_id=$dep_id OR m.u_id=$uid) ORDER BY m.book_id DESC  ";     //type_id = หนังสือถึงจังหวัดเท่านั้น และรหัสหน่วยงานตนเองเท่านั้น
 								break;
 							case 4: //สารบรรณกลุ่มงาน  ดูได้ทั้งหน่วย  แต่แก้ไม่ได้
-								$sql .= " WHERE m.type_id=1 AND m.dep_id=$dep_id  ORDER BY m.book_id DESC  ";     //type_id = หนังสือถึงจังหวัดเท่านั้น และรหัสหน่วยงานตนเองเท่านั้น
+								$sql .= " WHERE m.type_id=1 AND (m.dep_id=$dep_id OR m.u_id=$uid)  ORDER BY m.book_id DESC  ";     //type_id = หนังสือถึงจังหวัดเท่านั้น และรหัสหน่วยงานตนเองเท่านั้น
 								break;
 							case 5: //สารบรรณกลุ่มงาน  ดูได้เฉพาะของตนเอง
-								$sql .= " WHERE m.type_id=1 AND m.dep_id=$dep_id AND m.u_id=$u_id ORDER BY m.book_id DESC  ";
+								$sql .= " WHERE m.type_id=1 AND m.u_id=$uid ORDER BY m.book_id DESC  ";
 								break;
 						}
 
@@ -589,7 +589,7 @@ $ystatus = $ystatus;
 								<i class="fa fa-database"></i> ตกลง
 								<input id="u_id" name="u_id" type="hidden" value="<?php echo $u_id; ?>">
 								<input id="sec_id" name="sec_id" type="hidden" value="<?php echo $sec_id; ?>">
-								<input id="dep_id" name="dep_id" type="hidden" value="<?php echo $dep_id; ?>">
+								<input id="user_dep_id" name="user_dep_id" type="hidden" value="<?php echo $dep_id; ?>">
 								<input id="yid" name="yid" type="hidden" value="<?php echo $yid; ?>">
 							</button>
 						</center>
@@ -894,8 +894,8 @@ if (isset($_POST['btnUpdate'])) {
 	dbQuery("BEGIN");
 
 	// Update book_master
-	$sql_m = "UPDATE book_master SET pri_id=?, speed_id=?, obj_id=? WHERE book_id=?";
-	$res_m = dbQuery($sql_m, "iiii", [$pri_id, $speed_id, $obj_id, $book_id]);
+	$sql_m = "UPDATE book_master SET pri_id=?, speed_id=?, obj_id=?, dep_id=? WHERE book_id=?";
+	$res_m = dbQuery($sql_m, "iiiii", [$pri_id, $speed_id, $obj_id, $practice, $book_id]);
 
 	// Update book_detail
 	$sql_d = "UPDATE book_detail SET 
