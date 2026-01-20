@@ -55,7 +55,8 @@ if (@$_GET['dep_id'] <> '') {    //user login edit
     <div class="col-md-10">
         <div class="panel panel-danger">
             <div class="panel-heading"><i class="fa fa-pencil fa-2x" aria-hidden="true"></i>
-                <strong>แก้ไขข้อมูลส่วนราชการ</strong></div>
+                <strong>แก้ไขข้อมูลส่วนราชการ</strong>
+            </div>
             <div class="panel-body">
                 <form class="alert-info" method="post">
                     <div class="form-group form-inline">
@@ -63,12 +64,11 @@ if (@$_GET['dep_id'] <> '') {    //user login edit
                             <label for="status"><i class="fa fa-cog"></i>สถานะการใช้งาน</label>
                             <?php
                             $status = $getROW['status'];
-                            if ($status == 1) {
-                                echo "<input class='radio' type=\"radio\" id=\"status\" name=\"status\" value=\"0\" >ระงับการใช้งาน";
-                            } else {
-                                echo "<input class='radio' type=\"radio\" id=\"status\" name=\"status\" value=\"1\">ใช้งาน ";
-                                echo "<input class='radio' type=\"radio\" id=\"status\" name=\"status\" value=\"0\" checked>ระงับการใช้งาน";
-                            }
+                            $active_check = ($status == 1) ? "checked" : "";
+                            $inactive_check = ($status != 1) ? "checked" : "";
+                            echo "<input class='radio' type=\"radio\" id=\"status\" name=\"status\" value=\"1\" $active_check>ใช้งาน ";
+                            echo "<input class='radio' type=\"radio\" id=\"status\" name=\"status\" value=\"0\" $inactive_check>ระงับการใช้งาน";
+
 
                             ?>
                             <br>
@@ -76,13 +76,11 @@ if (@$_GET['dep_id'] <> '') {    //user login edit
                             <?php
 
                             $local_num = $getROW['local_num'];
-                            if ($local_num == 1) {
-                                echo "<input class='radio' type=\"radio\" id=\"local_num\" name=\"local_num\" value=\"1\" checked>ใช้งาน ";
-                                echo "<input class='radio' type=\"radio\" id=\"local_num\" name=\"local_num\" value=\"0\" >ระงับการใช้งาน";
-                            } else {
-                                echo "<input class='radio' type=\"radio\" id=\"local_num\" name=\"local_num\" value=\"1\" >ใช้งาน ";
-                                echo "<input class='radio' type=\"radio\" id=\"local_num\" name=\"local_num\" value=\"0\" checked>ระงับการใช้งาน";
-                            }
+                            $local_active = ($local_num == 1) ? "checked" : "";
+                            $local_inactive = ($local_num != 1) ? "checked" : "";
+                            echo "<input class='radio' type=\"radio\" id=\"local_num\" name=\"local_num\" value=\"1\" $local_active>ใช้งาน ";
+                            echo "<input class='radio' type=\"radio\" id=\"local_num\" name=\"local_num\" value=\"0\" $local_inactive>ระงับการใช้งาน";
+
                             ?>
                         </div>
                     </div>
@@ -202,8 +200,9 @@ if (isset($_POST['update'])) {
     $phone = $_POST['phone'];
     $fax = $_POST['fax'];
     $social = $_POST['website'];
-    $status = $_POST['status'];
-    $local_num = $_POST['local_num'];
+    $status = isset($_POST['status']) ? $_POST['status'] : 1;
+    $local_num = isset($_POST['local_num']) ? $_POST['local_num'] : 1;
+
     $prefex = $_POST['prefex'];
     $ministry = $_POST['ministry'];
     $email = $_POST['email'];
@@ -252,7 +251,4 @@ if (isset($_POST['update'])) {
                                             </script>";
     }
 }
-?>
-
-
-<?php //include "footer.php"; ?>
+?><?php //include "footer.php"; ?>

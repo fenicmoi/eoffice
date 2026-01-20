@@ -220,7 +220,64 @@ ini_set('display_errors', 1);
             $c4 = $row['c4'];
             $c5 = $row['c5'];
 
-            $sum = $c1 + $c2 + $c3 + $c4 + $c5; ?>
+            $sum = $c1 + $c2 + $c3 + $c4 + $c5;
+
+            // New Summary Query
+            $sqlBook = "SELECT COUNT(*) as all_books FROM book_master";
+            $resBook = dbQuery($sqlBook);
+            $rowBook = dbFetchArray($resBook);
+
+            $sqlToday = "SELECT COUNT(*) as today_books FROM book_detail WHERE date_in = CURDATE()";
+            $resToday = dbQuery($sqlToday);
+            $rowToday = dbFetchArray($resToday);
+
+            // Count Departs
+            $sqlDep = "SELECT COUNT(*) as all_dep FROM depart";
+            $resDep = dbQuery($sqlDep);
+            $rowDep = dbFetchArray($resDep);
+            ?>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <i class="fa fa-book fa-3x pull-left"></i>
+                            <div class="text-right">
+                                <div class="huge"><?php echo $rowBook['all_books']; ?></div>
+                                <div>หนังสือทั้งหมด</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <i class="fa fa-calendar-check-o fa-3x pull-left"></i>
+                            <div class="text-right">
+                                <div class="huge"><?php echo $rowToday['today_books']; ?></div>
+                                <div>หนังสือเข้าวันนี้</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="panel panel-warning">
+                        <div class="panel-heading">
+                            <i class="fa fa-university fa-3x pull-left"></i>
+                            <div class="text-right">
+                                <div class="huge"><?php echo $rowDep['all_dep']; ?></div>
+                                <div>หน่วยงานทั้งหมด</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <style>
+                .huge {
+                    font-size: 30px;
+                    font-weight: bold;
+                }
+            </style>
 
             <div class="row"> <!-- สถิติข้อมูล -->
                 <div class="col-md-12">
@@ -297,84 +354,39 @@ ini_set('display_errors', 1);
                             </div> <!-- row -->
                             <div class="row">
                                 <div class="col-md-6">
-                                    <div id="depart" style="width: 700px; height: 350px;"></div>
-                                    <script type="text/javascript" src="js/chart/loader.js"></script>
+                                    <div id="depart" style="width: 100%; height: 350px;"></div>
                                     <script type="text/javascript">
-                                        // Load google charts
-                                        google.charts.load('current', { 'packages': ['corechart'] });
-                                        google.charts.setOnLoadCallback(drawChart);
-
-                                        // Draw the chart and set the chart values
-                                        function drawChart() {
+                                        google.charts.setOnLoadCallback(drawChartDepart);
+                                        function drawChartDepart() {
                                             var data = google.visualization.arrayToDataTable([
-                                                ['Task', 'Hours per Day'],
-                                                ['ส่วนกลาง', <?= $c1; ?>],
-                                                ['ส่วนภูมิภาค', <?= $c2; ?>],
-                                                ['ส่วนท้องถิ่น', <?= $c3; ?>],
-                                                ['รัฐวิสาหกิจ', <?= $c4; ?>],
-                                                ['อื่น', <?= $c5; ?>]
+                                                ['Type', 'Count'],
+                                                <?php
+                                                $sqlType = "SELECT t.type_name, COUNT(d.dep_id) as count 
+                                                            FROM office_type t 
+                                                            LEFT JOIN depart d ON t.type_id = d.type_id 
+                                                            GROUP BY t.type_id";
+                                                $resultType = dbQuery($sqlType);
+                                                while ($rowType = dbFetchArray($resultType)) {
+                                                    echo "['" . $rowType['type_name'] . "', " . $rowType['count'] . "],";
+                                                }
+                                                ?>
                                             ]);
 
-                                            // Optional; add a title and set the width and height of the chart
                                             var options = {
-                                                title: 'ส่วนราชการ',
+                                                title: 'จำนวนส่วนราชการ (แยกตามประเภท)',
                                                 pieHole: 0.4,
+                                                width: '100%',
+                                                height: 350
                                             };
 
-
-                                            // Display the chart inside the <div> element with id="piechart"
                                             var chart = new google.visualization.PieChart(document.getElementById('depart'));
                                             chart.draw(data, options);
                                         }
                                     </script>
                                 </div>
                                 <?php
-                                $sql = 'SELECT 
-                                            COUNT(IF(level_id=1,1,null)) AS c1,
-                                            COUNT(IF(level_id=2,1,null)) AS c2,
-                                            COUNT(IF(level_id=3,1,null)) AS c3,
-                                            COUNT(IF(level_id=4,1,null)) AS c4,
-                                            COUNT(IF(level_id=5,1,null)) AS c5
-                                        FROM user';
-
-                                $result = dbQuery($sql);
-                                $row = dbFetchArray($result);
-                                $c1 = $row['c1'];
-                                $c2 = $row['c2'];
-                                $c3 = $row['c3'];
-                                $c4 = $row['c4'];
-                                $c5 = $row['c5'];
-                                $sum = $c1 + $c2 + $c3 + $c4 + $c5; ?>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div id="piechart"></div>
-
-                                        <script type="text/javascript">
-                                            // Load google charts
-                                            google.charts.load('current', { 'packages': ['corechart'] });
-                                            google.charts.setOnLoadCallback(drawChart);
-
-                                            // Draw the chart and set the chart values
-                                            function drawChart() {
-                                                var data = google.visualization.arrayToDataTable([
-                                                    ['Task', 'Hours per Day'],
-                                                    ['ผู้ดูแลระบบ', <?= $c1; ?>],
-                                                    ['สารบรรณจังหวัด', <?= $c2; ?>],
-                                                    ['สารบรรณหน่วยงาน', <?= $c3; ?>],
-                                                    ['สารบรรณกลุ่ม', <?= $c4; ?>],
-                                                    ['ผู้ใช้ทั่วไป', <?= $c5; ?>]
-                                                ]);
-
-                                                // Optional; add a title and set the width and height of the chart
-                                                var options = { 'title': 'สัดส่วนผู้ใช้งาน', 'width': 550, 'height': 400 };
-
-                                                // Display the chart inside the <div> element with id="piechart"
-                                                var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-                                                chart.draw(data, options);
-                                            }
-                                        </script>
-                                    </div>
-                                </div>
+                                // Removed duplicate chart code
+                                ?>
                             </div> <!-- panel-body -->
                             <div class="panel-footer"></div>
                         </div> <!-- class panel -->
