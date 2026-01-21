@@ -56,28 +56,8 @@ function runNum()
 
 function checkMenu($level_id)
 {
-  switch ($level_id) {
-    case 1:
-      $menu = "menu1.php";
-      $_SESSION['level'] = 1;
-      break;
-    case 2:
-      $menu = "menu2.php";
-      $_SESSION['level'] = 2;
-      break;
-    case 3:
-      $menu = "menu3.php";
-      $_SESSION['level'] = 3;
-      break;
-    case 4:
-      $menu = "menu4.php";
-      $_SESSION['level'] = 4;
-      break;
-    case 5:
-      $menu = "menu4.php";
-      $_SESSION['level'] = 5;
-  }
-  return $menu;
+  $_SESSION['level'] = $level_id;
+  return "menu_dynamic.php";
 }
 
 function chkYear()
