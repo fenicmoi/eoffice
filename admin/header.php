@@ -276,6 +276,10 @@ if ($u_id) {
     $time_check = $time - 600;
     //print $time_check;
 //กำหนดเวลาในที่นี้ผมกำหนด 10 นาที
+    
+    // Clean up old sessions (older than 10 minutes)
+    dbQuery("DELETE FROM user_online WHERE time < $time_check");
+
     $sql = "select * from user_online";
     //print $sql;
     $result = dbQuery($sql);

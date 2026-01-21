@@ -19,6 +19,193 @@ ini_set('display_errors', 1);
             $row = dbFetchArray($result);
             ?>
             <?php
+            // ========== NEW STATISTICS SECTION ==========
+            // Query for Active Users
+            $sqlActiveUsers = "SELECT COUNT(*) as active_users FROM user_online";
+            $resultActiveUsers = dbQuery($sqlActiveUsers);
+            $rowActiveUsers = dbFetchArray($resultActiveUsers);
+            $activeUsers = $rowActiveUsers['active_users'] ?? 0;
+
+            // Query for Today's Documents
+            $sqlTodayDocs = "SELECT COUNT(*) as today_docs FROM book_detail WHERE date_in = CURDATE()";
+            $resultTodayDocs = dbQuery($sqlTodayDocs);
+            $rowTodayDocs = dbFetchArray($resultTodayDocs);
+            $todayDocs = $rowTodayDocs['today_docs'] ?? 0;
+
+            // Query for Incoming Documents (Total)
+            $sqlIncomingTotal = "SELECT COUNT(*) as incoming_total FROM book_master WHERE type_id = 1";
+            $resultIncomingTotal = dbQuery($sqlIncomingTotal);
+            $rowIncomingTotal = dbFetchArray($resultIncomingTotal);
+            $incomingTotal = $rowIncomingTotal['incoming_total'] ?? 0;
+
+            // Query for Incoming Documents (Pending)
+            $sqlIncomingPending = "SELECT COUNT(*) as incoming_pending 
+                                   FROM book_master m 
+                                   INNER JOIN book_detail d ON d.book_id = m.book_id 
+                                   WHERE m.type_id = 1 AND d.status = ''";
+            $resultIncomingPending = dbQuery($sqlIncomingPending);
+            $rowIncomingPending = dbFetchArray($resultIncomingPending);
+            $incomingPending = $rowIncomingPending['incoming_pending'] ?? 0;
+
+            // Query for Outgoing Documents (Normal)
+            $sqlOutgoingNormal = "SELECT COUNT(*) as outgoing_normal FROM book_master WHERE type_id = 2";
+            $resultOutgoingNormal = dbQuery($sqlOutgoingNormal);
+            $rowOutgoingNormal = dbFetchArray($resultOutgoingNormal);
+            $outgoingNormal = $rowOutgoingNormal['outgoing_normal'] ?? 0;
+
+            // Query for Circular Documents
+            $sqlCircular = "SELECT COUNT(*) as circular_docs FROM book_master WHERE type_id = 3";
+            $resultCircular = dbQuery($sqlCircular);
+            $rowCircular = dbFetchArray($resultCircular);
+            $circularDocs = $rowCircular['circular_docs'] ?? 0;
+
+            // Query for Provincial Commands
+            $sqlCommands = "SELECT COUNT(*) as commands FROM book_master WHERE type_id = 4";
+            $resultCommands = dbQuery($sqlCommands);
+            $rowCommands = dbFetchArray($resultCommands);
+            $commands = $rowCommands['commands'] ?? 0;
+
+            // Query for Pending Documents
+            $sqlPending = "SELECT COUNT(*) as pending_docs FROM book_detail WHERE status = ''";
+            $resultPending = dbQuery($sqlPending);
+            $rowPending = dbFetchArray($resultPending);
+            $pendingDocs = $rowPending['pending_docs'] ?? 0;
+
+            // Query for Completed Documents
+            $sqlCompleted = "SELECT COUNT(*) as completed_docs FROM book_detail WHERE status != ''";
+            $resultCompleted = dbQuery($sqlCompleted);
+            $rowCompleted = dbFetchArray($resultCompleted);
+            $completedDocs = $rowCompleted['completed_docs'] ?? 0;
+            ?>
+
+            <!-- Statistics Overview Section -->
+            <div class="row" style="margin-bottom: 20px;">
+                <div class="col-md-12">
+                    <h3 style="margin-bottom: 20px; color: #4e73df; font-weight: 600;">
+                        <i class="fas fa-chart-line"></i> สถิติระบบ
+                        <small style="font-size: 14px; color: #858796; margin-left: 10px;">
+                            อัพเดท: <span id="stats-timestamp"><?php echo date('d/m/Y H:i:s'); ?></span>
+                        </small>
+                        <button id="refresh-stats-btn" class="btn btn-sm btn-primary"
+                            style="margin-left: 15px; border-radius: 20px;" title="รีเฟรชข้อมูล">
+                            <i class="fas fa-sync-alt"></i> รีเฟรช
+                        </button>
+                    </h3>
+                </div>
+            </div>
+
+            <!-- Row 1: Main Statistics -->
+            <div class="row" style="margin-bottom: 20px;">
+                <div class="col-md-3">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading" style="background: linear-gradient(135deg, #4e73df, #224abe);">
+                            <i class="fas fa-users fa-3x pull-left" style="opacity: 0.8;"></i>
+                            <div class="text-right">
+                                <div class="huge" style="font-size: 30px; font-weight: bold;">
+                                    <span id="stat-active-users"><?php echo $activeUsers; ?></span>
+                                </div>
+                                <div>ผู้ใช้งานออนไลน์</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="panel panel-success">
+                        <div class="panel-heading" style="background: linear-gradient(135deg, #1cc88a, #047857);">
+                            <i class="fas fa-file-alt fa-3x pull-left" style="opacity: 0.8;"></i>
+                            <div class="text-right">
+                                <div class="huge" style="font-size: 30px; font-weight: bold;"><span id="stat-today-docs"><?php echo $todayDocs; ?></span>
+                                </div>
+                                <div>เอกสารวันนี้</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="panel panel-info">
+                        <div class="panel-heading" style="background: linear-gradient(135deg, #36b9cc, #1a8a9a);">
+                            <i class="fas fa-inbox fa-3x pull-left" style="opacity: 0.8;"></i>
+                            <div class="text-right">
+                                <div class="huge" style="font-size: 30px; font-weight: bold;">
+                                    <span id="stat-incoming-total"><?php echo $incomingTotal; ?></span>
+                                </div>
+                                <div>หนังสือรับทั้งหมด</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="panel panel-warning">
+                        <div class="panel-heading" style="background: linear-gradient(135deg, #f6c23e, #d4a017);">
+                            <i class="fas fa-paper-plane fa-3x pull-left" style="opacity: 0.8;"></i>
+                            <div class="text-right">
+                                <div class="huge" style="font-size: 30px; font-weight: bold;">
+                                    <span id="stat-outgoing-normal"><?php echo $outgoingNormal; ?></span>
+                                </div>
+                                <div>หนังสือส่ง</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row 2: Document Types -->
+            <div class="row" style="margin-bottom: 20px;">
+                <div class="col-md-3">
+                    <div class="panel panel-danger">
+                        <div class="panel-heading" style="background: linear-gradient(135deg, #e74a3b, #b91d1d);">
+                            <i class="fas fa-gavel fa-3x pull-left" style="opacity: 0.8;"></i>
+                            <div class="text-right">
+                                <div class="huge" style="font-size: 30px; font-weight: bold;"><span id="stat-commands"><?php echo $commands; ?></span>
+                                </div>
+                                <div>คำสั่งจังหวัด</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading" style="background: linear-gradient(135deg, #5a67d8, #3c4ab3);">
+                            <i class="fas fa-sync-alt fa-3x pull-left" style="opacity: 0.8;"></i>
+                            <div class="text-right">
+                                <div class="huge" style="font-size: 30px; font-weight: bold;">
+                                    <span id="stat-circular-docs"><?php echo $circularDocs; ?></span>
+                                </div>
+                                <div>หนังสือเวียน</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="panel panel-warning">
+                        <div class="panel-heading" style="background: linear-gradient(135deg, #f39c12, #d68910);">
+                            <i class="fas fa-clock fa-3x pull-left" style="opacity: 0.8;"></i>
+                            <div class="text-right">
+                                <div class="huge" style="font-size: 30px; font-weight: bold;">
+                                    <span id="stat-pending-docs"><?php echo $pendingDocs; ?></span>
+                                </div>
+                                <div>รอดำเนินการ</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="panel panel-success">
+                        <div class="panel-heading" style="background: linear-gradient(135deg, #28a745, #1e7e34);">
+                            <i class="fas fa-check-circle fa-3x pull-left" style="opacity: 0.8;"></i>
+                            <div class="text-right">
+                                <div class="huge" style="font-size: 30px; font-weight: bold;">
+                                    <span id="stat-completed-docs"><?php echo $completedDocs; ?></span>
+                                </div>
+                                <div>ดำเนินการแล้ว</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <?php
+            // ========== ORIGINAL USER-LEVEL SPECIFIC SECTION ==========
             if ($level_id < 4) {
                 ?>
                 <div class="row">
@@ -48,9 +235,9 @@ ini_set('display_errors', 1);
                     </div>
                     <div class="col-md-3">
                         <div class="bg-danger text-center">
-                            <a href="#">
+                            <a href="flow-circle.php">
                                 <i class="fas fa-eye fa-4x"></i>
-                                <h5>หนังสือเวียน</h5>
+                                <h5>หนังสือเวียน <span class="badge"><?php echo $circularDocs; ?></span></h5>
                             </a>
                         </div>
                     </div>
@@ -396,3 +583,4 @@ ini_set('display_errors', 1);
         } ?> <!-- end if -->
         </div> <!-- container  -->
     </div>
+<script src="js/dashboard_refresh.js"></script>
