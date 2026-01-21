@@ -5,7 +5,10 @@ $u_id = $_SESSION['ses_u_id'];
 ?>
 <?php
 //ตรวจสอบปีเอกสารว่าเป็นปีปัจจุบันหรือไม่
-list($yid, $yname, $ystatus) = chkYear();
+    list($yid,$yname,$ystatus)=chkYear();  
+$yid = $yid;
+$yname = $yname;
+$ystatus = $ystatus;
 ?>
 <div class="col-md-2">
     <?php
@@ -18,12 +21,12 @@ list($yid, $yname, $ystatus) = chkYear();
     <div class="panel panel-default">
         <div class="panel-heading">
             <i class="fa fa-envelope fa-2x" aria-hidden="true"></i>
-            <strong>ทะเบียนหนังสือส่งสำนักงานจังหวัด[เวียน]</strong>
-            <a href="" class="btn btn-danger btn-md pull-right" data-toggle="modal" data-target="#modalAdd"><i
+            <strong>ทะเบียนหนังสือส่งสำนักงานจังหวัด[ปกติ]</strong>
+            <a href="" class="btn btn-primary btn-md pull-right" data-toggle="modal" data-target="#modalAdd"><i
                     class="fa fa-plus " aria-hidden="true"></i> ลงทะเบียนส่ง</a>
         </div>
         <table class="table table-bordered table-hover" id="dataTable">
-            <thead class="bg-info">
+            <thead class="bg-primary">
                 <tr>
                     <th>เลขหนังสือ</th>
                     <th>เรื่อง</th>
@@ -33,12 +36,16 @@ list($yid, $yname, $ystatus) = chkYear();
             </thead>
             <tbody>
                 <?php
-                $sql = "SELECT * FROM flowcircle_depart ORDER BY cid DESC";
+                $count = 1;
+                $sql = "SELECT * FROM  flownormal_depart   ORDER BY cid DESC";
                 $result = page_query($dbConn, $sql, 10);
 
                 while ($row = dbFetchArray($result)) { ?>
                     <tr>
-                        <td><?php echo $row['prefex']; ?>/ว<?php echo $row['rec_no']; ?></td>
+                        <td>
+                            <?php echo $row['prefex']; ?>/
+                            <?php echo $row['rec_no']; ?>
+                        </td>
                         <td>
                             <?php
                             $cid = $row['cid'];
@@ -48,7 +55,9 @@ list($yid, $yname, $ystatus) = chkYear();
                                 <?php echo $row['title']; ?>
                             </a>
                         </td>
-                        <td><?php echo thaiDate($row['dateline']); ?></td>
+                        <td>
+                            <?php echo thaiDate($row['dateline']); ?>
+                        </td>
                         <td>
                             <?php
                             $curDate = date('Y-m-d');
@@ -57,7 +66,7 @@ list($yid, $yname, $ystatus) = chkYear();
 
                             if ($date_diff <= 7) { ?>
                                 <a class="btn btn-success btn-block"
-                                    href="flow-circle-edit.php?u_id=<?= $u_id ?>&cid=<?= $cid ?>&type=depart"><i
+                                    href="flow-normal-edit.php?u_id=<?= $u_id ?>&cid=<?= $cid ?>&type=depart"><i
                                         class="fas fa-edit"></i></a>
                             <?php } else if ($date_diff > 7) { ?>
                                     <center><i class="fas fa-lock fa-2x"></i></center>
@@ -91,7 +100,7 @@ list($yid, $yname, $ystatus) = chkYear();
             <div class="modal-content">
                 <div class="modal-header bg-primary">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title"><i class="fa fa-plus-circle"></i> ออกเลขหนังสือเวียนสำนักงานจังหวัด</h4>
+                    <h4 class="modal-title"><i class="fa fa-plus-circle"></i> ออกเลขหนังสือส่งปกติ</h4>
                 </div>
                 <div class="modal-body bg-success">
                     <form name="form" method="post" enctype="multipart/form-data">
@@ -100,8 +109,9 @@ list($yid, $yname, $ystatus) = chkYear();
                                 <td>
                                     <div class="form-group form-inline">
                                         <label for="typeDoc">ประเภทหนังสือ :</label>
-                                        <input class="form-control" name="typeDoc" type="radio" value="0" disabled> ปกติ
-                                        <input class="form-control" name="typeDoc" type="radio" value="1" checked="">
+                                        <input class="form-control" name="typeDoc" type="radio" value="0" checked="">
+                                        ปกติ
+                                        <input class="form-control" name="typeDoc" type="radio" value="1" disabled>
                                         เวียน
                                     </div>
                                 </td>
@@ -167,6 +177,7 @@ list($yid, $yname, $ystatus) = chkYear();
                                 </td>
                             </tr>
                             <?php
+                            //ชั้นความเร็ว
                             $sql = "SELECT * FROM speed ORDER BY speed_id";
                             $result = dbQuery($sql);
                             ?>
@@ -185,6 +196,7 @@ list($yid, $yname, $ystatus) = chkYear();
                                     </div>
                                 </td>
                                 <?php
+                                //ชั้นความลับ
                                 $sql = "SELECT * FROM secret ORDER BY sec_id";
                                 $result = dbQuery($sql);
                                 ?>
@@ -334,7 +346,7 @@ list($yid, $yname, $ystatus) = chkYear();
             </div>
             <div class="modal-body no-padding">
                 <div id="divDataview">
-                    <!-- สวนสำหรับแสดงผลรายละเอียด   อ้างอิงกับไฟล์  show-flow-circle.php -->
+                    <!-- สวนสำหรับแสดงผลรายละเอียด   อ้างอิงกับไฟล์  show-flow-normal.php -->
                 </div>
             </div> <!-- modal-body -->
             <div class="modal-footer bg-info">
@@ -365,14 +377,14 @@ if (isset($_POST['save'])) {
     if ($ystatus == 0) {
         echo "<script>swal(\"ระบบจัดการปีปฏิทินมีปัญหา  ติดต่อ Admin!\") </script>";
     } else {
-        $sqlRun = "SELECT cid,rec_no FROM flowcircle_depart WHERE  yid=$yid  ORDER  BY cid DESC";
+        $sqlRun = "SELECT cid,rec_no FROM flownormal_depart WHERE  yid=$yid  ORDER  BY cid DESC";
         $resRun = dbQuery($sqlRun);
         $rowRun = dbFetchArray($resRun);
         $rec_no = $rowRun['rec_no'];
         $rec_no++;
 
         dbQuery('BEGIN');
-        $sqlInsert = "INSERT INTO flowcircle_depart
+        $sqlInsert = "INSERT INTO flownormal_depart
                          (rec_no,u_id,obj_id,yid,typeDoc,prefex,title,speed_id,sec_id,sendfrom,sendto,refer,attachment,practice,file_location,dateline,dateout,open,dep_id)    
                     VALUE($rec_no,$u_id,$obj_id,$yid,'$typeDoc','$prefex','$title',$speed_id,$sec_id,'$sendfrom','$sendto','$refer','$attachment','$practice','$file_location','$dateline','$datelout',$open,$dep_id)";
 
@@ -387,7 +399,7 @@ if (isset($_POST['save'])) {
                 },
                 function(isConfirm){
                     if(isConfirm){
-                        window.location.href='circleoffice.php';
+                        window.location.href='normaloffice.php';
                     }
                 }); 
             </script>";
@@ -412,12 +424,12 @@ if (isset($_POST['save'])) {
         }
     })
 
-    function loadData(cid, u_id) {
-        var sdata = {
-            cid: cid,
-            u_id: u_id
-        };
-        $('#divDataview').load('show-flow-circle.php', sdata);
-    }
+function loadData(cid, u_id) {
+                                  var sdata = {
+                                      cid: cid,
+                                      u_id: u_id
+                                  };
+                                  $('#divDataview').load('show-flow-normal.php', sdata);
+                              }
 </script>
 <?php include "footer.php"; ?>

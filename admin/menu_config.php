@@ -98,6 +98,16 @@ function getMenuConfig($level_id, $dep_id)
             ]
         ],
         [
+            'id' => 'collapse_prov_office_main',
+            'title' => 'หนังสือสำนักงานจังหวัด',
+            'icon' => 'fas fa-building',
+            'allowed_levels' => [1, 2, 3, 4, 5],
+            'items' => [
+                ['title' => 'หนังสือส่งปกติ', 'url' => 'normaloffice.php', 'icon' => 'far fa-arrow-alt-circle-right', 'allowed_levels' => [1, 2, 3, 4]],
+                ['title' => 'หนังสือส่งเวียน', 'url' => 'circleoffice.php', 'icon' => 'far fa-arrow-alt-circle-right', 'allowed_levels' => [1, 2, 3, 4]],
+            ]
+        ],
+        [
             'id' => 'collapse_prov_office',
             'title' => 'สำนักงานจังหวัด',
             'icon' => 'fab fa-app-store',
