@@ -9,6 +9,9 @@ list($yid, $yname, $ystatus) = chkYear();
 $yid = $yid;
 $yname = $yname;
 $ystatus = $ystatus;
+$pDate = date('Y-m-d');
+$uid = $u_id; // Initialize uid for use in forms
+$username = isset($u_name) ? $u_name : (isset($firstname) ? $firstname : ''); // Initialize username for use in forms
 ?>
 <div class="col-md-2">
 	<?php
