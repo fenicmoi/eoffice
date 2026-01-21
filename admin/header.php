@@ -280,17 +280,20 @@ if ($u_id) {
     // Clean up old sessions (older than 10 minutes)
     dbQuery("DELETE FROM user_online WHERE time < $time_check");
 
-    $sql = "select * from user_online";
+    $u_id_online = $_SESSION['ses_u_id'] ?? 0;
+    $dep_id_online = $_SESSION['dep_id'] ?? 0;
+
+    $sql = "select * from user_online where session='$session'";
     //print $sql;
     $result = dbQuery($sql);
     $session_check = dbNumRows($result);
     //echo "session_check".$session_check;
     if ($session_check == 0) {
-      $sql = "insert into user_online values ('$session',$time)";
+      $sql = "insert into user_online (session, u_id, dep_id, time) values ('$session', $u_id_online, $dep_id_online, $time)";
       //print $sql;
       dbQuery($sql);
     } else {
-      $sql = "update user_online set time='$time' where session='$session'";
+      $sql = "update user_online set time='$time', u_id = $u_id_online, dep_id = $dep_id_online where session='$session'";
       //print $sql;
       dbQuery($sql);
     }

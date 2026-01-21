@@ -28,29 +28,11 @@ $resultOutgoingNormal = dbQuery($sqlOutgoingNormal);
 $rowOutgoingNormal = dbFetchArray($resultOutgoingNormal);
 $outgoingNormal = $rowOutgoingNormal['outgoing_normal'] ?? 0;
 
-// Query for Circular Documents
-$sqlCircular = "SELECT COUNT(*) as circular_docs FROM book_master WHERE type_id = 3";
-$resultCircular = dbQuery($sqlCircular);
-$rowCircular = dbFetchArray($resultCircular);
-$circularDocs = $rowCircular['circular_docs'] ?? 0;
-
-// Query for Provincial Commands
-$sqlCommands = "SELECT COUNT(*) as commands FROM book_master WHERE type_id = 4";
-$resultCommands = dbQuery($sqlCommands);
-$rowCommands = dbFetchArray($resultCommands);
-$commands = $rowCommands['commands'] ?? 0;
-
-// Query for Pending Documents
-$sqlPending = "SELECT COUNT(*) as pending_docs FROM book_detail WHERE status = ''";
-$resultPending = dbQuery($sqlPending);
-$rowPending = dbFetchArray($resultPending);
-$pendingDocs = $rowPending['pending_docs'] ?? 0;
-
-// Query for Completed Documents
-$sqlCompleted = "SELECT COUNT(*) as completed_docs FROM book_detail WHERE status != ''";
-$resultCompleted = dbQuery($sqlCompleted);
-$rowCompleted = dbFetchArray($resultCompleted);
-$completedDocs = $rowCompleted['completed_docs'] ?? 0;
+// Query for Active Agencies (distinct dep_id from user_online)
+$sqlActiveAgencies = "SELECT COUNT(DISTINCT dep_id) as active_agencies FROM user_online WHERE dep_id != 0";
+$resultActiveAgencies = dbQuery($sqlActiveAgencies);
+$rowActiveAgencies = dbFetchArray($resultActiveAgencies);
+$activeAgencies = $rowActiveAgencies['active_agencies'] ?? 0;
 
 // Return JSON response
 echo json_encode([
@@ -60,10 +42,7 @@ echo json_encode([
         'todayDocs' => $todayDocs,
         'incomingTotal' => $incomingTotal,
         'outgoingNormal' => $outgoingNormal,
-        'circularDocs' => $circularDocs,
-        'commands' => $commands,
-        'pendingDocs' => $pendingDocs,
-        'completedDocs' => $completedDocs
+        'activeAgencies' => $activeAgencies
     ],
     'timestamp' => date('d/m/Y H:i:s')
 ]);
