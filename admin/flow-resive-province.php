@@ -71,7 +71,24 @@ $username = isset($_SESSION['username']) ? $_SESSION['username'] : '';
 		font-weight: 600;
 		color: #4e73df;
 	}
+
+	.highlight {
+		background-color: yellow;
+		font-weight: bold;
+		color: red;
+		padding: 0 2px;
+		border-radius: 3px;
+	}
 </style>
+<?php
+function highlightText($text, $search)
+{
+	if (empty($search)) {
+		return $text;
+	}
+	return preg_replace('/(' . preg_quote($search, '/') . ')/iu', '<span class="highlight">$1</span>', $text);
+}
+?>
 
 <?php
 //ตรวจสอบปีเอกสาร
@@ -225,16 +242,16 @@ $ystatus = $ystatus;
 
 						<tr>
 							<td>
-								<?php echo $row['rec_id']; ?>/<?php echo $row['yname']; ?>
+								<?php echo isset($txt_search) ? highlightText($row['rec_id'], $txt_search) : $row['rec_id']; ?>/<?php echo $row['yname']; ?>
 							</td>
 							<td>
-								<?php echo $row['book_no']; ?>
+								<?php echo isset($txt_search) ? highlightText($row['book_no'] ?? '', $txt_search) : ($row['book_no'] ?? ''); ?>
 							</td>
 							<td>
 								<a href="#"
 									onclick="load_leave_data('<?php print $u_id; ?>','<?php print $rec_id; ?>','<?php print $book_id; ?>');"
 									data-toggle="modal" data-target=".bs-example-modal-table">
-									<?php echo $row['title']; ?>
+									<?php echo isset($txt_search) ? highlightText($row['title'], $txt_search) : $row['title']; ?>
 								</a>
 
 							</td>
