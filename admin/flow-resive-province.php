@@ -178,29 +178,13 @@ $ystatus = $ystatus;
 						@$dateEnd = $_POST['dateEnd'];
 
 						if (@$typeSearch == 1) { //ทะเบียนรับ
-							if ($level_id <= 2) {
-								$sql .= " WHERE m.rec_id LIKE '%$txt_search%'  ORDER BY m.book_id  DESC";
-							} else {
-								$sql .= " WHERE m.rec_id LIKE '%$txt_search%'  AND m.dep_id=$dep_id  ORDER BY m.book_id  DESC";
-							}
+							$sql .= " WHERE m.rec_id LIKE '%$txt_search%' AND m.type_id=1 ORDER BY m.book_id DESC";
 						} elseif (@$typeSearch == 2) { //เลขหนังสือ
-							if ($level_id <= 2) {
-								$sql .= " WHERE d.book_no LIKE '%$txt_search%'  ORDER BY m.book_id DESC ";
-							} else {
-								$sql .= " WHERE d.book_no LIKE '%$txt_search%'   AND m.dep_id=$dep_id  ORDER BY m.book_id DESC ";
-							}
+							$sql .= " WHERE d.book_no LIKE '%$txt_search%' AND m.type_id=1 ORDER BY m.book_id DESC";
 						} elseif (@$typeSearch == 3) { //เรื่อง
-							if ($level_id <= 2) {
-								$sql .= " WHERE d.title LIKE '%$txt_search%'  ORDER BY m.book_id DESC ";
-							} else {
-								$sql .= " WHERE d.title LIKE '%$txt_search%'   AND m.dep_id=$dep_id  ORDER BY m.book_id DESC ";
-							}
+							$sql .= " WHERE d.title LIKE '%$txt_search%' AND m.type_id=1 ORDER BY m.book_id DESC";
 						} elseif (@$typeSearch == 4) { //ตามเวลา
-							if ($level_id <= 2) {
-								$sql .= " WHERE  (d.date_book BETWEEN '$dateStart' AND '$dateEnd')  ORDER BY m.book_id DESC ";
-							} else {
-								$sql .= " WHERE  (d.date_book BETWEEN '$dateStart' AND '$dateEnd') AND m.dep_id=$dep_id  ORDER BY m.book_id DESC ";
-							}
+							$sql .= " WHERE (d.date_book BETWEEN '$dateStart' AND '$dateEnd') AND m.type_id=1 ORDER BY m.book_id DESC";
 						}
 
 						//$result=dbQuery($sql);
@@ -222,24 +206,7 @@ $ystatus = $ystatus;
                                         </script>";
 						}
 					} else { //กรณีโหลดเพจ หรือไม่มีการกดปุ่มใดๆ
-						switch ($level_id) {
-							case 1: //admin
-								$sql .= " WHERE m.type_id=1 ORDER BY m.book_id DESC ";       //type_id = ดูหนังสือได้ทั้งหมด
-								break;
-							case 2: //สารบรรณจังหวัดดูได้ทั้งจังหวัด
-								$sql .= " WHERE m.type_id=1 ORDER BY m.book_id DESC ";       //type_id = หนังสือถึงจังหวัดเท่านั้น
-								break;
-							case 3: //สารบรรณหน่วยงาน  ดูได้ทั้งหน่วยงาน
-								$sql .= " WHERE m.type_id=1 AND (m.dep_id=$dep_id OR m.u_id=$uid) ORDER BY m.book_id DESC  ";     //type_id = หนังสือถึงจังหวัดเท่านั้น และรหัสหน่วยงานตนเองเท่านั้น
-								break;
-							case 4: //สารบรรณกลุ่มงาน  ดูได้ทั้งหน่วย  แต่แก้ไม่ได้
-								$sql .= " WHERE m.type_id=1 AND (m.dep_id=$dep_id OR m.u_id=$uid)  ORDER BY m.book_id DESC  ";     //type_id = หนังสือถึงจังหวัดเท่านั้น และรหัสหน่วยงานตนเองเท่านั้น
-								break;
-							case 5: //สารบรรณกลุ่มงาน  ดูได้เฉพาะของตนเอง
-								$sql .= " WHERE m.type_id=1 AND m.u_id=$uid ORDER BY m.book_id DESC  ";
-								break;
-						}
-
+						$sql .= " WHERE m.type_id=1 ORDER BY m.book_id DESC ";
 						$result = page_query($dbConn, $sql, 10);
 					}
 
@@ -248,10 +215,10 @@ $ystatus = $ystatus;
 						<?php $rec_id = $row['rec_id']; ?><!-- กำหนดตัวแปรเพื่อส่งไปกับลิงค์ -->
 						<?php $book_id = $row['book_id']; ?><!-- กำหนดตัวแปรเพื่อส่งไปกับลิงค์ -->
 						<?php
-						if (isset($row['file_location'])) {
-							$showFile = "<a href='$row[file_location]' target='_balnk'>Download</a>";
+						if (isset($row['file_location']) && !empty($row['file_location'])) {
+							$showFile = "<a href='$row[file_location]' target='_blank' class='btn btn-success btn-xs' title='Download เอกสาร'><i class='fas fa-file-pdf'></i></a>";
 						} else {
-							$showFile = "ไม่มีไฟล์";
+							$showFile = "<span class='text-muted' title='ไม่มีไฟล์แนบ'><i class='fas fa-exclamation-triangle'></i></span>";
 						}
 						?>
 
@@ -288,8 +255,8 @@ $ystatus = $ystatus;
 							?>
 							<td>
 								<?php
-								if ($level_id > 3) {
-									echo '<i class="fas fa-ban"></i>ไม่มีสิทธิ์';
+								if ($row['u_id'] != $uid) {
+									echo '<i class="fas fa-ban"></i> ดูได้อย่างเดียว';
 								} else {
 									if ($numday >= $dayEdit) {  //$dayEdit เอามาจากค่า config
 										echo '<i class="fab fa-expeditedssl fa-2x"></i>';

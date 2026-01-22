@@ -22,7 +22,7 @@ $level_id = $_SESSION['ses_level_id'];
 //print $level_id;
 
 
-$sql = "SELECT  bookm.book_id,bookd.*,o.obj_name,spe.speed_name,p.pri_name,u.firstname,s.sec_name,s.sec_code,dep.dep_name,year.yname
+$sql = "SELECT  bookm.book_id, bookm.u_id as owner_id, bookd.*,o.obj_name,spe.speed_name,p.pri_name,u.firstname,s.sec_name,s.sec_code,dep.dep_name,year.yname
        FROM  book_master  bookm
        INNER JOIN book_detail bookd ON bookd.book_id = bookm.book_id
        INNER JOIN user u ON  u.u_id = bookm.u_id
@@ -41,6 +41,12 @@ $row = dbFetchArray($result);
 $strDate = $row['date_in'];
 $dateThai = DateThai($strDate);
 $book_detail_id = $row['book_detail_id'];
+$owner_id = $row['owner_id'];
+$current_uid = $_SESSION['ses_u_id'];
+$is_owner = ($owner_id == $current_uid);
+
+$readonly = !$is_owner ? "readonly" : "";
+$disabled = !$is_owner ? "disabled" : "";
 
 if (isset($row['file_location'])) {
     $showFile = "<a href='$row[file_location]' target='_balnk'>Download เอกสาร</a>";
@@ -63,7 +69,7 @@ if (isset($row['file_location'])) {
                 <td class="detail-label"><i class="fas fa-hashtag"></i> เลขหนังสือ</td>
                 <td>
                     <input type="text" class="form-control" name="book_no"
-                        value="<?php echo htmlspecialchars($row['book_no']); ?>">
+                        value="<?php echo htmlspecialchars($row['book_no']); ?>" <?php echo $readonly; ?>>
                 </td>
                 <td class="detail-label"><i class="fas fa-barcode"></i> ทะเบียนกลาง</td>
                 <td>
@@ -74,34 +80,34 @@ if (isset($row['file_location'])) {
                 <td class="detail-label"><i class="far fa-calendar-alt"></i> ลงวันที่เอกสาร</td>
                 <td>
                     <input type="date" class="form-control" name="date_book" value="<?php echo $row['date_book']; ?>"
-                        onKeyDown="return false">
+                        onKeyDown="return false" <?php echo $readonly; ?>>
                 </td>
                 <td class="detail-label"><i class="far fa-clock"></i> วันที่บันทึก</td>
                 <td>
-                    <input type="text" class="form-control" name="date_in" value="<?php echo $row['date_in']; ?>">
+                    <input type="text" class="form-control" name="date_in" value="<?php echo $row['date_in']; ?>" <?php echo $readonly; ?>>
                 </td>
             </tr>
             <tr>
                 <td class="detail-label"><i class="fas fa-paper-plane"></i> ผู้ส่ง</td>
                 <td colspan="3"><input type="text" class="form-control" name="sendfrom"
-                        value="<?php echo htmlspecialchars($row['sendfrom']); ?>">
+                        value="<?php echo htmlspecialchars($row['sendfrom']); ?>" <?php echo $readonly; ?>>
                 </td>
             </tr>
             <tr>
                 <td class="detail-label"><i class="fas fa-user-tag"></i> ผู้รับ</td>
                 <td colspan="3"><input type="text" class="form-control" name="sendto"
-                        value="<?php echo htmlspecialchars($row['sendto']); ?>">
+                        value="<?php echo htmlspecialchars($row['sendto']); ?>" <?php echo $readonly; ?>>
                 </td>
             </tr>
             <tr>
                 <td class="detail-label"><i class="fas fa-align-left"></i> เรื่อง</td>
                 <td colspan="3"><input type="text" class="form-control" name="title"
-                        value="<?php echo htmlspecialchars($row['title']); ?>"></td>
+                        value="<?php echo htmlspecialchars($row['title']); ?>" <?php echo $readonly; ?>></td>
             </tr>
             <tr>
                 <td class="detail-label"><i class="fas fa-shield-alt"></i> ชั้นความลับ</td>
                 <td>
-                    <select class="form-control" name="pri_id">
+                    <select class="form-control" name="pri_id" <?php echo $disabled; ?>>
                         <?php
                         $sql_p = "SELECT * FROM priority ORDER BY pri_id";
                         $res_p = dbQuery($sql_p);
@@ -114,7 +120,7 @@ if (isset($row['file_location'])) {
                 </td>
                 <td class="detail-label"><i class="fas fa-bolt"></i> ชั้นความเร็ว</td>
                 <td>
-                    <select class="form-control" name="speed_id">
+                    <select class="form-control" name="speed_id" <?php echo $disabled; ?>>
                         <?php
                         $sql_s = "SELECT * FROM speed ORDER BY speed_id";
                         $res_s = dbQuery($sql_s);
@@ -129,7 +135,7 @@ if (isset($row['file_location'])) {
             <tr>
                 <td class="detail-label"><i class="fas fa-bullseye"></i> วัตถุประสงค์</td>
                 <td>
-                    <select class="form-control" name="obj_id">
+                    <select class="form-control" name="obj_id" <?php echo $disabled; ?>>
                         <?php
                         $sql_o = "SELECT * FROM object ORDER BY obj_id";
                         $res_o = dbQuery($sql_o);
@@ -147,19 +153,17 @@ if (isset($row['file_location'])) {
             </tr>
             <tr>
                 <td class="detail-label"><i class="fas fa-link"></i> อ้างถึง</td>
-                <td colspan="3"><textarea class="form-control" name="reference"
-                        rows="2"><?php print $row['reference']; ?></textarea></td>
+                <td colspan="3"><textarea class="form-control" name="reference" rows="2" <?php echo $readonly; ?>><?php print $row['reference']; ?></textarea></td>
             </tr>
             <tr>
                 <td class="detail-label"><i class="fas fa-paperclip"></i> สิ่งที่ส่งมาด้วย</td>
-                <td colspan="3"><textarea class="form-control" name="attachment"
-                        rows="2"><?php print $row['attachment']; ?></textarea></td>
+                <td colspan="3"><textarea class="form-control" name="attachment" rows="2" <?php echo $readonly; ?>><?php print $row['attachment']; ?></textarea></td>
             </tr>
             <tr>
                 <td class="detail-label"><i class="fas fa-university"></i> หน่วยดำเนินการ</td>
                 <td colspan="3">
                     <select class="form-control selectpicker" data-live-search="true" name="practice"
-                        style="width: 100%;">
+                        style="width: 100%;" <?php echo $disabled; ?>>
                         <option value="">-- เลือกหน่วยปฏิบัติ --</option>
                         <?php
                         $sql_d = "SELECT * FROM depart ORDER BY dep_name";
@@ -187,7 +191,7 @@ if (isset($row['file_location'])) {
                 <td colspan="3">
                     <div class="row">
                         <div class="col-md-8">
-                            <input type="file" name="file_location" class="form-control">
+                            <input type="file" name="file_location" class="form-control" <?php echo $disabled; ?>>
                         </div>
                         <div class="col-md-4">
                             <div class="detail-value-text" style="color: #4e73df; font-size: 0.9rem;">
@@ -202,20 +206,27 @@ if (isset($row['file_location'])) {
                     <hr style="border-top: 1px solid #eaecf4; margin-bottom: 2rem;">
 
                     <div class="text-center">
-                        <button class="btn btn-warning btn-lg" type="submit" name="btnUpdate"
-                            style="min-width: 160px; font-weight: 700; border-radius: 30px; margin-right: 15px;">
-                            <i class="fas fa-save"></i> บันทึกแก้ไข
-                        </button>
+                        <?php if ($is_owner) { ?>
+                            <button class="btn btn-warning btn-lg" type="submit" name="btnUpdate"
+                                style="min-width: 160px; font-weight: 700; border-radius: 30px; margin-right: 15px;">
+                                <i class="fas fa-save"></i> บันทึกแก้ไข
+                            </button>
 
-                        <button class="btn btn-success btn-lg" type="submit" name="resive"
-                            style="min-width: 160px; font-weight: 700; border-radius: 30px; margin-right: 5px;">
-                            <i class="fas fa-check-circle"></i> ลงรับหนังสือ
-                        </button>
+                            <button class="btn btn-success btn-lg" type="submit" name="resive"
+                                style="min-width: 160px; font-weight: 700; border-radius: 30px; margin-right: 5px;">
+                                <i class="fas fa-check-circle"></i> ลงรับหนังสือ
+                            </button>
 
-                        <button class="btn btn-danger btn-lg" type="submit" name="reply"
-                            style="min-width: 160px; font-weight: 700; border-radius: 30px;">
-                            <i class="fas fa-undo"></i> ส่งคืนหนังสือ
-                        </button>
+                            <button class="btn btn-danger btn-lg" type="submit" name="reply"
+                                style="min-width: 160px; font-weight: 700; border-radius: 30px;">
+                                <i class="fas fa-undo"></i> ส่งคืนหนังสือ
+                            </button>
+                        <?php } else { ?>
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle"></i> คุณสามารถดูข้อมูลได้เพียงอย่างเดียว
+                                เนื่องจากไม่ได้เป็นผู้ลงทะเบียนหนังสือฉบับนี้
+                            </div>
+                        <?php } ?>
                     </div>
                 </td>
             </tr>
