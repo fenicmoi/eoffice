@@ -211,7 +211,7 @@ $u_id = $_GET['edit'];
                         </div>
                     </div>
                     <center>
-                        <button class="btn btn-success btn-lg" type="submit" name="save">
+                        <button class="btn btn-success btn-lg" type="submit" name="update">
                             <i class="fa fa-save"></i> บันทึก
                         </button>
                         <a class="btn btn-danger btn-lg" href="user.php"><i class="fas fa-times-circle"></i> ยกเลิก</a>

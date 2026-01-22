@@ -77,7 +77,8 @@ $ystatus = $ystatus;
 
                             if ($date_diff <= 7) { ?>
                                 <a class="btn btn-success btn-block"
-                                    href="flow-circle-edit.php?u_id=<?= $u_id ?>&cid=<?= $cid ?>"><i class="fas fa-edit"></i></a>
+                                    href="flow-circle-edit.php?u_id=<?= $u_id ?>&cid=<?= $cid ?>"><i
+                                        class="fas fa-edit"></i></a>
                             <?php } else if ($date_diff > 7) { ?>
                                     <center><i class="fas fa-lock fa-2x"></i></center>
                             <?php } ?>
@@ -165,8 +166,6 @@ $ystatus = $ystatus;
                             <?php
                             $sql = "SELECT section.sec_code, user.firstname, user.sec_id FROM section, user WHERE user.u_id = ? AND user.sec_id = section.sec_id";
                             $result = dbQuery($sql, "i", [(int) $u_id]);
-                            // print $sql;
-                            $result = dbQuery($sql);
                             $rowPrefex = dbFetchArray($result);
                             $prefex = $rowPrefex['sec_code'];
                             $firstname = $rowPrefex['firstname'];
@@ -540,6 +539,7 @@ if (isset($_POST['update'])) {
             <div class="modal-body">
                 <div class="alert alert-danger"><i class="fas fa-comments" fa-2x></i>ระบุจำนวนเอกสารที่ต้องการจอง</div>
                 <form name="form" method="post" enctype="multipart/form-data">
+                    <?php echo csrf_field(); ?>
                     <div class="form-group col-sm-6">
                         <div class="input-group">
                             <span class="input-group-addon">จำนวน:</span>

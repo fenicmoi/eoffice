@@ -239,6 +239,7 @@ $username = isset($u_name) ? $u_name : (isset($firstname) ? $firstname : ''); //
 				</div>
 				<div class="modal-body bg-success">
 					<form name="form" method="post" enctype="multipart/form-data">
+						<?php echo csrf_field(); ?>
 						<div class="form-group col-md-6">
 							<div class="input-group">
 								<span class="input-group-addon">ปีเอกสาร</span>

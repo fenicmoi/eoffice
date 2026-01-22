@@ -77,6 +77,7 @@ $cid=$_GET['cid'];
                    <i class="badge"> ข้อมูลทั่วไป </i>                   
                     <div class="well">
                      <form name="form" method="post" action="flow-circle.php" enctype="multipart/form-data">
+                        <?php echo csrf_field(); ?>
                         <table width="800">
                             <tr>
                                 <td> 

@@ -2,6 +2,7 @@
 date_default_timezone_set('Asia/Bangkok');
 include 'function.php';
 include '../library/database.php';
+include '../library/security.php';
 
 $cid = $_POST['cid'];
 $u_id = $_POST['u_id'];
