@@ -56,7 +56,8 @@ function highlightText($text, $search)
             <i class="fa fa-envelope fa-2x" aria-hidden="true"></i> <strong>ทะเบียนหนังสือส่ง [เวียน]</strong>
             <a href="" class="btn btn-danger btn-md pull-right" data-toggle="modal" data-target="#modalAdd"><i
                     class="fa fa-plus " aria-hidden="true"></i> ลงทะเบียนส่ง</a>
-            <!-- <a href="" class="btn btn-default btn-md pull-right" data-toggle="modal" data-target="#modalReserv"><i class="fas fa-hand-point-up "></i> จองทะเบียนส่ง</a> -->
+            <a href="" class="btn btn-info btn-md pull-right" style="margin-right: 5px;" data-toggle="modal"
+                data-target="#modalReserv"><i class="fas fa-hand-point-up "></i> จองทะเบียนส่ง</a>
         </div>
         <table class="table table-bordered table-hover" id="dataTable">
             <thead class="bg-info">
@@ -645,8 +646,14 @@ if (isset($_POST['update'])) {
                     <?php echo csrf_field(); ?>
                     <div class="form-group col-sm-6">
                         <div class="input-group">
+                            <span class="input-group-addon">เลขประจำส่วนราชการ:</span>
+                            <input type="text" class="form-control" name="prefex" placeholder="ตย. 0017.1" required>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <div class="input-group">
                             <span class="input-group-addon">จำนวน:</span>
-                            <input type="number" class="form-control" name="num" max=10 placeholder="ไม่เกิน 10 ฉบับ"
+                            <input type="number" class="form-control" name="num" max=100 placeholder="ไม่เกิน 100 ฉบับ"
                                 required>
                         </div>
                     </div>
@@ -668,24 +675,25 @@ if (isset($_POST['btnReserv'])) {
     $sql = "SELECT section.sec_code, user.firstname, user.sec_id FROM section, user WHERE user.u_id = ? AND user.sec_id = section.sec_id";
     $result = dbQuery($sql, "i", [(int) $u_id]);
     $rowPrefex = dbFetchArray($result);
+
+    $prefex = $_POST['prefex'];
+    $num = $_POST['num'];   //จำนวนหนังสือที่ต้องจอง
+
     $obj_id = 1;
     $typeDoc = 1;
-    $prefex = '' . '/';
     $title = "จองเลขหนังสือ";
     $speed_id = 4;
-    $sendfrom = "ผู้ว่าราชการจังหวัด";
-    $sendto = "Mr.x";
+    $sendfrom = "จองเลข";
+    $sendto = "-";
     $refer = "-";
     $attachment = "-";
     $practice = $rowPrefex['firstname'];
-    ;
     $file_location = "-";
     $dateline = date("Y-m-d");
     $datelout = date('Y-m-d');
     $follow = 0;
     $open = 0;
 
-    $num = $_POST['num'];   //จำนวนหนังสือที่ต้องจอง
     $a = 0;
     while ($a < $num) {
         $sql = "SELECT MAX(rec_no) AS rec_no FROM flowcircle WHERE yid = ?";
