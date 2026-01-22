@@ -173,16 +173,16 @@ $ystatus = $ystatus;
 					//ตรวจสอบการกดปุ่มค้นหา
 					if (isset($_POST['btnSearch'])) { //ถ้ามีการกดปุ่มค้นหา
 						@$typeSearch = $_POST['typeSearch']; //ประเภทการค้นหา
-						@$txt_search = $_POST['search']; //กล่องรับข้อความ
+						@$txt_search = trim($_POST['search']); //กล่องรับข้อความ
 						@$dateStart = $_POST['dateStart'];
 						@$dateEnd = $_POST['dateEnd'];
 
 						if (@$typeSearch == 1) { //ทะเบียนรับ
-							$sql .= " WHERE m.rec_id LIKE '%$txt_search%' AND m.type_id=1 ORDER BY m.book_id DESC";
+							$sql .= " WHERE m.rec_id LIKE '%" . dbEscapeString($txt_search) . "%' AND m.type_id=1 ORDER BY m.book_id DESC";
 						} elseif (@$typeSearch == 2) { //เลขหนังสือ
-							$sql .= " WHERE d.book_no LIKE '%$txt_search%' AND m.type_id=1 ORDER BY m.book_id DESC";
+							$sql .= " WHERE d.book_no LIKE '%" . dbEscapeString($txt_search) . "%' AND m.type_id=1 ORDER BY m.book_id DESC";
 						} elseif (@$typeSearch == 3) { //เรื่อง
-							$sql .= " WHERE d.title LIKE '%$txt_search%' AND m.type_id=1 ORDER BY m.book_id DESC";
+							$sql .= " WHERE d.title LIKE '%" . dbEscapeString($txt_search) . "%' AND m.type_id=1 ORDER BY m.book_id DESC";
 						} elseif (@$typeSearch == 4) { //ตามเวลา
 							$sql .= " WHERE (d.date_book BETWEEN '$dateStart' AND '$dateEnd') AND m.type_id=1 ORDER BY m.book_id DESC";
 						}
@@ -199,7 +199,7 @@ $ystatus = $ystatus;
                                             showConfirmButton:true
                                         },
                                             function(isConfirm){
-                                                if(isConfirm){p
+                                                if(isConfirm){
                                                     window.location.href='flow-resive-province.php';
                                                         }
                                                 }); 
