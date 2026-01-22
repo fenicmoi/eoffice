@@ -9,13 +9,46 @@ list($yid, $yname, $ystatus) = chkYear();
 $yid = $yid;
 $yname = $yname;
 $ystatus = $ystatus;
+
+function highlightText($text, $search)
+{
+    if (empty($search))
+        return $text;
+    return preg_replace('/(' . preg_quote($search, '/') . ')/iu', '<span class="highlight">$1</span>', $text);
+}
 ?>
+<style>
+    .highlight {
+        background-color: #ffeb3b;
+        font-weight: bold;
+        color: #cb2431;
+        padding: 2px;
+        border-radius: 4px;
+    }
+</style>
 <div class="col-md-2">
     <?php
     $menu = checkMenu($level_id);
     include $menu;
     ?>
 </div>
+
+<script>
+    $(document).ready(function () {
+        $("#dateSearch").hide();
+
+        $('#typeSearch').change(function () {
+            var typeSearch = $('#typeSearch').val();
+            if (typeSearch == 4) {
+                $("#dateSearch").show(500);
+                $("#search").hide(500);
+            } else {
+                $("#dateSearch").hide(500);
+                $("#search").show(500);
+            }
+        })
+    });
+</script>
 
 <div class="col-md-10">
     <div class="panel panel-default">
@@ -27,6 +60,38 @@ $ystatus = $ystatus;
         </div>
         <table class="table table-bordered table-hover" id="dataTable">
             <thead class="bg-info">
+                <tr bgcolor="black">
+                    <td colspan="4">
+                        <form class="form-inline" method="post" name="frmSearch" id="frmSearch">
+                            <?php echo csrf_field(); ?>
+                            <div class="form-group">
+                                <select class="form-control" id="typeSearch" name="typeSearch">
+                                    <option value="1"> เลขทะเบียนส่ง</option>
+                                    <option value="2"> เลขเอกสาร</option>
+                                    <option value="3" selected>เรื่อง</option>
+                                    <option value="4">ตามช่วงเวลา</option>
+                                </select>
+                                <div class="input-group">
+                                    <input class="form-control" id="search" name="search" type="text" size="80"
+                                        placeholder="Keyword สั้นๆ">
+                                    <div class="input-group" id="dateSearch">
+                                        <span class="input-group-addon"><i
+                                                class="fas fa-calendar-alt"></i>วันที่เริ่มต้น</span>
+                                        <input class="form-control" id="dateStart" name="dateStart" type="date">
+                                        <span class="input-group-addon"><i
+                                                class="fas fa-calendar-alt"></i>วันที่สิ้นสุด</span>
+                                        <input class="form-control" id="dateEnd" name="dateEnd" type="date">
+                                    </div>
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-primary" type="submit" name="btnSearch" id="btnSearch">
+                                            <i class="fas fa-search "></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </td>
+                </tr>
                 <tr>
                     <th>เลขหนังสือ</th>
                     <th>เรื่อง</th>
@@ -36,27 +101,65 @@ $ystatus = $ystatus;
             </thead>
             <tbody>
                 <?php
-                $count = 1;
-                if ($level_id == 1) {   //กรณีเป็น Admin  สามารถดูได้ทั้งหมด
-                    $sql = "SELECT * FROM flowcircle ORDER BY cid DESC";
-                    $result = page_query($dbConn, $sql, 10);
-                } elseif ($level_id == 2) {   //สารบรรณกลาง  แสดงทั้งหมด
-                    $sql = "SELECT * FROM flowcircle ORDER BY cid DESC";
-                    $result = page_query($dbConn, $sql, 10);
-                } elseif ($level_id == 3) {             //สารบรรณหน่วยงาน   แสดงแค่หน่วยของตนเอง
-                    $sql = "SELECT * FROM flowcircle WHERE dep_id = ? ORDER BY cid DESC";
-                    $result = page_query($dbConn, $sql, 10, "i", [(int) $dep_id]);
-                } elseif ($level_id == 4) {             //สารบรรณกลุ่มงาน  แสดงแค่กลุ่มของตนเอง
-                    $sql = "SELECT * FROM flowcircle WHERE dep_id = ? AND sec_id = ? ORDER BY cid DESC";
-                    $result = page_query($dbConn, $sql, 10, "ii", [(int) $dep_id, (int) $sec_id]);
-                } elseif ($level_id == 5) {            // ผู้ใช้ทั่วไปดูข้อมูลเฉพาะของกลุ่มตนเอง
-                    $sql = "SELECT * FROM flowcircle WHERE dep_id = ? AND sec_id = ? ORDER BY cid DESC";
-                    $result = page_query($dbConn, $sql, 10, "ii", [(int) $dep_id, (int) $sec_id]);
+                if (isset($_POST['btnSearch'])) {
+                    $typeSearch = $_POST['typeSearch'];
+                    $txt_search = trim($_POST['search']);
+                    $dateStart = $_POST['dateStart'];
+                    $dateEnd = $_POST['dateEnd'];
+
+                    $sql = "SELECT * FROM flowcircle WHERE 1=1";
+                    $types = "";
+                    $params = [];
+
+                    if ($typeSearch == 1) {
+                        $sql .= " AND rec_no LIKE '%" . dbEscapeString($txt_search) . "%'";
+                    } elseif ($typeSearch == 2) {
+                        $sql .= " AND prefex LIKE '%" . dbEscapeString($txt_search) . "%'";
+                    } elseif ($typeSearch == 3) {
+                        $sql .= " AND title LIKE '%" . dbEscapeString($txt_search) . "%'";
+                    } elseif ($typeSearch == 4) {
+                        $sql .= " AND (dateline BETWEEN ? AND ?)";
+                        $params[] = $dateStart;
+                        $params[] = $dateEnd;
+                        $types .= "ss";
+                    }
+
+                    // ปรับสิทธิ์การดูข้อมูลในการค้นหา
+                    if ($level_id == 3) {
+                        $sql .= " AND dep_id = ?";
+                        $params[] = (int) $dep_id;
+                        $types .= "i";
+                    } elseif ($level_id >= 4) {
+                        $sql .= " AND dep_id = ? AND sec_id = ?";
+                        $params[] = (int) $dep_id;
+                        $params[] = (int) $sec_id;
+                        $types .= "ii";
+                    }
+
+                    $sql .= " ORDER BY cid DESC";
+                    $result = page_query($dbConn, $sql, 10, $types, $params);
+                    echo "<tr><td colspan='4' class='alert-warning'>ผลการค้นหาสำหรับ: <b>" . htmlspecialchars($txt_search) . "</b></td></tr>";
+                } else {
+                    if ($level_id == 1 || $level_id == 2) {
+                        $sql = "SELECT * FROM flowcircle ORDER BY cid DESC";
+                        $result = page_query($dbConn, $sql, 10);
+                    } elseif ($level_id == 3) {
+                        $sql = "SELECT * FROM flowcircle WHERE dep_id = ? ORDER BY cid DESC";
+                        $result = page_query($dbConn, $sql, 10, "i", [(int) $dep_id]);
+                    } else {
+                        $sql = "SELECT * FROM flowcircle WHERE dep_id = ? AND sec_id = ? ORDER BY cid DESC";
+                        $result = page_query($dbConn, $sql, 10, "ii", [(int) $dep_id, (int) $sec_id]);
+                    }
+                }
+
+                if (dbNumRows($result) == 0) {
+                    echo "<tr><td colspan='4' class='text-center'>--- ไม่พบข้อมูล ---</td></tr>";
                 }
 
                 while ($row = dbFetchArray($result)) { ?>
                     <tr>
-                        <td><?php echo $row['prefex']; ?>/ว<?php echo $row['rec_no']; ?></td>
+                        <td><?php echo $row['prefex']; ?>/ว<?php echo isset($txt_search) ? highlightText($row['rec_no'], $txt_search) : $row['rec_no']; ?>
+                        </td>
                         <td>
                             <?php
                             $cid = $row['cid'];
@@ -64,7 +167,7 @@ $ystatus = $ystatus;
                             ?>
                             <a href="#" onClick="loadData('<?php print $cid; ?>','<?php print $u_id; ?>');"
                                 data-toggle="modal" data-target=".bs-example-modal-table">
-                                <?php echo $row['title']; ?>
+                                <?php echo isset($txt_search) ? highlightText($row['title'], $txt_search) : $row['title']; ?>
                             </a>
                         </td>
                         <td><?php echo thaiDate($row['dateline']); ?></td>
