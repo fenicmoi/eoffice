@@ -26,34 +26,7 @@ ini_set('display_errors', 1);
             $rowActiveUsers = dbFetchArray($resultActiveUsers);
             $activeUsers = $rowActiveUsers['active_users'] ?? 0;
 
-            // Query for Today's Documents
-            $sqlTodayDocs = "SELECT COUNT(*) as today_docs FROM book_detail WHERE date_in = CURDATE()";
-            $resultTodayDocs = dbQuery($sqlTodayDocs);
-            $rowTodayDocs = dbFetchArray($resultTodayDocs);
-            $todayDocs = $rowTodayDocs['today_docs'] ?? 0;
-
-            // Query for Incoming Documents (Total)
-            $sqlIncomingTotal = "SELECT COUNT(*) as incoming_total FROM book_master WHERE type_id = 1";
-            $resultIncomingTotal = dbQuery($sqlIncomingTotal);
-            $rowIncomingTotal = dbFetchArray($resultIncomingTotal);
-            $incomingTotal = $rowIncomingTotal['incoming_total'] ?? 0;
-
-            // Query for Incoming Documents (Pending)
-            $sqlIncomingPending = "SELECT COUNT(*) as incoming_pending 
-                                   FROM book_master m 
-                                   INNER JOIN book_detail d ON d.book_id = m.book_id 
-                                   WHERE m.type_id = 1 AND d.status = ''";
-            $resultIncomingPending = dbQuery($sqlIncomingPending);
-            $rowIncomingPending = dbFetchArray($resultIncomingPending);
-            $incomingPending = $rowIncomingPending['incoming_pending'] ?? 0;
-
-            // Query for Outgoing Documents (Normal)
-            $sqlOutgoingNormal = "SELECT COUNT(*) as outgoing_normal FROM book_master WHERE type_id = 2";
-            $resultOutgoingNormal = dbQuery($sqlOutgoingNormal);
-            $rowOutgoingNormal = dbFetchArray($resultOutgoingNormal);
-            $outgoingNormal = $rowOutgoingNormal['outgoing_normal'] ?? 0;
-
-            // Query for Circular Documents
+            // Query for Circular Documents (Used in original section below)
             $sqlCircularDocs = "SELECT COUNT(*) as circular_docs FROM flowcircle";
             $resultCircularDocs = dbQuery($sqlCircularDocs);
             $rowCircularDocs = dbFetchArray($resultCircularDocs);
@@ -82,9 +55,9 @@ ini_set('display_errors', 1);
                 </div>
             </div>
 
-            <!-- Row 1: Main Statistics -->
+            <!-- Row 1: Main Statistics (Active Users & Active Agencies) -->
             <div class="row" style="margin-bottom: 20px;">
-                <div class="col-md-3">
+                <div class="col-md-6">
                     <div class="panel panel-primary">
                         <div class="panel-heading" style="background: linear-gradient(135deg, #4e73df, #224abe);">
                             <i class="fas fa-users fa-3x pull-left" style="opacity: 0.8;"></i>
@@ -92,55 +65,14 @@ ini_set('display_errors', 1);
                                 <div class="huge" style="font-size: 30px; font-weight: bold;">
                                     <span id="stat-active-users"><?php echo $activeUsers; ?></span>
                                 </div>
-                                <div>ผู้ใช้งานออนไลน์</div>
+                                <div style="font-size: 18px;">ผู้ใช้งานออนไลน์</div>
                             </div>
+                            <div class="clearfix"></div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <div class="panel panel-success">
-                        <div class="panel-heading" style="background: linear-gradient(135deg, #1cc88a, #047857);">
-                            <i class="fas fa-file-alt fa-3x pull-left" style="opacity: 0.8;"></i>
-                            <div class="text-right">
-                                <div class="huge" style="font-size: 30px; font-weight: bold;"><span
-                                        id="stat-today-docs"><?php echo $todayDocs; ?></span>
-                                </div>
-                                <div>เอกสารวันนี้</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="panel panel-info">
-                        <div class="panel-heading" style="background: linear-gradient(135deg, #36b9cc, #1a8a9a);">
-                            <i class="fas fa-inbox fa-3x pull-left" style="opacity: 0.8;"></i>
-                            <div class="text-right">
-                                <div class="huge" style="font-size: 30px; font-weight: bold;">
-                                    <span id="stat-incoming-total"><?php echo $incomingTotal; ?></span>
-                                </div>
-                                <div>หนังสือรับทั้งหมด</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="panel panel-warning">
-                        <div class="panel-heading" style="background: linear-gradient(135deg, #f6c23e, #d4a017);">
-                            <i class="fas fa-paper-plane fa-3x pull-left" style="opacity: 0.8;"></i>
-                            <div class="text-right">
-                                <div class="huge" style="font-size: 30px; font-weight: bold;">
-                                    <span id="stat-outgoing-normal"><?php echo $outgoingNormal; ?></span>
-                                </div>
-                                <div>หนังสือส่ง</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Row 3: Agency Statistics & More -->
-            <div class="row" style="margin-bottom: 20px;">
-                <div class="col-md-3">
+                <div class="col-md-6">
                     <div class="panel panel-default"
                         style="border: none; box-shadow: 0 4px 15px rgba(0,0,0,0.1); cursor: pointer;"
                         data-toggle="modal" data-target="#modalActiveAgencies">
@@ -151,7 +83,7 @@ ini_set('display_errors', 1);
                                 <div class="huge" style="font-size: 30px; font-weight: bold;">
                                     <span id="stat-active-agencies"><?php echo $activeAgencies; ?></span>
                                 </div>
-                                <div style="font-weight: 500;">หน่วยงานที่ออนไลน์</div>
+                                <div style="font-size: 18px; font-weight: 500;">หน่วยงานที่ออนไลน์</div>
                             </div>
                             <div class="clearfix"></div>
                             <div style="font-size: 12px; margin-top: 5px; text-align: right; opacity: 0.9;">
