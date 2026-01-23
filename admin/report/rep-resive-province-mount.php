@@ -17,6 +17,7 @@ $dateEnd = $_POST['dateEnd'];     // วันที่สิ้นสุด
 $uid = $_POST['uid'];
 $yid = $_POST['yid'];
 $username = $_POST['username'];
+$scope = $_POST['scope'] ?? 'all';
 
 
 $sql_header = "SELECT d.dep_name,s.sec_id,s.sec_name 
@@ -62,6 +63,11 @@ $row_header = dbFetchArray($result_header);
                     <h4>กลุ่มงาน/หน่วยงานย่อย: <?php echo $row_header['sec_name']; ?> &nbsp;|&nbsp; วันที่ออกรายงาน:
                         <?php echo DateThai(); ?>
                 </center>
+                <?php if ($scope == 'owner') { ?>
+                    <center>
+                        <h5>(เฉพาะที่เป็นเจ้าของ)</h5>
+                    </center>
+                <?php } ?>
             </td>
         </tr>
         <tr>
@@ -82,9 +88,15 @@ $row_header = dbFetchArray($result_header);
                      INNER JOIN depart dep ON d.practice = dep.dep_id
                      LEFT JOIN user u ON m.u_id = u.u_id
                      WHERE m.type_id=1 
-                     AND d.date_line BETWEEN '$dateStart 00:00:00' AND '$dateEnd 23:59:59' 
-                     AND (m.dep_id='$dep_id' OR u.dep_id='$dep_id')
-                     ORDER BY m.rec_id DESC";
+                     AND d.date_line BETWEEN '$dateStart 00:00:00' AND '$dateEnd 23:59:59' ";
+
+        if ($scope == 'owner') {
+            $sql_data .= " AND m.u_id = '$uid' ";
+        } else {
+            $sql_data .= " AND (m.dep_id='$dep_id' OR u.dep_id='$dep_id') ";
+        }
+
+        $sql_data .= " ORDER BY m.rec_id DESC";
 
         $result_data = dbQuery($sql_data);
         $i = 1;

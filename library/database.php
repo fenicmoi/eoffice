@@ -24,6 +24,9 @@ function dbQuery($sql, $types = null, $params = null)
     // **รูปแบบการเรียกใช้ทั่วไป (ไม่รับค่าจากผู้ใช้)**
     if (empty($params) || empty($types)) {
         $result = $dbConn->query($sql);
+        if ($result === false) {
+            error_log("MySQL Query Error: " . $dbConn->error . "\nSQL: " . $sql);
+        }
         return $result;
     }
 
@@ -72,25 +75,37 @@ function dbAffectedRows()
 function dbFetchArray($result)
 {
     global $dbConn;
-    return mysqli_fetch_array($result);
+    if ($result instanceof mysqli_result) {
+        return mysqli_fetch_array($result);
+    }
+    return false;
 }
 
 function dbFetchAssoc($result)
 {
     global $dbConn;
-    return mysqli_fetch_assoc($result);
+    if ($result instanceof mysqli_result) {
+        return mysqli_fetch_assoc($result);
+    }
+    return false;
 }
 
 function dbFetchRow($result)
 {
     global $dbConn;
-    return mysqli_fetch_row($result);
+    if ($result instanceof mysqli_result) {
+        return mysqli_fetch_row($result);
+    }
+    return false;
 }
 
 function dbFreeResult($result)
 {
     global $dbConn;
-    return mysqli_free_result($result);
+    if ($result instanceof mysqli_result) {
+        return mysqli_free_result($result);
+    }
+    return false;
 }
 
 function dbNumRows($result)

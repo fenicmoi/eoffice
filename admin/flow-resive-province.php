@@ -604,6 +604,13 @@ $ystatus = $ystatus;
 					action="report/rep-resive-province.php" target="_blank">
 					<span>เลือกวันที่</span>
 					<input class="form-control" id="dateprint" name="dateprint" type="date">
+					<div class="form-group">
+						&nbsp;&nbsp;ขอบเขตรายงาน:
+						<label class="radio-inline"><input type="radio" name="scope" value="all" checked>
+							ทั้งหมด</label>
+						<label class="radio-inline"><input type="radio" name="scope" value="owner">
+							เฉพาะที่เป็นเจ้าของ</label>
+					</div>
 					<button type="submit" class="btn btn-lg btn-success">
 						<span class="glyphicon glyphicon-print"></span>
 					</button>
@@ -652,6 +659,13 @@ $ystatus = $ystatus;
 								<span class="input-group-addon">วันสิ้นสุด</span>
 								<input class="form-control" id="dateEnd" name="dateEnd" type="date">
 							</div>
+						</div>
+						<div class="form-group">
+							&nbsp;&nbsp;ขอบเขตรายงาน:
+							<label class="radio-inline"><input type="radio" name="scope" value="all" checked>
+								ทั้งหมด</label>
+							<label class="radio-inline"><input type="radio" name="scope" value="owner">
+								เฉพาะที่เป็นเจ้าของ</label>
 						</div>
 						<button type="submit" class="btn btn-lg btn-success">
 							<span class="glyphicon glyphicon-print"></span>

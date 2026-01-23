@@ -16,7 +16,7 @@ $dateprint = $_POST['dateprint'];  // วันที่พิมพ์ราย
 $uid = $_POST['uid'];
 $yid = $_POST['yid'];
 $username = $_POST['username'];
-
+$scope = $_POST['scope'] ?? 'all';
 
 
 $sql = "SELECT d.dep_name,s.sec_id,s.sec_name 
@@ -61,6 +61,9 @@ $row = dbFetchArray($result);
                     <h4>กลุ่มงาน: <?php echo $row['sec_name']; ?> &nbsp;|&nbsp; วันที่ออกรายงาน:
                         <?php echo DateThai(); ?>
                     </h4>
+                    <?php if ($scope == 'owner') { ?>
+                        <h5>(เฉพาะที่เป็นเจ้าของ)</h5>
+                    <?php } ?>
                 </center>
             </td>
         </tr>
@@ -83,9 +86,15 @@ $row = dbFetchArray($result);
               INNER JOIN depart dep ON dep.dep_id= d.practice
               LEFT JOIN user u ON m.u_id = u.u_id
               WHERE m.type_id=1 
-              AND d.date_line BETWEEN '$dateprint 00:00:00' AND '$dateprint 23:59:59' 
-              AND (m.dep_id='$dep_id' OR u.dep_id='$dep_id')
-              ORDER BY m.rec_id DESC";
+              AND d.date_line BETWEEN '$dateprint 00:00:00' AND '$dateprint 23:59:59' ";
+
+        if ($scope == 'owner') {
+            $sql .= " AND m.u_id = '$uid' ";
+        } else {
+            $sql .= " AND (m.dep_id='$dep_id' OR u.dep_id='$dep_id') ";
+        }
+
+        $sql .= " ORDER BY m.rec_id DESC";
 
         // **การนับแถวด้วย dbNumRows(sql) ก่อนรัน dbQuery ซ้ำ อาจทำให้โค้ดทำงานซ้ำซ้อน**
         // ควรใช้ $i=1; และนับไปเรื่อยๆ ในลูป หรือใช้ dbNumRows(result) หลังการ Query

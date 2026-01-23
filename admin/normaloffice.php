@@ -5,7 +5,7 @@ $u_id = $_SESSION['ses_u_id'];
 ?>
 <?php
 //ตรวจสอบปีเอกสารว่าเป็นปีปัจจุบันหรือไม่
-    list($yid,$yname,$ystatus)=chkYear();  
+list($yid, $yname, $ystatus) = chkYear();
 $yid = $yid;
 $yname = $yname;
 $ystatus = $ystatus;
@@ -377,16 +377,16 @@ if (isset($_POST['save'])) {
     if ($ystatus == 0) {
         echo "<script>swal(\"ระบบจัดการปีปฏิทินมีปัญหา  ติดต่อ Admin!\") </script>";
     } else {
-        $sqlRun = "SELECT cid,rec_no FROM flownormal_depart WHERE  yid=$yid  ORDER  BY cid DESC";
+        $sqlRun = "SELECT cid,rec_no FROM flownormal_depart WHERE yid=$yid ORDER BY cid DESC LIMIT 1";
         $resRun = dbQuery($sqlRun);
         $rowRun = dbFetchArray($resRun);
-        $rec_no = $rowRun['rec_no'];
+        $rec_no = ($rowRun) ? $rowRun['rec_no'] : 0;
         $rec_no++;
 
         dbQuery('BEGIN');
         $sqlInsert = "INSERT INTO flownormal_depart
                          (rec_no,u_id,obj_id,yid,typeDoc,prefex,title,speed_id,sec_id,sendfrom,sendto,refer,attachment,practice,file_location,dateline,dateout,open,dep_id)    
-                    VALUE($rec_no,$u_id,$obj_id,$yid,'$typeDoc','$prefex','$title',$speed_id,$sec_id,'$sendfrom','$sendto','$refer','$attachment','$practice','$file_location','$dateline','$datelout',$open,$dep_id)";
+                    VALUES ($rec_no, $uid, $obj_id, $yid, '$typeDoc', '$prefex', '$title', $speed_id, $sec_id, '$sendfrom', '$sendto', '$refer', '$attachment', '$practice', '$file_location', '$dateline', '$datelout', $open, $dep_id)";
 
         $result = dbQuery($sqlInsert);
         if ($result) {
@@ -424,12 +424,12 @@ if (isset($_POST['save'])) {
         }
     })
 
-function loadData(cid, u_id) {
-                                  var sdata = {
-                                      cid: cid,
-                                      u_id: u_id
-                                  };
-                                  $('#divDataview').load('show-flow-normal.php', sdata);
-                              }
+    function loadData(cid, u_id) {
+        var sdata = {
+            cid: cid,
+            u_id: u_id
+        };
+        $('#divDataview').load('show-flow-normal.php', sdata);
+    }
 </script>
 <?php include "footer.php"; ?>

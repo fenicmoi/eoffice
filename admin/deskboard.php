@@ -53,7 +53,11 @@ ini_set('display_errors', 1);
             $rowOutgoingNormal = dbFetchArray($resultOutgoingNormal);
             $outgoingNormal = $rowOutgoingNormal['outgoing_normal'] ?? 0;
 
-            $outgoingNormal = $rowOutgoingNormal['outgoing_normal'] ?? 0;
+            // Query for Circular Documents
+            $sqlCircularDocs = "SELECT COUNT(*) as circular_docs FROM flowcircle";
+            $resultCircularDocs = dbQuery($sqlCircularDocs);
+            $rowCircularDocs = dbFetchArray($resultCircularDocs);
+            $circularDocs = $rowCircularDocs['circular_docs'] ?? 0;
 
             // Query for Active Agencies (distinct dep_id from user_online)
             $sqlActiveAgencies = "SELECT COUNT(DISTINCT dep_id) as active_agencies FROM user_online WHERE dep_id != 0";
