@@ -280,8 +280,8 @@ if ($u_id) {
     // Clean up old sessions (older than 10 minutes)
     dbQuery("DELETE FROM user_online WHERE time < $time_check");
 
-    $u_id_online = $_SESSION['ses_u_id'] ?? 0;
-    $dep_id_online = $_SESSION['ses_dep_id'] ?? 0;
+    $u_id_online = (int) ($_SESSION['ses_u_id'] ?? 0);
+    $dep_id_online = (int) ($_SESSION['ses_dep_id'] ?? 0);
 
     $sql = "select * from user_online where session='$session'";
     //print $sql;

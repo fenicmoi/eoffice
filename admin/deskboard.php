@@ -249,7 +249,7 @@ ini_set('display_errors', 1);
                                     <div class="panel panel-default">
                                         <div class="panel-heading">
                                             <h4 class="panel-title text-center">
-                                                <a data-toggle="collapse" href="#menu5"><i
+                                                <a href="phonebook.php"><i
                                                         class="fas fa-address-book fa-2x"></i><br>
                                                     สมุดโทรศัพท์จังหวัด</a>
                                             </h4>
@@ -258,8 +258,7 @@ ini_set('display_errors', 1);
 
                                             <ul class="list-group">
                                                 <li class="list-group-item"><a class="btn btn-primary"
-                                                        href="http://www.phone.phatthalung.go.th/" target="_news"><i
-                                                            class="fas fa-home  pull-left"></i>
+                                                        href="phonebook.php"><i class="fas fa-home  pull-left"></i>
                                                         สมุดโทรศัพท์จังหวัด</a>
                                                     <!-- <li class="list-group-item"><a class="btn btn-primary" href="phone_depart.php"><i class="fas fa-school  pull-left"></i>  ข้อมูลหน่วยงาน</a> -->
                                                     <!-- <li class="list-group-item"><a class="btn btn-primary" href="headoffice.php"><i class="far fa-user-circle  pull-left"></i>  ข้อมูลผู้บริหาร/เจ้าหน้าที่</a>  -->

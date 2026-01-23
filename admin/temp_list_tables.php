@@ -12,3 +12,5 @@ function getCreate($table)
 
 getCreate('flownormal');
 getCreate('flowcircle');
+getCreate('depart');
+getCreate('office_type');

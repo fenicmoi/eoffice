@@ -16,9 +16,6 @@ $(document).ready(function () {
                 if (response.success) {
                     // Update all statistics with animation
                     updateStatWithAnimation('#stat-active-users', response.data.activeUsers);
-                    updateStatWithAnimation('#stat-today-docs', response.data.todayDocs);
-                    updateStatWithAnimation('#stat-incoming-total', response.data.incomingTotal);
-                    updateStatWithAnimation('#stat-outgoing-normal', response.data.outgoingNormal);
                     updateStatWithAnimation('#stat-active-agencies', response.data.activeAgencies);
 
                     // Update timestamp
@@ -52,31 +49,16 @@ $(document).ready(function () {
             type: 'GET',
             dataType: 'json',
             success: function (response) {
+                console.log('Agencies response:', response);
                 if (response.success && response.data.agencies.length > 0) {
-                    var html = '<table class="table table-hover table-striped">';
-                    html += '<thead style="background-color: #f8f9fc;"><tr><th>หน่วยงาน</th><th>ประเภท</th><th class="text-center">จำนวนผู้ใช้ออนไลน์</th></tr></thead>';
-                    html += '<tbody>';
-
-                    $.each(response.data.agencies, function (i, item) {
-                        html += '<tr>';
-                        html += '<td><strong>' + item.agency_name + '</strong></td>';
-                        html += '<td>' + item.agency_type + '</td>';
-                        html += '<td class="text-center"><span class="badge" style="background-color: #4e73df;">' + item.user_count + '</span></td>';
-                        html += '</tr>';
-                    });
-
-                    html += '</tbody>';
-                    html += '<tfoot style="background-color: #f8f9fc; font-weight: bold;">';
-                    html += '<tr><td colspan="2">รวมข้อมูลทั้งสิ้น</td><td class="text-center">' + response.data.totalUsers + '</td></tr>';
-                    html += '</tfoot></table>';
-
-                    content.html(html);
-                    $('#agencies-modal-timestamp').text(response.timestamp);
+                    // ... existing code ...
                 } else {
+                    console.warn('No agencies or failure:', response);
                     content.html('<div class="alert alert-info text-center">ไม่มีหน่วยงานที่กำลังใช้งานระบบในขณะนี้</div>');
                 }
             },
-            error: function () {
+            error: function (xhr, status, error) {
+                console.error('Agencies AJAX error:', error, status, xhr.responseText);
                 content.html('<div class="alert alert-danger text-center">เกิดข้อผิดพลาดในการดึงข้อมูล</div>');
             }
         });

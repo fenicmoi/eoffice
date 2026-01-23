@@ -127,8 +127,9 @@ function getMenuConfig($level_id, $dep_id)
             'id' => 'collapse5',
             'title' => 'ระบบสนับสนุนอื่นๆ',
             'icon' => 'fab fa-app-store',
-            'allowed_levels' => [1, 2, 5],
+            'allowed_levels' => [1, 2, 3, 4, 5],
             'items' => [
+                ['title' => 'สมุดโทรศัพท์จังหวัด', 'url' => 'phonebook.php', 'icon' => 'fas fa-address-book', 'allowed_levels' => [1, 2, 3, 4, 5]],
                 ['title' => 'รายนามผู้บริหาร', 'url' => '#', 'icon' => 'far fa-arrow-alt-circle-right', 'allowed_levels' => [1]],
                 ['title' => 'ระบบนัดงานผู้บริหาร', 'url' => 'http://www.phangnga.go.th/calendar/', 'icon' => 'far fa-arrow-alt-circle-right', 'target' => '_blank', 'allowed_levels' => [1]],
             ]
