@@ -52,8 +52,15 @@ $row = dbFetchAssoc($result);
         <tr>
             <td colspan="11">
                 <center>
-                    <h3>รายงานทะเบียนหนังสือรับ ระหว่างวันที่ <?php echo thaiDate($dateStart); ?> -
-                        <?php echo thaiDate($dateEnd); ?> </h3>
+                    <h3>รายงานทะเบียนหนังสือรับ ประจำวันที่ <?php echo thaiDate($dateprint); ?>
+                        <?php
+                        if ($haftday == 1) {
+                            echo " (ช่วงเช้า)";
+                        } elseif ($haftday == 2) {
+                            echo " (ช่วงบ่าย)";
+                        }
+                        ?>
+                    </h3>
                 </center>
             </td>
         </tr>
