@@ -56,8 +56,11 @@ $ystatus = $ystatus;
 					</button>
 					<ul class="dropdown-menu">
 
+						<li><a href="#" data-toggle="modal" data-target="#myReport"><i class="fas fa-calendar-alt"></i>
+								รายงานทะเบียนรับ (ประจำวัน)</a>
+						</li>
 						<li><a href="#" data-toggle="modal" data-target="#myReport1"><i class="fas fa-calendar-alt"></i>
-								รายงานทะเบียนรับ</a>
+								รายงานทะเบียนรับ (ตามเงื่อนไขเวลา)</a>
 						</li>
 					</ul>
 				</div>
@@ -102,7 +105,7 @@ $ystatus = $ystatus;
 					<th>เลขที่เอกสาร</th>
 					<th>เรื่อง</th>
 					<th>ลงวันที่</th>
-						<th>หน่วยปฏิบัติ</th>
+					<th>หน่วยปฏิบัติ</th>
 					<th>วันที่ลงรับ</th>
 					<th>เวลาที่ลงรับ</th>
 					<th>แก้ไข</th>
@@ -188,10 +191,10 @@ $ystatus = $ystatus;
 								<?php echo $row['sec_name']; ?>
 							</td>
 							<td>
-								<?php echo thaiDate($row['datein']);?>
+								<?php echo thaiDate($row['datein']); ?>
 							</td>
 							<td>
-								<?php echo $row['time_stamp'];?>
+								<?php echo $row['time_stamp']; ?>
 							</td>
 							<!--  ส่วนตรวจสอบจำนวนวันที่กำหนดให้แก้ไขได้ไม่เกิน 7 วัน  -->
 							<?php
@@ -334,7 +337,8 @@ $ystatus = $ystatus;
 											$res_sec = dbQuery($sql_sec);
 											while ($row_sec = dbFetchArray($res_sec)) { ?>
 												<option value="<?php echo $row_sec['sec_id'] ?>">
-													<?php echo $row_sec['sec_name']; ?></option>
+													<?php echo $row_sec['sec_name']; ?>
+												</option>
 											<?php } ?>
 										</select>
 									</div>
@@ -531,7 +535,7 @@ if (isset($_POST['save'])) { //กดปุ่มบันทึกจากฟ�
                 }); 
             </script>";
 	}
-	}
+}
 
 // Update logic from Detail Modal
 if (isset($_POST['btnUpdate'])) {
