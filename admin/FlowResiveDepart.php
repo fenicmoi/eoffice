@@ -102,7 +102,9 @@ $ystatus = $ystatus;
 					<th>เลขที่เอกสาร</th>
 					<th>เรื่อง</th>
 					<th>ลงวันที่</th>
-					<th>หน่วยปฏิบัติ</th>
+						<th>หน่วยปฏิบัติ</th>
+					<th>วันที่ลงรับ</th>
+					<th>เวลาที่ลงรับ</th>
 					<th>แก้ไข</th>
 				</tr>
 			</thead>
@@ -157,7 +159,7 @@ $ystatus = $ystatus;
 				$numrow = dbNumRows($result);
 				if ($numrow == 0) { ?>
 					<tr>
-						<td colspan="6">
+						<td colspan="8">
 							<center>
 								<h5>ไม่มีข้อมูล</h5>
 							</center>
@@ -184,6 +186,12 @@ $ystatus = $ystatus;
 							</td>
 							<td>
 								<?php echo $row['sec_name']; ?>
+							</td>
+							<td>
+								<?php echo thaiDate($row['datein']);?>
+							</td>
+							<td>
+								<?php echo $row['time_stamp'];?>
 							</td>
 							<!--  ส่วนตรวจสอบจำนวนวันที่กำหนดให้แก้ไขได้ไม่เกิน 7 วัน  -->
 							<?php
