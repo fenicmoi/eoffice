@@ -101,9 +101,10 @@ $u_id = $_SESSION['ses_u_id'];
                                 } ?></td>
 
                                 <td>
-                                    <a class="btn btn-warning" href="user_edit.php?edit=<?php echo $row['u_id']; ?>"
-                                        onclick="return confirm('กำลังจะแก้ไขข้อมูล !'); ">
-                                        <i class="fas fa-edit" aria-hidden="true"></i> แก้ไข</a>
+                                    <a class="btn btn-warning" href="#" 
+                                       onclick="loadEditModal(<?php echo $row['u_id']; ?>); return false;">
+                                       <i class="fas fa-edit" aria-hidden="true"></i> แก้ไข
+                                    </a>
                                 </td>
                             </tr>
                             <?php ++$count;
@@ -264,6 +265,25 @@ $u_id = $_SESSION['ses_u_id'];
             </div>
         </div>
         <!-- End Model -->
+
+        <!-- Modal Edit -->
+        <div id="modalEdit" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-lg">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header bg-warning">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title"><i class="fa fa-user-edit"></i> แก้ไขผู้ใช้งาน</h4>
+                    </div>
+                    <div class="modal-body" id="modalEditBody">
+                        <div class="text-center">
+                            <i class="fa fa-spinner fa-spin fa-3x"></i><br>กำลังโหลดข้อมูล...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Modal Edit -->
 
 
 
@@ -432,6 +452,26 @@ if (isset($_POST['update'])) {
         // เรียกใช้ DataTables บนตารางที่มี id="myTable"
         $('#myTable').DataTable();
     });
+
+    function loadEditModal(u_id) {
+        // Open Modal
+        $('#modalEdit').modal('show');
+        
+        // Load Content
+        $.ajax({
+            url: "user_model_edit.php",
+            type: "GET",
+            data: { edit: u_id },
+            success: function (data) {
+                $('#modalEditBody').html(data);
+                // Initialize stuff if needed inside the modal (e.g. selectpicker)
+                // user_model_edit.php should handle its own inline scripts or we do it here
+            },
+            error: function () {
+                $('#modalEditBody').html('<div class="alert alert-danger">Error loading data</div>');
+            }
+        });
+    }
 </script>
 <script language=Javascript>   //ส่วนการทำ dropdown
     function Inint_AJAX() {

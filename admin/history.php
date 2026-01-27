@@ -91,20 +91,20 @@ if (!isset($_SESSION['ses_u_id'])) {
 				</thead>
 				<tbody>
 					<?php
-					$sql = "SELECT * FROM  paper WHERE sec_id=$sec_id ";
+					$sql = "SELECT p.* FROM paper p INNER JOIN section s ON p.sec_id = s.sec_id WHERE s.dep_id = $dep_id ";
 
 					if (isset($_POST['btnSearch'])) { //ถ้ามีการกดปุ่มค้นหา
 						$typeSearch = isset($_POST['typeSearch']) ? $_POST['typeSearch'] : '';
 						$txt_search = isset($_POST['search']) ? $_POST['search'] : '';
 
 						if ($typeSearch == 1) { //เลขหนังสือ
-							$sql .= " AND book_no LIKE '%$txt_search%'   ORDER BY pid  DESC";
+							$sql .= " AND p.book_no LIKE '%$txt_search%'   ORDER BY p.pid  DESC";
 						} else if ($typeSearch == 2) { //ชื่อเรื่อง
-							$sql .= " AND title LIKE '%$txt_search%'     ORDER BY  pid DESC";
+							$sql .= " AND p.title LIKE '%$txt_search%'     ORDER BY  p.pid DESC";
 						}
 
 					} else {
-						$sql .= " ORDER BY pid DESC";
+						$sql .= " ORDER BY p.pid DESC";
 					}
 
 					//pagenavigation

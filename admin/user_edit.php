@@ -335,30 +335,31 @@ if (isset($_POST['update'])) {
     }  //check db
 } //check button
 ?>
-function dochange(src, val) {
-$.ajax({
-url: "localtion.php",
-type: "GET",
-data: {
-data: src,
-val: val
-},
-success: function(data) {
-// Replace the HTML of the target element
-$("#" + src).html(data);
-// Refresh the selectpicker to reflect the new options
-// We target both the specific select if possible, or all selectpickers inside the updated container
-// Since the replaced content is a <select class="selectpicker">, we need to initialize/refresh it.
-    // However, .selectpicker('refresh') works on existing initialized selects.
-    // If the element is replaced entirely, we might need to re-initialize.
-    // But usually, just calling .selectpicker('refresh') on the new element (after it's in DOM) works if it was already
-    initialized,
-    // OR we just initialize it.
-
-    // Let's try re-initializing the selectpicker for the new element.
-    $("#" + src + " select").selectpicker('refresh');
-    }
-    });
+<script>
+    function dochange(src, val) {
+        $.ajax({
+            url: "localtion.php",
+            type: "GET",
+            data: {
+                data: src,
+                val: val
+            },
+            success: function(data) {
+                // Replace the HTML of the target element
+                $("#" + src).html(data);
+                
+                // Refresh the selectpicker to reflect the new options
+                // Since the replaced content is essentially the select element or contains it,
+                // we verify if we need to re-initialize it.
+                // The incoming data from localtion.php varies (sometimes includes <select>, sometimes options).
+                // Based on previous code, localtion.php echoes the whole <select> tag.
+                // So we need to initialize selectpicker on the new element.
+                
+                $("#" + src + " .selectpicker").selectpicker();
+                // Or if the container #src contains the select directly:
+                 $("#" + src + " select").selectpicker();
+            }
+        });
     }
 
 

@@ -30,7 +30,7 @@ if ($data == 'province') {
           echo "<option value=\"$row[dep_id]\" >$row[dep_name]</option> ";
      }
 } else if ($data == 'district') {
-     echo "<select class =\"form-control\" name='district' required>\n";
+     echo "<select class =\"form-control selectpicker\" data-live-search=\"true\" name='district' required>\n";
      echo "<option value=''>- เลือก1 -</option>\n";
      $sql = "SELECT * FROM section WHERE dep_id= '$val' ORDER BY sec_id DESC";
      $result = mysqli_query($dbConn, $sql);
