@@ -335,33 +335,36 @@ if (isset($_POST['update'])) {
     }  //check db
 } //check button
 ?>
-<script language=Javascript>   //ส่วนการทำ dropdown
-    function Inint_AJAX() {
-        try { return new ActiveXObject("Msxml2.XMLHTTP"); } catch (e) { } //IE
-        try { return new ActiveXObject("Microsoft.XMLHTTP"); } catch (e) { } //IE
-        try { return new XMLHttpRequest(); } catch (e) { } //Native Javascript
-        alert("XMLHttpRequest not supported");
-        return null;
-    };
+function dochange(src, val) {
+$.ajax({
+url: "localtion.php",
+type: "GET",
+data: {
+data: src,
+val: val
+},
+success: function(data) {
+// Replace the HTML of the target element
+$("#" + src).html(data);
+// Refresh the selectpicker to reflect the new options
+// We target both the specific select if possible, or all selectpickers inside the updated container
+// Since the replaced content is a <select class="selectpicker">, we need to initialize/refresh it.
+    // However, .selectpicker('refresh') works on existing initialized selects.
+    // If the element is replaced entirely, we might need to re-initialize.
+    // But usually, just calling .selectpicker('refresh') on the new element (after it's in DOM) works if it was already
+    initialized,
+    // OR we just initialize it.
 
-    function dochange(src, val) {
-        var req = Inint_AJAX();
-        req.onreadystatechange = function () {
-            if (req.readyState == 4) {
-                if (req.status == 200) {
-                    document.getElementById(src).innerHTML = req.responseText; //รับค่ากลับมา
-                }
-            }
-        };
-        req.open("GET", "localtion.php?data=" + src + "&val=" + val); //สร้าง connection
-        req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf-8"); // set Header
-        req.send(null); //ส่งค่า
+    // Let's try re-initializing the selectpicker for the new element.
+    $("#" + src + " select").selectpicker('refresh');
+    }
+    });
     }
 
 
 
     $(document).ready(function () {
-        $('#myTable').DataTable();
+    $('#myTable').DataTable();
     });
-</script>
-<?php include '../footer.php'; ?>
+    </script>
+    <?php include '../footer.php'; ?>
