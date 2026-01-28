@@ -133,35 +133,52 @@ if (!isset($_SESSION['ses_u_id'])) {
 							<td><a href="checklist.php?pid=<?php echo $rowList['pid']; ?>" class="btn btn-warning"
 									target="_blank"><i class="fab fa-wpexplorer"></i> ติดตาม</a></td>
 							<?php
-							$d1 = $rowList['postdate'];
-							$d2 = date('Y-m-d');
-							$numday = getNumDay($d1, $d2);
+					$d1 = $rowList['postdate'];
+					$d2 = date('Y-m-d');
+					$numday = getNumDay($d1, $d2);
+					
+					// ตรวจสอบว่าหนังสือเป็นของแผนกตนเองหรือไม่
+					$isOwnSection = ($rowList['sec_id'] == $sec_id);
 
-							//กำหนดให้แก้ไขได้ 1 วันเท่านั้น
-							if ($numday > 7) { ?>
-								<td>
-									<center><i class="fab fa-expeditedssl fa-2x"></i></center>
-								</td>
-							<?php } else {
-								if ($rowList['insite'] == 1) { ?>
-									<td><a class="btn btn-info" href="inside_all_edit.php?pid=<?php echo $rowList['pid']; ?>"><i
-												class="fas fa-edit"></i>แก้ไข</a></td>
-								<?php } else if ($rowList['outsite'] == 1) { ?>
-										<td><a class="btn btn-info" href="outside_all_edit.php?pid=<?php echo $rowList['pid']; ?>"><i
-													class="fas fa-edit"></i>แก้ไข</a></td>
-								<?php } ?>
-
-							<?php } ?>
+					//กำหนดให้แก้ไขได้ 1 วันเท่านั้น
+					if ($numday > 7) { ?>
+						<td>
+							<center><i class="fab fa-expeditedssl fa-2x"></i></center>
+						</td>
+					<?php } else {
+						// ถ้าไม่ใช่แผนกตนเอง ให้ปุ่มแก้ไขไม่ทำงาน
+						if (!$isOwnSection) { ?>
 							<td>
-								<?php if ($numday > 7) { ?>
-									<center><i class="fab fa-expeditedssl fa-2x"></i></center>
-								<?php } else { ?>
-									<a class="btn btn-default" href="in_out_del.php?pid=<?= $rowList['pid']; ?>"
-										onclick="return confirm('คุณกำลังจะลบข้อมูล !'); "> <i class="fas fa-trash-alt"></i>
-										ยกเลิก</a>
-								<?php } ?>
-
+								<button class="btn btn-secondary" disabled style="cursor: not-allowed; opacity: 0.5;">
+									<i class="fas fa-edit"></i> แก้ไข
+								</button>
 							</td>
+						<?php } else {
+							if ($rowList['insite'] == 1) { ?>
+								<td><a class="btn btn-info" href="inside_all_edit.php?pid=<?php echo $rowList['pid']; ?>"><i
+											class="fas fa-edit"></i>แก้ไข</a></td>
+							<?php } else if ($rowList['outsite'] == 1) { ?>
+									<td><a class="btn btn-info" href="outside_all_edit.php?pid=<?php echo $rowList['pid']; ?>"><i
+												class="fas fa-edit"></i>แก้ไข</a></td>
+							<?php } ?>
+						<?php } ?>
+
+					<?php } ?>
+					<td>
+						<?php if ($numday > 7) { ?>
+							<center><i class="fab fa-expeditedssl fa-2x"></i></center>
+						<?php } else if (!$isOwnSection) { ?>
+							<!-- ถ้าไม่ใช่แผนกตนเอง ให้ปุ่มยกเลิกไม่ทำงาน -->
+							<button class="btn btn-secondary" disabled style="cursor: not-allowed; opacity: 0.5;">
+								<i class="fas fa-trash-alt"></i> ยกเลิก
+							</button>
+						<?php } else { ?>
+							<a class="btn btn-default" href="in_out_del.php?pid=<?= $rowList['pid']; ?>"
+								onclick="return confirm('คุณกำลังจะลบข้อมูล !'); "> <i class="fas fa-trash-alt"></i>
+								ยกเลิก</a>
+						<?php } ?>
+
+					</td>
 						</tr>
 					<?php } //end while ?>
 				</tbody>
