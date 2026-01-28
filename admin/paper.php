@@ -122,8 +122,32 @@ $numrow = dbNumRows($result);
 								}
 								?>
 							</td>
-							<td><a href="<?php echo $rowNew['file']; ?>" target="_blank">
-									<?php echo $rowNew['title']; ?></a>
+							<td>
+								<div style="font-weight: 700; margin-bottom: 5px;">
+									<?php echo htmlspecialchars($rowNew['title']); ?>
+								</div>
+								<div class="attachment-list">
+									<?php
+									// ดึงไฟล์แนบทั้งหมดของหนังสือเล่มนี้
+									$sqlFiles = "SELECT * FROM paper_file WHERE pid = ?";
+									$resFiles = dbQuery($sqlFiles, "i", [$rowNew['pid']]);
+									while ($fRow = dbFetchArray($resFiles)) {
+										?>
+										<a href="download.php?file=<?php echo urlencode($fRow['file_path']); ?>" target="_blank"
+											class="btn btn-xs btn-default" style="margin-right: 2px; margin-bottom: 2px;"
+											title="<?php echo htmlspecialchars($fRow['file_name']); ?>">
+											<i class="fas fa-paperclip text-primary"></i>
+											<small><?php echo htmlspecialchars($fRow['file_name']); ?></small>
+										</a>
+									<?php } ?>
+
+									<?php if (dbNumRows($resFiles) == 0 && !empty($rowNew['file'])) { ?>
+										<a href="download.php?file=<?php echo urlencode($rowNew['file']); ?>" target="_blank"
+											class="btn btn-xs btn-default" title="ดาวน์โหลด">
+											<i class="fas fa-file-pdf text-danger"></i> ไฟล์หลัก
+										</a>
+									<?php } ?>
+								</div>
 							</td>
 							<td><?php echo $rowNew['dep_name']; ?></td>
 							<td><a href="checklist.php?pid=<?php print $rowNew['pid']; ?>" class="badge"

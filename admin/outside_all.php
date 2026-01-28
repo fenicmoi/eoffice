@@ -1,12 +1,45 @@
-<script>
-    $(document).ready(function () {
-        // No longer needed as we removed the old table
-        // $('#tbOutside').DataTable(); 
-    });
-</script>
 <?php
 date_default_timezone_set('Asia/Bangkok');
 include "header.php";
+?>
+<style>
+    .file-upload-row {
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .btn-remove-file {
+        color: #e74a3b;
+        cursor: pointer;
+        font-size: 1.2em;
+    }
+
+    .btn-remove-file:hover {
+        color: #be2617;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        // Function to add new file row
+        $("#add-file-btn").click(function () {
+            const newRow = `
+                <div class="file-upload-row">
+                    <input type="file" name="fileupload[]" class="form-control">
+                    <i class="fas fa-minus-circle btn-remove-file" title="ลบไฟล์นี้"></i>
+                </div>
+            `;
+            $("#file-upload-container").append(newRow);
+        });
+
+        // Function to remove file row
+        $(document).on('click', '.btn-remove-file', function () {
+            $(this).closest('.file-upload-row').remove();
+        });
+    });
+</script>
+<?php
 
 // checkuser login
 if (!isset($_SESSION['ses_u_id'])) {
@@ -149,17 +182,29 @@ $jsonTreeData = json_encode(array_values($treeData));
 
                 <?php
                 if ($cid && isset($link_file) && $link_file <> null) { ?>
-                    <div class="form-group form-inline">
-                        <label for="fileupload">ไฟล์แนบ</label><a class="btn btn-warning"
-                            href="<?php print htmlspecialchars($link_file, ENT_QUOTES, 'UTF-8'); ?>" target="_blank"><i
-                                class="fa fa-file fa-2x"></i></a>
-                    </div>
-                <?php } else { ?>
-                    <div class="form-group form-inline">
-                        <label for="fileupload">แนบไฟล์</label>
-                        <input type="file" name="fileupload" required>
+                    <div class="form-group">
+                        <label for="fileupload">ไฟล์แนบเดิม:</label>
+                        <a class="btn btn-warning" href="<?php print htmlspecialchars($link_file, ENT_QUOTES, 'UTF-8'); ?>"
+                            target="_blank">
+                            <i class="fa fa-file"></i> ดูไฟล์เดิม
+                        </a>
                     </div>
                 <?php } ?>
+
+                <div class="form-group">
+                    <label for="fileupload">แนบไฟล์:</label>
+                    <div id="file-upload-container">
+                        <div class="file-upload-row">
+                            <input type="file" name="fileupload[]" class="form-control">
+                        </div>
+                    </div>
+                    <button type="button" id="add-file-btn" class="btn btn-sm btn-success" style="margin-top: 5px;">
+                        <i class="fas fa-plus"></i> เพิ่มไฟล์
+                    </button>
+                    <small class="text-muted" style="display: block; margin-top: 5px;">
+                        * สามารถแนบได้หลายไฟล์พร้อมกัน
+                    </small>
+                </div>
                 <div class="form-group form-inline">
                     <label for="detail">รายละเอียด</label>
                     <textarea name="detail" rows="3"
@@ -202,44 +247,82 @@ if (isset($_POST['sendOut'])) {           //ตรวจสอบปุ่ม se
     @$fileupload = filter_input(INPUT_POST, 'file', FILTER_SANITIZE_STRING);                // ไฟล์เอกสาร (ชื่อไฟล์เดิม)
     $dateSend = date('Y-m-d');                    // วันที่ส่งเอกสาร
 
-    $link_file = ''; // กำหนดค่าเริ่มต้น
-    // **ส่วนที่ 3: ปรับปรุงการจัดการไฟล์อัปโหลด**
-    if (isset($_FILES['fileupload'])) {
-        $err = $_FILES['fileupload']['error'];
+    $uploaded_files = [];
+    $upload_dir = "paper/";
+    $allowed_extensions = array('pdf', 'png', 'jpg', 'jpeg', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'zip', '7z', 'rar', 'zipx');
 
-        if ($err === UPLOAD_ERR_OK) {
-            $upload = $_FILES['fileupload'];
-            $upload_dir = "paper/";
+    if (isset($_FILES['fileupload']) && is_array($_FILES['fileupload']['name'])) {
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
 
-            $filename = $upload['name'];
-            $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
-            $allowed_extensions = array('pdf', 'png', 'jpg', 'jpeg', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'zip', '7z', 'rar', 'zipx');
+        // กำหนดคู่ Extension และ MIME Type ที่อนุญาต
+        $allowed_types = [
+            'pdf' => 'application/pdf',
+            'png' => 'image/png',
+            'jpg' => 'image/jpeg',
+            'jpeg' => 'image/jpeg',
+            'doc' => 'application/msword',
+            'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            'xls' => 'application/vnd.ms-excel',
+            'xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'ppt' => 'application/vnd.ms-powerpoint',
+            'pptx' => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+            'zip' => 'application/zip',
+            '7z' => 'application/x-7z-compressed',
+            'rar' => 'application/x-rar-compressed',
+        ];
 
-            if (!in_array($ext, $allowed_extensions)) {
-                echo "<script>alert('ไม่อนุญาตให้อัปโหลดไฟล์ .$ext'); window.history.back();</script>";
+        foreach ($_FILES['fileupload']['name'] as $key => $filename) {
+            // ข้ามช่องที่ไม่มีการเลือกไฟล์
+            if ($_FILES['fileupload']['error'][$key] === UPLOAD_ERR_NO_FILE)
+                continue;
+
+            $err = $_FILES['fileupload']['error'][$key];
+            if ($err === UPLOAD_ERR_OK) {
+                $tmp_name = $_FILES['fileupload']['tmp_name'][$key];
+                $name = $_FILES['fileupload']['name'][$key];
+
+                // 1. ตรวจสอบนามสกุลไฟล์
+                $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
+
+                // 2. ตรวจสอบ MIME Type จริงของไฟล์
+                $real_mime = finfo_file($finfo, $tmp_name);
+
+                if (array_key_exists($ext, $allowed_types) && $real_mime === $allowed_types[$ext]) {
+                    $date_prefix = date("YmdHis");
+                    $random_num = mt_rand(100000, 999999);
+
+                    // ทำความสะอาดชื่อไฟล์ปลายทาง (ลบอักขระพิเศษ)
+                    $new_filename = $date_prefix . "_" . $random_num . "_" . $key . "." . $ext;
+                    $target_path = $upload_dir . $new_filename;
+
+                    if (move_uploaded_file($tmp_name, $target_path)) {
+                        $uploaded_files[] = [
+                            'path' => $target_path,
+                            'name' => $name
+                        ];
+                    }
+                } else {
+                    // หากพบไฟล์ผิดประเภท ให้บล็อกการทำงานทั้งหมดและแจ้งเตือน
+                    finfo_close($finfo);
+                    echo "<script>alert('ไม่อนุญาตให้อัปโหลดไฟล์: $name เนื่องจากประเภทไฟล์ไม่ถูกต้องหรือมีความเสี่ยง'); window.history.back();</script>";
+                    exit;
+                }
+            } elseif ($err !== UPLOAD_ERR_NO_FILE) {
+                // กรณีเกิด Error อื่นๆ ในการอัปโหลด
+                finfo_close($finfo);
+                echo "<script>alert('เกิดข้อผิดพลาดในการอัปโหลดไฟล์: $filename (Error Code: $err)'); window.history.back();</script>";
                 exit;
             }
-
-            $date_prefix = date("YmdHis");
-            $random_num = mt_rand(100000, 999999);
-            $new_filename = $date_prefix . "_" . $random_num . "." . $ext;
-            $link_file = $upload_dir . $new_filename;
-
-            if (!move_uploaded_file($upload['tmp_name'], $link_file)) {
-                echo "<script>alert('เกิดข้อผิดพลาดในการบันทึกไฟล์'); window.history.back();</script>";
-                exit;
-            }
-        } elseif ($err === UPLOAD_ERR_NO_FILE) {
-            if (!empty($fileupload)) {
-                $link_file = $fileupload;
-            }
-        } elseif ($err === UPLOAD_ERR_INI_SIZE || $err === UPLOAD_ERR_FORM_SIZE) {
-            echo "<script>alert('ไฟล์มีขนาดใหญ่เกินกว่าที่ระบบกำหนด (Upload Max Size)'); window.history.back();</script>";
-            exit;
-        } else {
-            echo "<script>alert('เกิดข้อผิดพลาดในการอัปโหลดไฟล์ (Error Code: $err)'); window.history.back();</script>";
-            exit;
         }
+        finfo_close($finfo);
+    }
+
+    // กำหนดไฟล์หลักสำหรับตาราง paper (ใช้ไฟล์แรกถ้ามี)
+    $link_file = !empty($uploaded_files) ? $uploaded_files[0]['path'] : '';
+
+    // ถ้าไม่มีการอัปโหลดใหม่ ให้ใช้ไฟล์เดิมถ้ามี
+    if (empty($link_file) && !empty($fileupload)) {
+        $link_file = $fileupload;
     }
 
     // Check if recipients are selected
@@ -254,6 +337,14 @@ if (isset($_POST['sendOut'])) {           //ตรวจสอบปุ่ม se
 
         if ($result === true) {
             $lastid = dbInsertId();
+
+            // บันทึกไฟล์ทั้งหมดลงในตาราง paper_file
+            if (!empty($uploaded_files)) {
+                $sql_file = "INSERT INTO paper_file (pid, file_path, file_name, upload_date) VALUES (?, ?, ?, NOW())";
+                foreach ($uploaded_files as $f) {
+                    dbQuery($sql_file, "iss", [$lastid, $f['path'], $f['name']]);
+                }
+            }
 
             // Loop through selected Department IDs
             foreach ($_POST['dep_ids'] as $target_dep_id) {

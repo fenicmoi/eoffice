@@ -13,17 +13,33 @@ if (!isset($_SESSION['ses_u_id'])) {
 	$dateRecive = date('Y-m-d H:m:s');
 }
 ?>
+<style>
+	mark {
+		background-color: #ffeb3b;
+		padding: 2px 4px;
+		border-radius: 2px;
+		font-weight: bold;
+		color: #000;
+	}
+</style>
 <script>
+	// ฟังก์ชันสำหรับไฮไลท์ข้อความที่ตรงกับคำค้นหา
+	function highlightText(text, keyword) {
+		if (!keyword || keyword.trim() === '') return text;
+		// Escape special regex characters
+		var escapedKeyword = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+		var regex = new RegExp('(' + escapedKeyword + ')', 'gi');
+		return text.replace(regex, '<mark>$1</mark>');
+	}
+
 	$(document).ready(function () {
 		// $("#btnSearch").prop("disabled",true); 
 		$("#dateSearch").hide();
 		$("tr").first().hide();
 
-
 		$("#hideSearch").click(function () {
 			$("tr").first().show(1000);
 		});
-
 
 		$('#typeSearch').change(function () {
 			var typeSearch = $('#typeSearch').val();
@@ -34,7 +50,17 @@ if (!isset($_SESSION['ses_u_id'])) {
 				$("#dateSearch").hide(500);
 				$("#search").show(500);
 			}
-		})
+		});
+
+		// ไฮไลท์ข้อความหลังจากโหลดหน้าเสร็จ
+		var searchKeyword = $('#search').val();
+		if (searchKeyword) {
+			$('.highlight-target').each(function() {
+				var originalText = $(this).text();
+				var highlightedText = highlightText(originalText, searchKeyword);
+				$(this).html(highlightedText);
+			});
+		}
 	});
 </script>
 <div class="col-md-2">
@@ -61,14 +87,19 @@ if (!isset($_SESSION['ses_u_id'])) {
 					<tr bgcolor="black">
 						<td colspan="8">
 							<form class="form-inline" method="post" name="frmSearch" id="frmSearch">
+								<?php 
+								// เก็บค่าค้นหาเพื่อแสดงใน input field
+								$searchValue = isset($_POST['search']) ? htmlspecialchars($_POST['search']) : '';
+								$typeSearchValue = isset($_POST['typeSearch']) ? $_POST['typeSearch'] : '2';
+								?>
 								<div class="form-group">
 									<select class="form-control" id="typeSearch" name="typeSearch">
-										<option value="1"><i class="fas fa-star"></i>เลขหนังสือ</option>
-										<option value="2" selected>เรื่อง</option>
+										<option value="1" <?php echo ($typeSearchValue == '1') ? 'selected' : ''; ?>><i class="fas fa-star"></i>เลขหนังสือ</option>
+										<option value="2" <?php echo ($typeSearchValue == '2') ? 'selected' : ''; ?>>เรื่อง</option>
 									</select>
 									<div class="input-group">
 										<input class="form-control" id="search" name="search" type="text" size="80"
-											placeholder="Keyword สั้นๆ">
+											placeholder="Keyword สั้นๆ" value="<?php echo $searchValue; ?>">
 										<div class="input-group-btn">
 											<button class="btn btn-primary" type="submit" name="btnSearch"
 												id="btnSearch"><i class="fas fa-search "></i></button>
@@ -84,10 +115,11 @@ if (!isset($_SESSION['ses_u_id'])) {
 						<th>เรื่อง</th>
 						<th>วันที่ส่ง</th>
 						<th>เวลาส่ง</th>
+						<th>ผู้ส่ง</th>
+						<th>หน่วยส่ง</th>
 						<th>วันที่(รับ/คืน)</th>
 						<th>เวลา</th>
-						<th>หน่วยส่ง</th>
-						<th>ผู้ส่ง</th>
+						<th>ผู้รับ</th>
 						<th>แก้ไข</th>
 						<th>สถานะ</th>
 						<th>ตรวจสอบ</th>
@@ -97,65 +129,95 @@ if (!isset($_SESSION['ses_u_id'])) {
 				<tbody>
 					<?php
 					//แก้ไขให้เจ้าหน้าที่ทุกคนภายในหน่วยเดียวกันสามารถมองเห็นได้
-					$sql = "SELECT p.pid,p.postdate,u.puid,u.pid,u.confirm,u.confirmdate,p.title,p.file,p.book_no,d.dep_name,s.sec_name,us.firstname FROM paperuser u
+					$sql = "SELECT p.pid,p.postdate,u.puid,u.pid,u.confirm,u.confirmdate,u.u_id as receiver_id,p.title,p.file,p.book_no,d.dep_name,s.sec_name,us.firstname as sender_name, ur.firstname as receiver_name FROM paperuser u
 						INNER JOIN paper p ON p.pid=u.pid
 						INNER JOIN depart d ON d.dep_id=p.dep_id
 						INNER JOIN section s ON s.sec_id=p.sec_id
 						INNER JOIN user us  ON us.u_id=p.u_id
-						WHERE u.dep_id=$dep_id  AND u.confirm > 0";
+						LEFT JOIN user ur ON ur.u_id=u.u_id
+						WHERE u.dep_id=? AND u.confirm > 0";
+					$params = [$dep_id];
+					$types = "i";
+
 					if (isset($_POST['btnSearch'])) { //ถ้ามีการกดปุ่มค้นหา
-						@$typeSearch = $_POST['typeSearch']; //ประเภทการค้นหา
-						@$txt_search = $_POST['search']; //กล่องรับข้อความ
-						if (@$typeSearch == 1) { //เลขที่หนังสือ
-							$sql .= " AND p.book_no LIKE '%$txt_search%'   ORDER BY u.puid  DESC";
-						} elseif (@$typeSearch == 2) { //ชื่อเรื่อง
-							$sql .= " AND p.title LIKE '%$txt_search%'     ORDER BY u.puid  DESC";
+						$typeSearch = isset($_POST['typeSearch']) ? $_POST['typeSearch'] : '';
+						$txt_search = isset($_POST['search']) ? trim($_POST['search']) : '';
+
+						if (!empty($txt_search)) {
+							if ($typeSearch == 1) { //เลขที่หนังสือ
+								$sql .= " AND p.book_no LIKE ? ORDER BY u.puid DESC";
+								$params[] = "%$txt_search%";
+								$types .= "s";
+							} elseif ($typeSearch == 2) { //ชื่อเรื่อง
+								$sql .= " AND p.title LIKE ? ORDER BY u.puid DESC";
+								$params[] = "%$txt_search%";
+								$types .= "s";
+							}
+						} else {
+							$sql .= " ORDER BY u.puid DESC";
 						}
 					} else {
 						$sql .= " ORDER BY u.puid DESC";
 					}
-					$result = page_query($dbConn, $sql, 10);
+					$result = page_query($dbConn, $sql, 10, $types, $params);
 					?>
 					<?php
 					while ($rowf = dbFetchArray($result)) { ?>
 						<tr>
 							<td><i class="far fa-envelope-open"></i></td>
-							<td>
+							<td class="highlight-target">
 								<?php
 								if ($rowf['book_no'] == null) {
 									echo "...";
 								} else {
-									echo $rowf['book_no'];
+									echo htmlspecialchars($rowf['book_no']);
 								}
 								?>
 							</td>
 							<td>
 								<a href="download.php?file=<?php echo urlencode($rowf['file']); ?>"
-									target="_blank"><?php echo $rowf['title']; ?></a>
+									target="_blank" class="highlight-target"><?php echo htmlspecialchars($rowf['title']); ?></a>
 
 							</td>
 							<td><?php echo thaiDate($rowf['postdate']); ?></td>
 							<td><?php echo substr($rowf['postdate'], 10); ?></td>
+							<td><?php echo htmlspecialchars($rowf['sender_name']); ?></td>
+							<td><?php echo htmlspecialchars($rowf['dep_name']); ?></td>
 							<td><?php echo thaiDate($rowf['confirmdate']); ?></td>
 							<td><?php echo substr($rowf['confirmdate'], 10); ?></td>
-							<td><?php echo $rowf['dep_name']; ?></td>
-							<td><?php echo $rowf['firstname']; ?></td>
+							<td>
+								<?php 
+								if (!empty($rowf['receiver_name'])) {
+									echo htmlspecialchars($rowf['receiver_name']);
+								} else {
+									echo "<span style='color: #999;'>-</span>";
+								}
+								?>
+							</td>
 							<?php
-							if ($level_id > 3) {    //ตรวจสอบผู้ใช้  ถ้าเป็นผู้ใช้ทั่วไปแก้ไขสถานะไม่ได้
-								echo "<td>-</td>";
-							} else {
+							// เฉพาะสารบรรณประจำหน่วยงาน (level_id = 3) เท่านั้นที่สามารถเปลี่ยนสถานะได้
+							if ($level_id == 3) {
+								// แสดงปุ่มสำหรับสารบรรณ
 								echo "<td>";
 								switch ($rowf['confirm']) {
 									case 1:
-										echo "<a class='btn btn-danger btn-sm' href=?pid=" . $rowf['pid'] . "&sec_id=" . $sec_id . "&dep_id=" . $dep_id . "&confirm=2>ส่งคืน</a>";
+										echo "<a class='btn btn-danger btn-sm' href='?pid=" . $rowf['pid'] . "&sec_id=" . $sec_id . "&dep_id=" . $dep_id . "&confirm=2' onclick='return confirm(\"ต้องการเปลี่ยนเป็นส่งคืนหรือไม่?\");'><i class='fas fa-undo'></i> ส่งคืน</a>";
 										break;
 									case 2:
-										echo "<a class='btn btn-success btn-sm' href=?pid=" . $rowf['pid'] . "&sec_id=" . $sec_id . "&dep_id=" . $dep_id . "&confirm=1>ลงรับ</a>";
+										echo "<a class='btn btn-success btn-sm' href='?pid=" . $rowf['pid'] . "&sec_id=" . $sec_id . "&dep_id=" . $dep_id . "&confirm=1' onclick='return confirm(\"ต้องการเปลี่ยนเป็นลงรับหรือไม่?\");'><i class='fas fa-check'></i> ลงรับ</a>";
 										break;
 									default:
 										break;
 								}
-
+								echo "</td>";
+							} else {
+								// ผู้ใช้อื่นๆ แสดงเฉพาะสถานะปัจจุบัน (ไม่สามารถแก้ไขได้)
+								echo "<td>";
+								if ($rowf['confirm'] == 1) {
+									echo "<span class='badge badge-success' style='background-color: #28a745; color: white; padding: 5px 10px;'>ลงรับแล้ว</span>";
+								} elseif ($rowf['confirm'] == 2) {
+									echo "<span class='badge badge-danger' style='background-color: #dc3545; color: white; padding: 5px 10px;'>ส่งคืนแล้ว</span>";
+								}
 								echo "</td>";
 							}
 							?>
@@ -169,8 +231,12 @@ if (!isset($_SESSION['ses_u_id'])) {
 								}
 								?>
 							</td>
-							<td><a href="checklist.php?pid=<?php print $rowf['pid']; ?>" class="badge"
-									target="_blank">Click</a></td>
+							<td>
+								<a href="checklist.php?pid=<?php print $rowf['pid']; ?>" class="btn btn-warning btn-sm"
+									target="_blank" style="color: #000; font-weight: bold;">
+									<i class="fab fa-wpexplorer"></i> ติดตาม
+								</a>
+							</td>
 						</tr>
 					<?php } ?>
 				</tbody>
