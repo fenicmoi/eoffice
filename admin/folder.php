@@ -175,9 +175,31 @@ if (!isset($_SESSION['ses_u_id'])) {
 								?>
 							</td>
 							<td>
-								<a href="download.php?file=<?php echo urlencode($rowf['file']); ?>"
-									target="_blank" class="highlight-target"><?php echo htmlspecialchars($rowf['title']); ?></a>
+								<div class="highlight-target" style="font-weight: 700; margin-bottom: 5px;">
+									<?php echo htmlspecialchars($rowf['title']); ?>
+								</div>
+								<div class="attachment-list">
+									<?php
+									// ดึงไฟล์แนบทั้งหมดของหนังสือเล่มนี้
+									$sqlFiles = "SELECT * FROM paper_file WHERE pid = ?";
+									$resFiles = dbQuery($sqlFiles, "i", [$rowf['pid']]);
+									while ($fRow = dbFetchArray($resFiles)) {
+										?>
+										<a href="download.php?file=<?php echo urlencode($fRow['file_path']); ?>" target="_blank"
+											class="btn btn-xs btn-default" style="margin-right: 2px; margin-bottom: 2px;"
+											title="<?php echo htmlspecialchars($fRow['file_name']); ?>">
+											<i class="fas fa-paperclip text-primary"></i>
+											<small><?php echo htmlspecialchars($fRow['file_name']); ?></small>
+										</a>
+									<?php } ?>
 
+									<?php if (dbNumRows($resFiles) == 0 && !empty($rowf['file'])) { ?>
+										<a href="download.php?file=<?php echo urlencode($rowf['file']); ?>" target="_blank"
+											class="btn btn-xs btn-default" title="ดาวน์โหลด">
+											<i class="fas fa-file-pdf text-danger"></i> ไฟล์หลัก
+										</a>
+									<?php } ?>
+								</div>
 							</td>
 							<td><?php echo thaiDate($rowf['postdate']); ?></td>
 							<td><?php echo substr($rowf['postdate'], 10); ?></td>
