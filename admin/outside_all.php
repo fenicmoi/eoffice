@@ -157,6 +157,14 @@ $jsonTreeData = json_encode(array_values($treeData));
                             <div class="panel panel-info">
                                 <div class="panel-heading">เลือกหน่วยงาน</div>
                                 <div class="panel-body" style="max-height: 500px; overflow-y: auto;">
+                                    <div class="form-group"
+                                        style="position: sticky; top: 0; background: white; z-index: 10; padding-bottom: 10px; border-bottom: 1px solid #eee;">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                            <input type="text" id="global-search" class="form-control"
+                                                placeholder="ค้นหาหน่วยงานทั้งหมดที่นี่...">
+                                        </div>
+                                    </div>
                                     <div id="org-tree">
                                         <!-- Treeview will be rendered here by JS -->
                                     </div>
@@ -578,5 +586,56 @@ if (isset($_POST['sendOut'])) {           //ตรวจสอบปุ่ม se
             // Update Preview on any change
             updatePreview();
         });
+// --- Global Search Handler ---
+        const globalSearchInput = document.getElementById('global-search');
+        if (globalSearchInput) {
+            globalSearchInput.addEventListener('keyup', function() {
+                const filter = this.value.trim().toLowerCase();
+                
+                // Perform search on all category LIs
+                const categoryLIs = treeContainer.querySelectorAll(':scope > ul > li');
+                
+                categoryLIs.forEach(li => {
+                    const group = li.querySelector('.dept-group');
+                    if (!group) return;
+
+                    // If search is empty, show all and collapse
+                    if (filter === "") {
+                        li.style.display = '';
+                        group.style.display = 'none';
+                        const toggleBtn = li.querySelector('button.btn-default i');
+                        if (toggleBtn) toggleBtn.className = 'fa fa-plus';
+                        
+                        // Also show all departments inside
+                        group.querySelectorAll('li').forEach(deptLi => {
+                            deptLi.style.display = '';
+                        });
+                        return;
+                    }
+
+                    let hasMatch = false;
+                    const departments = group.querySelectorAll('li');
+                    
+                    departments.forEach(deptLi => {
+                        const text = deptLi.textContent.toLowerCase();
+                        if (text.indexOf(filter) > -1) {
+                            deptLi.style.display = '';
+                            hasMatch = true;
+                        } else {
+                            deptLi.style.display = 'none';
+                        }
+                    });
+
+                    if (hasMatch) {
+                        li.style.display = '';
+                        group.style.display = 'block'; // Expand if match found
+                        const toggleBtn = li.querySelector('button.btn-default i');
+                        if (toggleBtn) toggleBtn.className = 'fa fa-minus';
+                    } else {
+                        li.style.display = 'none';
+                    }
+                });
+            });
+        }
     });
 </script>
