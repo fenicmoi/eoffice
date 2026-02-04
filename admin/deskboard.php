@@ -1,16 +1,32 @@
-<link rel="stylesheet" href="../css/note.css">
 <?php
-include '../chksession.php';
+// Strict session validation - prevent unauthorized access
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Check if user is logged in
+if (!isset($_SESSION['ses_u_id']) || empty($_SESSION['ses_u_id'])) {
+    // Clear any partial session data
+    session_unset();
+    session_destroy();
+    // Redirect to login page
+    header("Location: ../index.php");
+    exit();
+}
+
 require_once '../library/database.php';
 require_once '../library/security.php';
 require_once 'function.php';
+
 $u_id = $_SESSION['ses_u_id'];
 $level_id = $_SESSION['ses_level_id'];
 $dep_id = $_SESSION['ses_dep_id'];
 $sec_id = $_SESSION['ses_sec_id'];
+
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 ?>
+<link rel="stylesheet" href="../css/note.css">
 
 <style>
     :root {
