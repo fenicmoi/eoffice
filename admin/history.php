@@ -115,7 +115,9 @@ if (!isset($_SESSION['ses_u_id'])) {
 						<th></th>
 						<th>ที่</th>
 						<th>เรื่อง</th>
+						<th>หน่วยส่ง</th>
 						<th>วันที่ส่ง</th>
+
 						<th>เวลา</th>
 						<th>ตรวจสอบ</th>
 						<th>แก้ไข</th>
@@ -124,7 +126,10 @@ if (!isset($_SESSION['ses_u_id'])) {
 				</thead>
 				<tbody>
 					<?php
-					$sql = "SELECT p.* FROM paper p INNER JOIN section s ON p.sec_id = s.sec_id WHERE s.dep_id = ? ";
+					$sql = "SELECT p.*, d.dep_name FROM paper p 
+                            INNER JOIN section s ON p.sec_id = s.sec_id 
+                            INNER JOIN depart d ON s.dep_id = d.dep_id 
+                            WHERE s.dep_id = ? ";
 					$params = [$dep_id];
 					$types = "i";
 
@@ -193,6 +198,7 @@ if (!isset($_SESSION['ses_u_id'])) {
 									<?php } ?>
 								</div>
 							</td>
+							<td><?php echo htmlspecialchars($rowList['dep_name']); ?></td>
 							<td><?php echo thaiDate($rowList['postdate']); ?></td>
 							<td><?php echo substr($rowList['postdate'], 10); ?></td>
 							<td><a href="checklist.php?pid=<?php echo $rowList['pid']; ?>" class="btn btn-warning"
