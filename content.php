@@ -43,10 +43,10 @@
         </a>
     </div>
     <div class="col-md-2">
-        <div class="block-unified">
-            <i class="fab fa-fort-awesome"></i>
-            <h5>ลงทะเบียนหน่วยงาน</h5>
-        </div>
+        <a href="https://mbrs.phatthalung.go.th/" target="_blank" class="block-unified">
+            <i class="fas fa-calendar-alt"></i>
+            <h5>จองห้องประชุม</h5>
+        </a>
     </div>
     <div class="col-md-2">
         <a href="https://www.phone.phatthalung.go.th/" target="_blank" class="block-unified">
@@ -55,17 +55,19 @@
         </a>
     </div>
     <div class="col-md-2">
+        <a href="https://www.phatthalung.go.th/old/plg_sendbooks/index_new.php" target="_blank" class="block-unified">
+            <i class="fab fa-fort-awesome"></i>
+            <h5>คลังหนังสือเก่าจังหวัดพัทลุง</h5>
+        </a>
+    </div>
+
+    <div class="col-md-2">
         <a href="manual.pdf" target="_blank" class="block-unified">
             <i class="fas fa-file-pdf"></i>
             <h5>คู่มือผู้ใช้</h5>
         </a>
     </div>
-    <div class="col-md-2">
-        <a href="https://mbrs.phatthalung.go.th/" target="_blank" class="block-unified">
-            <i class="fas fa-calendar-alt"></i>
-            <h5>จองห้องประชุม</h5>
-        </a>
-    </div>
+
 </div>
 
 
