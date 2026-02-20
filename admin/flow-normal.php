@@ -63,6 +63,7 @@ $dep_id = $_SESSION['ses_dep_id'];
                                                 <select class="form-control" id="typeSearch" name="typeSearch">
                                                     <option value="1">เลขส่ง</option>
                                                     <option value="2" selected>ชื่อเรื่อง</option>
+                                                    <option value="4">ค้นหาจากวันที่</option>
                                                 </select>
 
                                                 <div class="input-group">
@@ -100,31 +101,63 @@ $dep_id = $_SESSION['ses_dep_id'];
                                 
                                  //ส่วนการค้นหา
                                  if(isset($_POST['btnSearch'])){
-                                     @$typeSearch = $_POST[ 'typeSearch' ]; //ประเภทการค้นหา
-                                     @$txt_search = $_POST[ 'search' ]; //กล่องรับข้อความ
+                                     $typeSearch = $_POST[ 'typeSearch' ]; //ประเภทการค้นหา
+                                     $txt_search = $_POST[ 'search' ]; //กล่องรับข้อความ
                                     $sql="SELECT * FROM  flownormal";
-                                     if ( @$typeSearch == 1 ) { //ค้นด้วยเลขเลขส่ง
+                                     if ( $typeSearch == 1 ) { //ค้นด้วยเลขเลขส่ง
                                         if($level_id <= 2){     
-                                            $sql .= " WHERE rec_no LIKE '%$txt_search%' ";
+                                            $sql .= " WHERE CONCAT(prefex,'/',rec_no) LIKE '%$txt_search%' ";
                                         }else{
-                                            $sql .= " WHERE rec_no LIKE '%$txt_search%'  AND m.dep_id=$dep_id  AND sec_id=$sec_id  ";
+                                            //$sql .= " WHERE rec_no LIKE '%$txt_search%'  AND m.dep_id=$dep_id  AND sec_id=$sec_id  ";
+                                            $sql .= " WHERE CONCAT(prefex,'/',rec_no) LIKE '%$txt_search%'  AND dep_id=$dep_id ";
                                         }
-                                    } elseif ( @$typeSearch == 2 ) { //ค้นด้วยชื่อชื่อเรื่อง
+                                    } elseif ( $typeSearch == 2 ) { //ค้นด้วยชื่อชื่อเรื่อง
                                         if($level_id <=2){
                                             $sql .= " WHERE title LIKE '%$txt_search%' ";
                                         }else{
-                                            $sql .= " WHERE title LIKE '%$txt_search%'   AND dep_id=$dep_id  AND sec_id=$sec_id ";
+                                            //$sql .= " WHERE title LIKE '%$txt_search%'   AND dep_id=$dep_id  AND sec_id=$sec_id ";
+                                            $sql .= " WHERE title LIKE '%$txt_search%'   AND dep_id=$dep_id ";
                                         }
-                                        $sql .= "ORDER BY cid DESC";
+                                    } elseif ( $typeSearch == 4 ) { //ค้นด้วยวันที่
+                                          $dateStart = $_POST['dateStart'];
+                                          $dateEnd = $_POST['dateEnd'];
+                                          if($level_id <=2){
+                                              $sql .= " WHERE dateline BETWEEN '$dateStart' AND '$dateEnd' ";
+                                          }else{
+                                              $sql .= " WHERE dateline BETWEEN '$dateStart' AND '$dateEnd' AND dep_id=$dep_id ";
+                                          }
                                     }
+                                    
+                                    $sql .= " ORDER BY cid DESC";
 
                                  }//isset 
                               // print $level_id;
                                 //print $sql;
+                                // function for highlighting words
+                                function highlightWords($text, $word) {
+                                    $text = preg_replace('#'. preg_quote($word) .'#i', '<span style="background-color: #F9E79F;">\\0</span>', $text);
+                                    return $text;
+                                }
+
                                 $result = page_query( $dbConn, $sql, 10 );
-                                while($row = dbFetchArray($result)){?>
+                                while($row = dbFetchArray($result)){
+                                    $rec_no_display = $row['prefex'] . ' / ' . $row['rec_no']; // Default full display
+                                    $title_display = $row['title'];
+
+                                    if(isset($_POST['btnSearch'])){
+                                        $typeSearch = $_POST['typeSearch'];
+                                        $txt_search = $_POST['search'];
+                                        
+                                        if($typeSearch == 1 && !empty($txt_search)){
+                                            // Highlight within the full string
+                                            $rec_no_display = highlightWords($rec_no_display, $txt_search);
+                                        } elseif($typeSearch == 2 && !empty($txt_search)){
+                                            $title_display = highlightWords($row['title'], $txt_search);
+                                        }
+                                    }
+                                    ?>
                                     <tr>
-                                    <td><?php echo $row['prefex'];?> / <?php echo $row['rec_no']; ?></td>
+                                    <td><?php echo $rec_no_display; ?></td>
                                     <td>
                                         <?php 
                                          $cid=$row['cid']; 
@@ -133,7 +166,7 @@ $dep_id = $_SESSION['ses_dep_id'];
                                         <a href="#" 
                                             onClick="loadData('<?php print $cid;?>','<?php print $u_id; ?>');" 
                                             data-toggle="modal" data-target=".bs-example-modal-table">
-                                             <?php echo $row['title'];?> 
+                                             <?php echo $title_display;?> 
                                     </a>
                                     </td>
                                     <td><?php echo thaiDate($row['dateline']); ?></td>
