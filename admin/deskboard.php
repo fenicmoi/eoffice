@@ -834,19 +834,13 @@ ini_set('display_errors', 1);
 
                     <!-- Column 3: Meetings -->
                     <div class="col-md-3">
-                        <div class="menu-card" data-toggle="collapse" data-target="#menu4" style="cursor: pointer;">
-                            <i class="fas fa-handshake text-info"></i>
-                            <h5>จองห้องประชุม</h5>
-                            <small class="text-secondary">ระบบจองห้องประชุม</small>
-                        </div>
-                        <div id="menu4" class="collapse" style="margin-top: 10px;">
-                            <div class="list-group list-group-flush shadow-sm"
-                                style="border-radius: 10px; overflow: hidden;">
-                                <a href="meet_index.php" class="list-group-item list-group-item-action"><i
-                                        class="fas fa-calendar-alt text-info" style="width: 20px;"></i>
-                                    ปฏิทินและจองห้อง</a>
+                        <a href="https://mbrs.phatthalung.go.th/" style="text-decoration: none;">
+                            <div class="menu-card">
+                                <i class="fas fa-address-book text-warning"></i>
+                                <h5>จองห้องประชุม</h5>
+                                <small class="text-secondary">ห้องประชุมศาลากลางจังหวัด</small>
                             </div>
-                        </div>
+                        </a>
                     </div>
 
                     <!-- Column 4: Phonebook -->
