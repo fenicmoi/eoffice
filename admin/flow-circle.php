@@ -56,43 +56,40 @@ function highlightText($text, $search)
             <i class="fa fa-envelope fa-2x" aria-hidden="true"></i> <strong>ทะเบียนหนังสือส่ง [เวียน]</strong>
             <a href="" class="btn btn-danger btn-md pull-right" data-toggle="modal" data-target="#modalAdd"><i
                     class="fa fa-plus " aria-hidden="true"></i> ลงทะเบียนส่ง</a>
-            <a href="" class="btn btn-info btn-md pull-right" style="margin-right: 5px;" data-toggle="modal"
+            <a href="" class="btn btn-danger btn-md pull-right" style="margin-right: 5px;" data-toggle="modal"
                 data-target="#modalReserv"><i class="fas fa-hand-point-up "></i> จองทะเบียนส่ง</a>
+        </div>
+        <div class="panel-body bg-info">
+            <form class="form-inline" method="post" name="frmSearch" id="frmSearch">
+                <?php echo csrf_field(); ?>
+                <div class="form-group">
+                    <label for="search">ค้นหา : </label>
+                    <select class="form-control" id="typeSearch" name="typeSearch">
+                        <option value="1"> เลขทะเบียนส่ง</option>
+                        <option value="2"> เลขเอกสาร</option>
+                        <option value="3" selected>เรื่อง</option>
+                        <option value="4">ตามช่วงเวลา</option>
+                    </select>
+                    <div class="input-group">
+                        <input class="form-control" id="search" name="search" type="text" size="80"
+                            placeholder="Keyword สั้นๆ">
+                        <div class="input-group" id="dateSearch">
+                            <span class="input-group-addon"><i class="fas fa-calendar-alt"></i>วันที่เริ่มต้น</span>
+                            <input class="form-control" id="dateStart" name="dateStart" type="date">
+                            <span class="input-group-addon"><i class="fas fa-calendar-alt"></i>วันที่สิ้นสุด</span>
+                            <input class="form-control" id="dateEnd" name="dateEnd" type="date">
+                        </div>
+                        <div class="input-group-btn">
+                            <button class="btn btn-primary" type="submit" name="btnSearch" id="btnSearch">
+                                <i class="fas fa-search "></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
         <table class="table table-bordered table-hover" id="dataTable">
             <thead class="bg-info">
-                <tr bgcolor="black">
-                    <td colspan="4">
-                        <form class="form-inline" method="post" name="frmSearch" id="frmSearch">
-                            <?php echo csrf_field(); ?>
-                            <div class="form-group">
-                                <select class="form-control" id="typeSearch" name="typeSearch">
-                                    <option value="1"> เลขทะเบียนส่ง</option>
-                                    <option value="2"> เลขเอกสาร</option>
-                                    <option value="3" selected>เรื่อง</option>
-                                    <option value="4">ตามช่วงเวลา</option>
-                                </select>
-                                <div class="input-group">
-                                    <input class="form-control" id="search" name="search" type="text" size="80"
-                                        placeholder="Keyword สั้นๆ">
-                                    <div class="input-group" id="dateSearch">
-                                        <span class="input-group-addon"><i
-                                                class="fas fa-calendar-alt"></i>วันที่เริ่มต้น</span>
-                                        <input class="form-control" id="dateStart" name="dateStart" type="date">
-                                        <span class="input-group-addon"><i
-                                                class="fas fa-calendar-alt"></i>วันที่สิ้นสุด</span>
-                                        <input class="form-control" id="dateEnd" name="dateEnd" type="date">
-                                    </div>
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-primary" type="submit" name="btnSearch" id="btnSearch">
-                                            <i class="fas fa-search "></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </td>
-                </tr>
                 <tr>
                     <th>เลขหนังสือ</th>
                     <th>เรื่อง</th>

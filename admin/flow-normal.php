@@ -8,12 +8,12 @@ $dep_id = $_SESSION['ses_dep_id'];
 <script>
 	$( document ).ready( function () {
 		$( "#dateSearch" ).hide();
-		$( "tr" ).first().hide();
+		// $( "tr" ).first().hide(); // Removed to show search by default
 
 
-		$( "#hideSearch" ).click( function () {
-			$( "tr" ).first().show( 1000 );
-		} );
+		// $( "#hideSearch" ).click( function () {
+		// 	$( "tr" ).first().show( 1000 );
+		// } );
 
 
 		$( '#typeSearch' ).change( function () {
@@ -52,38 +52,36 @@ $dep_id = $_SESSION['ses_dep_id'];
                     <i class="fas fa-hand-point-up"></i> จองเลข
                      </a>
                     <a href="" class="btn btn-default btn-md pull-right" data-toggle="modal" data-target="#modalAdd"><i class="fa fa-plus " aria-hidden="true"></i> ลงทะเบียนส่ง</a>
-                    <button id="hideSearch" class="btn btn-default pull-right"><i class="fas fa-search"> ค้นหา</i></button>
+                </div>
+                <div class="panel-body bg-info">
+                    <form class="form-inline" method="post" name="frmSearch" id="frmSearch">
+                        <div class="form-group">
+                            <label for="search">ค้นหา : </label>
+                            <select class="form-control" id="typeSearch" name="typeSearch">
+                                <option value="1">เลขส่ง</option>
+                                <option value="2" selected>ชื่อเรื่อง</option>
+                                <option value="4">ค้นหาจากวันที่</option>
+                            </select>
+
+                            <div class="input-group">
+                                <input class="form-control" id="search" name="search" type="text" size="80" placeholder="Keyword สั้นๆ">
+                                <div class="input-group" id="dateSearch">
+                                    <span class="input-group-addon"><i class="fas fa-calendar-alt"></i>วันที่เริ่มต้น</span>
+                                    <input class="form-control" id="dateStart" name="dateStart" type="date">
+                                    <span class="input-group-addon"><i class="fas fa-calendar-alt"></i>วันที่สิ้นสุด</span>
+                                    <input class="form-control" id="dateEnd" name="dateEnd" type="date">
+                                </div>
+                                <div class="input-group-btn">
+                                    <button class="btn btn-primary" type="submit" name="btnSearch" id="btnSearch">
+                                            <i class="fas fa-search "></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
                  <table class="table table-bordered table-hover">
                         <thead class="bg-info">
-                            	<tr bgcolor="black">
-                                    <td colspan="8">
-                                        <form class="form-inline" method="post" name="frmSearch" id="frmSearch">
-                                            <div class="form-group">
-                                                <select class="form-control" id="typeSearch" name="typeSearch">
-                                                    <option value="1">เลขส่ง</option>
-                                                    <option value="2" selected>ชื่อเรื่อง</option>
-                                                    <option value="4">ค้นหาจากวันที่</option>
-                                                </select>
-
-                                                <div class="input-group">
-                                                    <input class="form-control" id="search" name="search" type="text" size="80" placeholder="Keyword สั้นๆ">
-                                                    <div class="input-group" id="dateSearch">
-                                                        <span class="input-group-addon"><i class="fas fa-calendar-alt"></i>วันที่เริ่มต้น</span>
-                                                        <input class="form-control" id="dateStart" name="dateStart" type="date">
-                                                        <span class="input-group-addon"><i class="fas fa-calendar-alt"></i>วันที่สิ้นสุด</span>
-                                                        <input class="form-control" id="dateEnd" name="dateEnd" type="date">
-                                                    </div>
-                                                    <div class="input-group-btn">
-                                                        <button class="btn btn-primary" type="submit" name="btnSearch" id="btnSearch">
-                                                                <i class="fas fa-search "></i>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </td>
-                                </tr>
                             <tr>
                                 <th>เลขหนังสือ</th>
                                 <th>เรื่อง</th>
