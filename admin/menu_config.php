@@ -103,8 +103,8 @@ function getMenuConfig($level_id, $dep_id)
             'icon' => 'fas fa-building',
             'allowed_levels' => [1, 2, 3, 4, 5],
             'items' => [
-                ['title' => 'หนังสือส่งปกติ', 'url' => 'normaloffice.php', 'icon' => 'far fa-arrow-alt-circle-right', 'allowed_levels' => [1, 2, 3, 4]],
-                ['title' => 'หนังสือส่งเวียน', 'url' => 'circleoffice.php', 'icon' => 'far fa-arrow-alt-circle-right', 'allowed_levels' => [1, 2, 3, 4]],
+                ['title' => 'หนังสือส่งปกติ', 'url' => 'normaloffice.php', 'icon' => 'far fa-arrow-alt-circle-right', 'allowed_levels' => [1, 2, 3, 4, 5]],
+                ['title' => 'หนังสือส่งเวียน', 'url' => 'circleoffice.php', 'icon' => 'far fa-arrow-alt-circle-right', 'allowed_levels' => [1, 2, 3, 4, 5]],
             ]
         ],
         [

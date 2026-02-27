@@ -34,11 +34,24 @@ $cid=$_GET['cid'];
    
    
     
-    //เลือกขอมูลหนังสือเวียน
-    $sqlFlowCircle="SELECT * FROM flownormal WHERE  cid=$cid";
+    // เลือกข้อมูลหนังสือเวียน
+    // ตรวจสอบก่อนว่าส่ง type=depart มาหรือไม่
+    $type = isset($_GET['type']) ? $_GET['type'] : '';
+
+    if ($type == 'depart') {
+        $sqlFlowCircle = "SELECT * FROM flownormal_depart WHERE cid=$cid";
+    } else {
+        $sqlFlowCircle = "SELECT * FROM flownormal WHERE cid=$cid";
+    }
+    
     //print $sqlFlowCircle;
     $resSqlFlowCircle= dbQuery($sqlFlowCircle);
     $rowFlowCircle=  dbFetchAssoc($resSqlFlowCircle);
+
+    if(!$rowFlowCircle){
+        echo "<script>alert('ไม่สามารถเลือกข้อมูลระบบได้'); window.history.back();</script>";
+        exit();
+    }
     
     $speed=$rowFlowCircle['speed_id'];
     $sec_id=$rowFlowCircle['sec_id'];
@@ -56,19 +69,8 @@ $cid=$_GET['cid'];
 
     
     
-    $fileUpload=$rowFlowCircle['file_upload'];
+    $fileUpload = isset($rowFlowCircle['file_upload']) ? $rowFlowCircle['file_upload'] : '';
 
-    
-
-   
-
-   
-    
-    if(!$rowFlowCircle){
-        echo "ไม่สามารถเลือกข้อมูลระบบได้";
-        exit();
-    }
-    
 ?>
         <div class="col-md-2" >
            <?php
@@ -83,7 +85,7 @@ $cid=$_GET['cid'];
                  <div class="panel-heading"><i class="fa fa-envelope-open-o fa-2x" aria-hidden="true"></i>  <strong>แก้ไข/เพิ่มเติม</strong></div>
                    <i class="badge"> ข้อมูลทั่วไป </i>                   
                     <div class="well">
-                     <form name="form" method="post" action="flow-normal.php" enctype="multipart/form-data">
+                     <form name="form" method="post" action="<?php echo ($type == 'depart') ? 'normaloffice.php' : 'flow-normal.php'; ?>" enctype="multipart/form-data">
                         <table width="800">
                             <tr>
                                 <td> 

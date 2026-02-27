@@ -34,11 +34,24 @@ $cid=$_GET['cid'];
    
    
     
-    //เลือกขอมูลหนังสือเวียน
-    $sqlFlowCircle="SELECT * FROM flowcircle WHERE  cid=$cid";
+    // เลือกข้อมูลหนังสือเวียน
+    // ตรวจสอบก่อนว่าส่ง type=depart มาหรือไม่
+    $type = isset($_GET['type']) ? $_GET['type'] : '';
+
+    if ($type == 'depart') {
+        $sqlFlowCircle = "SELECT * FROM flowcircle_depart WHERE cid=$cid";
+    } else {
+        $sqlFlowCircle = "SELECT * FROM flowcircle WHERE cid=$cid";
+    }
+    
     //print $sqlFlowCircle;
     $resSqlFlowCircle= dbQuery($sqlFlowCircle);
     $rowFlowCircle=  dbFetchAssoc($resSqlFlowCircle);
+
+    if(!$rowFlowCircle){
+        echo "<script>alert('ไม่สามารถเลือกข้อมูลระบบได้'); window.history.back();</script>";
+        exit();
+    }
     
     $speed=$rowFlowCircle['speed_id'];
     $sec_id=$rowFlowCircle['sec_id'];
@@ -53,15 +66,8 @@ $cid=$_GET['cid'];
     $dateLine=$rowFlowCircle['dateline'];
     $dateout=$rowFlowCircle['dateout'];
     
-    $fileUpload=$rowFlowCircle['file_upload'];
+    $fileUpload = isset($rowFlowCircle['file_upload']) ? $rowFlowCircle['file_upload'] : '';
 
-    
-    
-    if(!$rowFlowCircle){
-        echo "ไม่สามารถเลือกข้อมูลระบบได้";
-        exit();
-    }
-    
 ?>
         <div class="col-md-2" >
            <?php
@@ -76,7 +82,7 @@ $cid=$_GET['cid'];
                  <div class="panel-heading"><i class="fa fa-envelope-open-o fa-2x" aria-hidden="true"></i>  <strong>แก้ไข/เพิ่มเติม</strong></div>
                    <i class="badge"> ข้อมูลทั่วไป </i>                   
                     <div class="well">
-                     <form name="form" method="post" action="flow-circle.php" enctype="multipart/form-data">
+                     <form name="form" method="post" action="<?php echo ($type == 'depart') ? 'circleoffice.php' : 'flow-circle.php'; ?>" enctype="multipart/form-data">
                         <?php echo csrf_field(); ?>
                         <table width="800">
                             <tr>
