@@ -88,7 +88,8 @@ $row_header = dbFetchArray($result_header);
                      INNER JOIN depart dep ON d.practice = dep.dep_id
                      LEFT JOIN user u ON m.u_id = u.u_id
                      WHERE m.type_id=1 
-                     AND d.date_line BETWEEN '$dateStart 00:00:00' AND '$dateEnd 23:59:59' ";
+                     AND m.yid = '$yid'
+                     AND d.date_in BETWEEN '$dateStart' AND '$dateEnd' ";
 
         if ($scope == 'owner') {
             $sql_data .= " AND m.u_id = '$uid' ";

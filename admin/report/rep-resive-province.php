@@ -86,7 +86,8 @@ $row = dbFetchArray($result);
               INNER JOIN depart dep ON dep.dep_id= d.practice
               LEFT JOIN user u ON m.u_id = u.u_id
               WHERE m.type_id=1 
-              AND d.date_line BETWEEN '$dateprint 00:00:00' AND '$dateprint 23:59:59' ";
+              AND m.yid = '$yid'
+              AND d.date_in = '$dateprint' ";
 
         if ($scope == 'owner') {
             $sql .= " AND m.u_id = '$uid' ";
