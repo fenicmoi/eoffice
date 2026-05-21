@@ -75,7 +75,7 @@
 <div class="mb-10">
     <h3 class="text-3xl md:text-4xl font-bold text-gray-900 mb-8 border-b-4 border-teal-500 pb-3 inline-block"
         style="font-family: 'Sarabun', sans-serif;">ระบบงานหลัก</h3>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         <!-- 1. e-office (NT) -->
         <a href="http://phatthalung.eoffice.go.th" target="_blank"
             class="flex flex-col items-center justify-center p-10 bg-white rounded-2xl shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border-t-4 border-blue-500 group no-underline hover:no-underline focus:outline-none">
@@ -118,17 +118,7 @@
                 ระบบทำเนียบ<br>หัวหน้าส่วนราชการ</h4>
         </a>
 
-        <!-- 4. ระบบคลังหนังสือเก่าจังหวัด -->
-        <a href="http://www.phatthalung.go.th/old/plg_sendbooks/index_new.php" target="_blank"
-            class="flex flex-col items-center justify-center p-10 bg-white rounded-2xl shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border-t-4 border-orange-500 group no-underline hover:no-underline focus:outline-none">
-            <div
-                class="w-20 h-20 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center mb-6 group-hover:bg-orange-600 group-hover:text-white transition-colors duration-300">
-                <i class="fas fa-archive text-4xl"></i>
-            </div>
-            <h4 class="text-xl md:text-2xl font-bold text-gray-900 text-center group-hover:text-orange-600 m-0 leading-normal"
-                style="font-family: 'Sarabun', sans-serif;">
-                ระบบคลังหนังสือเก่า<br>จังหวัด</h4>
-        </a>
+
     </div>
 </div>
 
