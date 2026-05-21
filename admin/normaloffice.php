@@ -37,10 +37,10 @@ $ystatus = $ystatus;
         <div class="panel-heading">
             <i class="fa fa-envelope fa-2x" aria-hidden="true"></i>
             <strong>ทะเบียนหนังสือส่งสำนักงานจังหวัด[ปกติ]</strong>
-            <a href="" class="btn btn-default pull-right" data-toggle="modal" data-target="#modalReserv">
+            <a href="" class="btn btn-default pull-right" style="display:none;" data-toggle="modal" data-target="#modalReserv">
                 <i class="fas fa-hand-point-up"></i> จองเลข
             </a>
-            <a href="" class="btn btn-primary btn-md pull-right" data-toggle="modal" data-target="#modalAdd"><i
+            <a href="" class="btn btn-primary btn-md pull-right" style="display:none;" data-toggle="modal" data-target="#modalAdd"><i
                     class="fa fa-plus " aria-hidden="true"></i> ลงทะเบียนส่ง</a>
         </div>
         <div class="panel-body bg-info">

@@ -238,15 +238,17 @@ if (isset($_POST['save'])) {
 
         move_uploaded_file($_FILES['fileupload']['tmp_name'], $part_copy);
 
-        $sqlRun = "SELECT cid,rec_id FROM flowbuy WHERE  yid=$yid  ORDER  BY cid DESC";
-        $resRun =  dbQuery($sqlRun);
+        $sqlRun = "SELECT cid,rec_id FROM flowbuy WHERE yid = ? ORDER BY cid DESC";
+        $resRun =  dbQuery($sqlRun, "i", [(int)$yid]);
         $rowRun = dbFetchArray($resRun);
         $rec_id = $rowRun['rec_id'];
         $rec_id++;
 
         $sql = "INSERT INTO flowbuy (rec_id,yid,title,boss,dateline,dateout,file_upload,u_id,sec_id,dep_id)    
-                  VALUE($rec_id,$yid,'$title','$boss','$dateline','$dateout','$part_link',$u_id,$sec_id,$dep_id)";
-        $result = dbQuery($sql);
+                  VALUE(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $result = dbQuery($sql, "iisssssiii", [
+            $rec_id, $yid, $title, $boss, $dateline, $dateout, $part_link, $u_id, $sec_id, $dep_id
+        ]);
         if (!$result) {
             echo "<script>
                     swal({
@@ -312,11 +314,12 @@ if (isset($_POST['update'])) {
         }
 
         move_uploaded_file($_FILES['fileupload']['tmp_name'], $part_copy);
-        $sql = "UPDATE flowbuy SET title='$title',boss='$boss',dateline='$dateline',file_upload='$part_copy',date_edit='$date' WHERE cid=$cid";
+        $sql = "UPDATE flowbuy SET title = ?, boss = ?, dateline = ?, file_upload = ?, date_edit = ? WHERE cid = ?";
+        $result = dbQuery($sql, "sssssi", [$title, $boss, $dateline, $part_copy, $date, (int)$cid]);
     } else {
-        $sql = "UPDATE flowbuy SET title='$title',boss='$boss',dateline='$dateline',date_edit='$date' WHERE cid=$cid";
+        $sql = "UPDATE flowbuy SET title = ?, boss = ?, dateline = ?, date_edit = ? WHERE cid = ?";
+        $result = dbQuery($sql, "ssssi", [$title, $boss, $dateline, $date, (int)$cid]);
     }
-    $result =  dbQuery($sql);
 
     if ($result) {
         echo "<script>

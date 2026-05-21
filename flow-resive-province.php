@@ -400,9 +400,9 @@ $u_id=$_SESSION['ses_u_id'];
         $speed_id=$_POST['speed_id'];
 
         //(1) เลือกข้อมูลเพื่อรันเลขรับ  โดยมีเงื่อนไขให้ตรงกับหน่วยงานของผู้ใช้ ###########################
-        $sql="SELECT rec_id FROM book_master WHERE   yid=$yid  ORDER BY book_id DESC LIMIT 1";
+        $sql="SELECT rec_id FROM book_master WHERE yid = ? ORDER BY book_id DESC LIMIT 1";
         //print $sql;
-        $result=dbQuery($sql);
+        $result=dbQuery($sql, "i", [(int)$yid]);
         $rowRun= dbFetchArray($result);
         $rec_id=$rowRun['rec_id'];
          if($rec_id==0){
@@ -529,9 +529,9 @@ $u_id=$_SESSION['ses_u_id'];
             $part_copy='';
         }
 
-        $sql="UPDATE book_detail SET file_upload='$part_copy' WHERE book_detail_id=$book_detail_id";
+        $sql="UPDATE book_detail SET file_upload = ? WHERE book_detail_id = ?";
         //echo $sql;
-        $result=dbQuery($sql);
+        $result=dbQuery($sql, "si", [$part_copy, (int)$book_detail_id]);
          if($result){
             echo "<script>
             swal({

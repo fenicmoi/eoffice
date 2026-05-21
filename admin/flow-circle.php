@@ -54,9 +54,9 @@ function highlightText($text, $search)
     <div class="panel panel-default">
         <div class="panel-heading">
             <i class="fa fa-envelope fa-2x" aria-hidden="true"></i> <strong>ทะเบียนหนังสือส่ง [เวียน]</strong>
-            <a href="" class="btn btn-danger btn-md pull-right" data-toggle="modal" data-target="#modalAdd"><i
+            <a href="" class="btn btn-danger btn-md pull-right" style="display:none;" data-toggle="modal" data-target="#modalAdd"><i
                     class="fa fa-plus " aria-hidden="true"></i> ลงทะเบียนส่ง</a>
-            <a href="" class="btn btn-danger btn-md pull-right" style="margin-right: 5px;" data-toggle="modal"
+            <a href="" class="btn btn-danger btn-md pull-right" style="margin-right: 5px; display:none;" data-toggle="modal"
                 data-target="#modalReserv"><i class="fas fa-hand-point-up "></i> จองทะเบียนส่ง</a>
         </div>
         <div class="panel-body bg-info">
@@ -110,11 +110,17 @@ function highlightText($text, $search)
                     $params = [];
 
                     if ($typeSearch == 1) {
-                        $sql .= " AND rec_no LIKE '%" . dbEscapeString($txt_search) . "%'";
+                        $sql .= " AND rec_no LIKE ?";
+                        $params[] = "%".$txt_search."%";
+                        $types .= "s";
                     } elseif ($typeSearch == 2) {
-                        $sql .= " AND prefex LIKE '%" . dbEscapeString($txt_search) . "%'";
+                        $sql .= " AND prefex LIKE ?";
+                        $params[] = "%".$txt_search."%";
+                        $types .= "s";
                     } elseif ($typeSearch == 3) {
-                        $sql .= " AND title LIKE '%" . dbEscapeString($txt_search) . "%'";
+                        $sql .= " AND title LIKE ?";
+                        $params[] = "%".$txt_search."%";
+                        $types .= "s";
                     } elseif ($typeSearch == 4) {
                         $sql .= " AND (dateline BETWEEN ? AND ?)";
                         $params[] = $dateStart;

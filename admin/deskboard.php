@@ -780,7 +780,7 @@ ini_set('display_errors', 1);
         // Section 2: Legacy Counters (Removed as per user request)
         // This section used to contain NEW DOCUMENTS and NEW RECEIVED BOOKS which are now moved to the top row.
         ?>
-        <div class="row" style="margin-top: 30px;">
+        <div class="row" style="margin-top: 30px; display:none;">
             <div class="col-md-12">
                 <div class="section-title">
                     <span>

@@ -9,8 +9,8 @@ $u_id=$_SESSION['ses_u_id'];
 /* code for data update */
 if(isset($_GET['edit']))
 {
-    $sql = "SELECT * FROM secret WHERE sec_id=".$_GET['edit'];
-    $result = dbQuery($sql);
+    $sql = "SELECT * FROM secret WHERE sec_id = ?";
+    $result = dbQuery($sql, "i", [(int)$_GET['edit']]);
 	$getROW = dbFetchArray($result);
 }
 ?>
@@ -75,8 +75,8 @@ if(isset($_GET['edit']))
     if(isset($_POST['save']))
     {
              $sec_name = $_POST['secret'];
-             $sql = "INSERT INTO secret(sec_name) VALUES('$sec_name')";
-             $result = dbQuery($sql);
+             $sql = "INSERT INTO secret(sec_name) VALUES(?)";
+             $result = dbQuery($sql, "s", [$sec_name]);
              if(!$result){
                 echo "<script>
                 swal({
@@ -110,8 +110,8 @@ if(isset($_GET['edit']))
 /* code for data delete */
 if(isset($_GET['del']))
 {
-	$sql = "DELETE FROM secret WHERE sec_id=".$_GET['del'];
-	$result = dbQuery($sql);
+	$sql = "DELETE FROM secret WHERE sec_id = ?";
+	$result = dbQuery($sql, "i", [(int)$_GET['del']]);
     if(!$result){
        echo "<script>
        swal({
@@ -149,8 +149,8 @@ if(isset($_GET['del']))
 
 if(isset($_POST['update']))
 {
-    $sql = "UPDATE secret SET sec_name='".$_POST['secret']."' WHERE sec_id=".$_GET['edit'];
-    $result = dbQuery($sql);
+    $sql = "UPDATE secret SET sec_name = ? WHERE sec_id = ?";
+    $result = dbQuery($sql, "si", [$_POST['secret'], (int)$_GET['edit']]);
 	if(!$result){
         echo "<script>
         swal({

@@ -40,12 +40,12 @@ $u_id=$_SESSION['ses_u_id'];
                                 $count=1;
                                 //$sql="SELECT * FROM  flowcircle WHERE u_id=$u_id ORDER BY cid DESC";
                                 if($level_id==1){   //กรณีเป็น Admin  สามารถดูได้ทั้งหมด
-                                     $sql="SELECT * FROM  flowcircle   ORDER BY cid DESC";    
+                                     $sql="SELECT * FROM flowcircle ORDER BY cid DESC";
+                                     $result = dbQuery($sql);
                                 }else{
-                                    $sql="SELECT * FROM  flowcircle WHERE dep_id=$dep_id AND sec_id=$sec_id  ORDER BY cid DESC LIMIT 200";
+                                    $sql="SELECT * FROM flowcircle WHERE dep_id = ? AND sec_id = ? ORDER BY cid DESC LIMIT 200";
+                                    $result = dbQuery($sql, "ii", [(int)$dep_id, (int)$sec_id]);
                                 }
-                                 
-                                $result = dbQuery($sql);
                                 while($row = dbFetchArray($result)){?>
                                     <tr>
                                   
@@ -134,9 +134,9 @@ $u_id=$_SESSION['ses_u_id'];
                                     FROM depart d
                                     INNER JOIN user u ON u.dep_id= d.dep_id
                                     WHERE u.u_id=".$u_id;*/
-                                $sql = "SELECT section.sec_code,user.firstname,user.sec_id  FROM section,user  WHERE user.u_id = $u_id AND user.sec_id = section.sec_id " ;
+                                $sql = "SELECT section.sec_code,user.firstname,user.sec_id FROM section,user WHERE user.u_id = ? AND user.sec_id = section.sec_id";
                                 //print $sql;
-                                $result =  dbQuery($sql);
+                                $result = dbQuery($sql, "i", [(int)$u_id]);
                                 $rowPrefex= dbFetchArray($result);
                                 $prefex=$rowPrefex['sec_code'];
                                 $firstname=$rowPrefex['firstname'];
@@ -380,9 +380,8 @@ if(isset($_POST['save'])){   //กดปุ่มบันทึกจากฟ�
         echo "<meta http-equiv='refresh' content='1;URL=flow-circle.php'>";
     }else{
            //ตัวเลขรันอัตโนมัติ
-            // $sqlRun="SELECT cid,rec_no FROM flowcircle WHERE  AND yid=$yid  ORDER  BY cid DESC";
-             $sqlRun="SELECT cid,rec_no FROM flowcircle WHERE  yid=$yid  ORDER  BY cid DESC";
-            $resRun=  dbQuery($sqlRun);
+             $sqlRun="SELECT cid,rec_no FROM flowcircle WHERE yid = ? ORDER BY cid DESC";
+            $resRun=dbQuery($sqlRun, "i", [(int)$yid]);
             $rowRun= dbFetchArray($resRun);
             $rec_no=$rowRun['rec_no'];
             $rec_no++;
@@ -390,9 +389,11 @@ if(isset($_POST['save'])){   //กดปุ่มบันทึกจากฟ�
         dbQuery('BEGIN');    
         $sqlInsert="INSERT INTO flowcircle
                          (rec_no,u_id,obj_id,yid,typeDoc,prefex,title,speed_id,sec_id,sendfrom,sendto,refer,attachment,practice,file_location,dateline,dateout,open,dep_id)    
-                    VALUE($rec_no,$u_id,$obj_id,$yid,'$typeDoc','$prefex','$title',$speed_id,$sec_id,'$sendfrom','$sendto','$refer','$attachment','$practice','$file_location','$dateline','$datelout',$open,$dep_id)";
+                    VALUE(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
        // echo $sqlInsert;
-        $result=dbQuery($sqlInsert);
+        $result=dbQuery($sqlInsert, "isiiissiissssssssii", [
+            $rec_no, $u_id, $obj_id, $yid, $typeDoc, $prefex, $title, $speed_id, $sec_id, $sendfrom, $sendto, $refer, $attachment, $practice, $file_location, $dateline, $datelout, $open, $dep_id
+        ]);
          if($result){
             dbQuery("COMMIT");
             echo "<script>
@@ -439,9 +440,9 @@ if(isset($_POST['update'])){
             $part_link="doc/".$newname;
             move_uploaded_file($_FILES['fileupload']['tmp_name'],$part_copy);  //คัดลอกไฟล์ไป Server
             
-            $sqlUpdate="UPDATE flowcircle SET file_upload='$part_copy' WHERE cid=$cid";
-            print $sqlUpdate;
-            $resUpdate=  mysqli_query($conn, $sqlUpdate);
+            $sqlUpdate="UPDATE flowcircle SET file_upload = ? WHERE cid = ?";
+            // print $sqlUpdate;
+            $resUpdate=dbQuery($sqlUpdate, "si", [$part_copy, (int)$_GET['cid']]);
             if(!$resUpdate){
                 echo "ระบบมีปัญหา";
                 exit;

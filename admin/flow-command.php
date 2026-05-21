@@ -20,10 +20,10 @@ $ystatus = $ystatus;
         <div class="panel-heading">
             <i class="fas fa-clipboard-list  fa-2x" aria-hidden="true"></i> <strong>ทะเบียนคำสั่งจังหวัด</strong>
 
-            <a href="" class="btn btn-default pull-right" data-toggle="modal" data-target="#modalReserv">
+            <a href="" class="btn btn-default pull-right" style="display:none;" data-toggle="modal" data-target="#modalReserv">
                 <i class="fas fa-hand-point-up"></i> จองเลขคำสั่ง
             </a>
-            <a href="" class="btn btn-default pull-right" data-toggle="modal" data-target="#modalAdd">
+            <a href="" class="btn btn-default pull-right" style="display:none;" data-toggle="modal" data-target="#modalAdd">
                 <i class="fa fa-plus" aria-hidden="true"></i> ออกเลขคำสั่ง
             </a>
         </div> <!-- panel -heading-->

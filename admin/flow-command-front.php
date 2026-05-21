@@ -52,19 +52,19 @@ $ystatus=$ystatus;
                                 $result=dbQuery($sql);
                                 $Num_Rows = dbNumRows($result);
 
-                                @$txt_search=$_POST['search'];    //รับค่าจากกล่องข้อความ
-                                @$type_search=$_POST['number'];   // รับค่าจากการเลือกวิธีสืบค้น
+                                 @$txt_search=$_POST['search'];    //รับค่าจากกล่องข้อความ
+                                @$type_search=(int)$_POST['number'];   // รับค่าจากการเลือกวิธีสืบค้น
                                 //$Per_Page=10;
 
                                 if(isset($_POST['Per_page'])){    //ตรวจสอบตัวแปร perpage เพื่อหาจำนวนรายการที่จะนำไปแสดงผล
-                                    $Per_Page = $_POST['Per_page'];  //รับค่า
+                                    $Per_Page = max(1, (int)$_POST['Per_page']);  //รับค่า
                                 }else{
                                     $Per_Page = 10;                //ถ้าไม่มีให้ใช้ 10
                                 }
 
                                  
                                 if (isset($_GET['Page'])) {    //ถ้ามีการรับค่า Page มา
-                                    $Page = $_GET['Page'];     //กำหนดตัวแปร page
+                                    $Page = max(1, (int)$_GET['Page']);     //กำหนดตัวแปร page
                                 }else{
                                     $Page = 1;                 //ถ้าไม่มีการกำหนด  ตัวแปรเท่ากับ 1
                                 }
@@ -88,12 +88,13 @@ $ystatus=$ystatus;
                                 $objQuery  = dbQuery($sql);
 
                                 if(isset($_POST['save'])){    //กรณีที่มีการกดปุ่มค้นหา
+                                      $searchParam = "%" . $txt_search . "%";
                                       if($type_search==1){    //ถ้าค้นหาด้วยเลขคำสั่ง
                                          $sql="SELECT c.*,y.yname,d.dep_name
                                                 FROM  flowcommand as c
                                                 INNER JOIN sys_year as y ON y.yid=c.yid
                                                 INNER JOIN depart as d ON d.dep_id =c.dep_id
-                                                WHERE rec_id LIKE '%$txt_search%' 
+                                                WHERE rec_id LIKE ? 
                                                 ORDER BY cid DESC
                                                 limit $Page_Start , $Per_Page  ";
                                       }else if($type_search==2){    //ถ้าค้นหาด้วยชื่อคำสั่ง
@@ -101,23 +102,22 @@ $ystatus=$ystatus;
                                                 FROM  flowcommand as c
                                                 INNER JOIN sys_year as y ON y.yid=c.yid
                                                 INNER JOIN depart as d ON d.dep_id =c.dep_id
-                                                WHERE title LIKE '%$txt_search%'   ORDER BY cid DESC
+                                                WHERE title LIKE ?   ORDER BY cid DESC
                                                 limit $Page_Start , $Per_Page  ";  
                                       }
-
-                                      //print $sql;
-                                     
+                                      $result = dbQuery($sql, "s", [$searchParam]);
                                 }else{
                                      $sql="SELECT c.*,y.yname,d.dep_name
                                       FROM  flowcommand as c
                                       INNER JOIN sys_year as y ON y.yid=c.yid
                                       INNER JOIN depart as d ON d.dep_id =c.dep_id
                                       ORDER BY c.cid DESC LIMIT $Page_Start,$Per_Page";
+                                     $result = dbQuery($sql);
                                 }
                                
                                 //print $sql;
                                // $edit=1;
-                                $result = dbQuery($sql);
+                                // $edit=1;
                                 while($row=dbFetchArray($result)){?>
                                     <?php 
                                         $cid=$row['cid'];

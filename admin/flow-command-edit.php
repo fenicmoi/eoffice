@@ -13,7 +13,7 @@ require_once 'crud_flownormal.php';
 <?php    
    //ตรวจสอบปีเอกสาร
    $sqlYear="SELECT * FROM sys_year WHERE status=1";
-   $resYear=$conn->query($sqlYear);
+   $resYear=dbQuery($sqlYear);
    $data=$resYear->fetch_array();
    $yid=$data[0];
    $yname=$data[1];
@@ -34,10 +34,10 @@ require_once 'crud_flownormal.php';
    
     
     //เลือกขอมูลหนังสือส่งปกติ
-    $sqlFlowCircle="SELECT * FROM flownormal WHERE  cid=$cid";
+    $sqlFlowCircle="SELECT * FROM flownormal WHERE  cid=?";
     //print $sqlFlowCircle;
-    $resSqlFlowCircle= mysqli_query($conn, $sqlFlowCircle);
-    $rowFlowCircle=  mysqli_fetch_assoc($resSqlFlowCircle);
+    $resSqlFlowCircle= dbQuery($sqlFlowCircle, "i", [(int)$cid]);
+    $rowFlowCircle=  dbFetchAssoc($resSqlFlowCircle);
     
     $speed=$rowFlowCircle['speed_id'];
     $sec_id=$rowFlowCircle['sec_id'];
@@ -55,21 +55,21 @@ require_once 'crud_flownormal.php';
 
     
      //ชั้นความเร็ว
-   $sqlSpeed="SELECT * FROM  speed WHERE speed_id=$speed";
-   $resSpeed=$conn->query($sqlSpeed);
-   $rowSpeed=  mysqli_fetch_assoc($resSpeed);
+   $sqlSpeed="SELECT * FROM  speed WHERE speed_id=?";
+   $resSpeed=dbQuery($sqlSpeed, "i", [(int)$speed]);
+   $rowSpeed=  dbFetchAssoc($resSpeed);
    $speed_name=$rowSpeed['speed_name'];
    
     //ชั้นความลับ
-    $sqlSecret="SELECT * FROM secret WHERE sec_id=$sec_id";
-    $resSecret=$conn->query($sqlSecret);
-    $rowSecret=  mysqli_fetch_assoc($resSecret);
+    $sqlSecret="SELECT * FROM secret WHERE sec_id=?";
+    $resSecret=dbQuery($sqlSecret, "i", [(int)$sec_id]);
+    $rowSecret=  dbFetchAssoc($resSecret);
     $sec_name=$rowSecret['sec_name'];
     
       //วัตถุประสงค์
-    $sqlobj="SELECT * FROM object WHERE obj_id=$obj_id";
-    $resObj=$conn->query($sqlobj);
-    $rowObj=  mysqli_fetch_assoc($resObj);
+    $sqlobj="SELECT * FROM object WHERE obj_id=?";
+    $resObj=dbQuery($sqlobj, "i", [(int)$obj_id]);
+    $rowObj=  dbFetchAssoc($resObj);
     $objName=$rowObj['obj_name'];
     
     if(!$rowFlowCircle){

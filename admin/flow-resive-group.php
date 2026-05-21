@@ -47,7 +47,7 @@ $username = isset($u_name) ? $u_name : (isset($firstname) ? $firstname : ''); //
 		<div class="panel-heading"><i class="fa fa-university fa-2x"></i> <strong>หนังสือรับกลุ่มงาน</strong>
 			<div class="btn-group btn-grouop-lg pull-right">
 				<a href="flow-resive-group.php" class="btn btn-default"><i class="fas fa-home"></i>หน้าแรก</a>
-				<a href="" class="btn btn-default" data-toggle="modal" data-target="#modalAdd">
+				<a href="" class="btn btn-default" style="display:none;" data-toggle="modal" data-target="#modalAdd">
 					<i class="fa fa-plus"></i> ลงทะเบียนรับ
 				</a>
 
@@ -122,23 +122,34 @@ $username = isset($u_name) ? $u_name : (isset($firstname) ? $firstname : ''); //
 			//กรณีมีการกดปุ่มค้นหา
 			if (isset($_POST['btnSearch'])) { //ถ้ามีการกดปุ่มค้นหา
 				@$typeSearch = $_POST['typeSearch']; //ประเภทการค้นหา
-				@$txt_search = $_POST['search']; //กล่องรับข้อความ
+				@$txt_search = "%" . $_POST['search'] . "%"; //กล่องรับข้อความ
 				@$dateStart = $_POST['dateStart']; //วันที่เริ้มค้นหา
 				@$dateEnd = $_POST['dateEnd']; //วันที่สิ้นสุดการค้นหา
 			
 				if (@$typeSearch == 1) { //ทะเบียนรับ
-					$sql .= " WHERE fr.rec_no LIKE '%$txt_search%'  AND fr.dep_id=$dep_id";
+					$sql .= " WHERE fr.rec_no LIKE ? AND fr.dep_id = ?";
+					$types = "si";
+					$params = [$txt_search, (int)$dep_id];
 				} elseif (@$typeSearch == 2) { //เลขหนังสือ
-					$sql .= " WHERE fr.book_no LIKE '%$txt_search%'   AND fr.dep_id=$dep_id";
+					$sql .= " WHERE fr.book_no LIKE ? AND fr.dep_id = ?";
+					$types = "si";
+					$params = [$txt_search, (int)$dep_id];
 				} elseif (@$typeSearch == 3) { //เรื่อง
-					$sql .= " WHERE fr.title LIKE '%$txt_search%'   AND fr.dep_id=$dep_id";
+					$sql .= " WHERE fr.title LIKE ? AND fr.dep_id = ?";
+					$types = "si";
+					$params = [$txt_search, (int)$dep_id];
 				} elseif (@$typeSearch == 4) { //ตามเวลา
-					$sql .= " WHERE  (fr.datein BETWEEN '$dateStart' AND '$dateEnd') AND fr.dep_id=$dep_id ";
+					$sql .= " WHERE (fr.datein BETWEEN ? AND ?) AND fr.dep_id = ?";
+					$types = "ssi";
+					$params = [$dateStart, $dateEnd, (int)$dep_id];
+				} else {
+					$types = "";
+					$params = [];
 				}
 
 				$sql .= " ORDER BY fr.cid DESC";
 
-				$result = page_query($dbConn, $sql, 10);
+				$result = page_query($dbConn, $sql, 10, $types, $params);
 				$numrow = dbNumRows($result);
 				if ($numrow == 0) {
 					echo "<script>
@@ -158,10 +169,9 @@ $username = isset($u_name) ? $u_name : (isset($firstname) ? $firstname : ''); //
 
 			} else { //กรณีโหลดเพจ หรือไม่มีการกดปุ่มใดๆ
 			
-				$sql .= " WHERE fr.sec_id=$sec_id ORDER BY fr.cid DESC";
+				$sql .= " WHERE fr.sec_id = ? ORDER BY fr.cid DESC";
+				$result = page_query($dbConn, $sql, 10, "i", [(int)$sec_id]);
 			}
-
-			$result = page_query($dbConn, $sql, 10);
 			while ($row = dbFetchArray($result)) { ?>
 				<tr>
 					<td> <?php echo $row['rec_no']; ?>/<?php echo $row['yname']; ?> </td>

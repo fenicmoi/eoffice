@@ -21,7 +21,7 @@ $u_id=$_SESSION['ses_u_id'];
                f.dateout,f.dateline,f.sendfrom,f.sendto,u.firstname,sec.sec_name,d.dep_name,sy.yname,f.status,f.file_upload
         FROM flowcircle f
         INNER JOIN user u  
-              ON u.u_id=$u_id 
+              ON u.u_id=? 
         INNER JOIN section sec 
               ON u.sec_id=sec.sec_id
         INNER JOIN depart d 
@@ -34,11 +34,11 @@ $u_id=$_SESSION['ses_u_id'];
               ON f.obj_id=o.obj_id
         INNER JOIN speed sp
               on f.speed_id=sp.speed_id
-        WHERE f.cid=$cid
+        WHERE f.cid=?
         ORDER BY f.rec_no DESC
         ";  
  //echo $sqlDetail;
- $resDetail= dbQuery($sqlDetail);
+ $resDetail= dbQuery($sqlDetail, "ii", [(int)$u_id, (int)$cid]);
  $rowDetail= dbFetchArray($resDetail);
  $status=$rowDetail['status'];
  $strDate=  $rowDetail['dateout'];

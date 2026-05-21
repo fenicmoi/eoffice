@@ -50,8 +50,17 @@ require_once 'library/security.php';
 
   <link href="css/dataTables.css" rel="stylesheet">
   <script src="js/dataTables.js"></script>
+  
+  <!-- Tailwind CSS (No Preflight) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      corePlugins: {
+        preflight: false,
+      }
+    }
+  </script>
 </head>
-
 <body>
   <!-- Fixed navbar -->
   <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -70,8 +79,9 @@ require_once 'library/security.php';
       <ul class="nav navbar-nav ">
         <li><a class="nav-link active" href="index.php?menu=1"><i class="fas fa-home"></i> หน้าแรก</a></li>
         <li><a class="btn-link" href="index.php?menu=2"><i class="fas fa-retweet"></i> คำสั่งจังหวัด</a></li>
+        <li><a class="btn-link" href="index.php?menu=4"><i class="fas fa-address-book"></i> ทำเนียบผู้ให้คำปรึกษา</a></li>
         <li class="dropdown">
-          <a class="btn-link" class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fas fa-users"></i>
+          <a class="btn-link dropdown-toggle" data-toggle="dropdown" href="#"><i class="fas fa-users"></i>
             ลงทะเบียน
             <span class="caret"></span></a>
           <!-- <ul class="dropdown-menu">

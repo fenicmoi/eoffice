@@ -208,9 +208,9 @@ if (isset($_POST['save'])) {
     $prefex = $_POST['prefex'];
     $m_id = $_POST['ministry'];
 
-    $sql = "SELECT * FROM depart WHERE dep_name='$dep_name'";
+    $sql = "SELECT * FROM depart WHERE dep_name=?";
     //echo $sql;
-    $result = dbQuery($sql);
+    $result = dbQuery($sql, "s", [$dep_name]);
     $row = dbFetchRow($result);
     if ($row > 0) {
         echo "<script>
@@ -227,9 +227,11 @@ if (isset($_POST['save'])) {
       </script>";
     } else {
         $sql = "INSERT INTO depart(type_id,dep_name,address,phone,fax,social,status,local_num,prefex,m_id)
-        VALUES ('$officeType','$dep_name','$address','$phone','$fax','$social',$status,$local_num,'$prefex',$m_id)";
+        VALUES (?,?,?,?,?,?,?,?,?,?)";
 
-        $result = dbQuery($sql);
+        $result = dbQuery($sql, "isssssiisi", [
+            (int)$officeType, $dep_name, $address, $phone, $fax, $social, (int)$status, (int)$local_num, $prefex, (int)$m_id
+        ]);
         if (!$result) {
             echo "<script>
            swal({
@@ -261,8 +263,8 @@ if (isset($_POST['save'])) {
 }
 
 if (isset($_GET['del'])) {
-    $sql = 'DELETE FROM depart WHERE dep_id=' . $_GET['del'];
-    $result = dbQuery($sql);
+    $sql = 'DELETE FROM depart WHERE dep_id=?';
+    $result = dbQuery($sql, "i", [(int)$_GET['del']]);
     if (!$result) {
         echo "<script>
         swal({

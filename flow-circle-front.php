@@ -56,20 +56,24 @@ include 'library/pagination.php';
                         </thead>
                         <tbody>
                             <?php
-                                @$type_search = $_POST['number'];
+                                @$type_search = (int)$_POST['number'];
                                 $txt_search = isset($_POST['search']) ? $_POST['search'] : '';
                                 $sql = "SELECT fl.*,s.speed_name ,d.dep_name
                                       FROM  flowcircle as fl
                                       INNER JOIN speed as s ON s.speed_id = fl.speed_id
                                       INNER JOIN depart as d ON d.dep_id =fl.dep_id";
+                                $types = null;
+                                $params = null;
                                 if(isset($_POST['save'])){    // check button search
                                     if($txt_search != null){
+                                        $types = "s";
+                                        $params = ["%".$txt_search."%"];
                                         if($type_search==1){    //search by id
-                                         $sql.=" WHERE fl.rec_no LIKE '%$txt_search%' AND fl.open=1 ORDER BY cid DESC ";
+                                         $sql.=" WHERE fl.rec_no LIKE ? AND fl.open=1 ORDER BY cid DESC ";
                                         }else if($type_search==2){        //search by name
-                                            $sql.=" WHERE fl.title LIKE '%$txt_search%' AND fl.open=1  ORDER BY cid DESC ";  
+                                            $sql.=" WHERE fl.title LIKE ? AND fl.open=1  ORDER BY cid DESC ";  
                                         }else if($type_search==3){
-                                            $sql.=" WHERE d.dep_name LIKE '%$txt_search%' AND fl.open=1 ORDER BY cid DESC ";
+                                            $sql.=" WHERE d.dep_name LIKE ? AND fl.open=1 ORDER BY cid DESC ";
                                         }//check type
                                         $num_row=100;  //แสดงผลจากการค้นหา
                                     }else{
@@ -80,7 +84,7 @@ include 'library/pagination.php';
                                      $num_row=10;
                                 }//check button
                                 //print $sql;
-                                $result = page_query( $dbConn, $sql,@$num_row );
+                                $result = page_query( $dbConn, $sql,@$num_row, $types, $params);
 
                                 while($row = dbFetchArray($result)){?>
                                     <tr>

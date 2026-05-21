@@ -306,9 +306,11 @@ if (isset($_POST['save'])) {   //กดปุ่มบันทึกจาก�
 
         $sqlInsert = "INSERT INTO flowrecive
                          (rec_no,u_id,obj_id,yid,typeDoc,prefex,title,speed_id,sec_id,sendfrom,sendto,refer,attachment,practice,file_location,dateline,dateout,follow,open,file_upload)    
-                    VALUE($rec_no,$u_id,$obj_id,$yid,'$typeDoc','$prefex','$title',$speed_id,$sec_id,'$sendfrom','$sendto','$refer','$attachment','$practice','$file_location','$dateline','$datelout',$follow,$open,'$newname')";
+                    VALUE(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         //echo $sqlInsert;
-        $SQL = mysqli_query($conn, $sqlInsert);
+        $SQL = dbQuery($sqlInsert, "iiiiissiissssssssiss", [
+            $rec_no, $u_id, $obj_id, $yid, $typeDoc, $prefex, $title, $speed_id, $sec_id, $sendfrom, $sendto, $refer, $attachment, $practice, $file_location, $dateline, $datelout, $follow, $open, $newname
+        ]);
 
 
         echo "<meta http-equiv='refresh' content='1;URL=flow-resive.php'>";
@@ -346,9 +348,9 @@ if (isset($_POST['update'])) {
 
         move_uploaded_file($_FILES['fileupload']['tmp_name'], $part_copy);  //คัดลอกไฟล์ไป Server
 
-        $sqlUpdate = "UPDATE flowrecive SET file_upload='$part_copy' WHERE cid=$cid";
+        $sqlUpdate = "UPDATE flowrecive SET file_upload=? WHERE cid=?";
         //print $sqlUpdate;
-        $resUpdate =  mysqli_query($conn, $sqlUpdate);
+        $resUpdate = dbQuery($sqlUpdate, "si", [$part_copy, (int)$cid]);
         if (!$resUpdate) {
             echo "ระบบมีปัญหา";
             exit;

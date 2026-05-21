@@ -47,10 +47,10 @@ $dep_id = $_SESSION['ses_dep_id'];
             <div class="panel panel-default" >
                 <div class="panel-heading">
                     <i class="fa fa-envelope fa-2x" aria-hidden="true"></i>  <strong>ทะเบียนหนังสือส่งสำนักงาน</strong>
-                    <a href="" class="btn btn-info pull-right" data-toggle="modal" data-target="#modalReserv">
+                    <a href="" class="btn btn-info pull-right" style="display:none;" data-toggle="modal" data-target="#modalReserv">
                     <i class="fas fa-hand-point-up"></i> จองเลข
                      </a>
-                    <a href="" class="btn btn-success btn-md pull-right" data-toggle="modal" data-target="#modalAdd"><i class="fa fa-plus " aria-hidden="true"></i> ลงทะเบียนส่ง</a>
+                    <a href="" class="btn btn-success btn-md pull-right" style="display:none;" data-toggle="modal" data-target="#modalAdd"><i class="fa fa-plus " aria-hidden="true"></i> ลงทะเบียนส่ง</a>
                     <button id="hideSearch" class="btn btn-warning pull-right"><i class="fas fa-search"> ค้นหา</i></button>
                 </div>
                  <table class="table table-bordered table-hover">
@@ -97,30 +97,35 @@ $dep_id = $_SESSION['ses_dep_id'];
                                     $sql="SELECT * FROM  flowdepart WHERE dep_id = $dep_id ORDER BY cid DESC";
                                 }
                                 
+                                 $types = null;
+                                 $params = null;
                                  //ส่วนการค้นหา
                                  if(isset($_POST['btnSearch'])){
-                                     @$typeSearch = $_POST[ 'typeSearch' ]; //ประเภทการค้นหา
+                                     @$typeSearch = (int)$_POST[ 'typeSearch' ]; //ประเภทการค้นหา
                                      @$txt_search = $_POST[ 'search' ]; //กล่องรับข้อความ
-                                    $sql="SELECT * FROM  flownormal";
-                                     if ( @$typeSearch == 1 ) { //ค้นด้วยเลขเลขส่ง
-                                        if($level_id <= 2){     
-                                            $sql .= " WHERE rec_no LIKE '%$txt_search%' ";
-                                        }else{
-                                            $sql .= " WHERE rec_no LIKE '%$txt_search%'  AND m.dep_id=$dep_id  AND sec_id=$sec_id  ";
+                                     $sql="SELECT * FROM  flownormal";
+                                     if($txt_search != null) {
+                                         $types = "s";
+                                         $params = ["%".$txt_search."%"];
+                                         if ( @$typeSearch == 1 ) { //ค้นด้วยเลขเลขส่ง
+                                            if($level_id <= 2){     
+                                                $sql .= " WHERE rec_no LIKE ? ";
+                                            }else{
+                                                $sql .= " WHERE rec_no LIKE ?  AND m.dep_id=$dep_id  AND sec_id=$sec_id  ";
+                                            }
+                                        } elseif ( @$typeSearch == 2 ) { //ค้นด้วยชื่อชื่อเรื่อง
+                                            if($level_id <=2){
+                                                $sql .= " WHERE title LIKE ? ";
+                                            }else{
+                                                $sql .= " WHERE title LIKE ?   AND dep_id=$dep_id  AND sec_id=$sec_id ";
+                                            }
+                                            $sql .= " ORDER BY cid DESC";
                                         }
-                                    } elseif ( @$typeSearch == 2 ) { //ค้นด้วยชื่อชื่อเรื่อง
-                                        if($level_id <=2){
-                                            $sql .= " WHERE title LIKE '%$txt_search%' ";
-                                        }else{
-                                            $sql .= " WHERE title LIKE '%$txt_search%'   AND dep_id=$dep_id  AND sec_id=$sec_id ";
-                                        }
-                                        $sql .= "ORDER BY cid DESC";
-                                    }
-
+                                     }
                                  }//isset 
                               // echo $level_id;
                                 //echo $sql;
-                                $result = page_query( $dbConn, $sql, 10 );
+                                $result = page_query( $dbConn, $sql, 10, $types, $params );
                                 while($row = dbFetchArray($result)){?>
                                     <tr>
                                     <td><?php echo $row['prefex'];?> / <?php echo $row['rec_no']; ?></td>
@@ -437,8 +442,8 @@ if(isset($_POST['save'])){   //กดปุ่มบันทึกจากฟ�
         echo "<meta http-equiv='refresh' content='1;URL=flow-circle.php'>";
     }else{
            //ตัวเลขรันอัตโนมัติ
-            $sqlRun="SELECT cid,rec_no FROM flowdepart WHERE  yid=$yid  ORDER  BY cid DESC";
-            $resRun=  dbQuery($sqlRun);
+            $sqlRun="SELECT cid,rec_no FROM flowdepart WHERE yid=? ORDER BY cid DESC";
+            $resRun=dbQuery($sqlRun, "i", [(int)$yid]);
             $rowRun= dbFetchArray($resRun);
             $rec_no=$rowRun['rec_no'];
             $rec_no++;
@@ -446,11 +451,13 @@ if(isset($_POST['save'])){   //กดปุ่มบันทึกจากฟ�
         dbQuery('BEGIN');    
         $sqlInsert="INSERT INTO flowdepart
                          (rec_no,u_id,obj_id,yid,typeDoc,prefex,title,speed_id,sec_id,sendfrom,sendto,refer,attachment,practice,file_location,dateline,dateout,dep_id)    
-                    VALUE($rec_no,$u_id,$obj_id,$yid,'$typeDoc','$prefex','$title',$speed_id,$sec_id,'$sendfrom','$sendto','$refer','$attachment','$practice','$file_location','$dateline','$datelout',$dep_id)";
+                    VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
        
        //echo $sqlInsert;
        
-        $result=dbQuery($sqlInsert);
+        $result = dbQuery($sqlInsert, "iiiiissiissssssssi", [
+            $rec_no, $u_id, $obj_id, $yid, $typeDoc, $prefex, $title, $speed_id, $sec_id, $sendfrom, $sendto, $refer, $attachment, $practice, $file_location, $dateline, $datelout, $dep_id
+        ]);
          if($result){
             dbQuery("COMMIT");
             echo "<script>
@@ -500,18 +507,20 @@ if (isset($_POST['update'])) {
     $file_location = $_POST['file_location'];
 
     $sql = "UPDATE flownormal SET
-                obj_id = $obj,
-                title = '$title',
-                speed_id = $speed,
-                sendfrom = '$sendfrom',
-                sendto = '$sendto',
-                refer = '$refer',
-                attachment = '$attachment',
-                practice = '$practice',
-                file_location = '$file_location',
-                dateout = '$dateout'
-            WHERE cid = $cid";
-    $resUpdate = dbQuery($sql);
+                obj_id = ?,
+                title = ?,
+                speed_id = ?,
+                sendfrom = ?,
+                sendto = ?,
+                refer = ?,
+                attachment = ?,
+                practice = ?,
+                file_location = ?,
+                dateout = ?
+            WHERE cid = ?";
+    $resUpdate = dbQuery($sql, "isisssssssi", [
+        (int)$obj, $title, (int)$speed, $sendfrom, $sendto, $refer, $attachment, $practice, $file_location, $dateout, (int)$cid
+    ]);
     if (!$resUpdate) {
         echo "<script>swal(\"Good job!\", \"ไม่สำเร็จ!\", \"error\")</script>";
         echo "<meta http-equiv='refresh' content='1;URL=flow-depart.php'>";
@@ -611,8 +620,10 @@ if(isset($_POST['btnReserv'])){
 
             $sql="INSERT INTO flowdepart
             (rec_no,u_id,obj_id,yid,typeDoc,prefex,title,speed_id,sec_id,sendfrom,sendto,refer,attachment,practice,file_location,dateline,dateout,dep_id)    
-            VALUE($rec_no,$u_id,$obj_id,$yid,'$typeDoc','$prefex','$title',$speed_id,$sec_id,'$sendfrom','$sendto','$refer','$attachment','$practice','$file_location','$dateline','$dateout',$dep_id)";
-            $result = dbQuery($sql);
+            VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $result = dbQuery($sql, "iiiiissiissssssssi", [
+                $rec_no, $u_id, $obj_id, $yid, $typeDoc, $prefex, $title, $speed_id, $sec_id, $sendfrom, $sendto, $refer, $attachment, $practice, $file_location, $dateline, $dateout, $dep_id
+            ]);
             $a++;
         }
         

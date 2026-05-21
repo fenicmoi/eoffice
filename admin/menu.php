@@ -55,10 +55,10 @@ if(!isset($_SESSION['ses_u_id'])){
         </div>
       </div>
     </div>
-    <div class="panel panel-default">
+    <div class="panel panel-info">
       <div class="panel-heading">
         <h4 class="panel-title">
-            <span class="glyphicon glyphicon-user"></span><a data-toggle="collapse" data-parent="#accordion" href="#collapse3">ระบบงานสารบรรณ</a>
+            <span class="fa fa-briefcase"></span><a data-toggle="collapse" data-parent="#accordion" href="#collapse3"> ระบบงานสารบรรณ</a>
         </h4>
       </div>
       <div id="collapse3" class="panel-collapse collapse">

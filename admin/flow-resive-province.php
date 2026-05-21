@@ -109,7 +109,7 @@ $ystatus = $ystatus;
 			<i class="fas fa-university fa-2x" aria-hidden="true"></i> <strong>ทะเบียนหนังสือรับ [ถึงจังหวัด]</strong>
 			:::สำหรับหนังสือราชการที่ส่งถึง ผวจ
 			<div class="btn-group pull-right">
-				<a href="" class="btn btn-warning" data-toggle="modal" data-target="#modalAdd"><i
+				<a href="" class="btn btn-warning" style="display:none;" data-toggle="modal" data-target="#modalAdd"><i
 						class="fa fa-plus "></i> ลงทะเบียนรับ</a>
 				<div class="btn-group">
 					<button class="btn btn-warning  dropdown-toggle" type="button" data-toggle="dropdown"><i
@@ -194,18 +194,29 @@ $ystatus = $ystatus;
 						@$dateStart = $_POST['dateStart'];
 						@$dateEnd = $_POST['dateEnd'];
 
+						$types = "";
+						$params = [];
 						if (@$typeSearch == 1) { //ทะเบียนรับ
-							$sql .= " WHERE m.rec_id LIKE '%" . dbEscapeString($txt_search) . "%' AND m.type_id=1 ORDER BY m.book_id DESC";
+							$sql .= " WHERE m.rec_id LIKE ? AND m.type_id=1 ORDER BY m.book_id DESC";
+							$params[] = "%".$txt_search."%";
+							$types .= "s";
 						} elseif (@$typeSearch == 2) { //เลขหนังสือ
-							$sql .= " WHERE d.book_no LIKE '%" . dbEscapeString($txt_search) . "%' AND m.type_id=1 ORDER BY m.book_id DESC";
+							$sql .= " WHERE d.book_no LIKE ? AND m.type_id=1 ORDER BY m.book_id DESC";
+							$params[] = "%".$txt_search."%";
+							$types .= "s";
 						} elseif (@$typeSearch == 3) { //เรื่อง
-							$sql .= " WHERE d.title LIKE '%" . dbEscapeString($txt_search) . "%' AND m.type_id=1 ORDER BY m.book_id DESC";
+							$sql .= " WHERE d.title LIKE ? AND m.type_id=1 ORDER BY m.book_id DESC";
+							$params[] = "%".$txt_search."%";
+							$types .= "s";
 						} elseif (@$typeSearch == 4) { //ตามเวลา
-							$sql .= " WHERE (d.date_book BETWEEN '$dateStart' AND '$dateEnd') AND m.type_id=1 ORDER BY m.book_id DESC";
+							$sql .= " WHERE (d.date_book BETWEEN ? AND ?) AND m.type_id=1 ORDER BY m.book_id DESC";
+							$params[] = $dateStart;
+							$params[] = $dateEnd;
+							$types .= "ss";
 						}
 
 						//$result=dbQuery($sql);
-						$result = page_query($dbConn, $sql, 100);
+						$result = page_query($dbConn, $sql, 100, $types, $params);
 						$numrow = dbNumRows($result);
 						if ($numrow == 0) {
 							echo "<script>

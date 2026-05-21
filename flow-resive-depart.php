@@ -46,9 +46,9 @@ $u_id=$_SESSION['ses_u_id'];
                                 $sql="SELECT fr.*,d.book_id,d.book_no,d.title,d.sendfrom,d.date_book,d.date_line,d.status
                                       FROM flowrecive as fr
                                       INNER JOIN book_detail as d ON fr.book_detail_id = d.book_detail_id
-                                      WHERE dep_id = $dep_id";
-                               // print $sql;
-                                $result=dbQuery($sql);
+                                      WHERE dep_id = ?";
+                                // print $sql;
+                                $result=dbQuery($sql, "i", [(int)$dep_id]);
                                 while($row=dbFetchArray($result)){?>
                                     <?php $rec_id=$row['rec_no']; ?>    <!-- กำหนดตัวแปรเพื่อส่งไปกับลิงค์ -->
                                     <?php $book_id=$row['book_detail_id']; ?>  <!-- กำหนดตัวแปรเพื่อส่งไปกับลิงค์ -->
@@ -161,8 +161,8 @@ $u_id=$_SESSION['ses_u_id'];
         $speed_id=$_POST['speed_id'];
 
         //(1) เลือกข้อมูลเพื่อรันเลขรับ  โดยมีเงื่อนไขให้ตรงกับหน่วยงานของผู้ใช้ ###########################
-        $sql="SELECT rec_id FROM book_master WHERE   yid=$yid ORDER  BY book_id DESC";
-        $result=dbQuery($sql);
+        $sql="SELECT rec_id FROM book_master WHERE yid = ? ORDER BY book_id DESC";
+        $result=dbQuery($sql, "i", [(int)$yid]);
         $rowRun= dbFetchArray($result);
         $rec_id=$rowRun['rec_id'];
         $rec_id++;
@@ -219,13 +219,13 @@ $u_id=$_SESSION['ses_u_id'];
         dbQuery('BEGIN');
 
         $sql="INSERT INTO book_master (rec_id,type_id,dep_id,sec_id,u_id,obj_id,pri_id,yid,typeDoc,speed_id) 
-                      VALUES ($rec_id,$type_id,$dep_id,$sec_id,$u_id,$obj_id,$pri_id,$yid,$typeDoc,$speed_id)";
-        $result1=dbQuery($sql);
+                      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $result1=dbQuery($sql, "iiiiiiiiii", [$rec_id, $type_id, $dep_id, $sec_id, $u_id, $obj_id, $pri_id, $yid, $typeDoc, $speed_id]);
 
         $sql="INSERT INTO book_detail (book_id,book_no,title,sendfrom,sendto,reference,attachment,date_book,date_in,practice,follow,publice_book,status,file_upload)
-        VALUES($book_id,'$book_no','$title','$sendfrom','$sendto','$refer','$attachment','$date_book','$date_in','$practice[0]','$follow','$publice_book',0,'$part_copy')";
+        VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?)";
         // echo $sql;
-        $result2=dbQuery($sql);
+        $result2=dbQuery($sql, "issssssssssiss", [$book_id, $book_no, $title, $sendfrom, $sendto, $refer, $attachment, $date_book, $date_in, $practice[0], $follow, $publice_book, $part_copy]);
 
         if($result1 && $result2){
             dbQuery("COMMIT");
@@ -278,9 +278,9 @@ $u_id=$_SESSION['ses_u_id'];
             $part_copy='';
         }
 
-        $sql="UPDATE book_detail SET file_upload='$part_copy' WHERE book_detail_id=$book_detail_id";
+        $sql="UPDATE book_detail SET file_upload = ? WHERE book_detail_id = ?";
         //echo $sql;
-        $result=dbQuery($sql);
+        $result=dbQuery($sql, "si", [$part_copy, (int)$book_detail_id]);
          if($result){
             echo "<script>
             swal({

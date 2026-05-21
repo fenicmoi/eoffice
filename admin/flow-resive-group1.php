@@ -121,19 +121,34 @@ $ystatus = $ystatus;
 				@$dateStart = $_POST[ 'dateStart' ]; //วันที่เริ้มค้นหา
 				@$dateEnd = $_POST[ 'dateEnd' ]; //วันที่สิ้นสุดการค้นหา
 
+				$types = "";
+				$params = [];
 				if ( @$typeSearch == 1 ) { //ทะเบียนรับ
-					$sql .= " WHERE fr.rec_no LIKE '%$txt_search%'  AND fr.dep_id=$dep_id";
+					$sql .= " WHERE fr.rec_no LIKE ? AND fr.dep_id=?";
+					$params[] = "%".$txt_search."%";
+					$params[] = (int)$dep_id;
+					$types .= "si";
 				} elseif ( @$typeSearch == 2 ) { //เลขหนังสือ
-					$sql .= " WHERE fr.book_no LIKE '%$txt_search%'   AND fr.dep_id=$dep_id";
+					$sql .= " WHERE fr.book_no LIKE ? AND fr.dep_id=?";
+					$params[] = "%".$txt_search."%";
+					$params[] = (int)$dep_id;
+					$types .= "si";
 				} elseif ( @$typeSearch == 3 ) { //เรื่อง
-					$sql .= " WHERE fr.title LIKE '%$txt_search%'   AND fr.dep_id=$dep_id";
+					$sql .= " WHERE fr.title LIKE ? AND fr.dep_id=?";
+					$params[] = "%".$txt_search."%";
+					$params[] = (int)$dep_id;
+					$types .= "si";
 				} elseif ( @$typeSearch == 4 ) { //ตามเวลา
-					$sql .= " WHERE  (fr.datein BETWEEN '$dateStart' AND '$dateEnd') AND fr.dep_id=$dep_id ";
+					$sql .= " WHERE (fr.datein BETWEEN ? AND ?) AND fr.dep_id=? ";
+					$params[] = $dateStart;
+					$params[] = $dateEnd;
+					$params[] = (int)$dep_id;
+					$types .= "ssi";
 				}
 
 				$sql .= " ORDER BY fr.cid DESC";
 
-				$result = page_query( $dbConn, $sql, 10 );
+				$result = page_query( $dbConn, $sql, 10, $types, $params );
 				$numrow = dbNumRows( $result );
 				if ( $numrow == 0 ) {
 					echo "<script>
@@ -427,8 +442,8 @@ if ( isset( $_POST[ 'update' ] ) ) { //กดปุ่มบันทึกจ�
 	$cid = $_POST[ 'cid' ];
 	$status = $_POST[ 'status' ];
 
-	$sql = "UPDATE flow_recive_group SET status=$status WHERE cid=$cid ";
-	$result = dbQuery( $sql );
+	$sql = "UPDATE flow_recive_group SET status=? WHERE cid=? ";
+	$result = dbQuery( $sql, "ii", [(int)$status, (int)$cid] );
 
 	if ( $result ) {
 		echo "<script>
@@ -484,10 +499,10 @@ if ( isset( $_POST[ 'save' ] ) ) { //กดปุ่มบันทึกจา�
 	$rec_no++;
 
 	$sql = "INSERT INTO flow_recive_group(rec_no,book_no,title,owner,sendfrom,sendto,practice,dateout,datein,dep_id,sec_id,u_id,yid) 
-                                    VALUES ($rec_no,'$book_no','$title','$owner','$sendfrom','$sendto','$practice','$dateout','$datein',$dep_id,$sec_id,$u_id,$yid)";
-	//print $sql;              
-
-	$result = dbQuery( $sql );
+                                    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+	$result = dbQuery($sql, "issssssssiiii", [
+        (int)$rec_no, $book_no, $title, $owner, $sendfrom, $sendto, $practice, $dateout, $datein, (int)$dep_id, (int)$sec_id, (int)$u_id, (int)$yid
+    ]);
 
 	if ( $result ) {
 		echo "<script>
@@ -520,9 +535,9 @@ if ( isset( $_POST[ 'save' ] ) ) { //กดปุ่มบันทึกจา�
 ?>
 <?php
 if ( isset( $_GET[ 'close' ] ) ) {
-	$cid = $_GET[ 'close' ];
-	$sql = "UPDATE  flow_recive_group SET status=1 WHERE cid=$cid";
-	$result = dbQuery( $sql );
+	$cid = (int)$_GET[ 'close' ];
+	$sql = "UPDATE  flow_recive_group SET status=1 WHERE cid=?";
+	$result = dbQuery($sql, "i", [$cid]);
 	echo "<script>
     swal({
      title:'เรียบร้อย',
@@ -538,9 +553,9 @@ if ( isset( $_GET[ 'close' ] ) ) {
 }
 
 if ( isset( $_GET[ 'open' ] ) ) {
-	$cid = $_GET[ 'open' ];
-	$sql = "UPDATE  flow_recive_group SET status=0 WHERE cid=$cid";
-	$result = dbQuery( $sql );
+	$cid = (int)$_GET[ 'open' ];
+	$sql = "UPDATE  flow_recive_group SET status=0 WHERE cid=?";
+	$result = dbQuery($sql, "i", [$cid]);
 	echo "<script>
     swal({
      title:'เรียบร้อย',

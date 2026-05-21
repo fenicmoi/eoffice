@@ -147,8 +147,8 @@ $u_id=$_SESSION['ses_u_id'];
                             </div>
                         </div>
                         <?php 
-                            $sql="SELECT *FROM depart WHERE dep_id=$dep_id";
-                            $result=dbQuery($sql);
+                            $sql="SELECT * FROM depart WHERE dep_id = ?";
+                            $result=dbQuery($sql, "i", [(int)$dep_id]);
                             $row=dbFetchArray($result);
                         ?>
                         <div class="form-group">
@@ -193,12 +193,12 @@ if(isset($_POST['save'])){
     //ตัวเลขรันอัตโนมัติ
     $sql="SELECT hire_id,rec_no
           FROM buy
-          WHERE yid=$yid[0]
+          WHERE yid = ?
           ORDER BY hire_id DESC
           LIMIT 1";
     //print $sql;
     
-    $result=dbQuery($sql);
+    $result=dbQuery($sql, "i", [(int)$yid[0]]);
     $row=dbFetchAssoc($result);
     $rec_no=$row['rec_no'];
 
@@ -210,10 +210,12 @@ if(isset($_POST['save'])){
     //echo "This is $rec_no=".$rec_no;
     dbQuery('BEGIN');
     $sql="INSERT INTO buy (rec_no,datein,title,money,employee,date_hire,signer,guarantee,date_submit,dep_id,sec_id,u_id,yid)
-                VALUES($rec_no,'$datein','$title',$money,'$employee','$datehire','$signer',$guarantee,'$date_submit',$dep_id,$sec_id,$u_id,$yid[0])";
+                VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     //echo $sql;     
     
-    $result=dbQuery($sql);
+    $result=dbQuery($sql, "ississsssiiii", [
+        $rec_no, $datein, $title, $money, $employee, $datehire, $signer, $guarantee, $date_submit, $dep_id, $sec_id, $u_id, $yid[0]
+    ]);
     if($result){
         dbQuery("COMMIT");
         echo "<script>

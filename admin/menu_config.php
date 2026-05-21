@@ -101,7 +101,7 @@ function getMenuConfig($level_id, $dep_id)
             'id' => 'collapse_prov_office_main',
             'title' => 'หนังสือสำนักงานจังหวัด',
             'icon' => 'fas fa-building',
-            'allowed_levels' => [1, 2, 3, 4, 5],
+            'allowed_levels' => [],
             'items' => [
                 ['title' => 'หนังสือส่งปกติ', 'url' => 'normaloffice.php', 'icon' => 'far fa-arrow-alt-circle-right', 'allowed_levels' => [1, 2, 3, 4, 5]],
                 ['title' => 'หนังสือส่งเวียน', 'url' => 'circleoffice.php', 'icon' => 'far fa-arrow-alt-circle-right', 'allowed_levels' => [1, 2, 3, 4, 5]],
@@ -127,7 +127,7 @@ function getMenuConfig($level_id, $dep_id)
             'id' => 'collapse5',
             'title' => 'ระบบสนับสนุนอื่นๆ',
             'icon' => 'fab fa-app-store',
-            'allowed_levels' => [1, 2, 3, 4, 5],
+            'allowed_levels' => [],
             'items' => [
                 ['title' => 'สมุดโทรศัพท์จังหวัด', 'url' => 'phonebook.php', 'icon' => 'fas fa-address-book', 'allowed_levels' => [1, 2, 3, 4, 5]],
                 ['title' => 'รายนามผู้บริหาร', 'url' => '#', 'icon' => 'far fa-arrow-alt-circle-right', 'allowed_levels' => [1]],
@@ -147,7 +147,7 @@ function getMenuConfig($level_id, $dep_id)
             'id' => 'collapse7',
             'title' => ($level_id == 1) ? 'ประกาศ' : 'ประกาศ/ประชาสัมพันธ์',
             'icon' => ($level_id == 1) ? 'fas fa-bullhorn' : 'fas fa-book',
-            'allowed_levels' => [1, 2, 3, 4, 5],
+            'allowed_levels' => [],
             'items' => [
                 ['title' => 'ลงประกาศ', 'url' => 'flow-buy.php', 'icon' => 'far fa-arrow-alt-circle-right', 'allowed_levels' => [1, 2, 3, 4, 5]],
             ]
@@ -156,7 +156,7 @@ function getMenuConfig($level_id, $dep_id)
             'id' => 'collapse8',
             'title' => 'จองห้องประชุม',
             'icon' => 'fas fa-gopuram',
-            'allowed_levels' => [1, 2, 3, 4, 5],
+            'allowed_levels' => [],
             'items' => [
                 ['title' => 'จัดการห้อง', 'url' => 'meet_room.php', 'icon' => 'fas fa-cogs', 'allowed_levels' => [1]],
                 ['title' => 'จัดการอุปกรณ์', 'url' => '#', 'icon' => 'fas fa-cogs', 'allowed_levels' => [1]],

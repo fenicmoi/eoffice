@@ -2,7 +2,7 @@
 
 ?>
 <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-4" style="display:none;">
           <div class="jumbotron">
              <center>
              <img class="img-rounded" src="images/eoffice.png"   width="304" height="200"> 
@@ -18,7 +18,7 @@
             </center>
           </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4" style="display:none;">
         <div class="jumbotron">
             <center>
             <img class="img-rounded" src="images/meetroom.jpg"  width="304" height="200"> 

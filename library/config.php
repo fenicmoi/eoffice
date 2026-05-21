@@ -1,5 +1,5 @@
 <?php
-$title = "E-Office จังหวัดพัทลุง";
+$title = "ระบบรับ-ส่ง e-ducument จังหวัดพัทลุง";
 $dayEdit = 8;  //จำนวนวันที่อนุญาตให้แก้ไขเอกสาร
 
 // database connection config
@@ -14,9 +14,9 @@ $dbName = 'phatthalun_eoffice';
 
 /*
 $dbHost = 'localhost';
-$dbUser = 'phatthalun_ptl';
-$dbPass = '07PyiAzxt';
+$dbUser = 'phatthalun_eoff';
+$dbPass = 'RWHmJHz5t6nyrANwvhE3';
 $dbName = 'phatthalun_eoffice';
-*/
 
+*/
 ?>

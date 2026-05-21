@@ -1,7 +1,7 @@
 <footer class="footer bg-dark text-white">
   <div class="container">
     <p class="text-muted">
-      <kbd>E-Office จังหวัดพัทลุง</kbd>
+      <kbd>ระบบรับ-ส่ง e-ducument จังหวัดพัทลุง</kbd>
       พัฒนาโดย:สำนักงานจังหวัดพัทลุง <i class="fas fa-user"></i> <i class="fas fa-fax"></i>
       074-613409
       <span data-toggle="modal" data-target="#card"><kbd>[ติดต่อผู้พัฒนาระบบ]</kbd></span>

@@ -27,17 +27,17 @@ if (isset($_GET['edit'])) {  //เปลี่ยนปุ่ม
     */
 
 if (isset($_GET['edit']) && $_GET['edit'] <> '') {      //admin login edit
-    $dep_id = $_GET['edit'];
-    $sql = 'SELECT * FROM depart WHERE dep_id=' . $_GET['edit'];    //กรณี admin แก้ไข
-    $result = dbQuery($sql);
+    $dep_id = (int)$_GET['edit'];
+    $sql = 'SELECT * FROM depart WHERE dep_id=?';    //กรณี admin แก้ไข
+    $result = dbQuery($sql, "i", [$dep_id]);
     $getROW = dbFetchArray($result);
     //echo "admin edit".$dep_id;
 }
 
 if (@$_GET['dep_id'] <> '') {    //user login edit
-    $dep_id = $_GET['dep_id'];
-    $sql = 'SELECT * FROM depart WHERE dep_id=' . $_GET['dep_id'];  //กรณี user ระดับ 3 แก้ไข
-    $result = dbQuery($sql);
+    $dep_id = (int)$_GET['dep_id'];
+    $sql = 'SELECT * FROM depart WHERE dep_id=?';  //กรณี user ระดับ 3 แก้ไข
+    $result = dbQuery($sql, "i", [$dep_id]);
     $getROW = dbFetchArray($result);
     // echo "user edit";
 }
@@ -210,20 +210,22 @@ if (isset($_POST['update'])) {
     $dep_id = $_POST['dep_id'];
 
     $sql = "UPDATE depart
-                                                SET type_id = $type_id,
-                                                    dep_name ='$dep_name',
-                                                    address ='$address',
-                                                    phone='$phone',
-                                                    fax='$fax',
-                                                    social='$social',
-                                                    status=$status,
-                                                    local_num=$local_num,
-                                                    prefex='$prefex',
-                                                    m_id=$ministry,
-                                                    email='$email'
-                                                WHERE dep_id ='$dep_id'";
-    // echo $sql;
-    $result = dbQuery($sql);
+            SET type_id = ?,
+                dep_name = ?,
+                address = ?,
+                phone = ?,
+                fax = ?,
+                social = ?,
+                status = ?,
+                local_num = ?,
+                prefex = ?,
+                m_id = ?,
+                email = ?
+            WHERE dep_id = ?";
+    $result = dbQuery($sql, "isssssiisisi", [
+        (int)$type_id, $dep_name, $address, $phone, $fax, $social,
+        (int)$status, (int)$local_num, $prefex, (int)$ministry, $email, (int)$dep_id
+    ]);
     if (!$result) {
         echo "<script>
                                             swal({

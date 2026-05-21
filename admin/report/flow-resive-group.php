@@ -355,10 +355,10 @@ $u_id=$_SESSION['ses_u_id'];
         $rec_no++;
 
         $sql="INSERT INTO flow_recive_group(rec_no,book_no,title,owner,sendfrom,sendto,practice,dateout,datein,dep_id,sec_id,u_id,yid) 
-                                    VALUES ($rec_no,'$book_no','$title','$owner','$sendfrom','$sendto','$practice','$dateout','$datein',$dep_id,$sec_id,$u_id,$yid)";
-        //print $sql;              
-                     
-        $result=dbQuery($sql);
+                                    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        $result=dbQuery($sql, "issssssssiiii", [
+            (int)$rec_no, $book_no, $title, $owner, $sendfrom, $sendto, $practice, $dateout, $datein, (int)$dep_id, (int)$sec_id, (int)$u_id, (int)$yid
+        ]);
         
         if($result){
             echo "<script>
@@ -391,9 +391,9 @@ $u_id=$_SESSION['ses_u_id'];
 ?>
 <?php
 if(isset($_GET['close'])){
-    $cid=$_GET['close'];
-    $sql = "UPDATE  flow_recive_group SET status=1 WHERE cid=$cid";
-    $result = dbQuery($sql);
+    $cid=(int)$_GET['close'];
+    $sql = "UPDATE  flow_recive_group SET status=1 WHERE cid=?";
+    $result = dbQuery($sql, "i", [$cid]);
     echo "<script>
     swal({
      title:'เรียบร้อย',
@@ -409,9 +409,9 @@ if(isset($_GET['close'])){
 }
 
 if(isset($_GET['open'])){
-    $cid=$_GET['open'];
-    $sql = "UPDATE  flow_recive_group SET status=0 WHERE cid=$cid";
-    $result = dbQuery($sql);
+    $cid=(int)$_GET['open'];
+    $sql = "UPDATE  flow_recive_group SET status=0 WHERE cid=?";
+    $result = dbQuery($sql, "i", [$cid]);
     echo "<script>
     swal({
      title:'เรียบร้อย',

@@ -137,7 +137,7 @@ $num_row = dbNumRows($result);
             </div>
       </div>
     </div>
-    <div class="panel panel-info">
+    <div class="panel panel-info" style="display:none;">
       <div class="panel-heading">
         <h4 class="panel-title">
            <i class="fas fa-book"></i><a data-toggle="collapse" data-parent="#accordion" href="#collapse7"> ประกาศ/ประชาสัมพันธ์</a>
@@ -152,7 +152,7 @@ $num_row = dbNumRows($result);
       </div>
     </div>
 
-     <div class="panel panel-info">
+     <div class="panel panel-info" style="display:none;">
       <div class="panel-heading">
         <h4 class="panel-title">
            <i class="fas fa-gopuram"></i><a data-toggle="collapse" data-parent="#accordion" href="#collapse8"> จองห้องประชุม</a>

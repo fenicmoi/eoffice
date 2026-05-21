@@ -42,7 +42,7 @@ require_once 'crud_FromSendProvince.php';
                 <div class="row">
                     <div class="col-md-2">
                         <div class="panel-body text-left ">
-                            <a href="#" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modalAdd">
+                            <a href="#" class="btn btn-primary btn-lg" style="display:none;" data-toggle="modal" data-target="#modalAdd">
                              <i class="fa fa-plus" aria-hidden="true"></i>ออกเลขหนังสือส่ง
                             </a>
                         </div>

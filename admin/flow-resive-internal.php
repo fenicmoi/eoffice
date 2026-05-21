@@ -303,14 +303,20 @@ if (isset($_POST['save'])) {   //กดปุ่มบันทึกจาก�
     dbQuery('BEGIN');
 
     $sql = "INSERT INTO book_master (rec_id,type_id,dep_id,sec_id,u_id,obj_id,pri_id,yid,typeDoc,speed_id) 
-                      VALUES ($rec_id,$type_id,$dep_id,$sec_id,$u_id,$obj_id,$pri_id,$yid,$typeDoc,$speed_id)";
-    $result1 = dbQuery($sql);
+                      VALUES (?,?,?,?,?,?,?,?,?,?)";
+    $result1 = dbQuery($sql, "iiiiiiiiii", [
+        (int)$rec_id, (int)$type_id, (int)$dep_id, (int)$sec_id, (int)$u_id, 
+        (int)$obj_id, (int)$pri_id, (int)$yid, $typeDoc, (int)$speed_id
+    ]);
     $book_id = dbInsertId();
 
     $sql = "INSERT INTO book_detail (book_id,book_no,title,sendfrom,sendto,reference,attachment,date_book,date_in,practice,follow,publice_book,status,file_upload)
-        VALUES($book_id,'$book_no','$title','$sendfrom','$sendto','$refer','$attachment','$date_book','$date_in','$practice','$follow','$publice_book',1,'$part_copy')";
-    // echo $sql;
-    $result2 = dbQuery($sql);
+        VALUES(?,?,?,?,?,?,?,?,?,?,?,?,1,?)";
+    
+    $result2 = dbQuery($sql, "issssssssssis", [
+        (int)$book_id, $book_no, $title, $sendfrom, $sendto, $refer, 
+        $attachment, $date_book, $date_in, $practice, $follow, $publice_book, $part_copy
+    ]);
 
     if ($result1 && $result2) {
         dbQuery("COMMIT");
@@ -350,14 +356,14 @@ if (isset($_POST['recive'])) {   //ถ้ามีการกดปุ่มร
     //transection
     dbQuery('BEGIN');
     //update book_detail
-    $sql = "UPDATE book_detail SET status=1 WHERE book_id=$book_id ";   //book_detail
-    $result1 = dbQuery($sql);
+    $sql = "UPDATE book_detail SET status=1 WHERE book_id=? ";   //book_detail
+    $result1 = dbQuery($sql, "i", [(int)$book_id]);
 
     //ค้นหาระเบียนที่จะลงรับ
     $sql = "SELECT m.book_id , d.book_detail_id , d.practice  FROM book_master m   
           INNER JOIN book_detail d ON d.book_id=m.book_id
-          WHERE d.book_id=$book_id AND d.status=1";
-    $result = dbQuery($sql);
+          WHERE d.book_id=? AND d.status=1";
+    $result = dbQuery($sql, "i", [(int)$book_id]);
     $row = dbFetchAssoc($result);
     $book_detail_id = $row['book_detail_id'];
 
@@ -375,8 +381,10 @@ if (isset($_POST['recive'])) {   //ถ้ามีการกดปุ่มร
     //วันที่ลงรับ
     $date_recive = DateThai();
 
-    $sql = "INSERT INTO flowrecive (book_detail_id,rec_no,date_recive,dep_id,yid)  VALUES($book_detail_id,$rec_no,'$date_recive',$dep_id,$yid)";
-    $result2 = dbQuery($sql);
+    $sql = "INSERT INTO flowrecive (book_detail_id,rec_no,date_recive,dep_id,yid)  VALUES(?,?,?,?,?)";
+    $result2 = dbQuery($sql, "iisii", [
+        (int)$book_detail_id, (int)$rec_no, $date_recive, (int)$dep_id, (int)$yid
+    ]);
 
     if (!$result1 && !$result2) {
         dbQuery("ROLLBACK");
@@ -411,8 +419,8 @@ if (isset($_POST['recive'])) {   //ถ้ามีการกดปุ่มร
 
 if (isset($_POST['resend'])) {   //ถ้ามีการกดปุ่มส่งคืน
     $book_id = $_POST['book_id'];
-    $sql = "UPDATE book_detail SET status=3 WHERE book_id=$book_id ";   //book_detail
-    $result1 = dbQuery($sql);
+    $sql = "UPDATE book_detail SET status=3 WHERE book_id=? ";   //book_detail
+    $result1 = dbQuery($sql, "i", [(int)$book_id]);
     if ($result1) {
         echo "<script>
         swal({

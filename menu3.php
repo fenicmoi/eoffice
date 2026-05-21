@@ -69,7 +69,7 @@ $num_row = dbNumRows($result);
         </div>
       </div>
     </div>
-       <div class="panel panel-info">
+       <div class="panel panel-info" style="display:none;">
       <div class="panel-heading">
         <h4 class="panel-title">
             <i class="fab fa-app-store"></i></span><a data-toggle="collapse" data-parent="#accordion" href="#collapse5"> ระบบสนับสนุนอื่นๆ</a>

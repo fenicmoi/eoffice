@@ -35,9 +35,9 @@ $cid=$_GET['cid'];
    
     
     //เลือกขอมูลหนังสือเวียน
-    $sqlFlowCircle="SELECT * FROM flowdepart WHERE  cid=$cid";
+    $sqlFlowCircle="SELECT * FROM flowdepart WHERE cid=?";
     //print $sqlFlowCircle;
-    $resSqlFlowCircle= dbQuery($sqlFlowCircle);
+    $resSqlFlowCircle= dbQuery($sqlFlowCircle, "i", [(int)$cid]);
     $rowFlowCircle=  dbFetchAssoc($resSqlFlowCircle);
     
     $speed=$rowFlowCircle['speed_id'];

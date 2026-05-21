@@ -137,9 +137,9 @@ if(isset($_POST['save'])){
     
     
     
-    $sql="SELECT * FROM sys_year WHERE dep_name='$yname'";
+    $sql="SELECT * FROM sys_year WHERE dep_name = ?";
     //echo $sql;
-    $result=dbQuery($sql);
+    $result=dbQuery($sql, "s", [$yname]);
     $row=dbFetchRow($result);
     if($row>0){
        echo "<script>
@@ -155,10 +155,9 @@ if(isset($_POST['save'])){
         }); 
       </script>";
     }else{
-        $sql="INSERT INTO sys_year(yname,status)
-        VALUES ('$yname',1)";
+        $sql="INSERT INTO sys_year(yname,status) VALUES (?, 1)";
         
-       $result=dbQuery($sql);
+       $result=dbQuery($sql, "s", [$yname]);
        if(!$result){
            echo "<script>
            swal({
@@ -190,8 +189,8 @@ if(isset($_POST['save'])){
 }
 
 if(isset($_GET['del'])){
-    $sql = "DELETE FROM sys_year WHERE yid=".$_GET['del'];
-    $result = dbQuery($sql);
+    $sql = "DELETE FROM sys_year WHERE yid = ?";
+    $result = dbQuery($sql, "i", [(int)$_GET['del']]);
     if(!$result){
         echo "<script>
         swal({
@@ -225,8 +224,8 @@ if(isset($_GET['del'])){
 
 
 if(isset($_GET['close'])){
-    $sql = "UPDATE  sys_year SET status=0 WHERE yid=".$_GET['close'];
-    $result = dbQuery($sql);
+    $sql = "UPDATE  sys_year SET status = 0 WHERE yid = ?";
+    $result = dbQuery($sql, "i", [(int)$_GET['close']]);
     echo "<script>
     swal({
      title:'เรียบร้อย',
@@ -242,8 +241,8 @@ if(isset($_GET['close'])){
 }
 
 if(isset($_GET['open'])){
-    $sql = "UPDATE  sys_year SET status=1 WHERE yid=".$_GET['open'];
-    $result = dbQuery($sql);
+    $sql = "UPDATE  sys_year SET status = 1 WHERE yid = ?";
+    $result = dbQuery($sql, "i", [(int)$_GET['open']]);
     echo "<script>
     swal({
      title:'เรียบร้อย',

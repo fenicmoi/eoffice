@@ -46,7 +46,7 @@ $ystatus = $ystatus;
 			<strong>หนังสือรับหน่วยงาน</strong>
 			:::ใช้คุมทะเบียนหนังสือรับสำหรับส่วนราชการต่าง ๆ ที่ยังไม่มีระบบคุมเอกสาร
 			<div class="btn-group pull-right">
-				<a href="" class="btn btn-default " data-toggle="modal" data-target="#modalAdd">
+				<a href="" class="btn btn-default " style="display:none;" data-toggle="modal" data-target="#modalAdd">
 					<i class="fa fa-plus" aria-hidden="true"></i> ลงทะเบียนรับ
 				</a>
 

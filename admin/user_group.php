@@ -9,8 +9,8 @@ $u_id=$_SESSION['ses_u_id'];
 /* code for data edit */
 if(isset($_GET['edit']))
 {
-    $sql ="SELECT * FROM user_level WHERE level_id=".$_GET['edit'];
-    $result = dbQuery($sql);
+    $sql ="SELECT * FROM user_level WHERE level_id = ?";
+    $result = dbQuery($sql, "i", [(int)$_GET['edit']]);
     $getRow=dbFetchArray($result);
 
 }
@@ -105,9 +105,9 @@ if(isset($_POST['save']))
         // $SQL = $conn->query("INSERT INTO user_level(level_name,status) VALUES('$level_name','$status')");
          //
 
-         $sql="SELECT level_name FROM user_level WHERE level_name='$level_name'";
+         $sql="SELECT level_name FROM user_level WHERE level_name = ?";
          //echo $sql;
-         $result=dbQuery($sql);
+         $result=dbQuery($sql, "s", [$level_name]);
          $row=dbFetchRow($result);
          if($row>0){
             echo "<script>
@@ -123,8 +123,8 @@ if(isset($_POST['save']))
              }); 
            </script>";
          }else{
-            $sql="INSERT INTO user_level(level_name,status) VALUES ('$level_name','$status')";
-            $result=dbQuery($sql);
+            $sql="INSERT INTO user_level(level_name,status) VALUES (?, ?)";
+            $result=dbQuery($sql, "si", [$level_name, (int)$status]);
             if(!$result){
                 echo "<script>
                 swal({
@@ -159,8 +159,8 @@ if(isset($_POST['save']))
 if(isset($_GET['del']))
 {
     $del=$_GET['del'];
-    $sql="DELETE FROM user_level WHERE level_id=$del";
-    $result = dbQuery($sql);
+    $sql="DELETE FROM user_level WHERE level_id = ?";
+    $result = dbQuery($sql, "i", [(int)$del]);
     if(!$result){
         echo "<script>
         swal({
@@ -194,17 +194,16 @@ if(isset($_GET['del']))
 /* code for data edit */
 if(isset($_GET['edit']))
 {
-    $sql ="SELECT * FROM user_level WHERE level_id=".$_GET['edit'];
-    $result = dbQuery($sql);
+    $sql ="SELECT * FROM user_level WHERE level_id = ?";
+    $result = dbQuery($sql, "i", [(int)$_GET['edit']]);
     $getRow=dbFetchArray($result);
 
 }
 
 if(isset($_POST['update']))
 {
-	$sql= "UPDATE user_level SET level_name='".$_POST['level_name']."',status='".$_POST['status']."'
-                             WHERE level_id=".$_GET['edit'];
-    $result=dbQuery($sql);
+	$sql= "UPDATE user_level SET level_name = ?, status = ? WHERE level_id = ?";
+    $result=dbQuery($sql, "sii", [$_POST['level_name'], (int)$_POST['status'], (int)$_GET['edit']]);
     if(!$result){
         echo "<script>
         swal({

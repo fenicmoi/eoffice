@@ -26,18 +26,18 @@
                                 $Num_Rows = dbNumRows($result);
                                
                                 @$txt_search=$_POST['search'];
-                                @$type_search=$_POST['number'];
+                                @$type_search=(int)$_POST['number'];
 
                                 //ตรวจสอบและกำหนดจำนวนรายการ
                                 if(isset($_POST['Per_page'])){    //ตรวจสอบตัวแปร perpage เพื่อหาจำนวนรายการที่จะนำไปแสดงผล
-                                    $Per_Page = $_POST['Per_page'];  //รับค่า
+                                    $Per_Page = max(1, (int)$_POST['Per_page']);  //รับค่า
                                 }else{
                                     $Per_Page = 10;                //ถ้าไม่มีให้ใช้ 10
                                 }
 
                                 //ตรวจสอบการรับค่าหน้า
                                  if (isset($_GET['Page'])) {    //ถ้ามีการรับค่า Page มา
-                                    $Page = $_GET['Page'];     //กำหนดตัวแปร page
+                                    $Page = max(1, (int)$_GET['Page']);     //กำหนดตัวแปร page
                                 }else{
                                     $Page = 1;                 //ถ้าไม่มีการกำหนด  ตัวแปรเท่ากับ 1
                                 }
@@ -63,16 +63,17 @@
                                       INNER JOIN speed as s ON s.speed_id = fl.speed_id";
 
                                 if(isset($_POST['save'])){    // check button search
+                                      $searchParam = "%" . $txt_search . "%";
                                       if($type_search==1){    //search by id
-                                         $sql.=" WHERE rec_no LIKE '%$txt_search%' AND fl.open=1 ORDER BY cid DESC LIMIT $Page_Start , $Per_Page";
+                                         $sql.=" WHERE rec_no LIKE ? AND fl.open=1 ORDER BY cid DESC LIMIT $Page_Start , $Per_Page";
                                       }else if($type_search==2){        //search by name
-                                         $sql.=" WHERE title LIKE '%$txt_search%' AND fl.open=1  ORDER BY cid DESC LIMIT $Page_Start , $Per_Page  ";  
+                                         $sql.=" WHERE title LIKE ? AND fl.open=1  ORDER BY cid DESC LIMIT $Page_Start , $Per_Page  ";  
                                       }
+                                      $result = dbQuery($sql, "s", [$searchParam]);
                                 }else{ //ถ้าไม่มีการกดเลือกใด ๆ  ใช้แสดงผลหน้าแรก
                                      $sql.=" WHERE fl.open=1  ORDER BY cid DESC limit $Page_Start , $Per_Page  ";
+                                     $result = dbQuery($sql);
                                 }
-
-                                $result = dbQuery($sql);
                                 while($row = dbFetchArray($result)){?>
                                     <tr>
                                     <?php

@@ -48,10 +48,10 @@ $dep_id = $_SESSION['ses_dep_id'];
             <div class="panel panel-default" >
                 <div class="panel-heading">
                     <i class="fa fa-envelope fa-2x" aria-hidden="true"></i>  <strong>หนังสือส่ง [ปกติ]</strong>
-                    <a href="" class="btn btn-default pull-right" data-toggle="modal" data-target="#modalReserv">
+                    <a href="" class="btn btn-default pull-right" data-toggle="modal" data-target="#modalReserv" style="display:none;">
                     <i class="fas fa-hand-point-up"></i> จองเลข
                      </a>
-                    <a href="" class="btn btn-default btn-md pull-right" data-toggle="modal" data-target="#modalAdd"><i class="fa fa-plus " aria-hidden="true"></i> ลงทะเบียนส่ง</a>
+                    <a href="" class="btn btn-default btn-md pull-right" data-toggle="modal" data-target="#modalAdd" style="display:none;"><i class="fa fa-plus " aria-hidden="true"></i> ลงทะเบียนส่ง</a>
                 </div>
                 <div class="panel-body bg-info">
                     <form class="form-inline" method="post" name="frmSearch" id="frmSearch">
@@ -99,36 +99,52 @@ $dep_id = $_SESSION['ses_dep_id'];
                                 
                                  //ส่วนการค้นหา
                                  if(isset($_POST['btnSearch'])){
-                                     $typeSearch = $_POST[ 'typeSearch' ]; //ประเภทการค้นหา
-                                     $txt_search = $_POST[ 'search' ]; //กล่องรับข้อความ
-                                    $sql="SELECT * FROM  flownormal";
+                                     $typeSearch = $_POST['typeSearch'];
+                                     $txt_search = "%" . $_POST['search'] . "%";
+                                     $types = "";
+                                     $params = [];
+                                     $sql="SELECT * FROM  flownormal";
+                                     
                                      if ( $typeSearch == 1 ) { //ค้นด้วยเลขเลขส่ง
                                         if($level_id <= 2){     
-                                            $sql .= " WHERE CONCAT(prefex,'/',rec_no) LIKE '%$txt_search%' ";
+                                            $sql .= " WHERE CONCAT(prefex,'/',rec_no) LIKE ?";
+                                            $types = "s";
+                                            $params = [$txt_search];
                                         }else{
-                                            //$sql .= " WHERE rec_no LIKE '%$txt_search%'  AND m.dep_id=$dep_id  AND sec_id=$sec_id  ";
-                                            $sql .= " WHERE CONCAT(prefex,'/',rec_no) LIKE '%$txt_search%'  AND dep_id=$dep_id ";
+                                            $sql .= " WHERE CONCAT(prefex,'/',rec_no) LIKE ? AND dep_id = ?";
+                                            $types = "si";
+                                            $params = [$txt_search, (int)$dep_id];
                                         }
                                     } elseif ( $typeSearch == 2 ) { //ค้นด้วยชื่อชื่อเรื่อง
                                         if($level_id <=2){
-                                            $sql .= " WHERE title LIKE '%$txt_search%' ";
+                                            $sql .= " WHERE title LIKE ?";
+                                            $types = "s";
+                                            $params = [$txt_search];
                                         }else{
-                                            //$sql .= " WHERE title LIKE '%$txt_search%'   AND dep_id=$dep_id  AND sec_id=$sec_id ";
-                                            $sql .= " WHERE title LIKE '%$txt_search%'   AND dep_id=$dep_id ";
+                                            $sql .= " WHERE title LIKE ? AND dep_id = ?";
+                                            $types = "si";
+                                            $params = [$txt_search, (int)$dep_id];
                                         }
                                     } elseif ( $typeSearch == 4 ) { //ค้นด้วยวันที่
                                           $dateStart = $_POST['dateStart'];
                                           $dateEnd = $_POST['dateEnd'];
                                           if($level_id <=2){
-                                              $sql .= " WHERE dateline BETWEEN '$dateStart' AND '$dateEnd' ";
+                                              $sql .= " WHERE dateline BETWEEN ? AND ?";
+                                              $types = "ss";
+                                              $params = [$dateStart, $dateEnd];
                                           }else{
-                                              $sql .= " WHERE dateline BETWEEN '$dateStart' AND '$dateEnd' AND dep_id=$dep_id ";
+                                              $sql .= " WHERE dateline BETWEEN ? AND ? AND dep_id = ?";
+                                              $types = "ssi";
+                                              $params = [$dateStart, $dateEnd, (int)$dep_id];
                                           }
                                     }
                                     
                                     $sql .= " ORDER BY cid DESC";
 
-                                 }//isset 
+                                 } else {
+                                     $types = "";
+                                     $params = [];
+                                 }
                               // print $level_id;
                                 //print $sql;
                                 // function for highlighting words
@@ -137,7 +153,7 @@ $dep_id = $_SESSION['ses_dep_id'];
                                     return $text;
                                 }
 
-                                $result = page_query( $dbConn, $sql, 10 );
+                                $result = page_query( $dbConn, $sql, 10, $types, $params );
                                 while($row = dbFetchArray($result)){
                                     $rec_no_display = $row['prefex'] . ' / ' . $row['rec_no']; // Default full display
                                     $title_display = $row['title'];
@@ -478,11 +494,13 @@ if(isset($_POST['save'])){   //กดปุ่มบันทึกจากฟ�
         dbQuery('BEGIN');    
         $sqlInsert="INSERT INTO flownormal
                          (rec_no,u_id,obj_id,yid,typeDoc,prefex,title,speed_id,sec_id,sendfrom,sendto,refer,attachment,practice,file_location,dateline,dateout,dep_id)    
-                    VALUE($rec_no,$u_id,$obj_id,$yid,'$typeDoc','$prefex','$title',$speed_id,$sec_id,'$sendfrom','$sendto','$refer','$attachment','$practice','$file_location','$dateline','$datelout',$dep_id)";
+                    VALUE(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
        
        //echo $sqlInsert;
        
-        $result=dbQuery($sqlInsert);
+        $result=dbQuery($sqlInsert, "iiiiissiissssssssi", [
+            $rec_no, $u_id, $obj_id, $yid, $typeDoc, $prefex, $title, $speed_id, $sec_id, $sendfrom, $sendto, $refer, $attachment, $practice, $file_location, $dateline, $datelout, $dep_id
+        ]);
          if($result){
             dbQuery("COMMIT");
             echo "<script>
@@ -532,18 +550,20 @@ if(isset($_POST['update'])){
     $file_location = $_POST['file_location'];
 
      $sql = "UPDATE flownormal SET
-                    obj_id = $obj,
-                    title = '$title',
-                    speed_id = $speed,
-                    sendfrom = '$sendfrom',
-                    sendto = '$sendto',
-                    refer = '$refer',
-                    attachment = '$attachment',
-                    practice = '$practice',
-                    file_location = '$file_location',
-                    dateout = '$dateout'
-            WHERE cid = $cid";
-    $resUpdate = dbQuery($sql);
+                    obj_id = ?,
+                    title = ?,
+                    speed_id = ?,
+                    sendfrom = ?,
+                    sendto = ?,
+                    refer = ?,
+                    attachment = ?,
+                    practice = ?,
+                    file_location = ?,
+                    dateout = ?
+            WHERE cid = ?";
+    $resUpdate = dbQuery($sql, "isssssssssi", [
+        (int)$obj, $title, (int)$speed, $sendfrom, $sendto, $refer, $attachment, $practice, $file_location, $dateout, (int)$cid
+    ]);
     if(!$resUpdate){
         echo "<script>swal(\"Good job!\", \"ไม่สำเร็จ!\", \"error\")</script>";                 
         echo "<meta http-equiv='refresh' content='1;URL=flow-normal.php'>";  
@@ -645,8 +665,10 @@ if(isset($_POST['btnReserv'])){
 
             $sql="INSERT INTO flownormal
             (rec_no,u_id,obj_id,yid,typeDoc,prefex,title,speed_id,sec_id,sendfrom,sendto,refer,attachment,practice,file_location,dateline,dateout,dep_id)    
-            VALUE($rec_no,$u_id,$obj_id,$yid,'$typeDoc','$prefex','$title',$speed_id,$sec_id,'$sendfrom','$sendto','$refer','$attachment','$practice','$file_location','$dateline','$dateout',$dep_id)";
-            $result = dbQuery($sql);
+            VALUE(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $result = dbQuery($sql, "iiiiissiissssssssi", [
+                $rec_no, $u_id, $obj_id, $yid, $typeDoc, $prefex, $title, $speed_id, $sec_id, $sendfrom, $sendto, $refer, $attachment, $practice, $file_location, $dateline, $dateout, $dep_id
+            ]);
             $a++;
         }
         

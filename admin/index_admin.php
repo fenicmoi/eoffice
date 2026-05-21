@@ -18,7 +18,7 @@ if (isset($_SESSION['login_success']) && $_SESSION['login_success'] === true) {
         // SweetAlert ที่แสดงเครื่องหมายถูก
         swal({
             title: 'WELCOME',
-            text: 'ยินดีต้อนรับเข้าสู่ระบบ E-Office ',
+            text: 'ยินดีต้อนรับเข้าสู่ระบบรับ-ส่ง e-ducument จังหวัดพัทลุง ',
             type: 'success', // **ใช้ 'success' เพื่อแสดงเครื่องหมายถูก**
             timer: 2000, // แสดง 2 วินาทีแล้วปิดเอง
             showConfirmButton: false

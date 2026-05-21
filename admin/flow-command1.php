@@ -210,18 +210,20 @@ if (isset($_POST['save'])) {
   //ว	ันที่มีผลบังคับใช้
   $dateout = date('Y-m-d');
 
-  $sqlRun = "SELECT cid,rec_id FROM flowcommand WHERE  yid=$yid  ORDER  BY cid DESC";
-  $resRun =  dbQuery($sqlRun);
+  $sqlRun = "SELECT cid,rec_id FROM flowcommand WHERE yid=? ORDER BY cid DESC";
+  $resRun = dbQuery($sqlRun, "i", [(int)$yid]);
   $rowRun = dbFetchArray($resRun);
   $rec_id = $rowRun['rec_id'];
   $rec_id++;
 
   $sql = "INSERT INTO flowcommand
                          (rec_id,yid,title,boss,dateline,dateout,u_id,sec_id,dep_id)    
-                    VALUE($rec_id,$yid,'$title','$boss','$dateline','$dateout',$u_id,$sec_id,$dep_id)";
-  //p	rint $sql;
+                    VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+  //print $sql;
 
-  $result = dbQuery($sql);
+  $result = dbQuery($sql, "iissssiii", [
+      $rec_id, $yid, $title, $boss, $dateline, $dateout, $u_id, $sec_id, $dep_id
+  ]);
   if (!$result) {
     echo "<script>
             swal({
@@ -288,8 +290,8 @@ if (isset($_POST['update'])) {
     move_uploaded_file($_FILES['fileupload']['tmp_name'], $part_copy);
     //ค		ัดลอกไฟล์ไป Server
 
-    $sql = "UPDATE flowcommand SET file_upload='$part_copy' WHERE cid=$cid";
-    $result =  dbQuery($sql);
+    $sql = "UPDATE flowcommand SET file_upload=? WHERE cid=?";
+    $result = dbQuery($sql, "si", [$part_copy, (int)$cid]);
 
     if ($result) {
       echo "<script>

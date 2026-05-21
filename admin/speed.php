@@ -8,8 +8,8 @@ $u_id=$_SESSION['ses_u_id'];
 /* code for data update */
 if(isset($_GET['edit']))
 {
-    $sql = "SELECT * FROM speed WHERE speed_id=".$_GET['edit'];
-    $result = dbQuery($sql);
+    $sql = "SELECT * FROM speed WHERE speed_id = ?";
+    $result = dbQuery($sql, "i", [(int)$_GET['edit']]);
 	$getROW = dbFetchArray($result);
 }
 ?>
@@ -76,8 +76,8 @@ if(isset($_GET['edit']))
     if(isset($_POST['save']))
     {
          $speed_name = $_POST['speed'];
-             $sql = "INSERT INTO speed(speed_name) VALUES('$speed_name')";
-             $result = dbQuery($sql);
+             $sql = "INSERT INTO speed(speed_name) VALUES(?)";
+             $result = dbQuery($sql, "s", [$speed_name]);
              if(!$result){
                 echo "<script>
                 swal({
@@ -111,8 +111,8 @@ if(isset($_GET['edit']))
 /* code for data delete */
 if(isset($_GET['del']))
 {
-    $sql = "DELETE FROM speed WHERE speed_id=".$_GET['del'];
-	$result = dbQuery($sql);
+    $sql = "DELETE FROM speed WHERE speed_id = ?";
+	$result = dbQuery($sql, "i", [(int)$_GET['del']]);
     if(!$result){
        echo "<script>
        swal({
@@ -145,8 +145,8 @@ if(isset($_GET['del']))
 
 if(isset($_POST['update']))
 {
-    $sql = "UPDATE speed SET speed_name='".$_POST['speed']."' WHERE speed_id=".$_GET['edit'];
-	$result = dbQuery($sql);
+    $sql = "UPDATE speed SET speed_name = ? WHERE speed_id = ?";
+	$result = dbQuery($sql, "si", [$_POST['speed'], (int)$_GET['edit']]);
     if(!$result){
        echo "<script>
        swal({

@@ -335,8 +335,8 @@ if (isset($_POST['save'])) {   //กดปุ่มบันทึกจาก�
         echo "<meta http-equiv='refresh' content='1;URL=flow-circle.php'>";
     } else {
         //ตัวเลขรันอัตโนมัติ
-        $sqlRun = "SELECT cid,rec_no FROM flowcircle WHERE dep_id=$dep_id AND yid=$yid  ORDER  BY cid DESC";
-        $resRun =  dbQuery($sqlRun);
+        $sqlRun = "SELECT cid,rec_no FROM flowcircle WHERE dep_id=? AND yid=?  ORDER  BY cid DESC";
+        $resRun =  dbQuery($sqlRun, "ii", [(int)$dep_id, (int)$yid]);
         $rowRun = dbFetchArray($resRun);
         $rec_no = $rowRun['rec_no'];
         $rec_no++;
@@ -344,9 +344,11 @@ if (isset($_POST['save'])) {   //กดปุ่มบันทึกจาก�
         dbQuery('BEGIN');
         $sqlInsert = "INSERT INTO flowcircle
                          (rec_no,u_id,obj_id,yid,typeDoc,prefex,title,speed_id,sec_id,sendfrom,sendto,refer,attachment,practice,file_location,dateline,dateout,dep_id)    
-                    VALUE($rec_no,$u_id,$obj_id,$yid,'$typeDoc','$prefex','$title',$speed_id,$sec_id,'$sendfrom','$sendto','$refer','$attachment','$practice','$file_location','$dateline','$datelout',$dep_id)";
+                    VALUE(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         // echo $sqlInsert;
-        $result = dbQuery($sqlInsert);
+        $result = dbQuery($sqlInsert, "iiiiissiissssssssi", [
+            $rec_no, $u_id, $obj_id, $yid, $typeDoc, $prefex, $title, $speed_id, $sec_id, $sendfrom, $sendto, $refer, $attachment, $practice, $file_location, $dateline, $datelout, $dep_id
+        ]);
         if ($result) {
             dbQuery("COMMIT");
             echo "<script>
@@ -405,9 +407,13 @@ if (isset($_POST['update'])) {
 
         move_uploaded_file($_FILES['fileupload']['tmp_name'], $part_copy);  //คัดลอกไฟล์ไป Server
 
-        $sqlUpdate = "UPDATE flowcircle SET file_upload='$part_copy' WHERE cid=$cid";
-        print $sqlUpdate;
-        $resUpdate =  mysqli_query($conn, $sqlUpdate);
+        if (!isset($cid) && isset($_POST['cid'])) {
+            $cid = $_POST['cid'];
+        }
+
+        $sqlUpdate = "UPDATE flowcircle SET file_upload=? WHERE cid=?";
+        // print $sqlUpdate;
+        $resUpdate = dbQuery($sqlUpdate, "si", [$part_copy, (int)$cid]);
         if (!$resUpdate) {
             echo "ระบบมีปัญหา";
             exit;
