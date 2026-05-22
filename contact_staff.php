@@ -1,43 +1,11 @@
 <?php
 $staff_members = [
     [
-        'name' => 'นายสมศักดิ์ แก้วเกลี้ยง',
-        'position' => 'นักวิชาการคอมพิวเตอร์ชำนาญการ',
-        'agency' => 'สำนักงานจังหวัดพัทลุง',
-        'image' => 'images/somsak.jpg',
-        'duty' => 'ที่ปรึกษาด้านการวางโครงสร้างหน่วยงาน',
-        'phone' => '0815399135',
-        'phone_display' => '081-539-9135',
-        'bg_top' => 'bg-blue-50',
-        'border_top' => 'border-blue-100',
-        'text_icon' => 'text-blue-500',
-        'bg_badge' => 'bg-blue-100',
-        'text_badge' => 'text-blue-800',
-        'btn_bg' => 'bg-blue-600',
-        'btn_hover' => 'hover:bg-blue-700'
-    ],
-    [
-        'name' => 'น.ส. กชพรรณ ชินภัควัต',
-        'position' => 'ผู้ช่วยนักวิเคราะห์นโยบายและแผน',
-        'agency' => 'สำนักงานจังหวัดพัทลุง',
-        'image' => 'images/kotchapan.jpg',
-        'duty' => 'ที่ปรึกษาด้านเทคนิคการใช้งานทั่วไป',
-        'phone' => '0936669974',
-        'phone_display' => '093-666-9974',
-        'bg_top' => 'bg-blue-50',
-        'border_top' => 'border-blue-100',
-        'text_icon' => 'text-blue-500',
-        'bg_badge' => 'bg-blue-100',
-        'text_badge' => 'text-blue-800',
-        'btn_bg' => 'bg-blue-600',
-        'btn_hover' => 'hover:bg-blue-700'
-    ],
-    [
         'name' => 'นางวิสรรพ์พร ยืนยง',
         'position' => 'ผู้ช่วยโทรคมจังหวัดพัทลุง',
         'agency' => 'บริษัทโทรคมนาคมแห่งชาติ จำกัด สาขาพัทลุง',
         'image' => 'images/care.png',
-        'duty' => 'ประสานงานภายในบริษัท NT',
+        'duty' => 'อำนวยความสะดวกและประสานงานภายในบริษัท NT',
         'phone' => '0893932270',
         'phone_display' => '089-393-2270',
         'bg_top' => 'bg-orange-50',
@@ -49,27 +17,11 @@ $staff_members = [
         'btn_hover' => 'hover:bg-orange-600'
     ],
     [
-        'name' => 'นายจิรายุทธ วงศ์พิพันธ์',
-        'position' => 'นักบริการงานพาณิชย์ 6',
-        'agency' => 'บริษัทโทรคมนาคมแห่งชาติ จำกัด สาขาพัทลุง',
-        'image' => 'images/jirayut.png',
-        'duty' => 'ประสานงานส่วนราชการกับส่วนกลาง',
-        'phone' => null,
-        'phone_display' => 'ไม่มีเบอร์ติดต่อ',
-        'bg_top' => 'bg-orange-50',
-        'border_top' => 'border-orange-100',
-        'text_icon' => 'text-orange-500',
-        'bg_badge' => 'bg-orange-100',
-        'text_badge' => 'text-orange-800',
-        'btn_bg' => '',
-        'btn_hover' => ''
-    ],
-    [
         'name' => 'นายภิญญาวัฒน์ สุขแก้ว',
         'position' => 'ผู้อำนวยการกลุ่มงานวิชาการสถิติและวางแผน',
         'agency' => 'สำนักงานสถิติจังหวัดพัทลุง',
         'image' => 'images/pinyawat.png',
-        'duty' => 'ประสานงานส่วนราชการกับส่วนกลาง',
+        'duty' => 'ที่ปรึกษาด้านการเชื่อมต่อข้ามหน่วยงาน (Dsync)',
         'phone' => '0805235887',
         'phone_display' => '080-523-5887',
         'bg_top' => 'bg-purple-50',
@@ -79,11 +31,72 @@ $staff_members = [
         'text_badge' => 'text-purple-800',
         'btn_bg' => 'bg-purple-600',
         'btn_hover' => 'hover:bg-purple-700'
+    ],
+    [
+        'name' => 'นายสมศักดิ์ แก้วเกลี้ยง',
+        'position' => 'นักวิชาการคอมพิวเตอร์ชำนาญการ',
+        'agency' => 'สำนักงานจังหวัดพัทลุง',
+        'image' => 'images/somsak.jpg',
+        'duty' => 'ที่ปรึกษาด้านการวางโครงสร้างและการจัดการระบบ',
+        'phone' => '0815399135',
+        'phone_display' => '081-539-9135',
+        'bg_top' => 'bg-blue-50',
+        'border_top' => 'border-blue-100',
+        'text_icon' => 'text-blue-500',
+        'bg_badge' => 'bg-blue-100',
+        'text_badge' => 'text-blue-800',
+        'btn_bg' => 'bg-blue-600',
+        'btn_hover' => 'hover:bg-blue-700'
+    ],
+    [
+        'name' => 'นายจิรายุทธ วงศ์พิพันธ์',
+        'position' => 'นักบริการงานพาณิชย์ 6',
+        'agency' => 'บริษัทโทรคมนาคมแห่งชาติ จำกัด สาขาพัทลุง',
+        'image' => 'images/jirayut.png',
+        'duty' => 'ที่ปรึกษาด้านการเริ่มต้นใช้งานระบบ(Implementation)',
+        'phone' => '0887922558',
+        'phone_display' => '088-792-2558',
+        'bg_top' => 'bg-orange-50',
+        'border_top' => 'border-orange-100',
+        'text_icon' => 'text-orange-500',
+        'bg_badge' => 'bg-orange-100',
+        'text_badge' => 'text-orange-800',
+        'btn_bg' => 'bg-orange-500',
+        'btn_hover' => 'hover:bg-orange-600'
+    ],
+    [
+        'name' => 'นางจิระภา  ศิริเทพ',
+        'position' => 'นักวิชาการคอมพิวเตอร์ปฏิบัติการ',
+        'agency' => 'สำนักงานเทศบาลเมืองพัทลุง',
+        'image' => 'images/pa.png',
+        'duty' => 'ที่ปรึกษาเทคนิคการใช้งานระบบ(อปท.)',
+        'phone' => '0891724565',
+        'phone_display' => '089-172-4565',
+        'bg_top' => 'bg-purple-50',
+        'border_top' => 'border-purple-100',
+        'text_icon' => 'text-purple-500',
+        'bg_badge' => 'bg-purple-100',
+        'text_badge' => 'text-purple-800',
+        'btn_bg' => 'bg-purple-600',
+        'btn_hover' => 'hover:bg-purple-700'
+    ],
+    [
+        'name' => 'น.ส. กชพรรณ ชินภัควัต',
+        'position' => 'ผู้ช่วยนักวิเคราะห์นโยบายและแผน',
+        'agency' => 'สำนักงานจังหวัดพัทลุง',
+        'image' => 'images/kotchapan.jpg',
+        'duty' => 'ที่ปรึกษาด้านเทคนิคการใช้งานระบบ(ส่วนกลาง/ส่วนภูมิภาค/องค์กรอิสระ)',
+        'phone' => '0936669974',
+        'phone_display' => '093-666-9974',
+        'bg_top' => 'bg-blue-50',
+        'border_top' => 'border-blue-100',
+        'text_icon' => 'text-blue-500',
+        'bg_badge' => 'bg-blue-100',
+        'text_badge' => 'text-blue-800',
+        'btn_bg' => 'bg-blue-600',
+        'btn_hover' => 'hover:bg-blue-700'
     ]
 ];
-
-// สุ่มสลับตำแหน่ง (Randomize order)
-shuffle($staff_members);
 ?>
 <div class="container-fluse" style="font-family: 'Sarabun', sans-serif;">
     <div class="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl shadow-lg p-8 mb-8 text-white mt-4">
@@ -113,8 +126,8 @@ shuffle($staff_members);
                 <div class="p-6 flex flex-col flex-grow">
                     <div class="mb-4 flex-grow">
                         <span
-                            class="inline-block <?php echo $staff['bg_badge']; ?> <?php echo $staff['text_badge']; ?> text-base px-3 py-1 rounded-full font-semibold mb-2">หน้าที่ให้คำปรึกษา</span>
-                        <p class="text-gray-700 text-xl m-0"><?php echo $staff['duty']; ?></p>
+                            class="inline-block <?php echo $staff['bg_badge']; ?> <?php echo $staff['text_badge']; ?> text-2xl px-4 py-1.5 rounded-full font-semibold mb-2">หน้าที่ให้คำปรึกษา</span>
+                        <p class="text-gray-700 text-3xl m-0"><?php echo $staff['duty']; ?></p>
                     </div>
                     <?php if ($staff['phone']): ?>
                         <a href="tel:<?php echo $staff['phone']; ?>"

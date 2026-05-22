@@ -85,7 +85,7 @@
             </div>
             <h4 class="text-xl md:text-2xl font-bold text-gray-900 text-center group-hover:text-blue-600 m-0"
                 style="font-family: 'Sarabun', sans-serif;">ระบบ e-office</h4>
-            <span class="text-base md:text-lg text-gray-600 mt-2 font-medium">(NT)</span>
+            <span class="text-base md:text-lg text-gray-600 mt-2 font-medium">(ระบบคลาวด์กลางภาครัฐ:GDCC)</span>
         </a>
 
         <!-- 2. e-office (จังหวัดพัทลุง) -->
@@ -102,8 +102,8 @@
                 <i class="fas fa-building text-4xl"></i>
             </div>
             <h4 class="text-xl md:text-2xl font-bold text-gray-900 text-center group-hover:text-teal-600 m-0"
-                style="font-family: 'Sarabun', sans-serif;">ระบบ e-office</h4>
-            <span class="text-base md:text-lg text-gray-600 mt-2 font-medium">(จังหวัดพัทลุง)</span>
+                style="font-family: 'Sarabun', sans-serif;">ระบบรับ-ส่ง เอกสารอิเล็กทรอนิคส์จังหวัดพัทลุง</h4>
+            <span class="text-base md:text-lg text-gray-600 mt-2 font-medium">(ระบบเดิม)</span>
         </a>
 
         <!-- 3. ระบบทำเนียบหัวหน้าส่วนราชการ -->
@@ -122,73 +122,17 @@
     </div>
 </div>
 
-<!-- Other Services Grid -->
-<div class="mb-12">
-    <h4 class="text-2xl md:text-3xl font-bold text-gray-800 mb-6" style="font-family: 'Sarabun', sans-serif;">
-        บริการอื่นๆ</h4>
-    <div class="grid grid-cols-2 md:grid-cols-5 gap-6">
-        <!-- Item 1 -->
-        <a href="#" data-toggle="modal" data-target="#modelRule"
-            class="flex flex-col items-center justify-center p-6 bg-white rounded-xl shadow hover:shadow-lg hover:-translate-y-1 transition-all duration-300 border border-gray-100 group no-underline hover:no-underline focus:outline-none">
-            <div
-                class="w-16 h-16 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center mb-4 group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300">
-                <i class="far fa-handshake text-3xl"></i>
-            </div>
-            <h5 class="text-lg md:text-xl font-bold text-gray-800 text-center group-hover:text-blue-600 m-0"
-                style="font-family: 'Sarabun', sans-serif;">ข้อตกลงการใช้งาน
-            </h5>
-        </a>
-
-        <!-- Item 2 -->
-        <a href="index.php?menu=3"
-            class="flex flex-col items-center justify-center p-6 bg-white rounded-xl shadow hover:shadow-lg hover:-translate-y-1 transition-all duration-300 border border-gray-100 group no-underline hover:no-underline focus:outline-none">
-            <div
-                class="w-16 h-16 rounded-full bg-teal-50 text-teal-600 flex items-center justify-center mb-4 group-hover:bg-teal-600 group-hover:text-white transition-colors duration-300">
-                <i class="fab fa-earlybirds text-3xl"></i>
-            </div>
-            <h5 class="text-lg md:text-xl font-bold text-gray-800 text-center group-hover:text-teal-600 m-0"
-                style="font-family: 'Sarabun', sans-serif;">รายชื่อหน่วยงาน
-            </h5>
-        </a>
-
-        <!-- Item 3 -->
-        <a href="https://mbrs.phatthalung.go.th/" target="_blank"
-            class="flex flex-col items-center justify-center p-6 bg-white rounded-xl shadow hover:shadow-lg hover:-translate-y-1 transition-all duration-300 border border-gray-100 group no-underline hover:no-underline focus:outline-none">
-            <div
-                class="w-16 h-16 rounded-full bg-yellow-50 text-yellow-600 flex items-center justify-center mb-4 group-hover:bg-yellow-500 group-hover:text-white transition-colors duration-300">
-                <i class="fas fa-calendar-alt text-3xl"></i>
-            </div>
-            <h5 class="text-lg md:text-xl font-bold text-gray-800 text-center group-hover:text-yellow-600 m-0"
-                style="font-family: 'Sarabun', sans-serif;">จองห้องประชุม
-            </h5>
-        </a>
-
-        <!-- Item 4 -->
-        <a href="manual.pdf" target="_blank"
-            class="flex flex-col items-center justify-center p-6 bg-white rounded-xl shadow hover:shadow-lg hover:-translate-y-1 transition-all duration-300 border border-gray-100 group no-underline hover:no-underline focus:outline-none">
-            <div
-                class="w-16 h-16 rounded-full bg-red-50 text-red-500 flex items-center justify-center mb-4 group-hover:bg-red-500 group-hover:text-white transition-colors duration-300">
-                <i class="fas fa-file-pdf text-3xl"></i>
-            </div>
-            <h5 class="text-lg md:text-xl font-bold text-gray-800 text-center group-hover:text-red-500 m-0"
-                style="font-family: 'Sarabun', sans-serif;">คู่มือผู้ใช้</h5>
-        </a>
-
-        <!-- Item 5: Contact Staff -->
-        <a href="index.php?menu=4"
-            class="flex flex-col items-center justify-center p-6 bg-white rounded-xl shadow hover:shadow-lg hover:-translate-y-1 transition-all duration-300 border border-gray-100 group no-underline hover:no-underline focus:outline-none">
-            <div
-                class="w-16 h-16 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center mb-4 group-hover:bg-indigo-600 group-hover:text-white transition-colors duration-300">
-                <i class="fas fa-headset text-3xl"></i>
-            </div>
-            <h5 class="text-lg md:text-xl font-bold text-gray-800 text-center group-hover:text-indigo-600 m-0"
-                style="font-family: 'Sarabun', sans-serif;">เจ้าหน้าที่ให้คำปรึกษา
-            </h5>
-        </a>
+<!-- Statistics Section -->
+<div id="statistics-section" class="mb-12">
+    <div class="mb-6 border-b-4 border-blue-500 pb-3 inline-block">
+        <h3 class="text-3xl md:text-4xl font-bold text-gray-900 m-0" style="font-family: 'Sarabun', sans-serif;">
+            <i class="fas fa-chart-line text-blue-500 mr-2"></i> สถิติการใช้งาน (ราชการส่วนภูมิภาค)
+        </h3>
+    </div>
+    <div class="bg-white rounded-2xl p-6 md:p-8 shadow-md border border-gray-100 flex justify-center">
+        <img src="images/stat_usage.png" alt="สถิติการใช้งาน" class="w-full lg:w-3/4 xl:w-2/3 max-h-[600px] object-contain rounded-xl shadow-sm transition-all duration-300 hover:shadow-lg hover:scale-[1.02]">
     </div>
 </div>
-
-
 
 <!-- Gallery Section (ผลการดำเนินการ) -->
 <div class="mb-12">
@@ -198,7 +142,7 @@
         </h3>
     </div>
     
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
         <!-- Image 1 -->
         <div class="rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 group cursor-pointer relative" onclick="openLightbox('images/gallery1.jpg')">
             <img src="images/gallery1.jpg" alt="ภาพผลการดำเนินการ 1" class="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-500">

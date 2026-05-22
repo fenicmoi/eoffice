@@ -55,6 +55,8 @@ switch ($menu) {
       </div>
 
       <div class="modal-footer border-0 p-3" style="background-color: #fffde7; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
+        <a href="javascript:void(0)" class="btn btn-warning shadow-sm font-weight-bold" onclick="$('#announcementModal').modal('hide'); setTimeout(function(){ document.getElementById('statistics-section').scrollIntoView({behavior: 'smooth', block: 'start'}); }, 350);"
+          style="font-size: 1.8rem; padding: 0.75rem 2rem; border-radius: 0.8rem;"><i class="fas fa-chart-line mr-2"></i> หน่วยงานที่ดำเนินการแล้ว</a>
         <button type="button" class="btn btn-danger shadow-sm font-weight-bold pulse-btn" data-dismiss="modal"
           style="font-size: 1.8rem; padding: 0.75rem 2rem; border-radius: 0.8rem;">ปิด / รับทราบ</button>
       </div>

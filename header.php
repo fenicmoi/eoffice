@@ -12,10 +12,10 @@ require_once 'library/security.php';
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-  <meta name="description" content="ระบบสารบรรณจังหวัดพัทลุง">
+  <meta name="description" content="">
   <meta name="author" content="นายสมศักดิ์  แก้วเกลี้ยง">
   <link rel="icon" href="images/favicon.png">
-  <title><?php echo $title ?>-version 2024</title>
+  <title>ศูนย์รวมข้อมูลการขับเคลื่อน e-office จังหวัดพัทลุง</title>
 
   <!-- popup -->
   <link rel="stylesheet" href="css/popup.css">

@@ -1,9 +1,17 @@
 <footer class="footer bg-dark" style="padding-top: 15px; padding-bottom: 5px;">
-    <div class="container">
+    <div class="container text-center">
         <p class="text-muted mb-0"> <kbd>ระบบรับ-ส่ง e-ducument จังหวัดพัทลุง</kbd>
             พัฒนาโดย:สำนักงานจังหวัดพัทลุง <i class="fas fa-user"></i> <i class="fas fa-fax"></i> 074-613409
-            <span data-toggle="modal" data-target="#card"><kbd>[ติดต่อผู้พัฒนาระบบ]</kbd></span>
+            <span data-toggle="modal" data-target="#card" style="cursor: pointer;"><kbd>[ติดต่อผู้พัฒนาระบบ]</kbd></span>
         </p>
+        
+        <!-- Visitor Counter -->
+        <div class="mt-3 mb-2" title="คลิกเพื่อดูสถิติและที่มาของผู้เยี่ยมชม">
+            <a href="https://info.flagcounter.com/X0k" target="_blank">
+                <img src="https://s11.flagcounter.com/count2/X0k/bg_343A40/txt_FFFFFF/border_343A40/columns_3/maxflags_9/viewers_3/labels_1/pageviews_1/flags_0/percent_0/" alt="Flag Counter" border="0" class="shadow-sm rounded">
+            </a>
+            <div class="text-muted mt-1" style="font-size: 12px;"><i class="fas fa-globe-asia"></i> สถิติผู้เยี่ยมชม (คลิกเพื่อดูรายละเอียด)</div>
+        </div>
     </div>
 </footer>
 
