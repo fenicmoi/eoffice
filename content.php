@@ -117,8 +117,6 @@
                 style="font-family: 'Sarabun', sans-serif;">
                 ระบบทำเนียบ<br>หัวหน้าส่วนราชการ</h4>
         </a>
-
-
     </div>
 </div>
 
