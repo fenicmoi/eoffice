@@ -140,7 +140,11 @@ function getMenuConfig($level_id, $dep_id)
             'icon' => 'fas fa-book',
             'allowed_levels' => [1, 2, 3, 4, 5],
             'items' => [
-                ['title' => 'E-Office', 'url' => 'https://shorturl.at/WEZe3', 'icon' => 'far fa-arrow-alt-circle-right', 'target' => '_blank', 'allowed_levels' => [3]],
+                ['title' => 'คู่มือ e-Office (ทุกฟังก์ชัน)', 'url' => 'https://documents.eoffice.go.th/docs/ManualeSaraban', 'icon' => 'far fa-arrow-alt-circle-right', 'target' => '_blank', 'allowed_levels' => [1, 2, 3, 4, 5]],
+                ['title' => 'คู่มือผู้ดูแลระบบ', 'url' => 'https://documents.eoffice.go.th/docs/ManualAdminTool', 'icon' => 'far fa-arrow-alt-circle-right', 'target' => '_blank', 'allowed_levels' => [1, 2, 3, 4, 5]],
+                ['title' => 'วิดีโอผู้ใช้งานทั่วไป', 'url' => 'https://documents.eoffice.go.th/docs/VideoTutorial', 'icon' => 'far fa-arrow-alt-circle-right', 'target' => '_blank', 'allowed_levels' => [1, 2, 3, 4, 5]],
+                ['title' => 'วิดีโอผู้ดูแลระบบ', 'url' => 'https://documents.eoffice.go.th/docs/VideoTutorialAdmin', 'icon' => 'far fa-arrow-alt-circle-right', 'target' => '_blank', 'allowed_levels' => [1, 2, 3, 4, 5]],
+                ['title' => 'วิดีโอบันทึกการอบรม', 'url' => 'https://documents.eoffice.go.th/docs/VideoTraining', 'icon' => 'far fa-arrow-alt-circle-right', 'target' => '_blank', 'allowed_levels' => [1, 2, 3, 4, 5]],
             ]
         ],
         [

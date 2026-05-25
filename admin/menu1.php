@@ -151,7 +151,11 @@ if (!isset($_SESSION['ses_u_id'])) {
         </div>
         <div id="collapse6" class="panel-collapse collapse">
             <div class="panel-body">
-                <!-- ตัวอย่าง: <a class="btn btn-primary btn-block" href="#"><i class="far fa-arrow-alt-circle-right pull-left"></i>E-Office 2.0</a> -->
+                <a class="btn btn-primary btn-block" href="https://documents.eoffice.go.th/docs/ManualeSaraban" target="_blank"><i class="far fa-arrow-alt-circle-right pull-left"></i>คู่มือ e-Office (ทุกฟังก์ชัน)</a>
+                <a class="btn btn-primary btn-block" href="https://documents.eoffice.go.th/docs/ManualAdminTool" target="_blank"><i class="far fa-arrow-alt-circle-right pull-left"></i>คู่มือผู้ดูแลระบบ</a>
+                <a class="btn btn-primary btn-block" href="https://documents.eoffice.go.th/docs/VideoTutorial" target="_blank"><i class="far fa-arrow-alt-circle-right pull-left"></i>วิดีโอผู้ใช้งานทั่วไป</a>
+                <a class="btn btn-primary btn-block" href="https://documents.eoffice.go.th/docs/VideoTutorialAdmin" target="_blank"><i class="far fa-arrow-alt-circle-right pull-left"></i>วิดีโอผู้ดูแลระบบ</a>
+                <a class="btn btn-primary btn-block" href="https://documents.eoffice.go.th/docs/VideoTraining" target="_blank"><i class="far fa-arrow-alt-circle-right pull-left"></i>วิดีโอบันทึกการอบรม</a>
             </div>
         </div>
     </div>

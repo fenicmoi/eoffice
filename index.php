@@ -14,6 +14,9 @@ switch ($menu) {
   case 4:
     include('contact_staff.php');
     break;
+  case 5:
+    include('manual.php');
+    break;
   default:
     include('content.php');
     break;

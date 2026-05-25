@@ -80,6 +80,7 @@ require_once 'library/security.php';
         <li><a class="nav-link active" href="index.php?menu=1"><i class="fas fa-home"></i> หน้าแรก</a></li>
         <li><a class="btn-link" href="index.php?menu=2"><i class="fas fa-retweet"></i> คำสั่งจังหวัด</a></li>
         <li><a class="btn-link" href="index.php?menu=4"><i class="fas fa-address-book"></i> ทำเนียบผู้ให้คำปรึกษา</a></li>
+        <li><a class="btn-link" href="index.php?menu=5"><i class="fas fa-book"></i> คู่มือและวิดีโอ</a></li>
         <li class="dropdown">
           <a class="btn-link dropdown-toggle" data-toggle="dropdown" href="#"><i class="fas fa-users"></i>
             ลงทะเบียน
