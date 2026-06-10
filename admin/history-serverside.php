@@ -21,9 +21,8 @@ $columns = array(
 );
 
 $sqlBase = " FROM paper p 
-             INNER JOIN section s ON p.sec_id = s.sec_id 
-             INNER JOIN depart d ON s.dep_id = d.dep_id 
-             WHERE s.dep_id = ? ";
+             INNER JOIN depart d ON p.dep_id = d.dep_id 
+             WHERE p.dep_id = ? ";
 
 $params = [(int) $dep_id];
 $types = "i";

@@ -360,10 +360,8 @@ if (isset($_POST['sendOut'])) {           //ตรวจสอบปุ่ม se
                 if ($target_dep_id > 0) {
                     // **ใช้ Prepared Statements ในการ SELECT User ในหน่วยงานนั้น**
                     // ค้นหาสารบรรณประจำหน่วยงานเท่านั้น (Level 3)
-                    $sql_users = "SELECT u.u_id, u.firstname, s.sec_id, d.dep_id
+                    $sql_users = "SELECT u.u_id, u.firstname, u.sec_id, u.dep_id
                                    FROM user u 
-                                   INNER JOIN section s ON s.sec_id=u.sec_id
-                                   INNER JOIN depart d  ON d.dep_id=u.dep_id
                                    WHERE u.dep_id=? AND u.level_id = 3";
 
                     $result_users = dbQuery($sql_users, 'i', [$target_dep_id]);

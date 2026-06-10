@@ -8,6 +8,7 @@ if (!isset($_SESSION['ses_u_id'])) {
 	exit();
 } else {
 	$u_id = $_SESSION['ses_u_id'];
+	$level_id = isset($_SESSION['ses_level_id']) ? $_SESSION['ses_level_id'] : 0;
 }
 
 ?>

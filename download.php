@@ -1,4 +1,13 @@
 <?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Check user login
+if (!isset($_SESSION['ses_u_id'])) {
+    die("Access Denied. Please login to download this file.");
+}
+
 include 'library/database.php';
 include 'library/config.php';
 

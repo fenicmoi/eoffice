@@ -139,6 +139,7 @@ $jsonCurrentDepIds = json_encode($currentDepIds);
 ?>
 <div class="col-md-2">
     <?php
+    $level_id = isset($_SESSION['ses_level_id']) ? $_SESSION['ses_level_id'] : 0;
     $menu = checkMenu($level_id);
     include $menu;
     ?>
@@ -309,10 +310,8 @@ if (isset($_POST['sendOut'])) {                   //ตรวจสอบปุ�
         foreach ($to_add as $target_dep_id) {
             if ($target_dep_id > 0) {
                 // Insert specific users (Level 3 - Saraban) in that department
-                $sql_users = "SELECT u.u_id, u.firstname, s.sec_id, d.dep_id
+                $sql_users = "SELECT u.u_id, u.firstname, u.sec_id, u.dep_id
                                FROM user u 
-                               INNER JOIN section s ON s.sec_id=u.sec_id
-                               INNER JOIN depart d  ON d.dep_id=u.dep_id
                                WHERE u.dep_id=$target_dep_id AND u.level_id = 3";
                 $result_users = dbQuery($sql_users);
                 while ($row = dbFetchArray($result_users)) {
