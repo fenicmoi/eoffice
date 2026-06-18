@@ -35,9 +35,15 @@ if (isset($_GET['file'])) {
         // set headers
         header('Content-Description: File Transfer');
         header('Content-Type: ' . $mime_type);
+        
+        // ตรวจสอบว่าเป็นมือถือหรือไม่ เพื่อบังคับดาวน์โหลด (attachment) หากเป็นมือถือ 
+        // เนื่องจากบางเบราว์เซอร์บนมือถือมีปัญหาในการเปิดไฟล์แบบ inline
+        $user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
+        $is_mobile = preg_match('/Mobile|Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile/i', $user_agent);
+        $disposition = $is_mobile ? 'attachment' : 'inline';
+
         // เลือกแบบ Inline (เปิดใน Browser) หรือ Attachment (บังคับโหลด)
-        // ถ้าต้องการเปิดอ่าน PDF ในเว็บใช้ 'inline', ถ้าต้องการโหลดใช้ 'attachment'
-        header('Content-Disposition: inline; filename="' . $filename . '"');
+        header('Content-Disposition: ' . $disposition . '; filename="' . $filename . '"');
         header('Expires: 0');
         header('Cache-Control: must-revalidate');
         header('Pragma: public');
