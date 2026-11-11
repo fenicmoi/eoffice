@@ -92,7 +92,6 @@ function getMenuConfig($level_id, $dep_id)
                 ['title' => 'ส่งแล้ว', 'url' => 'history.php', 'icon' => 'fas fa-folder-open', 'allowed_levels' => [1, 3, 4, 5]],
                 ['title' => 'ส่งภายใน', 'url' => 'inside_all.php', 'icon' => 'fas fa-home', 'allowed_levels' => [1, 2]],
                 ['title' => 'ส่งภายนอก', 'url' => 'outside_all.php', 'icon' => 'fas fa-paper-plane', 'allowed_levels' => [1, 2]],
-                ['title' => 'ส่งหนังสือ', 'url' => 'outside_all.php', 'icon' => 'fas fa-paper-plane', 'allowed_levels' => [3, 4, 5]],
                 ['title' => 'ระบบติดตามแฟ้ม', 'url' => 'follow.php', 'icon' => 'far fa-arrow-alt-circle-right', 'allowed_levels' => [1]],
                 ['title' => 'ตรวจแฟ้ม[สำหรับเลขาฯ]', 'url' => 'follow-check.php', 'icon' => 'far fa-arrow-alt-circle-right', 'allowed_levels' => [1]],
             ]

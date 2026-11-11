@@ -71,9 +71,9 @@ $u_id = $_SESSION['ses_u_id'];
         <div class="panel panel-primary">
             <div class="panel-heading"><i class="fas fa-shopping-cart fa-2x"></i> <strong>ทะเบียนคุมสัญญาซื้อ/ขาย
                 </strong>
-                <a href="" class="btn btn-default  pull-right" data-toggle="modal" data-target="#modalAdd">
+                <!-- <a href="" class="btn btn-default  pull-right" data-toggle="modal" data-target="#modalAdd">
                     <i class="fas fa-plus"></i> ออกเลขสัญญาซื้อ/ขาย
-                </a>
+                </a> -->
                 <!-- <button id="hideSearch" class="btn btn-default pull-right"><i class="fas fa-search"> ค้นหา</i></button> -->
                 <a href="buy.php" class="btn btn-default pull-right"><i class="fas fa-home"></i> หน้าหลัก</a>
             </div>

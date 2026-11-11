@@ -24,172 +24,103 @@ switch ($menu) {
 ?>
 <?php require_once 'footer.php'; ?>
 
-<!-- Modal ประกาศข่าวสาร -->
-<div class="modal fade" id="announcementModal" tabindex="-1" role="dialog" aria-labelledby="announcementModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-    <div class="modal-content border-0 shadow-lg custom-modal-animate" style="background-color: #fffde7; border: 5px solid #ffc107 !important; border-radius: 15px;">
-      <div class="modal-header bg-warning p-3" style="border-top-left-radius: 10px; border-top-right-radius: 10px;">
-        <h5 class="modal-title text-dark font-weight-bold" id="announcementModalLabel" style="font-size: 2.2rem;"><i
-            class="fas fa-bullhorn mr-3 shake-icon text-danger"></i>
-          ประกาศสำคัญจากคณะกรรมการ PCIO</h5>
-        <button type="button" class="close text-dark" data-dismiss="modal" aria-label="Close"
-          style="font-size: 2.5rem; padding: 0.75rem;">
+<!-- Modal เชิญชวนเข้าร่วมกลุ่ม LINE e-Office จังหวัดพัทลุง -->
+<div class="modal fade" id="lineGroupModal" tabindex="-1" role="dialog" aria-labelledby="lineGroupModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 520px; width: 92%; margin: 30px auto;">
+    <div class="modal-content border-0 shadow-2xl" style="border-radius: 24px; overflow: hidden; background: #ffffff;">
+      
+      <!-- Modal Header (LINE Official Green Theme) -->
+      <div class="modal-header border-0 text-white p-4 text-center position-relative" 
+           style="background: linear-gradient(135deg, #06C755 0%, #05a847 100%); border-bottom: 3.5px solid #048a3a;">
+        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close"
+                style="position: absolute; right: 18px; top: 16px; font-size: 2.4rem; color: #ffffff !important; opacity: 0.9; text-shadow: none;">
           <span aria-hidden="true">&times;</span>
         </button>
-      </div>
-
-      <div class="modal-body p-4 text-dark" style="font-size: 2.4rem; line-height: 1.6; font-family: 'Sarabun', sans-serif;">
-        <p class="mb-3"><strong>เรียน เจ้าหน้าที่ทุกท่าน</strong></p>
-        <p class="mb-3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ด้วยในคราวประชุมคณะกรรมการ PCIO จังหวัดพัทลุง
-          ครั้งที่ 1/2569
-          ได้มีกำหนดเปลี่ยนแปลงการออกเลขหนังสือ ดังนี้</p>
-        <ul style="padding-left: 1.5rem;">
-          <li class="mb-3"><span class="highlight-date"><i class="fas fa-calendar-alt mr-1"></i>วันที่ 1 มิถุนายน
-              2569</span> <strong>ขอความร่วมมือราชการส่วนภูมิภาคทุกหน่วยงาน</strong>
-            ส่งหนังสือให้ผู้บริหารลงนามด้วยระบบลงนามดิจิทัล <br></li>
-        </ul>
-        <p class="mb-3">จึงเรียนมาเพื่อทราบ</p>
-        <hr class="my-4">
-        <p class="mb-2 text-muted" style="font-size: 1.8rem;">ทั้งนี้
-          หากติดขัดปัญหาการใช้งานสามารถติดต่อเจ้าหน้าที่ได้ที่เบอร์</p>
-        <p class="mb-1">1. นายสมศักดิ์ แก้วเกลี้ยง โทร. <strong class="text-danger">081-539-9135</strong></p>
-        <p class="mb-0">2. นางสาวกชพรรณ ชินภัควัต โทร. <strong class="text-danger">093-666-9974</strong></p>
-      </div>
-
-      <div class="modal-footer border-0 p-3" style="background-color: #fffde7; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
-        <a href="javascript:void(0)" class="btn btn-warning shadow-sm font-weight-bold" onclick="$('#announcementModal').modal('hide'); setTimeout(function(){ document.getElementById('statistics-section').scrollIntoView({behavior: 'smooth', block: 'start'}); }, 350);"
-          style="font-size: 1.8rem; padding: 0.75rem 2rem; border-radius: 0.8rem;"><i class="fas fa-chart-line mr-2"></i> หน่วยงานที่ดำเนินการแล้ว</a>
-        <button type="button" class="btn btn-danger shadow-sm font-weight-bold pulse-btn" data-dismiss="modal"
-          style="font-size: 1.8rem; padding: 0.75rem 2rem; border-radius: 0.8rem;">ปิด / รับทราบ</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal Browser Notice (เดิม) -->
-<div class="modal fade" id="popupModal" tabindex="-1" role="dialog" aria-labelledby="popupModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
-    <div class="modal-content border-0 shadow">
-      <div class="modal-header bg-primary">
-        <h5 class="modal-title text-white" id="popupModalLabel"><i class="fas fa-info-circle mr-2"></i> ข้อตกลงการใช้งาน
-        </h5>
-        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-
-      <div class="modal-body">
-        <div class="text-center">
-          <p class="lead mb-2"><i class="fas fa-exclamation-triangle fa-2x text-warning"></i></p>
-          <h6 class="mb-2">แนะนำบราวเซอร์สำหรับการใช้งาน</h6>
-          <p class="small text-muted">เว็บไซต์นี้ทำงานได้ดีที่สุดบน Google Chrome หรือ Mozilla Firefox (เดสก์ท็อป)</p>
-
-          <div class="d-flex justify-content-center mt-3">
-            <a href="https://www.google.com/chrome/" class="btn btn-outline-primary mr-2" target="_blank"
-              rel="noopener">
-              <i class="fab fa-chrome mr-1"></i> Chrome
-            </a>
-            <a href="https://www.mozilla.org/th/firefox/new/" class="btn btn-outline-secondary" target="_blank"
-              rel="noopener">
-              <i class="fab fa-firefox mr-1"></i> Firefox
-            </a>
+        <div class="d-flex align-items-center justify-content-center" style="gap: 12px;">
+          <div style="background: rgba(255,255,255,0.25); border-radius: 50%; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <i class="fab fa-line" style="font-size: 3rem; color: #ffffff;"></i>
           </div>
-
-          <div class="mt-3">
-            <small class="text-muted">หากใช้เบราว์เซอร์อื่นแล้วพบปัญหา โปรดลองเปลี่ยนเป็น Chrome/Firefox</small>
+          <div class="text-left">
+            <h4 class="modal-title font-weight-bold m-0" id="lineGroupModalLabel" 
+                style="font-size: 2rem; color: #ffffff; font-family: 'Sarabun', sans-serif; line-height: 1.2;">
+              กลุ่ม LINE e-Office
+            </h4>
+            <div style="font-size: 1.3rem; color: #e8fced; font-weight: 500; font-family: 'Sarabun', sans-serif;">
+              จังหวัดพัทลุง (ประสานงาน & แจ้งข่าวสาร)
+            </div>
           </div>
         </div>
       </div>
 
-      <div class="modal-footer border-0 bg-light">
-        <button type="button" class="btn btn-primary btn-block shadow-sm" data-dismiss="modal">ปิด / รับทราบ</button>
+      <!-- Modal Body -->
+      <div class="modal-body p-4 text-center" style="font-family: 'Sarabun', sans-serif; background: #fafafa;">
+        
+        <p class="font-weight-bold mb-3" style="font-size: 1.5rem; color: #1e293b; line-height: 1.5;">
+          ขอเชิญเจ้าหน้าที่สารบรรณและผู้ใช้งานทุกท่าน<br>
+          <span style="color: #05a847; font-weight: 800;">เข้าร่วมกลุ่ม LINE เพื่อรับข่าวสารและสอบถามปัญหา</span>
+        </p>
+
+        <!-- QR Code Card -->
+        <div class="d-inline-block p-3 rounded-2xl shadow-sm mb-3" 
+             style="background: #ffffff; border: 2.5px solid #06C755; border-radius: 20px; box-shadow: 0 8px 24px rgba(6, 199, 85, 0.2);">
+          <img src="images/line_group_qrcode.jpg" alt="LINE Group QR Code e-Office จังหวัดพัทลุง" 
+               class="img-responsive mx-auto" 
+               style="max-width: 220px; width: 100%; height: auto; border-radius: 12px; display: block;">
+          <div class="mt-2 font-weight-bold" style="font-size: 1.35rem; color: #05a847;">
+            <i class="fas fa-qrcode mr-1"></i> สแกน QR Code เพื่อเข้าร่วม
+          </div>
+        </div>
+
+        <!-- Info List -->
+        <div class="text-left mx-auto p-3 rounded-xl mb-2" 
+             style="max-width: 420px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; font-size: 1.35rem; color: #334155;">
+          <div class="d-flex align-items-center mb-2" style="gap: 10px;">
+            <i class="fas fa-bullhorn text-success flex-shrink-0" style="color: #06C755; font-size: 1.4rem;"></i>
+            <span>ติดตามข่าวสาร ประกาศสำคัญ และกำหนดการระบบ</span>
+          </div>
+          <div class="d-flex align-items-center mb-2" style="gap: 10px;">
+            <i class="fas fa-comments text-success flex-shrink-0" style="color: #06C755; font-size: 1.4rem;"></i>
+            <span>สอบถามปัญหาการใช้งาน ปรึกษาทีม Admin จังหวัด</span>
+          </div>
+          <div class="d-flex align-items-center" style="gap: 10px;">
+            <i class="fas fa-book-reader text-success flex-shrink-0" style="color: #06C755; font-size: 1.4rem;"></i>
+            <span>รับเอกสารคู่มือและวิดีโอแนะนำการใช้งานล่าสุด</span>
+          </div>
+        </div>
+
       </div>
+
+      <!-- Modal Footer -->
+      <div class="modal-footer border-0 p-3 bg-white d-flex justify-content-between align-items-center" 
+           style="border-top: 1px solid #f1f5f9;">
+        <a href="images/line_group_qrcode.jpg" download="LINE_eOffice_Phatthalung.jpg" 
+           class="btn btn-outline-success font-weight-bold" 
+           style="border-radius: 10px; font-size: 1.35rem; border: 1.5px solid #06C755; color: #05a847; padding: 7px 16px;">
+          <i class="fas fa-download mr-1"></i> บันทึกรูป QR Code
+        </a>
+        <button type="button" class="btn btn-secondary font-weight-bold" data-dismiss="modal" 
+                style="border-radius: 10px; font-size: 1.35rem; padding: 7px 22px; background: #64748b; border: none; color: #ffffff;">
+          ปิดหน้าต่าง
+        </button>
+      </div>
+
     </div>
   </div>
 </div>
 
-<style>
-  @keyframes modalZoomIn {
-    0% { transform: scale(0.5) translateY(-100px); opacity: 0; }
-    70% { transform: scale(1.05) translateY(10px); opacity: 1; }
-    100% { transform: scale(1) translateY(0); opacity: 1; }
-  }
-
-  .custom-modal-animate {
-    animation: modalZoomIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-  }
-
-  @keyframes shake-icon {
-    0%, 100% { transform: rotate(0deg) scale(1); }
-    25% { transform: rotate(-20deg) scale(1.2); }
-    75% { transform: rotate(20deg) scale(1.2); }
-  }
-
-  .shake-icon {
-    display: inline-block;
-    animation: shake-icon 0.6s infinite;
-  }
-
-  @keyframes pulse-btn {
-    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7); }
-    70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(220, 53, 69, 0); }
-    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(220, 53, 69, 0); }
-  }
-
-  .pulse-btn {
-    animation: pulse-btn 2s infinite;
-  }
-
-  @keyframes glow-date {
-    0% {
-      color: #dc3545;
-      box-shadow: 0 0 5px rgba(220, 53, 69, 0.2);
-      transform: scale(1);
-    }
-
-    50% {
-      color: #ff1a1a;
-      box-shadow: 0 0 15px rgba(255, 26, 26, 0.6);
-      transform: scale(1.03);
-    }
-
-    100% {
-      color: #dc3545;
-      box-shadow: 0 0 5px rgba(220, 53, 69, 0.2);
-      transform: scale(1);
-    }
-  }
-
-  .highlight-date {
-    display: inline-block;
-    animation: glow-date 1.5s infinite;
-    font-weight: 900;
-    background: linear-gradient(45deg, #fff0f0, #ffffff);
-    padding: 4px 12px;
-    border-radius: 8px;
-    border: 2px solid #ff4d4d;
-    margin-right: 8px;
-    margin-bottom: 5px;
-  }
-</style>
+<!-- Floating Button to Open LINE Group Modal Anytime -->
+<div style="position: fixed; bottom: 25px; right: 25px; z-index: 1040;">
+  <button type="button" class="btn shadow-lg" data-toggle="modal" data-target="#lineGroupModal"
+          style="background: linear-gradient(135deg, #06C755 0%, #05a847 100%); color: #ffffff; border-radius: 30px; padding: 10px 22px; font-weight: 700; font-size: 1.45rem; border: 2.5px solid #ffffff; box-shadow: 0 6px 20px rgba(6, 199, 85, 0.5); display: flex; align-items: center; gap: 8px; transition: all 0.25s ease;"
+          onmouseover="this.style.transform='scale(1.05)';" onmouseout="this.style.transform='scale(1)';">
+    <i class="fab fa-line" style="font-size: 2.4rem;"></i>
+    <span>กลุ่ม LINE e-Office</span>
+  </button>
+</div>
 
 <script>
-  $(document).ready(function () {
-    // แสดง modal ข่าวสารทุกครั้งที่เข้าหน้าระบบ
-    $('#announcementModal').modal('show');
-
-    // จัดการ modal แนะนำ browser ให้แสดงหลังจาก modal ข่าวสารปิดลง (ถ้ายังไม่เคยเห็น)
-    $('#announcementModal').on('hidden.bs.modal', function () {
-      try {
-        if (!localStorage.getItem('seenBrowserNotice')) {
-          $('#popupModal').modal('show');
-          localStorage.setItem('seenBrowserNotice', '1');
-        }
-      } catch (e) {
-        $('#popupModal').modal('show');
-      }
-    });
+  $(document).ready(function() {
+    // แสดง Modal เชิญชวนเข้ากลุ่ม LINE เมื่อเปิดหน้าหลัก
+    $('#lineGroupModal').modal('show');
   });
 </script>

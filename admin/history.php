@@ -96,7 +96,6 @@ if (!isset($_SESSION['ses_u_id'])) {
 				<li><a class="btn-danger fas fa-envelope" href="paper.php"> หนังสือเข้า</a></li>
 				<li><a class="btn-danger fas fa-envelope-open" href="folder.php">สถานะ(รับ/คืน)</a></li>
 				<li class="active"><a class="btn-danger fas fa-history" href="history.php"> ส่งแล้ว</a></li>
-				<li><a class="btn-danger fas fa-globe" href="outside_all.php"> ส่งหนังสือ</a></li>
 			</ul>
 			<table class="table table-bordered table-hover" id="tbHistory" width="100%">
 				<thead>

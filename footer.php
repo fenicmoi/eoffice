@@ -1,8 +1,8 @@
-<footer class="footer bg-dark" style="padding-top: 15px; padding-bottom: 5px;">
+<footer class="footer" style="padding-top: 20px; padding-bottom: 12px; background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%); border-top: 3.5px solid #f59e0b; color: #cbd5e1;">
     <div class="container text-center">
-        <p class="text-muted mb-0"> <kbd>ระบบรับ-ส่ง e-ducument จังหวัดพัทลุง</kbd>
-            พัฒนาโดย:สำนักงานจังหวัดพัทลุง <i class="fas fa-user"></i> <i class="fas fa-fax"></i> 074-613409
-            <span data-toggle="modal" data-target="#card" style="cursor: pointer;"><kbd>[ติดต่อผู้พัฒนาระบบ]</kbd></span>
+        <p class="text-white-50 mb-0" style="color: #cbd5e1; font-size: 1.4rem;"> <span class="badge" style="background: #4c1d95; color: #fbbf24; font-size: 1.25rem;">ระบบรับ-ส่ง e-document จังหวัดพัทลุง</span>
+            พัฒนาโดย: สำนักงานจังหวัดพัทลุง <i class="fas fa-user ml-2"></i> <i class="fas fa-fax ml-1"></i> 074-613409
+            <span data-toggle="modal" data-target="#card" style="cursor: pointer;"><span class="badge badge-warning" style="background: #f59e0b; color: #1e1b4b; font-size: 1.25rem; font-weight: bold;">[ติดต่อผู้พัฒนาระบบ]</span></span>
         </p>
         
         <!-- Visitor Counter -->

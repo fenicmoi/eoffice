@@ -3,6 +3,7 @@
 define('IS_SYSTEM_RUNNING', true);
 require_once 'library/database.php';
 require_once 'library/security.php';
+$menu = isset($_GET['menu']) ? (int) $_GET['menu'] : 1;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -60,71 +61,326 @@ require_once 'library/security.php';
       }
     }
   </script>
+  <style>
+    /* Phatthalung Identity Theme */
+    :root {
+      --phatthalung-purple-dark: #2e0854;
+      --phatthalung-purple: #4c1d95;
+      --phatthalung-purple-light: #6b21a8;
+      --phatthalung-gold: #f59e0b;
+      --phatthalung-gold-light: #fbbf24;
+      --phatthalung-lake: #0284c7;
+    }
+
+    body {
+      padding-top: 70px;
+      background-color: #f8fafc;
+      font-family: 'Sarabun', 'Taviraj', 'TH Sarabun New', sans-serif;
+    }
+
+    /* Fix Tailwind CSS conflict with Bootstrap 3 collapse */
+    .collapse {
+      visibility: visible;
+    }
+    @media (max-width: 767px) {
+      .navbar-collapse.collapse:not(.in) {
+        display: none !important;
+      }
+      .navbar-collapse.collapse.in {
+        display: block !important;
+        visibility: visible !important;
+      }
+    }
+    @media (min-width: 768px) {
+      .navbar-collapse.collapse {
+        display: block !important;
+        visibility: visible !important;
+      }
+    }
+
+    /* Navbar with Phatthalung Identity */
+    .phatthalung-navbar {
+      background: linear-gradient(90deg, #2e0854 0%, #4c1d95 45%, #3b0764 100%) !important;
+      border: none !important;
+      border-bottom: 3.5px solid #f59e0b !important;
+      box-shadow: 0 4px 20px rgba(46, 8, 84, 0.35) !important;
+      min-height: 60px;
+    }
+
+    .phatthalung-navbar .navbar-brand {
+      padding: 6px 15px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+    }
+
+    .phatthalung-navbar .navbar-nav > li > a {
+      color: #f1f5f9 !important;
+      font-size: 1.35rem;
+      font-weight: 600;
+      padding: 19px 10px;
+      transition: all 0.2s ease;
+      font-family: 'Sarabun', sans-serif;
+    }
+
+    @media (min-width: 768px) and (max-width: 1200px) {
+      .phatthalung-navbar .navbar-nav > li > a {
+        font-size: 1.25rem;
+        padding: 19px 7px;
+      }
+      .phatthalung-navbar .navbar-brand {
+        padding: 6px 8px;
+      }
+    }
+
+    .phatthalung-navbar .navbar-nav > li > a:hover,
+    .phatthalung-navbar .navbar-nav > li > a:focus,
+    .phatthalung-navbar .navbar-nav > li.open > a {
+      color: #fbbf24 !important;
+      background: rgba(255, 255, 255, 0.08) !important;
+    }
+
+    .phatthalung-navbar .navbar-nav > li.active > a {
+      color: #fbbf24 !important;
+      background: rgba(245, 158, 11, 0.15) !important;
+      border-bottom: 3px solid #fbbf24;
+    }
+
+    /* Dropdown Menus */
+    .phatthalung-navbar .dropdown-menu {
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.15);
+      padding: 8px 0;
+      min-width: 290px;
+      font-family: 'Sarabun', sans-serif;
+    }
+
+    .phatthalung-navbar .dropdown-menu > li > a {
+      padding: 10px 18px;
+      font-size: 1.45rem;
+      color: #1e293b;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      transition: all 0.15s ease;
+    }
+
+    .phatthalung-navbar .dropdown-menu > li > a:hover {
+      background-color: #f3e8ff;
+      color: #6b21a8;
+      padding-left: 22px;
+    }
+
+    .phatthalung-navbar .dropdown-header {
+      font-size: 1.25rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #7e22ce;
+      font-weight: 700;
+      padding: 6px 18px;
+      background: #faf5ff;
+    }
+
+    @media (min-width: 768px) {
+      .phatthalung-navbar .navbar-nav > li.dropdown:hover > .dropdown-menu {
+        display: block;
+        margin-top: 0;
+      }
+    }
+
+    /* Golden Login Button */
+    .btn-phatthalung-login {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important;
+      color: #ffffff !important;
+      font-weight: 700 !important;
+      border-radius: 20px !important;
+      padding: 7px 15px !important;
+      margin-top: 13px !important;
+      margin-left: 6px !important;
+      margin-right: 10px !important;
+      border: 1px solid #fbbf24 !important;
+      box-shadow: 0 4px 12px rgba(217, 119, 6, 0.35) !important;
+      transition: all 0.25s ease !important;
+      font-size: 1.35rem !important;
+      display: inline-flex !important;
+      align-items: center !important;
+    }
+
+    .btn-phatthalung-login:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(217, 119, 6, 0.5) !important;
+      color: #ffffff !important;
+      background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%) !important;
+    }
+  </style>
 </head>
 <body>
-  <!-- Fixed navbar -->
-  <nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-        data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <img src="images/logo.png" class="navbar-brand" height="80" width="80">
-      <a class="navbar-brand" href="index.php"><?php echo $title; ?></a>
-    </div>
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav ">
-        <li><a class="nav-link active" href="index.php?menu=1"><i class="fas fa-home"></i> หน้าแรก</a></li>
-        <li><a class="btn-link" href="index.php?menu=2"><i class="fas fa-retweet"></i> คำสั่งจังหวัด</a></li>
-        <li><a class="btn-link" href="index.php?menu=4"><i class="fas fa-address-book"></i> ทำเนียบผู้ให้คำปรึกษา</a></li>
-        <li><a class="btn-link" href="index.php?menu=5"><i class="fas fa-book"></i> คู่มือและวิดีโอ</a></li>
-        <li class="dropdown">
-          <a class="btn-link dropdown-toggle" data-toggle="dropdown" href="#"><i class="fas fa-users"></i>
-            ลงทะเบียน
-            <span class="caret"></span></a>
-          <!-- <ul class="dropdown-menu">
-            <li><a href="index.php?menu=3"><i class="fas fa-check-circle"></i> ตรวจสอบส่วนราชการ/หน่วยงานที่ลงทะเบียน
-              </a></li>
-            <li><a data-toggle="modal" data-target="#modalAdd"><i class="fas fa-key"></i> ลงทะเบียนหน่วยงาน/เจ้าหน้าที่
-              </a></li>
-          </ul> -->
-        </li>
-        <li><a class="btn-link" href="#" data-toggle="modal" data-target="#modelRule">ข้อตกลงการใช้งาน</a></li>
-        <li><a class="btn-link" data-toggle="modal" data-target="#myModal"><i class="fas fa-key"></i> เข้าสู่ระบบ </a>
-        </li>
-      </ul>
-  </nav>
-  <!-- Modal -->
-  <div id="modelRule" class="modal fade" role="dialog">
-    <div class="modal-dialog modal-lg">
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header bg-primary">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title"><i class="fas fa-info-circle"></i> ข้อตกลงการใช้งาน</h4>
-        </div>
-        <div class="modal-body">
-          เรียนผู้ใช้งานระบบสำนักงานอัตโนมัติทุกท่าน เพื่อให้ระบบสามารถทำงานได้อย่างมีประสิทธิภาพ
-          จำเป็นต้องได้รับความร่วมมือจากเจ้าหน้าที่ผู้มีส่วนร่วมทุกท่านดังต่อไปนี้
-          <ol>
-            <li>ใช้โปรแกรม Web Browser <kbd>google chrome/firefox/opera/safari</kbd> เพื่อเข้าสู่ระบบเท่านั้น </li>
-            <li>เจ้าหน้าที่สารบรรณประจำหน่วยงาน <kbd>ต้องดำเนินการ</kbd> เพิ่มข้อมูลหน่อยงานย่อย (กลุ่ม/ฝ่าย/สาขา)
-              ด้วยตนเอง ก่อนใช้งานระบบ</li>
-            <li>กำหนดผู้ใช้งานเจ้าหน้าที่ระดับกลุ่มงานทุกกลุ่มงานอย่างน้อย 1 คน ส่วนผู้ใช้ทั่วไปสามารถกำหนดได้ไม่จำกัด
-            <li>เจ้าหน้าที่สารบรรณประจำหน่วยงาน <kbd>เข้าสู่ระบบวันละอย่างน้อย 2 ครั้ง ครั้งที่ 1 เวลา 09:00 น ครั้งที่
-                2 เวลา 14:00 น </li>
-          </ol>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary shadow-sm" data-dismiss="modal">ปิดหน้าต่าง</button>
-        </div>
+  <!-- Fixed Navbar with Phatthalung Identity -->
+  <nav class="navbar navbar-inverse navbar-fixed-top phatthalung-navbar">
+    <div class="container-fluid" style="padding-left: 15px; padding-right: 15px;">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+          data-target="#bs-example-navbar-collapse-1" aria-expanded="false" style="margin-top: 14px; border-color: #fbbf24;">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar" style="background-color: #fbbf24;"></span>
+          <span class="icon-bar" style="background-color: #fbbf24;"></span>
+          <span class="icon-bar" style="background-color: #fbbf24;"></span>
+        </button>
+        <a class="navbar-brand" href="index.php">
+          <img src="images/logo.png" alt="ตราประจำจังหวัดพัทลุง" style="height: 40px; width: 40px; margin-right: 10px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));">
+          <div style="line-height: 1.2;">
+            <div style="font-weight: 800; font-size: 1.6rem; color: #ffffff; font-family: 'Sarabun', sans-serif;">
+              e-Office <span style="color: #fbbf24;">จังหวัดพัทลุง</span>
+            </div>
+            <div style="font-size: 1.1rem; color: #e9d5ff; font-weight: 400; font-family: 'Sarabun', sans-serif;">
+              เมืองลุง ก้าวสู่ระบบราชการดิจิทัล 2570
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li class="<?php echo ($menu == 1) ? 'active' : ''; ?>">
+            <a href="index.php?menu=1"><i class="fas fa-home text-warning mr-1"></i> หน้าแรก</a>
+          </li>
+          
+          <!-- ระบบงานหลัก (Dropdown) -->
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+              <i class="fas fa-th-large text-warning mr-1"></i> ระบบงานหลัก <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+              <li class="dropdown-header"><i class="fas fa-star text-warning"></i> ระบบงานหลักประจำจังหวัด</li>
+              <li>
+                <a href="http://phatthalung.eoffice.go.th" target="_blank">
+                  <i class="fas fa-cloud text-primary mr-2" style="font-size: 1.5rem; width: 22px;"></i>
+                  <div>
+                    <span class="font-weight-bold">ระบบ e-Office (GDCC)</span>
+                    <span class="badge badge-primary ml-1" style="background: #2563eb; font-size: 1.1rem;">ระบบใหม่</span>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="#" data-toggle="modal" data-target="#myModal">
+                  <i class="fas fa-building text-warning mr-2" style="font-size: 1.5rem; width: 22px;"></i>
+                  <div>
+                    <span class="font-weight-bold">ระบบรับ-ส่ง เอกสารเดิม (พัทลุง)</span>
+                    <span class="badge badge-warning ml-1" style="background: #d97706; font-size: 1.1rem;">ระบบเดิม</span>
+                  </div>
+                </a>
+              </li>
+              <li role="separator" class="divider"></li>
+              <li>
+                <a href="http://www.phone.phatthalung.go.th" target="_blank">
+                  <i class="fas fa-address-book text-success mr-2" style="font-size: 1.5rem; width: 22px;"></i>
+                  <span>ติดต่อเรา</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <!-- เมนูคู่มือและสื่อการเรียนรู้ (Dropdown รวมคู่มือทั้งหมดตามที่ผู้ใช้ขอ: ส่วนคู่มืออื่นๆ เอาไปทำเป็น top menu) -->
+          <li class="dropdown <?php echo ($menu == 5) ? 'active' : ''; ?>">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+              <i class="fas fa-book-reader text-warning mr-1"></i> คู่มือและสื่อการเรียนรู้ <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu" style="min-width: 320px;">
+              <li class="dropdown-header"><i class="fas fa-file-pdf text-danger"></i> เอกสารคู่มือการใช้งาน (PDF)</li>
+              <li>
+                <a href="https://documents.eoffice.go.th/docs/ManualeSaraban" target="_blank">
+                  <i class="fas fa-file-pdf text-danger mr-2" style="font-size: 1.5rem; width: 22px;"></i>
+                  <div>
+                    <div class="font-weight-bold">คู่มือการใช้งานระบบ e-Office</div>
+                    <small class="text-muted">ครอบคลุมทุกฟังก์ชันสำหรับผู้ใช้ทั่วไป</small>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="https://documents.eoffice.go.th/docs/ManualAdminTool" target="_blank">
+                  <i class="fas fa-cogs mr-2" style="font-size: 1.5rem; width: 22px; color: #9333ea;"></i>
+                  <div>
+                    <div class="font-weight-bold">คู่มือสำหรับผู้ดูแลระบบ</div>
+                    <small class="text-muted">สำหรับ Administrator ประจำหน่วยงาน</small>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="https://documents.eoffice.go.th/new-features/28-04-2569/update-1/" target="_blank">
+                  <i class="fas fa-user-plus text-info mr-2" style="font-size: 1.5rem; width: 22px;"></i>
+                  <div>
+                    <div class="font-weight-bold">ขั้นตอนการลงทะเบียนระบบ</div>
+                    <small class="text-muted">คู่มือการสมัครและตั้งค่าบัญชีผู้ใช้</small>
+                  </div>
+                </a>
+              </li>
+              
+              <li role="separator" class="divider"></li>
+              <li class="dropdown-header"><i class="fab fa-youtube text-danger"></i> วิดีโอแนะนำและอบรม</li>
+              <li>
+                <a href="https://documents.eoffice.go.th/docs/VideoTutorial" target="_blank">
+                  <i class="fab fa-youtube text-danger mr-2" style="font-size: 1.5rem; width: 22px;"></i>
+                  <span>วิดีโอแนะนำการใช้งาน (ผู้ใช้ทั่วไป)</span>
+                </a>
+              </li>
+              <li>
+                <a href="https://documents.eoffice.go.th/docs/VideoTutorialAdmin" target="_blank">
+                  <i class="fas fa-video text-warning mr-2" style="font-size: 1.5rem; width: 22px;"></i>
+                  <span>วิดีโอแนะนำระบบ (สำหรับ Admin)</span>
+                </a>
+              </li>
+              <li>
+                <a href="https://documents.eoffice.go.th/docs/VideoTraining" target="_blank">
+                  <i class="fas fa-chalkboard-teacher text-success mr-2" style="font-size: 1.5rem; width: 22px;"></i>
+                  <span>วิดีโอบันทึกการอบรมอย่างละเอียด</span>
+                </a>
+              </li>
+
+              <li role="separator" class="divider"></li>
+              <li>
+                <a href="index.php?menu=5" style="background-color: #faf5ff; font-weight: bold; color: #4c1d95;">
+                  <i class="fas fa-th-list text-primary mr-2" style="font-size: 1.4rem; width: 22px;"></i>
+                  <span>เปิดหน้ารวมคู่มือและวิดีโอทั้งหมด &rarr;</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <!-- <li class="<?php echo ($menu == 2) ? 'active' : ''; ?>">
+            <a href="index.php?menu=2"><i class="fas fa-retweet text-warning mr-1"></i> คำสั่งจังหวัด</a>
+          </li> -->
+
+          <li class="<?php echo ($menu == 4) ? 'active' : ''; ?>">
+            <a href="index.php?menu=4"><i class="fas fa-address-book text-warning mr-1"></i>ติดต่อเจ้าหน้าที่</a>
+          </li>
+
+          <!-- ลงทะเบียน (Dropdown) -->
+          <li class="dropdown <?php echo ($menu == 3) ? 'active' : ''; ?>">
+            <a href="http://phatthalung.eoffice.go.th/api/auth/thaid/forward?source=register"  role="button" aria-haspopup="true" aria-expanded="false">
+              <i class="fas fa-users text-warning mr-1"></i> ลงทะเบียน <span class="caret"></span>
+            </a>
+          </li>
+
+          <!-- <li>
+            <a href="#" data-toggle="modal" data-target="#modelRule">
+              <i class="fas fa-info-circle text-warning mr-1"></i> ข้อตกลง
+            </a>
+          </li> -->
+        </ul>
+
+        <!-- ปุ่มเข้าสู่ระบบ เด่นสง่า สีทอง -->
+        <ul class="nav navbar-nav navbar-right">
+          <li>
+            <a href="#" class="btn-phatthalung-login" data-toggle="modal" data-target="#myModal">
+              <i class="fas fa-key mr-2"></i> เข้าสู่ระบบ (ระบบเดิม)
+            </a>
+          </li>
+        </ul>
       </div>
     </div>
-  </div>
-
+  </nav>
+  <!-- Modal -->
   <div class="container-fluse">
 
     <!-- Modal Login -->
@@ -165,146 +421,6 @@ require_once 'library/security.php';
       </div>
     </div>
 
-    <div class="container-fluse">
-      <!-- Modal Add -->
-      <div id="modalAdd" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-          <!-- Modal content-->
-          <div class="modal-content">
-            <div class="modal-header bg-success">
-              <button type="button" class="close" data-dismiss="modal">&times;</button>
-              <h4 class="modal-title font-weight-bold"><i class="fas fa-id-card mr-2"></i> ลงทะเบียนหน่วยงาน /
-                เจ้าหน้าที่
-              </h4>
-            </div>
-            <div class="modal-body">
-              <form method="post">
-                <div class="panel-group" id="accordion">
-                  <div class="panel panel-success">
-                    <h4 class="panel-title">
-                      <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">ส่วนที่ 1 ข้อมูลหน่วยงาน </a>
-                    </h4>
-                  </div>
-                  <div id="collapse1" class="panel-collapse collapse">
-                    <div class="panel-body">
-                      <fieldset>
-                        <div class="form-group">
-                          <div class="input-group">
-                            <span class="input-group-addon">ชื่อส่วนราชการ/หน่วยงาน</span>
-                            <input class="form-control" type="text" name="depart" required>
-                          </div>
-                        </div>
-                        <div class="form-group">
-                          <div class="input-group">
-                            <span class="input-group-addon">เลขประจำส่วนราชการ</span>
-                            <input class="form-control" type="text" name="book_no" placeholder="ตัวอย่าง พท 0017"
-                              required>
-                          </div>
-                        </div>
-                        <div class="form-group">
-                          <div class="input-group">
-                            <span class="input-group-addon">ที่อยู่สำนักงาน</span>
-                            <input class="form-control" type="text" name="address" required>
-                          </div>
-                        </div>
-                        <div class="form-group">
-                          <div class="input-group">
-                            <span class="input-group-addon">เบอร์โทรศัพท์</span>
-                            <input class="form-control" type="text" name="o_tel" placeholder="ตัวอย่าง 074-613409"
-                              required>
-                          </div>
-                        </div>
-                        <div class="form-group">
-                          <div class="input-group">
-                            <span class="input-group-addon">เบอร์โทรสาร</span>
-                            <input class="form-control" type="text" name="o_fax" placeholder="ตัวอย่าง 074-613409"
-                              required>
-                          </div>
-                        </div>
-                        <div class="form-group">
-                          <div class="input-group">
-                            <span class="input-group-addon">Website</span>
-                            <input class="form-control" type="text" name="website"
-                              placeholder="ตัวอย่าง www.phatthalung.go.th">
-                          </div>
-                        </div>
-                        <div class="form-group">
-                          <div class="input-group">
-                            <span class="input-group-addon">E-mail ทางการ</span>
-                            <input class="form-control" type="email" name="email" placeholder="อีเมลล์ทางการของหน่วยงาน"
-                              required>
-                          </div>
-                        </div>
-                      </fieldset>
-                    </div>
-                  </div>
-                  <div class="panel panel-default">
-                    <h4 class="panel-title">
-                      <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">ส่วนที่ 2
-                        ข้อมูลเจ้าหน้าที่สารบรรณประจำหน่วยงาน </a>
-                    </h4>
-                  </div>
-                  <div id="collapse2" class="panel-collapse collapse">
-                    <div class="panel-body">
-                      <fieldset>
-                        <div class="form-group">
-                          <div class="input-group">
-                            <span class="input-group-addon">ชื่อ</span>
-                            <input class="form-control" type="text" name="fname" required>
-                          </div>
-                        </div>
-                        <div class="form-group">
-                          <div class="input-group">
-                            <span class="input-group-addon">นามสกุล</span>
-                            <input class="form-control" type="text" name="lname" required>
-                          </div>
-                        </div>
-                        <div class="form-group">
-                          <div class="input-group">
-                            <span class="input-group-addon">ตำแหน่ง</span>
-                            <input class="form-control" type="text" name="position" required>
-                          </div>
-                        </div>
-                        <div class="form-group">
-                          <div class="input-group">
-                            <span class="input-group-addon">เบอร์สำนักงาน</span>
-                            <input class="form-control" type="text" name="tel" placeholder="ตัวอย่าง 0-7648-1421"
-                              required>
-                          </div>
-                        </div>
-                        <div class="form-group">
-                          <div class="input-group">
-                            <span class="input-group-addon">เบอร์มือถือ</span>
-                            <input class="form-control" type="text" name="fax" placeholder="ตัวอย่าง 0-7648-1421"
-                              required>
-                          </div>
-                        </div>
-                        <!-- <div class="form-group">
-                                          <div class="input-group">
-                                              <span class="input-group-addon">username</span>
-                                              <input class="form-control" type="text" name="username" placeholder="ประกอบด้วยตัวอักษรภาษาอังกฤษและตัวเลข 8 หลัก">
-                                          </div>
-                                        </div> -->
-                        <!-- <div class="form-group">
-                                          <div class="input-group">
-                                              <span class="input-group-addon">password</span>
-                                              <input class="form-control" type="text" name="password" placeholder="ประกอบด้วยตัวอักษรภาษาอังกฤษและตัวเลข 8 หลัก" required>
-                                          </div>
-                                        </div> -->
-                      </fieldset>
-                    </div>
-                  </div>
-                </div>
-                <br>
-                <center><input type="submit" name="add" class="btn btn-success btn-lg" value="ตกลง" /></center>
-              </form>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary shadow-sm" data-dismiss="modal">ยกเลิก</button>
-            </div>
-          </div>
-        </div>
-      </div>
       <?php
       if (isset($_POST['add'])) {       // check button  
         $depart = dbEscapeString($_POST['depart']);

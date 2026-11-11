@@ -108,7 +108,6 @@ if(!isset($_SESSION['ses_u_id'])){
                <a class="btn btn-primary btn-block" href="paper.php"><i class="fas fa-envelope  pull-left"></i>หนังสือเข้า</a>
                <a class="btn btn-primary btn-block" href="folder.php"><i class="far fa-envelope-open  pull-left"></i>รับแล้ว</a>
                <a class="btn btn-primary btn-block" href="history.php"><i class="fas fa-folder-open  pull-left"></i>ส่งแล้ว</a>
-               <a class="btn btn-primary btn-block" href="outside_all.php"><i class="fas fa-paper-plane pull-left"></i>ส่งหนังสือ</a>
             <!-- <a class="btn btn-primary btn-block" href="follow.php"><i class="far fa-arrow-alt-circle-right  pull-left"></i> ระบบติดตามแฟ้ม</a>
             <a class="btn btn-primary btn-block" href="follow-check.php"><i class="far fa-arrow-alt-circle-right  pull-left"></i>ตรวจแฟ้ม[สำหรับเลขาฯ]</a> -->
             </div>

@@ -17,7 +17,7 @@ $u_id=$_SESSION['ses_u_id'];
         <div class="col-md-10">
             <div class="panel panel-default" style="margin: 20">
                 <div class="panel-heading"><i class="fas fa-cart-plus"></i>   <strong>ทะเบียนคุมสัญญาจ้าง</strong>
-                    <a href="add_object.php" class="btn btn-primary  pull-right" data-toggle="modal" data-target="#modalAdd"><i class="fa fa-plus" aria-hidden="true"></i> ออกเลขที่สัญญา</a>
+                    <!-- <a href="add_object.php" class="btn btn-primary  pull-right" data-toggle="modal" data-target="#modalAdd"><i class="fa fa-plus" aria-hidden="true"></i> ออกเลขที่สัญญา</a> -->
                 </div> 
                 <br>
 

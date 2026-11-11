@@ -14,17 +14,25 @@ if (!defined('IS_SYSTEM_RUNNING')) {
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
         
-        <!-- Document 1 -->
-        <a href="https://documents.eoffice.go.th/docs/ManualeSaraban" target="_blank" class="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 flex flex-col group no-underline hover:no-underline focus:outline-none hover:-translate-y-2">
-            <div class="bg-blue-50 p-6 flex flex-col items-center border-b border-blue-100 relative">
-                <div class="absolute top-4 right-4 text-blue-300 group-hover:text-blue-500 transition-colors">
+        <!-- Phatthalung Official Sending Manual (New) -->
+        <a href="manual_send_eoffice.pdf" target="_blank" class="bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden border-2 border-red-400 flex flex-col group no-underline hover:no-underline focus:outline-none hover:-translate-y-2 relative">
+            <div class="absolute top-3 left-3 z-10">
+                <span class="bg-red-600 text-white text-xs font-bold px-2.5 py-1 rounded-full shadow-md animate-pulse">
+                    <i class="fas fa-star mr-1 text-yellow-300"></i> แนะนำ • สำนักงานจังหวัดพัทลุง
+                </span>
+            </div>
+            <div class="bg-gradient-to-b from-red-50 to-orange-50 p-6 flex flex-col items-center border-b border-red-100 relative pt-10">
+                <div class="absolute top-4 right-4 text-red-300 group-hover:text-red-500 transition-colors">
                     <i class="fas fa-external-link-alt text-xl"></i>
                 </div>
-                <div class="w-24 h-24 bg-white rounded-full flex items-center justify-center text-blue-500 shadow-sm mb-4">
+                <div class="w-24 h-24 bg-white rounded-full flex items-center justify-center text-red-600 shadow-md mb-4 border border-red-100 group-hover:scale-110 transition-transform">
                     <i class="fas fa-file-pdf text-5xl"></i>
                 </div>
-                <h4 class="text-2xl font-bold text-gray-900 text-center m-0 group-hover:text-blue-600 transition-colors">คู่มือการใช้งานระบบ e-Office</h4>
-                <p class="text-lg text-gray-500 text-center mt-2 mb-0">(ครอบคลุมทุกฟังก์ชัน)</p>
+                <h4 class="text-2xl font-bold text-gray-900 text-center m-0 group-hover:text-red-600 transition-colors">คู่มือการส่งหนังสือ e-Office</h4>
+                <p class="text-base text-gray-600 text-center mt-2 mb-0 font-medium">3 ช่องทางส่ง (ส่งปกติ / dConnect / E-mail)</p>
+                <span class="inline-block mt-3 px-3 py-1 bg-red-600 text-white rounded-lg text-sm font-bold shadow-sm">
+                    <i class="fas fa-download mr-1"></i> คลิกเปิด/ดาวน์โหลดไฟล์ PDF
+                </span>
             </div>
         </a>
 

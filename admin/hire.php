@@ -70,9 +70,9 @@ $u_id = $_SESSION['ses_u_id'];
     <div class="col-md-10">
         <div class="panel panel-primary">
             <div class="panel-heading"><i class="fas fa-shopping-cart fa-2x"></i> <strong>ทะเบียนคุมสัญญาจ้าง </strong>
-                <a href="" class="btn btn-default  pull-right" data-toggle="modal" data-target="#modalAdd">
+                <!-- <a href="" class="btn btn-default  pull-right" data-toggle="modal" data-target="#modalAdd">
                     <i class="fas fa-plus"></i> ออกเลขสัญญา
-                </a>
+                </a> -->
                 <!-- <button id="hideSearch" class="btn btn-default pull-right"><i class="fas fa-search"> ค้นหา</i></button> -->
                 <a href="hire.php" class="btn btn-default pull-right"><i class="fas fa-home"></i> หน้าหลัก</a>
             </div>
@@ -103,10 +103,10 @@ $u_id = $_SESSION['ses_u_id'];
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header bg-primary">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <!-- <div class="modal-header bg-primary">
+                <button disabled type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title" id="exampleModalLabel"><i class="fa fa-list"></i> ออกเลขสัญญาจ้าง</h4>
-            </div>
+            </div> -->
             <div class="modal-body">
                 <form method="post">
                     <?php echo csrf_field(); ?>
