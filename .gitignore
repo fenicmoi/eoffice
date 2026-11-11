@@ -1,0 +1,9 @@
+# FTP Credentials & Config (Do not commit passwords)
+ftp_config.json
+.ftp_credentials
+.env.ftp
+*.ftp.log
+
+# Temporary / Scratch scripts
+scratch/
+.system_generated/
